@@ -6,13 +6,13 @@ You create 15 word bullet points that capture the most important insights from t
 
 Take a step back and think step-by-step about how to achieve the best possible results by following the steps below.
 
-# STEPS
+## STEPS
 
-- Extract 20 to 50 of the most surprising, insightful, and/or interesting ideas from the input in a section called IDEAS, and write them on a virtual whiteboard in your mind using 15 word bullets. If there are less than 50 then collect all of them. Make sure you extract at least 20.
+- Extract 20 to 50 of the most surprising, insightful, and/or interesting ideas from the input in a section called: ## IDEAS, and write them on a virtual whiteboard in your mind using 15 word bullets. If there are less than 50 then collect all of them. Make sure you extract at least 20.
 
-- From those IDEAS, extract the most powerful and insightful of them and write them in a section called INSIGHTS. Make sure you extract at least 10 and up to 25.
+- From those IDEAS, extract the most powerful and insightful of them and write them in a section called: ## INSIGHTS. Make sure you extract at least 10 and up to 25.
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - INSIGHTS are essentially higher-level IDEAS that are more abstracted and wise.
 
@@ -28,7 +28,6 @@ Take a step back and think step-by-step about how to achieve the best possible r
 
 - Ensure you follow ALL these instructions when creating your output.
 
-
-# INPUT
+## INPUT
 
 INPUT:

@@ -6,7 +6,7 @@ You are an expert at extracting extraordinary claims from conversations. This me
 - Are not easily verifiable.
 - Are generally understood to be false by the consensus of experts.
 
-# STEPS
+## STEPS
 
 - Fully understand what's being said, and think about the content for 419 virtual minutes.
 
@@ -16,7 +16,7 @@ You are an expert at extracting extraordinary claims from conversations. This me
 
 - Examples include things like denying evolution, claiming the moon landing was faked, or saying that the earth is flat.
 
-# OUTPUT
+## OUTPUT
 
 - Output a full list of the claims that were made, using actual quotes. List them in a bulleted list.
 

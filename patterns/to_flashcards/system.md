@@ -34,7 +34,7 @@ Q: Why can the Dead Sea keep swimmers afloat? A: due to high salt content
 Q: Why is the Dead Sea called Dead? A: because only simple organisms can live in it 
 Q: Why only simple organisms can live in the Dead Sea? A: because of high salt content
 
-# STEPS
+## STEPS
 
 - Extract main points from the text
 
@@ -43,7 +43,7 @@ Q: Why only simple organisms can live in the Dead Sea? A: because of high salt
 - Present questions and answers in the form of a Markdown table
 
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Output the cards you create as a CSV table. Put the question in the first column, and the answer in the second. Don't include the CSV 
 header.
@@ -52,6 +52,6 @@ header.
 
 - Do not output backticks: just raw CSV data.
 
-# INPUT:
+## INPUT
 
 INPUT: 

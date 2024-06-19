@@ -1,10 +1,3 @@
-# IDENTITY and PURPOSE
-
-You are an expert LLM prompt writing service. You take an LLM/AI prompt as input and output a better prompt based on your prompt writing expertise and the knowledge gleaned from the article called "Prompt engineering Strategies and Tactics" below.
-
-=== START PROMPT WRITING KNOWLEDGE ARTICLE ===
-
-````markdown
 # Prompt engineering Strategies and Tactics
 
 This guide shares strategies and tactics for getting better results from large language models (sometimes referred to as GPT models) like GPT-4o. The methods described here can sometimes be deployed in combination for greater effect. We encourage experimentation to find the methods that work best for you.
@@ -21,12 +14,12 @@ These models can’t read your mind. If outputs are too long, ask for brief repl
 
 Tactics:
 
-- [Include details in your query to get more relevant answers](knowledge.md#tactic-include-details-in-your-query-to-get-more-relevant-answers)
-- [Ask the model to adopt a persona](knowledge.md#tactic-ask-the-model-to-adopt-a-persona)
-- [Use delimiters to clearly indicate distinct parts of the input](knowledge.md#tactic-use-delimiters-to-clearly-indicate-distinct-parts-of-the-input)
-- [Specify the steps required to complete a task](knowledge.md#tactic-specify-the-steps-required-to-complete-a-task)
-- [Provide examples](knowledge.md#tactic-provide-examples)
-- [Specify the desired length of the output](knowledge.md#tactic-specify-the-desired-length-of-the-output)
+- [Include details in your query to get more relevant answers](#tactic-include-details-in-your-query-to-get-more-relevant-answers)
+- [Ask the model to adopt a persona](#tactic-ask-the-model-to-adopt-a-persona)
+- [Use delimiters to clearly indicate distinct parts of the input](#tactic-use-delimiters-to-clearly-indicate-distinct-parts-of-the-input)
+- [Specify the steps required to complete a task](#tactic-specify-the-steps-required-to-complete-a-task)
+- [Provide examples](#tactic-provide-examples)
+- [Specify the desired length of the output](#tactic-specify-the-desired-length-of-the-output)
 
 ### Provide reference text
 
@@ -34,8 +27,8 @@ Language models can confidently invent fake answers, especially when asked about
 
 Tactics:
 
-- [Instruct the model to answer using a reference text](knowledge.md#tactic-instruct-the-model-to-answer-using-a-reference-text)
-- [Instruct the model to answer with citations from a reference text](knowledge.md#tactic-instruct-the-model-to-answer-with-citations-from-a-reference-text)
+- [Instruct the model to answer using a reference text](#tactic-instruct-the-model-to-answer-using-a-reference-text)
+- [Instruct the model to answer with citations from a reference text](#tactic-instruct-the-model-to-answer-with-citations-from-a-reference-text)
 
 ### Split complex tasks into simpler subtasks
 
@@ -43,9 +36,9 @@ Just as it is good practice in software engineering to decompose a complex syste
 
 Tactics:
 
-- [Use intent classification to identify the most relevant instructions for a user query](knowledge.md#tactic-use-intent-classification-to-identify-the-most-relevant-instructions-for-a-user-query)
-- [For dialogue applications that require very long conversations, summarize or filter previous dialogue](knowledge.md#tactic-for-dialogue-applications-that-require-very-long-conversations-summarize-or-filter-previous-dialogue)
-- [Summarize long documents piecewise and construct a full summary recursively](knowledge.md#tactic-summarize-long-documents-piecewise-and-construct-a-full-summary-recursively)
+- [Use intent classification to identify the most relevant instructions for a user query](#tactic-use-intent-classification-to-identify-the-most-relevant-instructions-for-a-user-query)
+- [For dialogue applications that require very long conversations, summarize or filter previous dialogue](#tactic-for-dialogue-applications-that-require-very-long-conversations-summarize-or-filter-previous-dialogue)
+- [Summarize long documents piecewise and construct a full summary recursively](#tactic-summarize-long-documents-piecewise-and-construct-a-full-summary-recursively)
 
 ### Give the model time to "think"
 
@@ -53,9 +46,9 @@ If asked to multiply 17 by 28, you might not know it instantly, but can still wo
 
 Tactics:
 
-- [Instruct the model to work out its own solution before rushing to a conclusion](knowledge.md#tactic-instruct-the-model-to-work-out-its-own-solution-before-rushing-to-a-conclusion)
-[Use inner monologue or a sequence of queries to hide the model's reasoning process](knowledge.md#tactic-use-inner-monologue-or-a-sequence-of-queries-to-hide-the-models-reasoning-process)
-- [Ask the model if it missed anything on previous passes](knowledge.md#tactic-ask-the-model-if-it-missed-anything-on-previous-passes)
+- [Instruct the model to work out its own solution before rushing to a conclusion](#tactic-instruct-the-model-to-work-out-its-own-solution-before-rushing-to-a-conclusion)
+[Use inner monologue or a sequence of queries to hide the model's reasoning process](#tactic-use-inner-monologue-or-a-sequence-of-queries-to-hide-the-models-reasoning-process)
+- [Ask the model if it missed anything on previous passes](#tactic-ask-the-model-if-it-missed-anything-on-previous-passes)
 
 ### Use external tools
 
@@ -63,9 +56,9 @@ Compensate for the weaknesses of the model by feeding it the outputs of other to
 
 Tactics:
 
-- [Use embeddings-based search to implement efficient knowledge retrieval](knowledge.md#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval)
-- [Use code execution to perform more accurate calculations or call external APIs](knowledge.md#tactic-use-code-execution-to-perform-more-accurate-calculations-or-call-external-apis)
-- [Give the model access to specific functions](knowledge.md#tactic-give-the-model-access-to-specific-functions)
+- [Use embeddings-based search to implement efficient knowledge retrieval](#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval)
+- [Use code execution to perform more accurate calculations or call external APIs](#tactic-use-code-execution-to-perform-more-accurate-calculations-or-call-external-apis)
+- [Give the model access to specific functions](#tactic-give-the-model-access-to-specific-functions)
 
 ### Test changes systematically
 
@@ -73,7 +66,7 @@ Improving performance is easier if you can measure it. In some cases a modificat
 
 Tactic:
 
-- [Evaluate model outputs with reference to gold-standard answers](knowledge.md#tactic-evaluate-model-outputs-with-reference-to-gold-standard-answers)
+- [Evaluate model outputs with reference to gold-standard answers](#tactic-evaluate-model-outputs-with-reference-to-gold-standard-answers)
 
 ## Tactics
 
@@ -97,11 +90,11 @@ In order to get a highly relevant response, make sure that requests provide any 
 The system message can be used to specify the persona used by the model in its replies.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 When I ask for help to write something, you will reply with a document that contains at least one joke or playful comment in every paragraph.
 
-USER:
+USER
 
 Write a thank you note to my steel bolt vendor for getting the delivery in on time and in short notice. This made it possible for us to deliver an important order.
 ```
@@ -113,7 +106,7 @@ Write a thank you note to my steel bolt vendor for getting the delivery in on ti
 Delimiters like triple quotation marks, XML tags, section titles, etc. can help demarcate sections of text to be treated differently.
 
 ```txt
-USER:
+USER
 
 Summarize the text delimited by triple quotes with a haiku. """insert text here"""
 ```
@@ -121,11 +114,11 @@ Summarize the text delimited by triple quotes with a haiku. """insert text here"
 - [Open in Playground](https://platform.openai.com/playground/p/default-delimiters-1?mode=chat)
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with a pair of articles (delimited with XML tags) about the same topic. First summarize the arguments of each article. Then indicate which of them makes a better argument and explain why.
 
-USER:
+USER
 
 <article> insert first article here </article>
 
@@ -135,11 +128,11 @@ USER:
 - [Open in Playground](https://platform.openai.com/playground/p/default-delimiters-2?mode=chat)
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with a thesis abstract and a suggested title for it. The thesis title should give the reader a good idea of the topic of the thesis but should also be eye-catching. If the title does not meet these criteria, suggest 5 alternatives.
 
-USER:
+USER
 
 Abstract: insert abstract here
 
@@ -155,7 +148,7 @@ For straightforward tasks such as these, using delimiters might not make a diffe
 Some tasks are best specified as a sequence of steps. Writing the steps out explicitly can make it easier for the model to follow them.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Use the following step-by-step instructions to respond to user inputs.
 
@@ -163,7 +156,7 @@ Step 1 - The user will provide you with text in triple quotes. Summarize this te
 
 Step 2 - Translate the summary from Step 1 into Spanish, with a prefix that says "Translation: ".
 
-USER:
+USER
 
 """insert text here"""
 ```
@@ -175,19 +168,19 @@ USER:
 Providing general instructions that apply to all examples is generally more efficient than demonstrating all permutations of a task by example, but in some cases providing examples may be easier. For example, if you intend for the model to copy a particular style of responding to user queries which is difficult to describe explicitly. This is known as "few-shot" prompting.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Answer in a consistent style.
 
-USER:
+USER
 
 Teach me about patience.
 
-ASSISTANT:
+ASSISTANT
 
 The river that carves the deepest valley flows from a modest spring; the grandest symphony originates from a single note; the most intricate tapestry begins with a solitary thread.
 
-USER:
+USER
 
 Teach me about the ocean.
 ```
@@ -199,7 +192,7 @@ Teach me about the ocean.
 You can ask the model to produce outputs that are of a given target length. The targeted output length can be specified in terms of the count of words, sentences, paragraphs, bullet points, etc. Note however that instructing the model to generate a specific number of words does not work with high precision. The model can more reliably generate outputs with a specific number of paragraphs or bullet points.
 
 ```txt
-USER:
+USER
 
 Summarize the text delimited by triple quotes in about 50 words. """insert text here"""
 ```
@@ -207,7 +200,7 @@ Summarize the text delimited by triple quotes in about 50 words. """insert text 
 - [Open in Playground](https://platform.openai.com/playground/p/default-summarize-text-50-words?mode=chat)
 
 ```txt
-USER:
+USER
 
 Summarize the text delimited by triple quotes in 2 paragraphs. """insert text here"""
 ```
@@ -215,7 +208,7 @@ Summarize the text delimited by triple quotes in 2 paragraphs. """insert text he
 - [Open in Playground](https://platform.openai.com/playground/p/default-summarize-text-2-paragraphs?mode=chat)
 
 ```txt
-USER:
+USER
 
 Summarize the text delimited by triple quotes in 3 bullet points. """insert text here"""
 ```
@@ -229,11 +222,11 @@ Summarize the text delimited by triple quotes in 3 bullet points. """insert text
 If we can provide a model with trusted information that is relevant to the current query, then we can instruct the model to use the provided information to compose its answer.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Use the provided articles delimited by triple quotes to answer questions. If the answer cannot be found in the articles, write "I could not find an answer."
 
-USER:
+USER
 
 <insert articles, each delimited by triple quotes>
 
@@ -242,18 +235,18 @@ Question: <insert question here>
 
 - [Open in Playground](https://platform.openai.com/playground/p/default-answer-from-retrieved-documents?mode=chat)
 
-Given that all models have limited context windows, we need some way to dynamically lookup information that is relevant to the question being asked. [Embeddings](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings) can be used to implement efficient knowledge retrieval. See the tactic ["Use embeddings-based search to implement efficient knowledge retrieval"](knowledge.md#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval) for more details on how to implement this.
+Given that all models have limited context windows, we need some way to dynamically lookup information that is relevant to the question being asked. [Embeddings](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings) can be used to implement efficient knowledge retrieval. See the tactic ["Use embeddings-based search to implement efficient knowledge retrieval"](#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval) for more details on how to implement this.
 
 #### Tactic: Instruct the model to answer with citations from a reference text
 
 If the input has been supplemented with relevant knowledge, it's straightforward to request that the model add citations to its answers by referencing passages from provided documents. Note that citations in the output can then be verified programmatically by string matching within the provided documents.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with a document delimited by triple quotes and a question. Your task is to answer the question using only the provided document and to cite the passage(s) of the document used to answer the question. If the document does not contain the information needed to answer this question then simply write: "Insufficient information." If an answer to the question is provided, it must be annotated with a citation. Use the following format for to cite relevant passages ({"citation": …}).
 
-USER:
+USER
 
 """<insert document here>"""
 
@@ -271,7 +264,7 @@ For tasks in which lots of independent sets of instructions are needed to handle
 Suppose for example that for a customer service application, queries could be usefully classified as follows:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with customer service queries. Classify each query into a primary category and a secondary category. Provide your output in json format with the keys: primary and secondary.
 
@@ -300,7 +293,7 @@ General Inquiry secondary categories:
 - Feedback
 - Speak to a human
 
-USER:
+USER
 
 I need to get my internet working again.
 ```
@@ -310,21 +303,21 @@ I need to get my internet working again.
 Based on the classification of the customer query, a set of more specific instructions can be provided to a model for it to handle next steps. For example, suppose the customer requires help with "troubleshooting".
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with customer service inquiries that require troubleshooting in a technical support context. Help the user by:
 
 - Ask them to check that all cables to/from the router are connected. Note that it is common for cables to come loose over time.
 - If all cables are connected and the issue persists, ask them which router model they are using
 - Now you will advise them how to restart their device:
--- If the model number is MTD-327J, advise them to push the red button and hold it for 5 seconds, then wait 5 minutes before testing the connection.
--- If the model number is MTD-327S, advise them to unplug and replug it, then wait 5 minutes before testing the connection.
+    - If the model number is MTD-327J, advise them to push the red button and hold it for 5 seconds, then wait 5 minutes before testing the connection.
+    - If the model number is MTD-327S, advise them to unplug and replug it, then wait 5 minutes before testing the connection.
 - If the customer's issue persists after restarting the device and waiting 5 minutes, connect them to IT support by outputting {"IT support requested"}.
 - If the user starts asking questions that are unrelated to this topic then confirm if they would like to end the current chat about troubleshooting and classify their request according to the following scheme:
 
 <insert primary/secondary classification scheme from above here>
 
-USER:
+USER
 
 I need to get my internet working again.
 ```
@@ -339,7 +332,7 @@ Since models have a fixed context length, dialogue between a user and an assista
 
 There are various workarounds to this problem, one of which is to summarize previous turns in the conversation. Once the size of the input reaches a predetermined threshold length, this could trigger a query that summarizes part of the conversation and the summary of the prior conversation could be included as part of the system message. Alternatively, prior conversation could be summarized asynchronously in the background throughout the entire conversation.
 
-An alternative solution is to dynamically select previous parts of the conversation that are most relevant to the current query. See the tactic ["Use embeddings-based search to implement efficient knowledge retrieval"](knowledge.md#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval).
+An alternative solution is to dynamically select previous parts of the conversation that are most relevant to the current query. See the tactic ["Use embeddings-based search to implement efficient knowledge retrieval"](#tactic-use-embeddings-based-search-to-implement-efficient-knowledge-retrieval).
 
 #### Tactic: Summarize long documents piecewise and construct a full summary recursively
 
@@ -354,11 +347,11 @@ To summarize a very long document such as a book we can use a sequence of querie
 Sometimes we get better results when we explicitly instruct the model to reason from first principles before coming to a conclusion. Suppose for example we want a model to evaluate a student’s solution to a math problem. The most obvious way to approach this is to simply ask the model if the student's solution is correct or not.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Determine if the student's solution is correct or not.
 
-USER:
+USER
 
 Problem Statement: I'm building a solar power installation and I need help working out the financials.
 - Land costs $100 / square foot
@@ -372,7 +365,7 @@ Student's Solution: Let x be the size of the installation in square feet.
 3. Maintenance cost: 100,000 + 100x
 Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
 
-ASSISTANT:
+ASSISTANT
 
 The student's solution is correct.
 ```
@@ -382,11 +375,11 @@ The student's solution is correct.
 But the student's solution is actually not correct! We can get the model to successfully notice this by prompting the model to generate its own solution first.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 First work out your own solution to the problem. Then compare your solution to the student's solution and evaluate if the student's solution is correct or not. Don't decide if the student's solution is correct until you have done the problem yourself.
 
-USER:
+USER
 
 Problem Statement: I'm building a solar power installation and I need help working out the financials.
 - Land costs $100 / square foot
@@ -400,7 +393,7 @@ Student's Solution: Let x be the size of the installation in square feet.
 3. Maintenance cost: 100,000 + 100x
 Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
 
-ASSISTANT:
+ASSISTANT
 
 Let x be the size of the installation in square feet.
 1. Land cost: 100x
@@ -420,7 +413,7 @@ The previous tactic demonstrates that it is sometimes important for the model to
 Inner monologue is a tactic that can be used to mitigate this. The idea of inner monologue is to instruct the model to put parts of the output that are meant to be hidden from the user into a structured format that makes parsing them easy. Then before presenting the output to the user, the output is parsed and only part of the output is made visible.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Follow these steps to answer the user queries.
 
@@ -432,7 +425,7 @@ Step 3 - If the student made a mistake, determine what hint you could give the s
 
 Step 4 - If the student made a mistake, provide the hint from the previous step to the student (outside of triple quotes). Instead of writing "Step 4 - ..." write "Hint:".
 
-USER:
+USER
 
 Problem Statement: <insert problem statement>
 
@@ -446,7 +439,7 @@ Alternatively, this can be achieved with a sequence of queries in which all exce
 First, we can ask the model to solve the problem on its own. Since this initial query doesn't require the student’s solution, it can be omitted. This provides the additional advantage that there is no chance that the model’s solution will be biased by the student’s attempted solution.
 
 ```txt
-USER:
+USER
 
 <insert problem statement>
 ```
@@ -456,11 +449,11 @@ USER:
 Next, we can have the model use all available information to assess the correctness of the student’s solution.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Compare your solution to the student's solution and evaluate if the student's solution is correct or not.
 
-USER:
+USER
 
 Problem statement: """<insert problem statement>"""
 
@@ -474,11 +467,11 @@ Student’s solution: """<insert student's solution>"""
 Finally, we can let the model use its own analysis to construct a reply in the persona of a helpful tutor.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You are a math tutor. If the student made an error, offer a hint to the student in a way that does not reveal the answer. If the student did not make an error, simply offer them an encouraging comment.
 
-USER:
+USER
 
 Problem statement: """<insert problem statement>"""
 
@@ -496,7 +489,7 @@ Analysis: """<insert model generated analysis from previous step>"""
 Suppose that we are using a model to list excerpts from a source which are relevant to a particular question. After listing each excerpt the model needs to determine if it should start writing another or if it should stop. If the source document is large, it is common for a model to stop too early and fail to list all relevant excerpts. In that case, better performance can often be obtained by prompting the model with followup queries to find any excerpts it missed on previous passes.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with a document delimited by triple quotes. Your task is to select excerpts which pertain to the following question: "What significant paradigm shifts have occurred in the history of artificial intelligence."
 
@@ -506,17 +499,17 @@ Ensure that excerpts contain all relevant context needed to interpret them - in 
 ...
 {"excerpt": "..."}]
 
-USER:
+USER
 
 """<insert document here>"""
 
-ASSISTANT:
+ASSISTANT
 
 [{"excerpt": "the model writes an excerpt here"},
 ...
 {"excerpt": "the model writes another excerpt here"}]
 
-USER:
+USER
 
 Are there more relevant excerpts? Take care not to repeat excerpts. Also ensure that excerpts contain all relevant context needed to interpret them - in other words don't extract small snippets that are missing important context.
 ```
@@ -531,18 +524,18 @@ A model can leverage external sources of information if provided as part of its 
 
 A text embedding is a vector that can measure the relatedness between text strings. Similar or relevant strings will be closer together than unrelated strings. This fact, along with the existence of fast vector search algorithms means that embeddings can be used to implement efficient knowledge retrieval. In particular, a text corpus can be split up into chunks, and each chunk can be embedded and stored. Then a given query can be embedded and vector search can be performed to find the embedded chunks of text from the corpus that are most related to the query (i.e. closest together in the embedding space).
 
-Example implementations can be found in the [OpenAI Cookbook](https://cookbook.openai.com/examples/vector_databases/readme). See the tactic [“Instruct the model to use retrieved knowledge to answer queries”](knowledge.md#tactic-instruct-the-model-to-answer-using-a-reference-text) for an example of how to use knowledge retrieval to minimize the likelihood that a model will make up incorrect facts.
+Example implementations can be found in the [OpenAI Cookbook](https://cookbook.openai.com/examples/vector_databases/readme). See the tactic [“Instruct the model to use retrieved knowledge to answer queries”](#tactic-instruct-the-model-to-answer-using-a-reference-text) for an example of how to use knowledge retrieval to minimize the likelihood that a model will make up incorrect facts.
 
 #### Tactic: Use code execution to perform more accurate calculations or call external APIs
 
 Language models cannot be relied upon to perform arithmetic or long calculations accurately on their own. In cases where this is needed, a model can be instructed to write and run code instead of making its own calculations. In particular, a model can be instructed to put code that is meant to be run into a designated format such as triple backtick. After an output is produced, the code can be extracted and run. Finally, if necessary, the output from the code execution engine (i.e. Python interpreter) can be provided as an input to the model for the next query.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You can write and execute Python code by enclosing it in triple backticks, e.g. \`\`\`code goes here\`\`\`. Use this to perform calculations.
 
-USER:
+USER
 
 Find all real-valued roots of the following polynomial: 3\*x\*\*5 - 5\*x\*\*4 - 3\*x\*\*3 - 7\*x - 10.
 ```
@@ -552,7 +545,7 @@ Find all real-valued roots of the following polynomial: 3\*x\*\*5 - 5\*x\*\*4 - 
 Another good use case for code execution is calling external APIs. If a model is instructed in the proper use of an API, it can write code that makes use of it. A model can be instructed in how to use an API by providing it with documentation and/or code samples showing how to use the API.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You can write and execute Python code by enclosing it in triple backticks. Also note that you have access to the following module to help users send messages to their friends: \`\`\`python import message message.write(to="John", message="Hey, want to meetup after work?")\`\`\`
 ```
@@ -593,7 +586,7 @@ Suppose it is known that the correct answer to a question should make reference 
 For example, using the following system message:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 You will be provided with text delimited by triple quotes that is supposed to be the answer to a question. Check if the following pieces of information are directly contained in the answer:
 
@@ -613,11 +606,11 @@ Finally, provide a count of how many "yes" answers there are. Provide this count
 Here's an example input where both points are satisfied:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 """Neil Armstrong is famous for being the first human to set foot on the Moon. This historic event took place on July 21, 1969, during the Apollo 11 mission."""
 ```
@@ -627,11 +620,11 @@ USER:
 Here's an example input where only one point is satisfied:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 """Neil Armstrong made history when he stepped off the lunar module, becoming the first person to walk on the moon."""
 ```
@@ -641,11 +634,11 @@ USER:
 Here's an example input where none are satisfied:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 """In the summer of '69, a voyage grand, Apollo 11, bold as legend's hand. Armstrong took a step, history unfurled, "One small step," he said, for a new world."""
 ```
@@ -655,7 +648,7 @@ USER:
 There are many possible variants on this type of model-based eval. Consider the following variation which tracks the kind of overlap between the candidate answer and the gold-standard answer, and also tracks whether the candidate answer contradicts any part of the gold-standard answer.
 
 ```txt
-SYSTEM:
+SYSTEM
 
 Use the following steps to respond to user inputs. Fully restate each step before proceeding. i.e."Step 1: Reason..."
 
@@ -667,11 +660,11 @@ Step 3: Output a JSON object structured like: {"type_of_overlap": "disjoint" or 
 
 Here's an example input with a substandard answer which nonetheless does not contradict the expert answer:
 
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 Question: """What event is Neil Armstrong most famous for and on what date did it occur? Assume UTC time."""
 
@@ -685,11 +678,11 @@ Expert Answer: """Neil Armstrong is most famous for being the first person to wa
 Here's an example input with answer that directly contradicts the expert answer:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 Question: """What event is Neil Armstrong most famous for and on what date did it occur? Assume UTC time."""
 
@@ -703,11 +696,11 @@ Expert Answer: """Neil Armstrong is most famous for being the first person to wa
 Here's an example input with a correct answer that also provides a bit more detail than is necessary:
 
 ```txt
-SYSTEM:
+SYSTEM
 
 <insert system message above>
 
-USER:
+USER
 
 Question: """What event is Neil Armstrong most famous for and on what date did it occur? Assume UTC time."""
 
@@ -726,21 +719,3 @@ For more inspiration, visit the [OpenAI Cookbook](https://cookbook.openai.com), 
 - [Prompting guides](https://cookbook.openai.com/related_resources#prompting-guides)
 - [Video courses](https://cookbook.openai.com/related_resources#video-courses)
 - [Papers on advanced prompting to improve reasoning](https://cookbook.openai.com/related_resources#papers-on-advanced-prompting-to-improve-reasoning)
-````
-
-=== END PROMPT WRITING KNOWLEDGE ARTICLE ===
-
-## STEPS
-
-- Interpret what the input was trying to accomplish.
-- Read and understand the PROMPT WRITING KNOWLEDGE above.
-- Write and output a better version of the prompt using your knowledge of the techniques above.
-
-## OUTPUT INSTRUCTIONS
-
-1. Output the prompt in clean, human-readable Markdown format.
-2. Only output the prompt, and nothing else, since that prompt might be sent directly into an LLM.
-
-## INPUT
-
-The following is the prompt you will improve:

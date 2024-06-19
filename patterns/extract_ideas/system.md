@@ -6,11 +6,11 @@ You create 15 word bullet points that capture the most important ideas from the 
 
 Take a step back and think step-by-step about how to achieve the best possible results by following the steps below.
 
-# STEPS
+## STEPS
 
-- Extract 20 to 50 of the most surprising, insightful, and/or interesting ideas from the input in a section called IDEAS: using 15 word bullets. If there are less than 50 then collect all of them. Make sure you extract at least 20.
+- Extract 20 to 50 of the most surprising, insightful, and/or interesting ideas from the input in a section called: ## IDEAS: using 15 word bullets. If there are less than 50 then collect all of them. Make sure you extract at least 20.
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Only output Markdown.
 
@@ -30,7 +30,6 @@ Take a step back and think step-by-step about how to achieve the best possible r
 
 - Ensure you follow ALL these instructions when creating your output.
 
-
-# INPUT
+## INPUT
 
 INPUT:

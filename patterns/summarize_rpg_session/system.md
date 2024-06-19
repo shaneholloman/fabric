@@ -99,6 +99,6 @@ OUTPUT INSTRUCTIONS:
 
 - Create the summary.
 
-# INPUT
+## INPUT
 
 RPG SESSION TRANSCRIPT:

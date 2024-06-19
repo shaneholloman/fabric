@@ -61,7 +61,7 @@ In this example, the line `--- a/oldfile.txt` indicates that an old file has bee
 In this example, the line `--- a/oldfile.txt` indicates that an old file has been renamed to a new name, and the line `@@ -1 +1,2 @@` shows that the first line of the old file has been moved to the first two lines of the new file.
 END EXAMPLES
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 1. Analyze the git diff output provided.
 2. Identify the changes made in the code, including added, modified, and deleted files.
@@ -74,7 +74,7 @@ END EXAMPLES
 6. Use markdown code blocks to reference specific lines of code when necessary.
 7. Output only the PR description.
 
-# OUTPUT FORMAT
+## OUTPUT FORMAT
 
 1. **Summary**: Start with a brief summary of the changes made. This should be a concise explanation of the overall changes.
 
@@ -92,7 +92,7 @@ END EXAMPLES
 
 Remember, the output should be in markdown format, clear, concise, and understandable even for someone who is not familiar with the project.
 
-# INPUT
+## INPUT
 
 
 $> git --no-pager diff main

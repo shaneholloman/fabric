@@ -2,40 +2,43 @@
 
 This pattern generates a summary of an academic paper based on the provided text. The input should be the complete text of the paper. The output is a summary including the following sections:
 
-**Title and authors of the Paper**
+```txt
+### Title and authors of the Paper
 
-**Main Goal and Fundamental Concept**
-   
-**Technical Approach**
-   
-**Distinctive Features**
-   
-**Experimental Setup and Results**
-   
-**Advantages and Limitations**
-   
-**Conclusion**
-   
+### Main Goal and Fundamental Concept
 
-# Example run in MacOS/Linux:
+### Technical Approach
+
+### Distinctive Features
+
+### Experimental Setup and Results
+
+### Advantages and Limitations
+
+### Conclusion
+```
+
+## Example run in MacOS/Linux
 
 Copy the paper text to the clipboard and execute the following command:
 
-``` bash
+```bash
 pbpaste | fabric --pattern summarize_paper
 ```
 
 or
-    
-``` bash
+
+```bash
 pbpaste | summarize_paper
 ```
 
-# Example output:
+## Example output
 
-``` markdown
+```markdown
 ### Title and authors of the Paper:
-**Internet of Paint (IoP): Channel Modeling and Capacity Analysis for Terahertz Electromagnetic Nanonetworks Embedded in Paint**  
+
+**Internet of Paint (IoP): Channel Modeling and Capacity Analysis for Terahertz Electromagnetic Nanonetworks Embedded in Paint**
+
 Authors: Lasantha Thakshila Wedage, Mehmet C. Vuran, Bernard Butler, Yevgeni Koucheryavy, Sasitharan Balasubramaniam
 
 ### Main Goal and Fundamental Concept
@@ -49,6 +52,7 @@ The study employs a comprehensive channel model to assess the communication capa
 ### Distinctive Features
 
 This research is pioneering in its exploration of paint as a medium for THz communication, marking a significant departure from traditional communication environments. The innovative aspects include:
+
 - The concept of integrating nano-network devices within paint (IoP).
 - A detailed channel model that accounts for the unique interaction of THz waves with painted surfaces and interfaces.
 - The examination of lateral wave propagation as a key mechanism for communication in this novel medium.
@@ -68,5 +72,5 @@ The Internet of Paint represents a groundbreaking step towards integrating commu
 
 ## Meta
 
-- **Author**: Song Luo (https://www.linkedin.com/in/song-luo-bb17315/)
+- **Author**: Song Luo (<https://www.linkedin.com/in/song-luo-bb17315/>)
 - **Published**: May 11, 2024

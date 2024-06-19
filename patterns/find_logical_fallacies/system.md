@@ -6,210 +6,313 @@ Take a step back and think step by step about how best to identify fallacies in 
 
 # FALLACIES
 
-Here's a list of fallacies from Wikipedia that you can use to supplement your knowledge.
+```markdown
+{{Short description|Argument that uses faulty reasoning}}
+{{redirect|Logical error|logical errors in data storage|Data integrity#Logical integrity}}
+{{Rhetoric}}
+A '''fallacy''' is the use of [[Validity (logic)|invalid]] or otherwise faulty [[reason]]ing in the construction of an [[argument]]<ref name="GenslerAZ">{{Cite book |last=Gensler |first=Harry J. |title=The A to Z of Logic |date=2010 |publisher=Rowman & Littlefield |isbn=978-0810875968 |page=74}}</ref><ref>{{Cite book |last=Woods |first=John |title=The Death of Argument |date=2004 |isbn=978-9048167005 |series=Applied Logic Series |volume=32 |pages=3–23 |chapter=Who Cares About the Fallacies? |doi=10.1007/978-1-4020-2712-3_1 |author-link=John Woods (logician)}}</ref> that may appear to be well-reasoned if unnoticed. The term was introduced in the Western intellectual tradition by the [[Aristotle|Aristotelian]] ''[[Sophistical Refutations|De Sophisticis Elenchis]]''.<ref name="Downden" />
 
-A fallacy is the use of invalid or otherwise faulty reasoning in the construction of an argument. All forms of human communication can contain fallacies.
-Because of their variety, fallacies are challenging to classify. They can be classified by their structure (formal fallacies) or content (informal fallacies). Informal fallacies, the larger group, may then be subdivided into categories such as improper presumption, faulty generalization, error in assigning causation, and relevance, among others.
-The use of fallacies is common when the speaker's goal of achieving common agreement is more important to them than utilizing sound reasoning. When fallacies are used, the premise should be recognized as not well-grounded, the conclusion as unproven (but not necessarily false), and the argument as unsound.[1]
-Formal fallacies
-Main article: Formal fallacy
-A formal fallacy is an error in the argument's form.[2] All formal fallacies are types of non sequitur.
-Appeal to probability – taking something for granted because it would probably be the case (or might possibly be the case).[3][4]
-Argument from fallacy (also known as the fallacy fallacy) – the assumption that, if a particular argument for a "conclusion" is fallacious, then the conclusion by itself is false.[5]
-Base rate fallacy – making a probability judgment based on conditional probabilities, without taking into account the effect of prior probabilities.[6]
-Conjunction fallacy – the assumption that an outcome simultaneously satisfying multiple conditions is more probable than an outcome satisfying a single one of them.[7]
-Non sequitur fallacy – where the conclusion does not logically follow the premise.[8]
-Masked-man fallacy (illicit substitution of identicals) – the substitution of identical designators in a true statement can lead to a false one.[9]
-Propositional fallacies
-A propositional fallacy is an error that concerns compound propositions. For a compound proposition to be true, the truth values of its constituent parts must satisfy the relevant logical connectives that occur in it (most commonly: [and], [or], [not], [only if], [if and only if]). The following fallacies involve relations whose truth values are not guaranteed and therefore not guaranteed to yield true conclusions.
-Types of propositional fallacies:
-Affirming a disjunct – concluding that one disjunct of a logical disjunction must be false because the other disjunct is true; A or B; A, therefore not B.[10]
-Affirming the consequent – the antecedent in an indicative conditional is claimed to be true because the consequent is true; if A, then B; B, therefore A.[10]
-Denying the antecedent – the consequent in an indicative conditional is claimed to be false because the antecedent is false; if A, then B; not A, therefore not B.[10]
-Quantification fallacies
-A quantification fallacy is an error in logic where the quantifiers of the premises are in contradiction to the quantifier of the conclusion.
-Types of quantification fallacies:
-Existential fallacy – an argument that has a universal premise and a particular conclusion.[11]
-Formal syllogistic fallacies
-Syllogistic fallacies – logical fallacies that occur in syllogisms.
-Affirmative conclusion from a negative premise (illicit negative) – a categorical syllogism has a positive conclusion, but at least one negative premise.[11]
-Fallacy of exclusive premises – a categorical syllogism that is invalid because both of its premises are negative.[11]
-Fallacy of four terms (quaternio terminorum) – a categorical syllogism that has four terms.[12]
-Illicit major – a categorical syllogism that is invalid because its major term is not distributed in the major premise but distributed in the conclusion.[11]
-Illicit minor – a categorical syllogism that is invalid because its minor term is not distributed in the minor premise but distributed in the conclusion.[11]
-Negative conclusion from affirmative premises (illicit affirmative) – a categorical syllogism has a negative conclusion but affirmative premises.[11]
-Fallacy of the undistributed middle – the middle term in a categorical syllogism is not distributed.[13]
-Modal fallacy – confusing necessity with sufficiency. A condition X is necessary for Y if X is required for even the possibility of Y. X does not bring about Y by itself, but if there is no X, there will be no Y. For example, oxygen is necessary for fire. But one cannot assume that everywhere there is oxygen, there is fire. A condition X is sufficient for Y if X, by itself, is enough to bring about Y. For example, riding the bus is a sufficient mode of transportation to get to work. But there are other modes of transportation – car, taxi, bicycle, walking – that can be used.
-Modal scope fallacy – a degree of unwarranted necessity is placed in the conclusion.
-Informal fallacies
-Main article: Informal fallacy
-Informal fallacies – arguments that are logically unsound for lack of well-grounded premises.[14]
-Argument to moderation (false compromise, middle ground, fallacy of the mean, argumentum ad temperantiam) – assuming that a compromise between two positions is always correct.[15]
-Continuum fallacy (fallacy of the beard, line-drawing fallacy, sorites fallacy, fallacy of the heap, bald man fallacy, decision-point fallacy) – improperly rejecting a claim for being imprecise.[16]
-Correlative-based fallacies
-Suppressed correlative – a correlative is redefined so that one alternative is made impossible (e.g., "I'm not fat because I'm thinner than John.").[17]
-Definist fallacy – defining a term used in an argument in a biased manner (e.g., using "loaded terms"). The person making the argument expects that the listener will accept the provided definition, making the argument difficult to refute.[18]
-Divine fallacy (argument from incredulity) – arguing that, because something is so incredible or amazing, it must be the result of superior, divine, alien or paranormal agency.[19]
-Double counting – counting events or occurrences more than once in probabilistic reasoning, which leads to the sum of the probabilities of all cases exceeding unity.
-Equivocation – using a term with more than one meaning in a statement without specifying which meaning is intended.[20]
-Ambiguous middle term – using a middle term with multiple meanings.[21]
-Definitional retreat – changing the meaning of a word when an objection is raised.[22] Often paired with moving the goalposts (see below), as when an argument is challenged using a common definition of a term in the argument, and the arguer presents a different definition of the term and thereby demands different evidence to debunk the argument.
-Motte-and-bailey fallacy – conflating two positions with similar properties, one modest and easy to defend (the "motte") and one more controversial (the "bailey").[23] The arguer first states the controversial position, but when challenged, states that they are advancing the modest position.[24][25]
-Fallacy of accent – changing the meaning of a statement by not specifying on which word emphasis falls.
-Persuasive definition – purporting to use the "true" or "commonly accepted" meaning of a term while, in reality, using an uncommon or altered definition.
-(cf. the if-by-whiskey fallacy)
-Ecological fallacy – inferring about the nature of an entity based solely upon aggregate statistics collected for the group to which that entity belongs.[26]
-Etymological fallacy – assuming that the original or historical meaning of a word or phrase is necessarily similar to its actual present-day usage.[27]
-Fallacy of composition – assuming that something true of part of a whole must also be true of the whole.[28]
-Fallacy of division – assuming that something true of a composite thing must also be true of all or some of its parts.[29]
-False attribution – appealing to an irrelevant, unqualified, unidentified, biased or fabricated source in support of an argument.
-Fallacy of quoting out of context (contextotomy, contextomy; quotation mining) – selective excerpting of words from their original context to distort the intended meaning.[30]
-False authority (single authority) – using an expert of dubious credentials or using only one opinion to promote a product or idea. Related to the appeal to authority.
-False dilemma (false dichotomy, fallacy of bifurcation, black-or-white fallacy) – two alternative statements are given as the only possible options when, in reality, there are more.[31]
-False equivalence – describing two or more statements as virtually equal when they are not.
-Feedback fallacy – believing in the objectivity of an evaluation to be used as the basis for improvement without verifying that the source of the evaluation is a disinterested party.[32]
-Historian's fallacy – assuming that decision-makers of the past had identical information as those subsequently analyzing the decision.[33] This is not to be confused with presentism, in which present-day ideas and perspectives are anachronistically projected into the past.
-Historical fallacy – believing that certain results occurred only because a specific process was performed, though said process may actually be unrelated to the results.[34]
-Baconian fallacy – supposing that historians can obtain the "whole truth" via induction from individual pieces of historical evidence. The "whole truth" is defined as learning "something about everything", "everything about something", or "everything about everything". In reality, a historian "can only hope to know something about something".[35]
-Homunculus fallacy – using a "middle-man" for explanation; this sometimes leads to regressive middle-men. It explains a concept in terms of the concept itself without explaining its real nature (e.g.: explaining thought as something produced by a little thinker – a homunculus – inside the head simply identifies an intermediary actor and does not explain the product or process of thinking).[36]
-Inflation of conflict – arguing that, if experts in a field of knowledge disagree on a certain point within that field, no conclusion can be reached or that the legitimacy of that field of knowledge is questionable.[37][38]
-If-by-whiskey – an argument that supports both sides of an issue by using terms that are emotionally sensitive and ambiguous.
-Incomplete comparison – insufficient information is provided to make a complete comparison.
-Intentionality fallacy – the insistence that the ultimate meaning of an expression must be consistent with the intention of the person from whom the communication originated (e.g. a work of fiction that is widely received as a blatant allegory must necessarily not be regarded as such if the author intended it not to be so).[39]
-Kafkatrapping – a sophistical rhetorical device in which any denial by an accused person serves as evidence of guilt.[40][41][42]
-Kettle logic – using multiple, jointly inconsistent arguments to defend a position.
-Ludic fallacy – failing to take into account that non-regulated random occurrences unknown unknowns can affect the probability of an event taking place.[43]
-Lump of labour fallacy – the misconception that there is a fixed amount of work to be done within an economy, which can be distributed to create more or fewer jobs.[44]
-McNamara fallacy (quantitative fallacy) – making an argument using only quantitative observations (measurements, statistical or numerical values) and discounting subjective information that focuses on quality (traits, features, or relationships).
-Mind projection fallacy – assuming that a statement about an object describes an inherent property of the object, rather than a personal perception.
-Moralistic fallacy – inferring factual conclusions from evaluative premises in violation of fact–value distinction (e.g.: inferring is from ought). Moralistic fallacy is the inverse of naturalistic fallacy.
-Moving the goalposts (raising the bar) – argument in which evidence presented in response to a specific claim is dismissed and some other (often greater) evidence is demanded.
-Nirvana fallacy (perfect-solution fallacy) – solutions to problems are rejected because they are not perfect.
-Package deal – treating essentially dissimilar concepts as though they were essentially similar.
-Proof by assertion – a proposition is repeatedly restated regardless of contradiction; sometimes confused with argument from repetition (argumentum ad infinitum, argumentum ad nauseam).
-Prosecutor's fallacy – a low probability of false matches does not mean a low probability of some false match being found.
-Proving too much – an argument that results in an overly generalized conclusion (e.g.: arguing that drinking alcohol is bad because in some instances it has led to spousal or child abuse).
-Psychologist's fallacy – an observer presupposes the objectivity of their own perspective when analyzing a behavioral event.
-Referential fallacy[45] – assuming that all words refer to existing things and that the meaning of words reside within the things they refer to, as opposed to words possibly referring to no real object (e.g.: Pegasus) or that the meaning comes from how they are used (e.g.: "nobody" was in the room).
-Reification (concretism, hypostatization, or the fallacy of misplaced concreteness) – treating an abstract belief or hypothetical construct as if it were a concrete, real event or physical entity (e.g.: saying that evolution selects which traits are passed on to future generations; evolution is not a conscious entity with agency).
-Retrospective determinism – believing that, because an event has occurred under some circumstance, the circumstance must have made the event inevitable (e.g.: because someone won the lottery while wearing their lucky socks, wearing those socks made winning the lottery inevitable).
-Slippery slope (thin edge of the wedge, camel's nose) – asserting that a proposed, relatively small, first action will inevitably lead to a chain of related events resulting in a significant and negative event and, therefore, should not be permitted.[46]
-Special pleading – the arguer attempts to cite something as an exemption to a generally accepted rule or principle without justifying the exemption (e.g.: an orphaned defendant who murdered their parents asking for leniency).
-Improper premise
-Begging the question (petitio principii) – using the conclusion of the argument in support of itself in a premise (e.g.: saying that smoking cigarettes is deadly because cigarettes can kill you; something that kills is deadly).[47][48]
-Loaded label – while not inherently fallacious, the use of evocative terms to support a conclusion is a type of begging the question fallacy. When fallaciously used, the term's connotations are relied on to sway the argument towards a particular conclusion. For example, in an organic foods advertisement that says "Organic foods are safe and healthy foods grown without any pesticides, herbicides, or other unhealthy additives", the terms "safe" and "healthy" are used to fallaciously imply that non-organic foods are neither safe nor healthy.[49]
-Circular reasoning (circulus in demonstrando) – the reasoner begins with what they are trying to end up with (e.g.: all bachelors are unmarried males).
-Fallacy of many questions (complex question, fallacy of presuppositions, loaded question, plurium interrogationum) – someone asks a question that presupposes something that has not been proven or accepted by all the people involved. This fallacy is often used rhetorically so that the question limits direct replies to those that serve the questioner's agenda. (E.g., "Have you or have you not stopped beating your wife?".)
-Faulty generalizations
-Faulty generalization – reaching a conclusion from weak premises.
-Accident – an exception to a generalization is ignored.[50]
-No true Scotsman – makes a generalization true by changing the generalization to exclude a counterexample.[51]
-Cherry picking (suppressed evidence, incomplete evidence, argumeit by half-truth, fallacy of exclusion, card stacking, slanting) – using individual cases or data that confirm a particular position, while ignoring related cases or data that may contradict that position.[52][53]
-Nut-picking (suppressed evidence, incomplete evidence) – using individual cases or data that falsify a particular position, while ignoring related cases or data that may support that position.
-Survivorship bias – a small number of successes of a given process are actively promoted while completely ignoring a large number of failures.
-False analogy – an argument by analogy in which the analogy is poorly suited.[54]
-Hasty generalization (fallacy of insufficient statistics, fallacy of insufficient sample, fallacy of the lonely fact, hasty induction, secundum quid, converse accident, jumping to conclusions) – basing a broad conclusion on a small or unrepresentative sample.[55]
-Argument from anecdote – a fallacy where anecdotal evidence is presented as an argument; without any other contributory evidence or reasoning.
-Inductive fallacy – a more general name for a class of fallacies, including hasty generalization and its relatives. A fallacy of induction happens when a conclusion is drawn from premises that only lightly support it.
-Misleading vividness – involves describing an occurrence in vivid detail, even if it is an exceptional occurrence, to convince someone that it is more important; this also relies on the appeal to emotion fallacy.
-Overwhelming exception – an accurate generalization that comes with qualifications that eliminate so many cases that what remains is much less impressive than the initial statement might have led one to assume.[56]
-Thought-terminating cliché – a commonly used phrase, sometimes passing as folk wisdom, used to quell cognitive dissonance, conceal lack of forethought, move on to other topics, etc. – but in any case, to end the debate with a cliché rather than a point.
-Questionable cause
-Questionable cause is a general type of error with many variants. Its primary basis is the confusion of association with causation, either by inappropriately deducing (or rejecting) causation or a broader failure to properly investigate the cause of an observed effect.
-Cum hoc ergo propter hoc (Latin for 'with this, therefore because of this'; correlation implies causation; faulty cause/effect, coincidental correlation, correlation without causation) – a faulty assumption that, because there is a correlation between two variables, one caused the other.[57]
-Post hoc ergo propter hoc (Latin for 'after this, therefore because of this'; temporal sequence implies causation) – X happened, then Y happened; therefore X caused Y.[58]
-Wrong direction (reverse causation) – cause and effect are reversed. The cause is said to be the effect and jice versa.[59] The consequence of the phenomenon is claimed to be its root cause.
-Ignoring a common cause
-Fallacy of the single cause (causal oversimplification[60]) – it is assumed that there is one, simple cause of an outcome when in reality it may have been caused by a number of only jointly sufficient causes.
-Furtive fallacy – outcomes are asserted to have been caused by the malfeasance of decision makers.
-Magical thinking – fallacious attribution of causal relationships between actions and events. In anthropology, it refers primarily to cultural beliefs that ritual, prayer, sacrifice, and taboos will produce specific supernatural consequences. In psychology, it refers to an irrational belief that thoughts by themselves can affect the world or that thinking something corresponds with doing it.
-Statistical fallacies
-Regression fallacy – ascribes cause where none exists. The flaw is failing to account for natural fluctuations. It is frequently a special kind of post hoc fallacy.
-Gambler's fallacy – the incorrect belief that separate, independent events can affect the likelihood of another random event. If a fair coin lands on heads 10 times in a row, the belief that it is "due to the number of times it had previously landed on tails" is incorrect.[61]
-Inverse gambler's fallacy – the inverse of the gambler's fallacy. It is the incorrect belief that on the basis of an unlikely outcome, the process must have happened many times before.
-p-hacking – belief in the significance of a result, not realizing that multiple comparisons or experiments have been run and only the most significant were published
-Garden of forking paths fallacy – incorrect belief that a single experiment can not be subject to the multiple comparisons effect.
-Relevance fallacies
-Appeal to the stone (argumentum ad lapidem) – dismissing a claim as absurd without demonstrating proof for its absurdity.[62]
-Invincible ignorance (argument by pigheadedness) – where a person simply refuses to believe the argument, ignoring any evidence given.[63]
-Argument from ignorance (appeal to ignorance, argumentum ad ignorantiam) – assuming that a claim is true because it has not been or cannot be proven false, or vice versa.[64]
-Argument from incredulity (appeal to common sense) – "I cannot imagine how this could be true; therefore, it must be false."[65]
-Argument from repetition (argumentum ad nauseam or argumentum ad infinitum) – repeating an argument until nobody cares to discuss it any more and referencing that lack of objection as evidence of support for the truth of the conclusion;[66][67] sometimes confused with proof by assertion.
-Argument from silence (argumentum ex silentio) – assuming that a claim is true based on the absence of textual or spoken evidence from an authoritative source, or vice versa.[68]
-Ignoratio elenchi (irrelevant conclusion, missing the point) – an argument that may in itself be valid, but does not address the issue in question.[69]
-Red herring fallacies
-A red herring fallacy, one of the main subtypes of fallacies of relevance, is an error in logic where a proposition is, or is intended to be, misleading in order to make irrelevant or false inferences. This includes any logical inference based on fake arguments, intended to replace the lack of real arguments or to replace implicitly the subject of the discussion.[70][71]
-Red herring – introducing a second argument in response to the first argument that is irrelevant and draws attention away from the original topic (e.g.: saying "If you want to complain about the dishes I leave in the sink, what about the dirty clothes you leave in the bathroom?").[72] In jury trial, it is known as a Chewbacca defense. In political strategy, it is called a dead cat strategy. See also irrelevant conclusion.
-Ad hominem – attacking the arguer instead of the argument. (Note that "ad hominem" can also refer to the dialectical strategy of arguing on the basis of the opponent's own commitments. This type of ad hominem is not a fallacy.)
-Circumstantial ad hominem – stating that the arguer's personal situation or perceived benefit from advancing a conclusion means that their conclusion is wrong.[73]
-Poisoning the well – a subtype of ad hominem presenting adverse information about a target person with the intention of discrediting everything that the target person says.[74]
-Appeal to motive – dismissing an idea by questioning the motives of its proposer.
-Tone policing – focusing on emotion behind (or resulting from) a message rather than the message itself as a discrediting tactic.
-Traitorous critic fallacy (ergo decedo, 'therefore I leave') – a critic's perceived affiliation is portrayed as the underlying reason for the criticism and the critic is asked to stay away from the issue altogether. Easily confused with the association fallacy (guilt by association) below.
-Appeal to authority (argument from authority, argumentum ad verecundiam) – an assertion is deemed true because of the position or authority of the person asserting it.[75][76]
-Appeal to accomplishment – an assertion is deemed true or false based on the accomplishments of the proposer. This may often also have elements of appeal to emotion see below.
-Courtier's reply – a criticism is dismissed by claiming that the critic lacks sufficient knowledge, credentials, or training to credibly comment on the subject matter.
-Appeal to consequences (argumentum ad consequentiam) – the conclusion is supported by a premise that asserts positive or negative consequences from some course of action in an attempt to distract from the initial discussion.[77]
-Appeal to emotion – manipulating the emotions of the listener rather than using valid reasoning to obtain common agreement.[78]
-Appeal to fear – generating distress, anxiety, cynicism, or prejudice towards the opponent in an argument.[79]
-Appeal to flattery – using excessive or insincere praise to obtain common agreement.[80]
-Appeal to pity (argumentum ad misericordiam) – generating feelings of sympathy or mercy in the listener to obtain common agreement.[81]
-Appeal to ridicule (reductio ad ridiculum, reductio ad absurdum, ad absurdum) – mocking or stating that the opponent's position is laughable to deflect from the merits of the opponent's argument. (Note that "reductio ad absurdum" can also refer to the classic form of argument that establishes a claim by showing that the opposite scenario would lead to absurdity or contradiction. This type of reductio ad absurdum is not a fallacy.)[82]
-Appeal to spite – generating bitterness or hostility in the listener toward an opponent in an argument.[83]
-Judgmental language – using insulting or pejorative language in an argument.
-Pooh-pooh – stating that an opponent's argument is unworthy of consideration.[84]
-Style over substance – embellishing an argument with compelling language, exploiting a bias towards the esthetic qualities of an argument, e.g. the rhyme-as-reason effect[85]
-Wishful thinking – arguing for a course of action by the listener according to what might be pleasing to imagine rather than according to evidence or reason.[86]
-Appeal to nature – judgment is based solely on whether the subject of judgment is 'natural' or 'unnatural'.[87] (Sometimes also called the "naturalistic fallacy", but is not to be confused with the other fallacies by that name.)
-Appeal to novelty (argumentum novitatis, argumentum ad antiquitatis) – a proposal is claimed to be superior or better solely because it is new or modern.[88] (opposite of appeal to tradition)
-Appeal to poverty (argumentum ad Lazarum) – supporting a conclusion because the arguer is poor (or refuting because the arguer is wealthy). (Opposite of appeal to wealth.)[89]
-Appeal to tradition (argumentum ad antiquitatem) – a conclusion supported solely because it has long been held to be true.[90]
-Appeal to wealth (argumentum ad crumenam) – supporting a conclusion because the arguer is wealthy (or refuting because the arguer is poor).[91] (Sometimes taken together with the appeal to poverty as a general appeal to the arguer's financial situation.)
-Argumentum ad baculum (appeal to the stick, appeal to force, appeal to threat) – an argument made through coercion or threats of force to support position.[92]
-Argumentum ad populum (appeal to widespread belief, bandwagon argument, appeal to the majority, appeal to the people) – a proposition is claimed to be true or good solely because a majority or many people believe it to be so.[93]
-Association fallacy (guilt by association and honor by association) – arguing that because two things share (or are implied to share) some property, they are the same.[94]
-Logic chopping fallacy (nit-picking, trivial objections) – Focusing on trivial details of an argument, rather than the main point of the argumentation.[95][96]
-Ipse dixit (bare assertion fallacy) – a claim that is presented as true without support, as self-evidently true, or as dogmatically true. This fallacy relies on the implied expertise of the speaker or on an unstated truism.[97][98][99]
-Bulverism (psychogenetic fallacy) – inferring why an argument is being used, associating it to some psychological reason, then assuming it is invalid as a result. The assumption that if the origin of an idea comes from a biased mind, then the idea itself must also be a falsehood.[37]
-Chronological snobbery – a thesis is deemed incorrect because it was commonly held when something else, known to be false, was also commonly held.[100][101]
-Fallacy of relative privation (also known as "appeal to worse problems" or "not as bad as") – dismissing an argument or complaint due to what are perceived to be more important problems. First World problems are a subset of this fallacy.[102][103]
-Genetic fallacy – a conclusion is suggested based solely on something or someone's origin rather than its current meaning or context.[104]
-I'm entitled to my opinion – a person discredits any opposition by claiming that they are entitled to their opinion.
-Moralistic fallacy – inferring factual conclusions from evaluative premises, in violation of fact-value distinction; e.g. making statements about what is, on the basis of claims about what ought to be. This is the inverse of the naturalistic fallacy.
-Naturalistic fallacy – inferring evaluative conclusions from purely factual premises[105][106] in violation of fact-value distinction. Naturalistic fallacy (sometimes confused with appeal to nature) is the inverse of moralistic fallacy.
-Is–ought fallacy[107] – deduce a conclusion about what ought to be, on the basis of what is.
-Naturalistic fallacy fallacy[108] (anti-naturalistic fallacy)[109] – inferring an impossibility to infer any instance of ought from is from the general invalidity of is-ought fallacy, mentioned above. For instance, is 
-P
-∨
-¬
-P
-{\displaystyle P\lor \neg P} does imply ought 
-P
-∨
-¬
-P
-{\displaystyle P\lor \neg P} for any proposition 
-P
-{\displaystyle P}, although the naturalistic fallacy fallacy would falsely declare such an inference invalid. Naturalistic fallacy fallacy is a type of argument from fallacy.
-Straw man fallacy – refuting an argument different from the one actually under discussion, while not recognizing or acknowledging the distinction.[110]
-Texas sharpshooter fallacy – improperly asserting a cause to explain a cluster of data.[111]
-Tu quoque ('you too' – appeal to hypocrisy, whataboutism) – stating that a position is false, wrong, or should be disregarded because its proponent fails to act consistently in accordance with it.[112]
-Two wrongs make a right – assuming that, if one wrong is committed, another wrong will rectify it.[113]
-Vacuous truth – a claim that is technically true but meaningless, in the form no A in B has C, when there is no A in B. For example, claiming that no mobile phones in the room are on when there are no mobile phones in the room.
+Fallacies may be committed intentionally to [[Psychological manipulation|manipulate]] or [[Persuasion|persuade]] by [[deception]], unintentionally because of human limitations such as [[carelessness]], [[Biases in judgment and decision making|cognitive or social biases]] and [[ignorance]], or potentially due to the limitations of language and understanding of language. These delineations include not only the ignorance of the right [[Psychology of reasoning|reasoning standard]] but also the ignorance of relevant properties of the [[Context (language use)|context]]. For instance, the [[soundness]] of [[legal argument]]s depends on the context in which they are made.<ref>{{Cite book |title=Argument types and fallacies in legal argumentation |date=2015 |publisher=Springer International Publishing |isbn=978-3-319-16147-1 |editor-last=Bustamente |editor-first=Thomas |location=Heidelberg |page=x |editor-last2=Dahlman |editor-first2=Christian}}</ref>
 
-# STEPS
+Fallacies are commonly divided into "formal" and "informal". A [[formal fallacy]] is a flaw in the structure of a [[deductive reasoning|deductive]] [[logical argument|argument]] that renders the argument invalid, while an [[informal fallacy]] originates in an error in reasoning other than an improper [[logical form]].<ref name="garns">{{Cite web |last=Garns |first=Rudy |date=1997 |title=Informal Fallacies |url=http://www.nku.edu/~garns/165/ppt3_2.html |url-status=dead |archive-url=https://web.archive.org/web/20170201173411/http://www.nku.edu/~garns/165/ppt3_2.html |archive-date=2017-02-01 |access-date=2013-09-10 |publisher=Northern Kentucky University}}</ref> Arguments containing informal fallacies may be formally [[Validity (logic)|valid]], but still fallacious.<ref name="Downden">{{Cite web |last=Dowden |first=Bradley |title=Fallacy |url=http://www.iep.utm.edu/fallacy |access-date=17 February 2016 |website=Internet Encyclopedia of Philosophy}}</ref>
+
+A special case is a [[mathematical fallacy]], an intentionally invalid [[mathematical proof]] with a concealed, or subtle, error. Mathematical fallacies are typically crafted and exhibited for educational purposes, usually taking the form of false proofs of obvious [[contradiction]]s.<ref>{{Cite web |title=Mathematical Fallacies |url=https://brilliant.org/wiki/mathematical-fallacies/ |access-date=4 February 2023 |website=brilliant.org}}</ref>
+
+== Overview ==
+Fallacies are types of erroneous reasoning that render arguments logically unsound.<ref>{{Cite web |title=Definition of fallacy |url=https://www.dictionary.com/browse/fallacy |access-date=2023-02-18 |website=www.dictionary.com |language=en}}</ref> According to The New Handbook of Cognitive Therapy Techniques, they include "unsubstantiated assertions that are often delivered with a conviction that makes them sound as though they are proven facts."<ref name="The new handbook of cognitive...">{{Cite book |last=McMullin |first=Rian E. |title=The new handbook of cognitive therapy techniques |date=2000 |publisher=W.W. Norton |isbn=978-0393703139 |edition=Rev. |location=New York |oclc=41580357}}</ref> Informal fallacies, in particular, are frequently found in mass media such as television and newspapers.<ref name="McMurty1990">{{Cite journal |last=McMurtry |first=John |date=December 1990 |title=The mass media: An analysis of their system of fallacy |journal=Interchange |volume=21 |issue=4 |pages=49–66 |doi=10.1007/BF01810092 |s2cid=144780081}}</ref> Understanding fallacies may allow one to recognize them in either one's own or others' writing. Avoiding fallacies may help improve one's ability to produce sound arguments.<ref>{{Cite web |date=14 March 2017 |title=The Importance of Logical Fallacies |url=https://thelogicofscience.com/2017/03/14/the-importance-of-logical-fallacies/ |access-date=4 February 2023 |website=thelogicofscience.com}}</ref>
+
+It can be difficult to evaluate whether an argument is fallacious, as arguments exist along a continuum of [[soundness]] and an argument that has several stages or parts might have some sound sections and some fallacious ones.<ref name="DeLancey_Handout">{{Cite web |last=DeLancey |first=Craig|title=Evaluating Arguments – Distinguishing between reasonable and fallacious tactics |url=https://writingcenter.ua.edu/wp-content/uploads/2012/02/evaluatingarguments.pdf |url-status=dead |archive-url=https://web.archive.org/web/20130903171329/http://writingcenter.ua.edu/wp-content/uploads/2012/02/evaluatingarguments.pdf |archive-date=2013-09-03 |access-date=7 March 2018 |website=oswego.edu |publisher=self-published}}</ref> Moreover, whether a specific argument is fallacious often depends on the content rather than the form of the argument. An example is a [[Validity (statistics)|probabilistically valid]] instance of the formally invalid argument form of [[denying the antecedent]] or [[affirming the consequent]]. <ref>{{Cite journal |last1=Godden |first1=David |last2=Zenker |first2=Frank |date=2015-03-05 |title=Denying Antecedents and Affirming Consequents: The State of the Art |url=http://ojs.uwindsor.ca/ojs/leddy/index.php/informal_logic/article/view/4173 |journal=Informal Logic |volume=35 |issue=1 |pages=88 |doi=10.22329/il.v35i1.4173 |issn=0824-2577 |doi-access=free}}</ref>  Thus, "fallacious arguments usually have the deceptive appearance of being good arguments, <ref name="Damer 2009">{{Citation |last=Damer |first=T. Edward |title=[[Attacking Faulty Reasoning]]: A Practical Guide to Fallacy-free Arguments |page=52 |year=2009 |edition=6th |place=Belmont, California |publisher=Wadsworth |isbn=978-0-495-09506-4 |author-link=T. Edward Damer}}</ref> because for most fallacious instances of an argument form, a similar but non-fallacious instance can be found." Evaluating an instance of an argument as fallacious is therefore often a matter of evaluating the context of the argument.
+
+Recognizing fallacies in everyday arguments may be difficult since arguments are often embedded in [[rhetoric]]al patterns that obscure the logical connections between statements. Informal fallacies may also exploit the [[emotion]]al, intellectual, or [[psychology|psychological]] weaknesses of the audience. Recognizing fallacies can develop reasoning skills to expose the weaker links between premises and conclusions to better discern between what appears to be true and what is true.
+
+[[Argumentation theory]] provides a different approach to understanding and classifying fallacies. In the [[pragma-dialectics|pragma-dialectical theory]], for instance, an argument is regarded as an interactive protocol between individuals who attempt to resolve their disagreement on the merits of a case.<ref>{{Cite book |last=Frans van |first=Eemeren |url=http://worldcat.org/oclc/1048664485 |title=Argumentation Theory : a Pragma-Dialectical Perspective |date=2018 |publisher=Springer International Publishing |isbn=978-3-319-95380-9 |oclc=1048664485}}</ref> The protocol consists of [[Pragma-dialectics|normative rules of interaction]], and violations of these rules are considered fallacies because they frustrate the attempt at resolving the disagreement.
+
+Fallacies are used in place of valid reasoning to communicate a point with the intention to persuade. Examples in the [[mass media]] today include but are not limited to [[propaganda]], [[advertisement]]s, [[politics]], newspaper editorials, and opinion-based news shows.<ref>{{Cite web |title=Fallacies in Propaganda |url=https://www.termpaperwarehouse.com/essay-on/Fallacies-In-Propaganda/5CEBA75592A5824A |access-date=4 February 2023 |website=www.termpaperwarehouse.com}}</ref>
+
+== <span id="Material fallacy"></span>Systems of classification ==
+Fallacies are generally classified strictly by either their structure or their content, such as by classifying them as [[Formal fallacy|formal fallacies]] or [[Informal fallacy|informal fallacies]], respectively. The classification of informal fallacies may be subdivided into categories such as linguistic, relevance through omission, relevance through intrusion, and relevance through presumption.<ref name="Pirie2006">{{Cite book |last=Pirie |first=Madsen |url=https://books.google.com/books?id=Gh5UjNNc0v4C&pg=PA46 |title=How to Win Every Argument: The Use and Abuse of Logic |publisher=A&C Black |year=2006 |isbn=978-0-8264-9006-3 |page=46 |author-link=Madsen Pirie |access-date=10 September 2015}}</ref> Alternatively, fallacies may be classified by the process by which they occur, such as [[Material fallacy|material fallacies]] (content), [[Verbal fallacy|verbal fallacies]] (linguistic), and formal fallacies (error in inference). In turn, material fallacies may be placed into the more general category of informal fallacies. Verbal fallacies may be placed in either formal or informal classifications: Compare [[equivocation]], which is a word- or phrase-based [[ambiguity]], to the [[fallacy of composition]], which is premise- and inference-based ambiguity.<ref>{{Cite web |title=fallacy |url=https://www.britannica.com/topic/fallacy#toc280530 |access-date=13 June 2017 |website=|publisher=Encyclopedia Britannica}}</ref>
+
+=== <span id="Verbal fallacy"></span>Greek logic ===
+The Greek philosopher [[Aristotle]] (384–322 BC) was the first to systematize logical errors into a list to make it easier to refute an opponent's thesis and thus win an argument.<ref name="eem">{{Cite book |last1=van Eemeren |first1=Frans |title=Fallacies and judgements of reasonableness, Empirical Research Concerning the Pragma-Dialectical Discussion Rules |last2=Garssen |first2=Bart |last3=Meuffels |first3=Bert |date=2009 |publisher=Springer Science+Business Media B.V. |isbn=978-90-481-2613-2 |location=Dordrecht |language=en |chapter=1}}</ref>{{rp|2}} Aristotle's "[[Sophistical Refutations]]" (''De Sophisticis Elenchis'') identifies thirteen fallacies. He divided them up into two major types: linguistic fallacies and non-linguistic fallacies, some of which depend on language and others that do not.<ref>{{Cite web |date=March 13, 2008 |title=Aristotle's original 13 fallacies |url=http://thenonsequitur.com/?page_id=621 |access-date=28 May 2013 |publisher=The Non Sequitur}}</ref><ref>{{Cite web |title=Aristotle's 13 fallacies |url=http://www.logiclaw.co.uk/fallacies/Straker3.html |url-status=dead |archive-url=https://web.archive.org/web/20180718072028/http://www.logiclaw.co.uk/fallacies/Straker3.html |archive-date=2018-07-18 |access-date=2017-12-12 |website=www.logiclaw.co.uk}}</ref> These fallacies are called verbal fallacies and material fallacies, respectively. A [[material fallacy]] is an error in what the arguer is talking about, while a [[verbal fallacy]] is an error in how the arguer is talking. Verbal fallacies are those in which a conclusion is obtained by improper or ambiguous use of words.<ref>{{Cite web |title=PHIL 495: Philosophical Writing (Spring 2008), Texas A&M University |url=http://aristotle.tamu.edu/~rasmith/Courses/PhilosophicalWriting/08a/fallacies.html |url-status=dead |archive-url=https://web.archive.org/web/20080905215503/http://aristotle.tamu.edu/~rasmith/Courses/PhilosophicalWriting/08a/fallacies.html |archive-date=2008-09-05 |access-date=2013-09-10}}</ref>
+An example of a language dependent fallacy is given as a debate as to who in humanity are learners: the wise or the ignorant.{{r|eem|page1=3}} A language-independent fallacy is, for example:
+
+# "[[Coriscus of Scepsis|Coriscus]] is different from [[Socrates]]."
+
+# "Socrates is a man."
+
+# "Therefore, Coriscus is different from a man."{{r|eem|page1=4}}
+
+=== <span id="Verbal fallacy"></span>Indian logic ===
+[[Indian logic|Indian logicians]] took great pains to identify fallacies in arguments. An influential collection of texts on logic and reason, the ''[[Nyāya Sūtras]]'', attributed to [[Aksapada Gautama]], variously estimated to have been composed between the 6th century BCE and the 2nd century CE, lists in its theory of inference five such reasons used in an argument that was further developed by later logicians.<ref>{{Cite encyclopedia |title=Epistemology in Classical Indian Philosophy |encyclopedia=The Stanford Encyclopedia of Philosophy |publisher=Metaphysics Research Lab, Stanford University |url=https://plato.stanford.edu/archives/spr2019/entries/epistemology-india/ |access-date=2021-05-07 |last=Phillips |first=Stephen |date=2019 |editor-last=Zalta |editor-first=Edward N. |edition=Spring 2019}}</ref><ref>{{Cite book |last=Mahamahopadhyaya Satisa Chandra Vidyabhushana |url=http://archive.org/details/NyayaSutrasOfGautama |title=The Nyaya Sutras Of Gautama (English)}}</ref><ref>{{Cite encyclopedia |title=Analytic Philosophy in Early Modern India |encyclopedia=The Stanford Encyclopedia of Philosophy |publisher=Metaphysics Research Lab, Stanford University |url=https://plato.stanford.edu/archives/sum2019/entries/early-modern-india/ |access-date=2021-05-07 |last=Ganeri |first=Jonardon |date=2019 |editor-last=Zalta |editor-first=Edward N. |edition=Summer 2019}}</ref>
+
+# ''Asiddha'': It is the unproved reason that results in this fallacy. [Paksadharmata]
+
+# ''Savyabhichara'': This is the fallacy of irregular reason
+
+# ''Satpratipaksa'': Here the reason is contradicted by another reason. If both have equal force, then nothing follows. 'Sound is eternal, because it is audible', and 'Sound is non-eternal, because it is produced'. Here 'audible' is counterbalanced by 'produced' and both are of equal force
+
+# ''Badhita'': When another proof (as by perception) definitely contradicts and disproves the middle term (reason). 'Fire is cold because it is a substance'
+
+# ''Viruddha'': Instead of proving something it is proving the opposite. 'Sound is eternal because it is produced'
+
+=== Whately's grouping ===
+English scholar and theologian [[Richard Whately]] (1787–1863) defines a fallacy broadly as, "any argument, or apparent argument, which professes to be decisive of the matter at hand, while in reality it is not".{{r|eem|page1=8}}
+
+Whately divided fallacies into two groups: ''logical'' and ''material''. According to Whately, logical fallacies are arguments where the conclusion does not follow from the premises. Material fallacies are not logical errors because the conclusion follows from the premises. He then divided the logical group into two groups: purely logical and semi-logical. The semi-logical group included all of Aristotle's [[sophisms]] except ''[[ignoratio elenchi]]'', ''[[petitio principii]]'', and ''[[non causa pro causa]]'', which are in the material group.<ref name="Coffey1912">{{Cite book |last=Coffey |first=P. |url=https://archive.org/details/thescienceoflogi01coffuoft |title=The Science of Logic |publisher=Longmans, Green, and Co.|year=1912 |isbn=978-0371778951 |edition=1st |volume=1 |page=[https://archive.org/details/thescienceoflogi01coffuoft/page/302 302] |language=en-US |lccn=12018756 |oclc=797892247 |ol=7104938M |access-date=2016-02-22 |ol-access=free}}</ref>
+
+=== Other systems of classification ===
+Other famous methods of classifying fallacies are those of [[Francis Bacon (philosopher)|Francis Bacon]] and [[John Stuart Mill|J. S. Mill]]. Bacon (''[[Novum Organum]]'', Aph. 33, 38 sqq.) divided fallacies into four Idola (Idols, i.e. False Appearances), which summarize the various kinds of mistakes to which the human intellect is prone. J. S. Mill discussed the subject in book five of his Logic, and [[Jeremy Bentham]]'s ''Book of Fallacies'' (1824) contains valuable remarks.
+
+== Formal fallacy ==
+{{Main|Formal fallacy}}
+
+A formal fallacy, deductive fallacy, logical fallacy or ''non sequitur'' ([[Latin]] for "it does not follow") is a flaw in the structure of a [[deductive reasoning|deductive]] [[logical argument|argument]] that renders the argument [[Validity (logic)|invalid]]. The flaw can be expressed in the standard system of logic.<ref name="GenslerAZ" /> Such an argument is always considered to be wrong.
+The presence of the formal fallacy does not imply anything about the argument's [[premise]]s or its conclusion. Both may actually be true or may even be more probable as a result of the argument, but the deductive argument is still invalid because the conclusion does not follow from the premises in the manner described.
+
+Even non-deductive arguments can be said to be fallacious: for example, an [[Inductive reasoning|inductive]] argument that incorrectly applies principles of probability or [[causality]]. But "since deductive arguments depend on formal properties and inductive arguments don't, formal fallacies apply only to deductive arguments."<ref name="garns" />
+
+A [[logical form]] such as "''A'' and ''B''" is independent of any particular conjunction of meaningful propositions. Logical form alone can guarantee that, given true premises, a true conclusion must follow. However, formal logic makes no such guarantee if any premise is false; the conclusion can be either true or false. Any formal error or logical fallacy similarly invalidates the deductive guarantee. Both the argument and all its premises must be true for a conclusion to be true.
+
+The term ''logical fallacy'' is in a sense self-contradictory because ''logic'' refers to valid reasoning, whereas a ''fallacy'' is the use of poor reasoning. Therefore, the term ''formal fallacy'' is preferred. In informal discourse, however, ''logical fallacy'' is used to mean an argument that is problematic for any reason.
+
+The term ''non sequitur'' denotes a general formal fallacy, often meaning one that does not belong to any named subclass of formal fallacies, like [[affirming the consequent]].
+
+=== Common examples ===
+{{main|List of fallacies#Formal fallacies}}
+
+==== Ecological fallacy ====
+An [[ecological fallacy]] is committed when one draws an inference from data based on the premise that qualities observed for groups necessarily hold for individuals; for example, "if countries with more Protestants tend to have higher suicide rates, then Protestants must be more likely to commit suicide."<ref>{{Cite encyclopedia |year=2004 |title=Ecological Fallacy |encyclopedia=Encyclopedia of Social Science Research Methods |publisher=Sage |location=Thousand Oaks, CA |last=Freedman |first=David A. |editor-last=Lewis-Beck |editor-first=Michael S. |pages=293–295 |isbn=978-0761923633 |editor2-first=Alan |editor2-last=Bryman |editor3-first=Tim Futing |editor3-last=Liao}}</ref>
+
+=== Fallacy fork ===
+[[Maarten Boudry]]<ref name=Boudry/> and others<ref>{{Cite book |last1=Eemeren |first1=Frans H. van |title=Handbook of Argumentation Theory |last2=Garssen |first2=Bart |last3=Krabbe |first3=Erik C. W. |last4=Snoeck Henkemans |first4=A. Francisca |last5=Verheij |first5=Bart |last6=Wagemans |first6=Jean H. M. |date=2014 |publisher=Springer |isbn=978-9048194728 |edition=Revised |location=New York |doi=10.1007/978-90-481-9473-5 |oclc=871004444 |author-link=Frans H. van Eemeren}}</ref> have argued that formal, deductive fallacies rarely occur in real life and that arguments that would be fallacious in formally deductive terms are not necessarily so when context and prior probabilities are taken into account, thus making the argument defeasible and/or inductive. Boudry coined the term ''fallacy fork''.<ref name=Boudry/> For a given fallacy, one must either characterize it by means of a deductive [[argumentation scheme]], which rarely applies (the first prong of the fork), or one must relax definitions and add nuance to take the actual intent and context of the argument into account (the other prong of the fork).<ref name=Boudry/> To argue, for example, that one became nauseated after eating a mushroom because the mushroom was poisonous could be an example of the ''post hoc ergo propter hoc'' fallacy.<ref name="Boudry">{{Cite journal |last=Boudry |first=Maarten |author-link=Maarten Boudry |date=2017 |title=The Fallacy Fork: Why It's Time to Get Rid of Fallacy Theory |journal=[[Skeptical Inquirer]] |volume=41 |issue=5 |pages=46–51}}</ref>
+
+== Informal fallacy ==
+{{main|Informal fallacy}}
+In contrast to a formal fallacy, an informal fallacy originates from a reasoning error other than a flaw in the logical form of the argument.<ref name="garns" /> A [[deductive argument]] containing an informal fallacy may be formally [[Validity (logic)|valid]],<ref name="Downden" /> but still remain rationally unpersuasive. Nevertheless, informal fallacies apply to both deductive and non-deductive arguments.
+
+Though the form of the argument may be relevant, fallacies of this type are "types of mistakes in reasoning that arise from the mishandling of the ''content'' of the propositions constituting the argument".<ref>{{Cite book |last1=Copi |first1=Irving M. |title=Introduction to Logic |last2=Cohen |first2=Carl |publisher=Pearson Education, Inc. |year=2005 |isbn=978-0-13-189834-9 |edition=12th|page=125}}</ref>
+
+=== Faulty generalization ===
+A special subclass of the informal fallacies is the set of [[faulty generalization]]s, also known as inductive fallacies. Here, the most important issue concerns inductive strength or methodology (for example, [[statistical inference]]). In the absence of sufficient evidence, drawing conclusions based on induction is [[Warrant (rhetoric)|unwarranted]] and fallacious. With the backing of sufficient amounts of the right type of [[empirical evidence]], however, the conclusions may become warranted and convincing (at which point the arguments are no longer considered fallacious).<ref>{{Cite journal |last=Neyman |first=J. |date=1937-08-30 |title=Outline of a Theory of Statistical Estimation Based on the Classical Theory of Probability |journal=Philosophical Transactions of the Royal Society of London. Series A, Mathematical and Physical Sciences |language=en |volume=236 |issue=767 |pages=333–380 |bibcode=1937RSPTA.236..333N |doi=10.1098/rsta.1937.0005 |issn=0080-4614 |s2cid=19584450 |doi-access=free}}</ref>
+
+==== Hasty generalization ====
+[[Hasty generalization]] is described as making assumptions about a whole group or range of cases based on a [[Sample (statistics)|sample]] that is inadequate (usually because it is atypical or just too small).
+Stereotypes about people ("frat boys are drunkards", "grad students are nerdy", "women don't enjoy sports", etc.) are common examples of the principle.
+
+Hasty generalization often follows a pattern such as:
+
+:X is true for A.
+:X is true for B.
+:Therefore, X is true for C, D, etc.
+
+While never a valid logical deduction, if such an inference can be made on statistical grounds, it may nonetheless be convincing. This is because with enough empirical evidence, the generalization is no longer a hasty one.
+
+=== Relevance fallacy ===
+The [[fallacy of relevance|fallacies of relevance]] are a broad class of informal fallacies, generically represented by [[missing the point]]: presenting an argument that may be [[soundness|sound]] but fails to address the issue in question.
+
+==== Argument from silence ====
+An [[argument from silence]] is a faulty conclusion that is drawn based on the absence of evidence rather than on the presence of evidence.
+
+=== Examples of informal fallacies ===
+{{Main|List of fallacies#Informal fallacies}}
+
+==== ''Post hoc'' (false cause) ====
+The post hoc fallacy assumes that because B comes after A, A caused B. It gets its name from the Latin phrase "''post hoc, ergo propter hoc''", which translates as "after this, therefore because of this".
+
+Sometimes one event really does cause another one that comes later—for example, if one registers for a class and their name later appears on the roll, it's true that the first event caused the one that came later. But sometimes two events that seem related in time are not really related as cause and event. That is, [[Correlation does not imply causation|temporal correlation does not necessarily entail causation]]. For example, if one eats a sandwich and then gets food poisoning, that does not necessarily mean the sandwich caused the food poisoning. Something else eaten earlier might have caused the food poisoning.
+
+==== Slippery slope ====
+For an argument to be a [[slippery slope]] type of argument, it must meet the requirements of that [[argumentation scheme]]. A slippery slope argument originates from a conversation or debate in which two actors take turns. It usually originates from one actor giving advice on a decision or act. Along the way, the actor must make additional choices on similar matters through which the actor enters the ‘grey area’ of the slippery slope. At this point, the actor potentially loses control over the direction of the arguments, thus leading to a ‘fatal’ outcome.<ref>{{Cite journal |last=Walton |first=Douglas |date=2015-09-02 |title=The Basic Slippery Slope Argument |url=https://informallogic.ca/index.php/informal_logic/article/view/4286 |journal=Informal Logic |language=en |volume=35 |issue=3 |pages=273–311 |doi=10.22329/il.v35i3.4286 |issn=2293-734X |doi-access=free}}</ref>
+
+Such an argument is built up according to the following argumentation scheme: initial premise, sequential premise, indeterminacy premise, control premise, loss of control premise, catastrophic outcome premise, and conclusion. Slippery slope arguments may be defeated by asking critical questions or giving counterarguments.<ref>{{Cite book |last=Walton |first=Douglas |title=Slippery Slope Arguments. |publisher=Oxford University Press |year=1992 |isbn=978-0198239253 |location=Oxford |language=EN}}</ref>
+
+There are several reasons for a slippery slope to be fallacious: for example, the argument is going too far into the future, it is a too complex argument whose structure is hard to identify, or the argument makes emotional appeals.<ref>{{Cite journal |last=Govier |first=Trudy |date=June 1982 |title=What's Wrong with Slippery Slope Arguments? |url=https://www.cambridge.org/core/product/identifier/S0045509100009796/type/journal_article |journal=Canadian Journal of Philosophy |language=en |volume=12 |issue=2 |pages=303–316 |doi=10.1080/00455091.1982.10715799 |issn=0045-5091 |s2cid=170107849}}</ref>
+
+It may be that a slippery slope is not necessarily fallacious if context is taken into account and there is an effort to assess plausibility.<ref>{{Cite web |last=Dwyer |first=Christopher |date=September 13, 2019 |title=Critically Thinking About the Slippery Slope "Fallacy" |url=https://www.psychologytoday.com/us/blog/thoughts-thinking/201909/critically-thinking-about-the-slippery-slope-fallacy |website=Psychology Today}}</ref>
+
+==== False analogy ====
+Informally known as the "[[apples and oranges]]" fallacy, a [[false analogy]] uses unsound comparisons.<ref>{{Cite journal |last=Kornprobst |first=Markus |year=2007 |title=Comparing Apples and Oranges? Leading and Misleading Uses of Historical Analogies |journal=Millennium&nbsp;— Journal of International Studies |volume=36 |pages=29–49 |doi=10.1177/03058298070360010301 |s2cid=145785208}}</ref>
+
+==== Straw man fallacy ====
+The [[straw man]] fallacy refers to the refutation of a standpoint in an argument that was never proposed. The fallacy usually occurs in the presentation of an opponent's standpoint as more extreme, distorted, or simplistic than it actually is. Compared to criticizing the opponent's actual standpoint, this allows the arguer to offer a seeming refutation of what is, however, not the actual standpoint.<ref>{{Cite journal |last1=Lewiński |first1=Marcin |last2=Oswald |first2=Steve |date=2013-12-01 |title=When and how do we deal with straw men? A normative and cognitive pragmatic account |url=https://www.sciencedirect.com/science/article/pii/S0378216613001227 |journal=Journal of Pragmatics |series=Biases and constraints in communication: Argumentation, persuasion and manipulation |language=en |volume=59 |pages=164–177 |doi=10.1016/j.pragma.2013.05.001 |issn=0378-2166}}</ref> Such an argument involves two arguers, with one criticizing the other's perspective.<ref>{{Cite journal |last1=Aikin |first1=Scott F. |last2=Casey |first2=John P. |date=2016-10-01 |title=Straw Men, Iron Men, and Argumentative Virtue |url=https://www.academia.edu/107692810/Straw_Men_Iron_Men_and_Argumentative_Virtue |url-access=registration |journal=Topoi |language=en |volume=35 |issue=2 |pages=431–440 |doi=10.1007/s11245-015-9308-5 |issn=1572-8749 |s2cid=145321942}}</ref> The reason for the straw man argument to be fallacious originates from the problem of how to deal with natural discourse. The opponent's argument is not reflected by the arguments that are proposed by the speaker.<ref>{{Cite journal |last1=Talisse |first1=Robert |last2=Aikin |first2=Scott F. |date=2006-09-01 |title=Two Forms of the Straw Man |journal=Argumentation |language=en |volume=20 |issue=3 |pages=345–352 |url=https://www.academia.edu/48271903/Two_Forms_of_the_Straw_Man |url-access=registration |doi=10.1007/s10503-006-9017-8 |issn=1572-8374 |s2cid=15523437}}</ref>
+
+== Measurement fallacy ==
+Some of the fallacies described above may be committed in the context of measurement.
+Where [[mathematical fallacies]] are subtle mistakes in reasoning leading to invalid mathematical proofs, measurement fallacies are unwarranted inferential leaps involved in the extrapolation of raw data to a measurement-based value claim. The ancient Greek Sophist [[Protagoras]] was one of the first thinkers to propose that humans can generate reliable measurements through his "human-measure" principle and the practice of ''dissoi logoi'' (arguing multiple sides of an issue).<ref>{{Cite book |last=Schiappa |first=Edward |title=Protagoras and Logos: A Study in Greek Philosophy and Rhetoric |publisher=University of South Carolina Press |year=1991 |isbn=978-0872497580 |location=Columbia}}</ref><ref>{{Cite book |last=Protagoras |url=https://archive.org/details/oldersophistscom0000unse |title=The Older Sophists |publisher=Hackett Publishing Co. |year=1972 |isbn=978-0872205567 |location=Indianapolis, IN |url-access=registration}}</ref> This history helps explain why measurement fallacies are informed by [[informal logic]] and [[argumentation theory]].
+
+=== Knowledge value measurement fallacy ===
+The increasing availability and circulation of [[big data]] are driving a proliferation of new metrics for scholarly authority,<ref name="Meho">{{Cite journal |last=Meho |first=Lokman I. |year=2007 |title=The Rise and Rise of Citation Analysis |journal=[[Physics World]] |volume=January |pages=32–36 |arxiv=physics/0701012 |bibcode=2007physics...1012M |doi=10.1088/2058-7058/20/1/33 |s2cid=16532275}}</ref><ref>{{Cite news |last=Jensen |first=Michael |date=June 15, 2007 |title=The New Metrics of Scholarly Authority |work=[[The Chronicle of Higher Education]] |publisher=The Chron |editor-last=Riley |editor-first=Michael G. |url=http://chronicle.com/article/The-New-Metrics-of-Scholarly/5449 |access-date=28 October 2013 |issn=0009-5982 |oclc=1554535}}</ref> and there is lively discussion regarding the relative usefulness of such metrics for measuring the value of knowledge production in the context of an "information tsunami."<ref name="Baveye 2010 191–215">{{Cite journal |last=Baveye |first=Phillippe C. |year=2010 |title=Sticker Shock and Looming Tsunami: The High Cost of Academic Serials in Perspective |journal=[[Journal of Scholarly Publishing]] |volume=41 |issue=2 |pages=191–215 |doi=10.1353/scp.0.0074 |s2cid=145424660}}<!--|access-date=28 October 2013--></ref>
+
+For example, [[anchoring]] fallacies can occur when unwarranted weight is given to data generated by metrics that the arguers themselves acknowledge are flawed. For example, the limitations of the [[journal impact factor]] (JIF) are well documented,<ref>{{Cite book |last=National Communication Journal |url=http://www.natcom.org/uploadedFiles/More_Scholarly_Resources/CCA%20Impact%20Factor%20Report%20Final.pdf |title=Impact Factors, Journal Quality, and Communication Journals: A Report for the Council of Communication Associations |publisher=National Communication Association |year=2013 |location=Washington, D.C. |access-date=2016-02-22 |archive-url=https://web.archive.org/web/20160404212454/http://www.natcom.org/uploadedFiles/More_Scholarly_Resources/CCA%20Impact%20Factor%20Report%20Final.pdf |archive-date=April 4, 2016 |url-status=dead}}</ref> and even JIF pioneer Eugene Garfield notes that, "while citation data create new tools for analyses of research performance, it should be stressed that they supplement rather than replace other quantitative and qualitative indicators."<ref>{{Cite journal |last=Garfield |first=Eugene |year=1993 |title=What Citations Tell us About Canadian Research |journal=Canadian Journal of Library and Information Science |volume=18 |issue=4 |page=34}}</ref> To the extent that arguers jettison the acknowledged limitations of JIF-generated data in evaluative judgments or leave behind Garfield's "supplement rather than replace" caveat, they commit anchoring fallacies.
+
+A [[naturalistic fallacy]] can occur, for example, in the case of sheer quantity metrics based on the premise "more is better"<ref name="Baveye 2010 191–215" /> or, in the case of developmental assessment in the field of psychology, "higher is better".<ref>{{Cite journal |last=Stein |first=Zachary |date=October 2008 |title=Myth Busting and Metric Making: Refashioning the Discourse about Development |url=http://www.archive-ilr.com/archives-2008/2008-10/2008-10-article-stein.php |journal=Integral Leadership Review |volume=8 |issue=5 |archive-url=https://archive.today/20131030094158/http://www.archive-ilr.com/archives-2008/2008-10/2008-10-article-stein.php |archive-date=October 30, 2013 |access-date=October 28, 2013}}</ref>
+
+A [[false analogy]] occurs when claims are supported by unsound comparisons between data points. For example, the [[Scopus]] and [[Web of Science]] bibliographic databases have difficulty distinguishing between citations of scholarly work that are arms-length endorsements, ceremonial citations, or negative citations (indicating the citing author withholds endorsement of the cited work).<ref name=Meho/> Hence, measurement-based value claims premised on the uniform quality of all citations may be questioned on false analogy grounds.
+
+As another example, consider the [[Faculty Scholarly Productivity Index]] of Academic Analytics. This tool purports to measure overall faculty productivity, yet it does not capture data based on citations in books. This creates a possibility that low productivity measurements using the tool commit [[argument from silence]] fallacies, to the extent that such measurements are supported by the absence of book citation data.
+
+[[Ecological fallacy|Ecological fallacies]] can be committed when one measures the scholarly productivity of a sub-group of individuals (e.g. "Puerto Rican" faculty) via reference to aggregate data about a larger and different group (e.g., "Hispanic" faculty).<ref>{{Cite journal |last=Allen |first=Henry L. |year=1997 |title=Faculty Workload and Productivity: Ethnic and Gender Disparities |url=http://www.nea.org/assets/img/PubAlmanac/ALM_97_04.pdf |url-status=dead |journal=NEA 1997 Almanac of Higher Education |page=39 |archive-url=https://web.archive.org/web/20150707001555/http://www.nea.org/assets/img/PubAlmanac/ALM_97_04.pdf |archive-date=July 7, 2015 |access-date=October 29, 2013}}</ref>
+
+== Intentional fallacy ==
+Sometimes a speaker or writer uses a fallacy intentionally. In any context, including academic debate, a conversation among friends, political discourse, advertising, or comedic purposes, the arguer may use fallacious reasoning to try to persuade the listener or reader, by means other than offering relevant evidence, that the conclusion is true.
+
+Examples of this include the speaker or writer:<ref name="Shewan">{{Cite book |last=Shewan |first=Edward |url=https://books.google.com/books?id=22s9JWeHJbAC&pg=PA92 |title=Applications of Grammar: Principles of Effective Communication |publisher=Christian Liberty Press |year=2003 |isbn=978-1-930367-28-9 |edition=2nd |chapter=Soundness of Argument |access-date=February 22, 2016 |chapter-url=https://books.google.com/books?id=22s9JWeHJbAC&pg=PA84}}</ref>
+
+# Diverting the argument to unrelated issues with a [[Red herring#Logical fallacy|red herring]] (''[[Ignoratio elenchi]]'')
+
+# Insulting someone's character ([[Ad hominem|''argumentum ad hominem'']])
+
+# Assuming the conclusion of an argument, a kind of circular reasoning, also called "[[begging the question]]" (''petitio principii'')
+
+# Making jumps in logic ([[Non sequitur (logic)|''non sequitur'']])
+
+# Identifying a false cause and effect (''[[post hoc ergo propter hoc]]'')
+
+# Asserting that everyone agrees (''[[argumentum ad populum]]'', [[Bandwagon effect|bandwagoning]])
+
+# Creating a [[false dilemma]] (either-or fallacy) in which the situation is oversimplified, also called ''false dichotomy''
+
+# Selectively using facts ([[card stacking]])
+
+# Making false or misleading comparisons ([[false equivalence]] or [[false analogy]])
+
+# Generalizing quickly and sloppily ([[hasty generalization]]) (''[[secundum quid]]'')
+
+# Using an argument's connections to other concepts or people to support or refute it, also called "guilt by association" ([[association fallacy]])
+
+# Claiming that a lack of proof counts as proof ([[Argument from ignorance|appeal to ignorance]])
+
+In humor, errors of reasoning are used for comical purposes. Groucho Marx used fallacies of [[amphiboly]], for instance, to make ironic statements; [[Gary Larson]] and [[Scott Adams]] employed fallacious reasoning in many of their cartoons. Wes Boyer and Samuel Stoddard have written a humorous essay teaching students how to be persuasive by means of a whole host of informal and formal fallacies.<ref name="How to Be Persuasive">{{Cite web |last1=Boyer |first1=Web |last2=Stoddard |first2=Samuel |title=How to Be Persuasive |url=http://www.rinkworks.com/persuasive/ |url-status=dead |archive-url=https://web.archive.org/web/20180727043805/http://www.rinkworks.com/persuasive/ |archive-date=July 27, 2018 |access-date=December 5, 2012 |website=Rink Works}}</ref>
+
+When someone uses logical fallacies intentionally to mislead in academic, political, or other high-stakes contexts, the breach of trust calls into question [[Ethos|the authority and intellectual integrity of that person]].<ref>Habick, Timothy, and Linda Cook. (2018) AICPA Test Development Fairness Guidelines. Association of International Certified Public Accounts, Ewing, NJ.{{page needed |date=December 2016}}<!-- Where does one find this citation? --></ref>
+
+== Assessment: pragmatic theory ==
+{{See also|Argumentation scheme}}
+According to the pragmatic theory,<ref>{{Cite book |last=Walton |first=Douglas N. |url=https://books.google.com/books?id=4uTWAAAAMAAJ |title=A Pragmatic Theory of Fallacy |publisher=[[University of Alabama Press]] |year=1995 |isbn=978-0817307981 |location=Tuscaloosa |pages=324 |author-link=Douglas N. Walton}}</ref> a fallacy can be either a heuristic error or a ploy used intentionally to unfairly win an argument. There are always two parties to an argument containing a fallacy: the perpetrator and the intended victim.
+
+The dialogue framework required to support the pragmatic theory of fallacy is built on the presumption that argumentative dialogue has both an adversarial component and a collaborative component. A dialogue has individual goals for each participant as well as shared goals that apply to all participants. A fallacy of the second kind is seen as more than simply a violation of the rule of reasonable dialogue. It is also a deceptive tactic of argumentation based on sleight-of-hand. Aristotle explicitly compared contentious reasoning to unfair fighting in athletic contests. But the roots of the pragmatic theory go back even further in history, to the Sophists. The pragmatic theory finds its roots in the Aristotelian conception of a fallacy as a sophistical refutation but also supports the view that many of the types of arguments traditionally labeled as fallacies are in fact reasonable techniques of argumentation that can be used, in many cases, to support legitimate goals of dialogue. Hence, under the pragmatic approach, each case needs to be analyzed individually to determine whether the argument is fallacious or reasonable.
+
+== See also ==
+{{columns-list|Lists
+
+* {{annotated link|List of cognitive biases}}
+* {{annotated link|List of fallacies}}
+* {{annotated link|List of memory biases}}
+* {{annotated link|List of paradoxes}}
+* {{intitle|Fallacy}}
+* {{intitle|Fallacious}}
+* {{slink|Pragma-dialectics#Rules for critical discussion}}
+
+'''Concepts'''
+
+* {{annotated link|Aporia}}
+* {{annotated link|Anti-pattern}}
+* {{annotated link|Argument map}}
+* {{annotated link|Argumentation theory}}
+* {{annotated link|Association fallacy}}
+* {{annotated link|Cognitive bias}}
+* {{annotated link|Cognitive distortion}}
+* {{annotated link|Critical thinking}}
+* {{annotated link|Demagogue}}
+* {{annotated link|Evidence}}
+* {{annotated link|Fallacies of definition}}
+* {{annotated link|False (logic)}}
+* {{annotated link|False premise}}
+* {{annotated link|False statement}}
+* {{annotated link|Illusion}}
+* {{annotated link|Inference objection}}
+* {{annotated link|Inquiry}}
+* {{annotated link|Jumping to conclusions}}
+* {{annotated link|Lemma (logic)|Lemma}}
+* {{annotated link|Lies, damned lies, and statistics}}
+* {{annotated link|Mathematical fallacy}}
+* {{annotated link|Paradox}}
+* {{annotated link|Prosecutor's fallacy}}
+* {{annotated link|Sophist}}
+* {{annotated link|Soundness}}
+* {{annotated link|Truth}}
+* {{annotated link|Validity (logic)|Validity}}
+* {{annotated link|Victim blaming}}
+
+'''Works'''
+
+* ''[[Attacking Faulty Reasoning]]''
+* ''[[Straight and Crooked Thinking]]''
+* [[Paul E. Meehl#"Why I Do Not Attend Case Conferences"|"Why I Do Not Attend Case Conferences"]]
+}}
+
+== References ==
+{{Reflist|30em}}
+
+== Further reading ==
+
+* [[C. L. Hamblin]], ''Fallacies'', Methuen London, 1970. reprinted by Vale Press in 1998. {{ISBN|0916475247}}.
+* {{Cite book |last1=Hans V. Hansen |title=Fallacies: classical and contemporary readings |last2=Robert C. Pinto |publisher=Penn State Press |year=1995 |isbn=978-0271014173}}
+* {{Cite book |last1=Frans van Eemeren |title=Fallacies and Judgments of Reasonableness: Empirical Research Concerning the Pragma-Dialectical Discussion |last2=Bart Garssen |last3=Bert Meuffels |publisher=Springer |year=2009 |isbn=978-9048126132}}
+* [[Douglas N. Walton]], ''Informal logic: A handbook for critical argumentation''. [[Cambridge University Press]], 1989. {{ISBN?}}
+* {{Cite book |last=Douglas |first=Walton |title=Informal Fallacies |date=1987 |publisher=John Benjamins |location=Amsterdam}} {{ISBN?}}
+* {{Cite book |last=Walton |first=Douglas |title=A Pragmatic Theory of Fallacy |date=1995 |publisher=University of Alabama Press |location=Tuscaloosa}} {{ISBN?}}
+* {{Cite journal |last=Walton |first=Douglas |date=2010 |title=Why Fallacies Appear to Be Better Arguments than They Are |url=<https://ojs.uwindsor.ca/ojs/leddy/index.php/informal_logic/article/download/2868/2407> |journal=Informal Logic |volume=30 |issue=2 |pages=159–184 |doi=10.22329/il.v30i2.2868 |doi-access=free}}
+* {{Cite book |last=John Woods |title=The death of argument: fallacies in agent based reasoning |publisher=Springer |year=2004 |isbn=978-1402026638 |author-link=John Woods (logician)}}
+* Woods, John (2013). ''Errors of Reasoning: Naturalizing the Logic of Inference''. London: College Publications. {{ISBN|978-1848901148}}
+* Fearnside, W. Ward and William B. Holther, Fallacy: The Counterfeit of Argument, 1959. {{ISBN?}}
+* [[Vincent F. Hendricks]], ''Thought 2 Talk: A Crash Course in Reflection and Expression'', New York: Automatic Press / VIP, 2005, {{ISBN|8799101378}}
+* D. H. Fischer, ''Historians' Fallacies: Toward a Logic of Historical Thought'', Harper Torchbooks, 1970. {{ISBN?}}
+* Warburton Nigel, ''Thinking from A to Z'', Routledge 1998. {{ISBN?}}
+* [[Carl Sagan|Sagan, Carl]], "''[[The Demon-Haunted World|The Demon-Haunted World: Science As a Candle in the Dark]]''". [[Ballantine Books]], 1997 {{ISBN|0345409469}}, 480 pgs. 1996 hardback edition: [[Random House]], {{ISBN|039453512X}}, xv+457 pages plus addenda insert (some printings). Ch. 12.
+
+=== Historical texts ===
+
+* [[Aristotle]], [https://web.archive.org/web/20061004164921/http://etext.library.adelaide.edu.au/a/aristotle/sophistical/ On Sophistical Refutations], ''De Sophistici Elenchi''. library.adelaide.edu.au
+* [[William of Ockham]], ''Summa of Logic'' (c. 1323) Part III.4.
+* [[John Buridan]], ''Summulae de dialectica'' Book VII.
+* [[Francis Bacon]], the doctrine of the idols in ''Novum Organum Scientiarum'', [http://fly.hiwaay.net/%7Epaul/bacon/organum/aphorisms1.html Aphorisms concerning The Interpretation of Nature and the Kingdom of Man, xxiii ff] {{Webarchive|url=<https://web.archive.org/web/20200214120354/http://fly.hiwaay.net/~paul/bacon/organum/aphorisms1.html> |date=2020-02-14 }}. fly.hiwaay.net
+* [[Arthur Schopenhauer]], [https://www.gutenberg.org/files/10731/10731-8.txt The Art of Controversy]  | [http://coolhaus.de/art-of-controversy/ ''Die Kunst, Recht zu behalten – The Art Of Controversy'' (bilingual)], (also known as "Schopenhauers 38 stratagems"). gutenberg.org
+* [[John Stuart Mill]], [http://www.la.utexas.edu/research/poltheory/mill/sol/ A System of Logic – Raciocinative and Inductive]. [https://www.laits.utexas.edu/poltheory/mill/sol/sol.b05.c07.html Book 5, Chapter 7, Fallacies of Confusion]. la.utexas.edu
+
+== External links ==
+{{Wiktionary|fallacy}}
+{{Wikiquote}}
+{{Wikiversity|Recognizing Fallacies}}
+{{Portal|Philosophy|Psychology}}
+
+* {{cite SEP |url-id=fallacies |title=Fallacies |last=Hansen |first=Hans}}
+* {{cite SEP |url-id=logic-informal/#Fal |title=Informal logic}}
+* {{cite IEP |url-id=fallacy}}
+* {{PhilPapers|category|fallacies}}
+* [https://www.scribd.com/doc/8009498/HUMBUG-eBook-by-Jef-Clark-and-Theo-Clark ''Humbug! The skeptic's field guide to spotting fallacies in thinking'']&nbsp;– textbook on fallacies. scribd.com
+* [http://www.infidels.org/library/modern/mathew/logic.html List of fallacies with clear examples], infidels.org
+* [https://web.archive.org/web/20150515000453/http://www.thefirstscience.org/syllogistic-machine Interactive Syllogistic Machine] A web based syllogistic machine for exploring fallacies, figures, and modes of syllogisms.
+* [http://www.csun.edu/~dgw61315/fallacies.html Logical Fallacies and the Art of Debate], csun.edu
+* [https://web.archive.org/web/20061006192956/http://onegoodmove.org/fallacy/welcome.htm Stephen Downes Guide to the Logical Fallacies], onegoodmove.org
+* [https://web.archive.org/web/20120609064101/http://writingcenter.unc.edu/handouts/fallacies/ Explain fallacies, what they are and how to avoid them]
+* [https://www.fallacyfiles.org/index.html Fallacy Files]
+* {{cite EB1911 |wstitle=Fallacy |volume=10 |pages=153–154}}
+
+{{Fallacies}}
+{{Disinformation}}
+{{Philosophical logic}}
+{{Authority control}}
+[[Category:Fallacies|*]]
+[[Category:Barriers to critical thinking]]
+[[Category:Information]]
+[[Category:Philosophical logic]]
+[[Category:Rhetoric]]
+```
+
+## STEPS
 
 - Read the input text and find all instances of fallacies in the text.
 
 - Write those fallacies in a list on a virtual whiteboard in your mind.
 
-# OUTPUT
+## OUTPUT
 
-- In a section called FALLACIES, list all the fallacies you found in the text using the structure of:
+- In a section called: FALLACIES, list all the fallacies you found in the text using the structure of:
 
 "- Fallacy Name: Fallacy Type — 15 word explanation."
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - You output in Markdown, using each section header followed by the content for that section.
 
@@ -217,6 +320,6 @@ Vacuous truth – a claim that is technically true but meaningless, in the form 
 
 - Do no complain about the input data. Just do the task.
 
-# INPUT:
+## INPUT
 
 INPUT:

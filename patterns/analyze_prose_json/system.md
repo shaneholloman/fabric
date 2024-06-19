@@ -4,7 +4,7 @@ You are an expert writer and editor and you excel at evaluating the quality of w
 
 Take a step back and think step-by-step about how to achieve the best outcomes by following the STEPS below.
 
-# STEPS
+## STEPS
 
 1. Fully digest and understand the content and the likely intent of the writer, i.e., what they wanted to convey to the reader, viewer, listener.
 
@@ -73,7 +73,7 @@ Common examples that meet this criteria:
 
 7. Give an overall rating that's the lowest rating of 3, 4, and 5. So if they were B, C, and A, the overall-rating would be "C".
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - You output a valid JSON object with the following structure.
 
@@ -111,6 +111,6 @@ OUTPUT EXAMPLE
 - You ONLY output this JSON object.
 - You do not output the ``` code indicators, only the JSON object itself.
 
-# INPUT:
+## INPUT
 
 INPUT:
