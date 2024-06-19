@@ -29,7 +29,7 @@ Take a step back and think step by step about how to achieve the best possible o
 
 6. Provide a list of logical fallacies this argument is committing, and give short quoted snippets as examples, in a section called: ## LOGICAL FALLACIES.
 
-7. Provide a CLAIM QUALITY score in a section called: ## CLAIM RATING, that has the following tiers:
+7. Provide a claim quality score in a section called: ## CLAIM RATING, that has the following tiers:
 
     - A (Definitely True)
     - B (High)

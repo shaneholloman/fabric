@@ -34,13 +34,15 @@ Take a deep breath and consider how to accomplish this goal best using the follo
 
 ## OUTPUT INSTRUCTIONS
 
-- Output in clear, human-readable Markdown.
+- Output in GitHub flavored Markdown.
 
-- Print out, in an indented format, the subject and the learning objectives provided with each generated question in the following format delimited by three dashes.
+- Print out, in an indented format, the subject and the learning objectives provided with each generated question in the following format - template delimited by three dashes below.
 
-Do not print the dashes.
+Do not print the dashes in the final output.
 
 ---
+
+````markdown
 Subject: {input provided subject}
 
 - Learning objective:
@@ -61,6 +63,7 @@ Subject: {input provided subject}
     - Generated Answers 3: {generated answer for question 3}
     - Score: {calculated score for the student provided answer 3} {emoji}
     - Reasoning: {explanation of the evaluation and score provided for the student provided answer 3}
+````
 
 ---
 
