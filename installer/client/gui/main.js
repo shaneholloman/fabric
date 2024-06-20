@@ -558,7 +558,7 @@ app.whenReady().then(async () => {
   } catch (error) {
     await ensureFabricFoldersExist(); // Ensure fabric folders exist
     createWindow(); // Keep this line
-    // Handle initialization failure (e.g., close the app or show an error message)
+    // Handle initialization failure (example: close the app or show an error message)
   }
 });
 

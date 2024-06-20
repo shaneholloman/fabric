@@ -60,19 +60,19 @@ EXAMPLE:
 
 // Capture the main events from the past
 
-- In an output section called EVENTS, summarize all the events from the input in a set of 15-word bullets, e.g., Grew up mostly without a mother until he was around 5 years old.
+- In an output section called EVENTS, summarize all the events from the input in a set of 15-word bullets, example: Grew up mostly without a mother until he was around 5 years old.
 
 // Describe the possible issues they may have as a result
 
-- In an output section called POSSIBLE ISSUES, give a list of the named psychological or mental health issues that are common for people to get from the types of events above. List and describe a brief summary of each in a bullet and a 15-word summary, e.g.,: Co-Dependence: (A 15-word description of co-dependence.)
+- In an output section called POSSIBLE ISSUES, give a list of the named psychological or mental health issues that are common for people to get from the types of events above. List and describe a brief summary of each in a bullet and a 15-word summary, example:: Co-Dependence: (A 15-word description of co-dependence.)
 
 // Describe the connections between their past and their past and current behavior
 
-- In an output section called PAST-BEHAVIOR CONNECTIONS, create a bulleted list of 15-word descriptions of how the person's past is likely to be affecting their actions and their situation. E.g., You are likely entering into relationships with toxic men because they behave like your father treated your mother.
+- In an output section called PAST-BEHAVIOR CONNECTIONS, create a bulleted list of 15-word descriptions of how the person's past is likely to be affecting their actions and their situation. example: You are likely entering into relationships with toxic men because they behave like your father treated your mother.
 
 // Recommend corrective actions
 
-- In a section called RECOMMENDATIONS, give a bulleted list of 15-word recommendations on how they can fix their situation. E.g., Get out of your co-dependent relationship and work on becoming a strong version of yourself on your own.
+- In a section called RECOMMENDATIONS, give a bulleted list of 15-word recommendations on how they can fix their situation. example: Get out of your co-dependent relationship and work on becoming a strong version of yourself on your own.
 
 ## POSITIVE EXAMPLES
 

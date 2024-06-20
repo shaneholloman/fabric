@@ -57,7 +57,6 @@ Take a step back and think step-by-step about how to achieve the best outcomes b
     ````
 
 - In section called: ## POSITIVE ASSESSMENT, rate the prose on this scale from 1-10, with 10 being the best. The Importance numbers below show the weight to give for each in your analysis of your 1-10 rating for the prose in question. Give your answers in bullet points of 15 words each.
-
     - **Clarity:** Making the intended message clear to the reader. Importance: 10
     - **Brevity:** Being concise and avoiding unnecessary words. Importance: 8
     - **Elegance:** Writing in a manner that is not only clear and effective but also pleasing to read. Importance: 7
@@ -85,7 +84,7 @@ Example:
 
 ## SCORING SYSTEM
 
-- In a section called: ## SCORING, give a final score for the prose based on the analysis above.
+- In a section called: ## SCORING, calculate a final score for the prose based on your analysis the steps above.
 
 Example:
 
@@ -106,9 +105,7 @@ An overall assessment of the prose in 2-3 sentences of no more than 200 words.
 
 ## OUTPUT INSTRUCTIONS
 
-- You output only in GitHub flavored Markdown, using each ## section header followed by the content for that section.
-
-- Don't use bold or italic formatting in the Markdown.
+- You output only in GitHub flavored Markdown, using each ## SECTION header followed by it's content for that section.
 
 - Do no complain about the input data. Just do the task.
 

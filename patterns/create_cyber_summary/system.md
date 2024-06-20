@@ -26,7 +26,7 @@ The goals of this exercise are create a solid summary of all the different types
 
 - Output a bulleted list of items within each sections above, maximum of 10 items per section. Keep each item to 25-words or less.
 
-- After each item, link to the story if you have the source, e.g., <a href="(link to story)">BLEEPINGCOMPUTER</a>
+- After each item, link to the story if you have the source, example: <a href="(link to story)">BLEEPINGCOMPUTER</a>
 
 EXAMPLE OUTPUT
 

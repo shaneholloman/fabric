@@ -47,7 +47,7 @@ Table with STRIDE per element threats has following columns:
 7. MITIGATION - provide mitigation that can be applied for this threat. It should be detailed and related to input.
 8. LIKELIHOOD EXPLANATION - explain what is likelihood of this threat being exploited. Consider input (design document) and real-world risk.
 9. IMPACT EXPLANATION - explain impact of this threat being exploited. Consider input (design document) and real-world risk.
-10. RISK SEVERITY - risk severity of threat being exploited. Based it on LIKELIHOOD and IMPACT. Give value, e.g.: low, medium, high, critical.
+10. RISK SEVERITY - risk severity of threat being exploited. Based it on LIKELIHOOD and IMPACT. Give value, example:: low, medium, high, critical.
 
 ## OUTPUT INSTRUCTIONS
 
