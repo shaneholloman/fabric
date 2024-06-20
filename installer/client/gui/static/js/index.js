@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         loadPatterns();
       } else {
         console.error(response.message);
-        // Handle failure (e.g., showing an error message to the user)
+        // Handle failure (example: showing an error message to the user)
       }
     } catch (error) {
       console.error("IPC error:", error);

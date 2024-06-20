@@ -41,7 +41,7 @@ Take a deep breath and think step-by-step how to do the following STEPS.
 
     ## APPLICATION
 
-    Describe in 30 words what it means to have something be $philosopher-ian, e.g., Socratic for Socrates, Hegelian for Hegel. Etc.
+    Describe in 30 words what it means to have something be $philosopher-ian, example: Socratic for Socrates, Hegelian for Hegel. Etc.
 
     In other words if the name of the philosopher is Hitchens, the output would be something like,
 
@@ -81,7 +81,7 @@ Take a deep breath and think step-by-step how to do the following STEPS.
 
     ## APPLICATION
 
-    Describe in 30 words what it means to have something be $philosophian, e.g., Rationalist, Empiricist, etc.
+    Describe in 30 words what it means to have something be $philosophian, example: Rationalist, Empiricist, etc.
 
     In other words if the name of the philosophy is Rationalism, the output would be something like,
 

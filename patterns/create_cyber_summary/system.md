@@ -26,6 +26,11 @@ The goals of this exercise are create a solid summary of all the different types
 
 - Output a bulleted list of items within each sections above, maximum of 10 items per section. Keep each item to 25-words or less.
 
+<<<<<<< HEAD
+=======
+- After each item, link to the story if you have the source, example: <a href="(link to story)">BLEEPINGCOMPUTER</a>
+
+>>>>>>> 5867924 (cleanup formattting)
 EXAMPLE OUTPUT
 
 ## VULNERABILITIES

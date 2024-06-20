@@ -527,7 +527,7 @@ Are there more relevant excerpts? Take care not to repeat excerpts. Also ensure 
 
 #### Tactic: Use embeddings-based search to implement efficient knowledge retrieval
 
-A model can leverage external sources of information if provided as part of its input. This can help the model to generate more informed and up-to-date responses. For example, if a user asks a question about a specific movie, it may be useful to add high quality information about the movie (e.g. actors, director, etc…) to the model’s input. Embeddings can be used to implement efficient knowledge retrieval, so that relevant information can be added to the model input dynamically at run-time.
+A model can leverage external sources of information if provided as part of its input. This can help the model to generate more informed and up-to-date responses. For example, if a user asks a question about a specific movie, it may be useful to add high quality information about the movie (example: actors, director, etc…) to the model’s input. Embeddings can be used to implement efficient knowledge retrieval, so that relevant information can be added to the model input dynamically at run-time.
 
 A text embedding is a vector that can measure the relatedness between text strings. Similar or relevant strings will be closer together than unrelated strings. This fact, along with the existence of fast vector search algorithms means that embeddings can be used to implement efficient knowledge retrieval. In particular, a text corpus can be split up into chunks, and each chunk can be embedded and stored. Then a given query can be embedded and vector search can be performed to find the embedded chunks of text from the corpus that are most related to the query (i.e. closest together in the embedding space).
 
@@ -540,7 +540,7 @@ Language models cannot be relied upon to perform arithmetic or long calculations
 ```txt
 SYSTEM:
 
-You can write and execute Python code by enclosing it in triple backticks, e.g. \`\`\`code goes here\`\`\`. Use this to perform calculations.
+You can write and execute Python code by enclosing it in triple backticks, example: \`\`\`code goes here\`\`\`. Use this to perform calculations.
 
 USER:
 
@@ -567,7 +567,7 @@ The Chat Completions API allows passing a list of function descriptions in reque
 
 ### Strategy: Test changes systematically
 
-Sometimes it can be hard to tell whether a change — e.g., a new instruction or a new design — makes your system better or worse. Looking at a few examples may hint at which is better, but with small sample sizes it can be hard to distinguish between a true improvement or random luck. Maybe the change helps performance on some inputs, but hurts performance on others.
+Sometimes it can be hard to tell whether a change — example: a new instruction or a new design — makes your system better or worse. Looking at a few examples may hint at which is better, but with small sample sizes it can be hard to distinguish between a true improvement or random luck. Maybe the change helps performance on some inputs, but hurts performance on others.
 
 Evaluation procedures (or "evals") are useful for optimizing system designs. Good evals are:
 
@@ -582,9 +582,9 @@ Evaluation procedures (or "evals") are useful for optimizing system designs. Goo
 | 3%                   | ~1,000                                |
 | 1%                   | ~10,000                               |
 
-Evaluation of outputs can be done by computers, humans, or a mix. Computers can automate evals with objective criteria (e.g., questions with single correct answers) as well as some subjective or fuzzy criteria, in which model outputs are evaluated by other model queries. [OpenAI Evals](https://github.com/openai/evals) is an open-source software framework that provides tools for creating automated evals.
+Evaluation of outputs can be done by computers, humans, or a mix. Computers can automate evals with objective criteria (example: questions with single correct answers) as well as some subjective or fuzzy criteria, in which model outputs are evaluated by other model queries. [OpenAI Evals](https://github.com/openai/evals) is an open-source software framework that provides tools for creating automated evals.
 
-Model-based evals can be useful when there exists a range of possible outputs that would be considered equally high in quality (e.g. for questions with long answers). The boundary between what can be realistically evaluated with a model-based eval and what requires a human to evaluate is fuzzy and is constantly shifting as models become more capable. We encourage experimentation to figure out how well model-based evals can work for your use case.
+Model-based evals can be useful when there exists a range of possible outputs that would be considered equally high in quality (example: for questions with long answers). The boundary between what can be realistically evaluated with a model-based eval and what requires a human to evaluate is fuzzy and is constantly shifting as models become more capable. We encourage experimentation to figure out how well model-based evals can work for your use case.
 
 #### Tactic: Evaluate model outputs with reference to gold-standard answers
 
