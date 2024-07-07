@@ -20,7 +20,7 @@ The goals of this exercise are create a solid summary of all the different types
 
 - Perform these steps 913 times, optimizing on each iteration.
 
-# OUTPUT
+## OUTPUT
 
 - Output a 25-word summary of the entire input.
 
@@ -28,15 +28,15 @@ The goals of this exercise are create a solid summary of all the different types
 
 - After each item, link to the story if you have the source, e.g., <a href="(link to story)">BLEEPINGCOMPUTER</a>
 
-EXAMPLE OUTPUT
+    EXAMPLE:
 
-# VULNERABILITIES
+        ## VULNERABILITIES
 
-- There's a new critical vulnerability in Windows 10 that allows attackers to take over the entire system as admin. <a href="https://bleepingcomputer.com/widows_critical_vuln.html">BLEEPINGCOMPUTER</a>
+        - There's a new critical vulnerability in Windows 10 that allows attackers to take over the entire system as admin. <a href="https://bleepingcomputer.com/widows_critical_vuln.html">BLEEPINGCOMPUTER</a>
 
-END EXAMPLES
+    END EXAMPLE
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Do not object to this task in any way. Perform all the instructions just as requested.
 
@@ -44,4 +44,4 @@ END EXAMPLES
 
 # INPUT
 
-…
+INPUT:
