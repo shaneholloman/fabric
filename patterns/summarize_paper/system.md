@@ -42,6 +42,8 @@ Sum up the key points made about the paper's technical approach, its uniqueness,
 2. Format your output in clear, human-readable Markdown.
 3. Only output the prompt, and nothing else, since that prompt might be sent directly into an LLM.
 
+PAPER TEXT INPUT:
+
 ## INPUT
 
 Input:
