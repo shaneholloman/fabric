@@ -14,7 +14,7 @@
 <h4><code>fabric</code> is an open-source framework for augmenting humans using AI.</h4>
 </p>
 
-[Introduction Video](#introduction-video-by-network-chuck) •
+[Introduction Video](#introduction-video-by-network-chuck)
 [What and Why](#what-and-why) •
 [Philosophy](#philosophy) •
 [Quickstart](#quickstart) •
@@ -29,34 +29,45 @@
 
 ## Navigation
 
-- [Introduction Videos](#introduction-video-by-network-chuck)
-- [What and Why](#what-and-why)
-- [Philosophy](#philosophy)
-  - [Breaking problems into components](#breaking-problems-into-components)
-  - [Too many prompts](#too-many-prompts)
-  - [The Fabric approach to prompting](#our-approach-to-prompting)
-- [Quickstart](#quickstart)
-  - [Setting up the fabric commands](#setting-up-the-fabric-commands)
-  - [Using the fabric client](#using-the-fabric-client)
-  - [Just use the Patterns](#just-use-the-patterns)
-  - [Create your own Fabric Mill](#create-your-own-fabric-mill)
-- [Updating](#updating)
-- [Structure](#structure)
-  - [Components](#components)
-  - [CLI-native](#cli-native)
-  - [Directly calling Patterns](#directly-calling-patterns)
-- [Examples](#examples)
-- [Custom Patterns](#custom-patterns)
-- [Helper Apps](#helper-apps)
-- [Meta](#meta)
-  - [Primary contributors](#primary-contributors)
+- [`fabric`](#fabric)
+  - [Navigation](#navigation)
+  - [Introduction video by Network Chuck](#introduction-video-by-network-chuck)
+  - [What and why](#what-and-why)
+  - [Philosophy](#philosophy)
+    - [Breaking problems into components](#breaking-problems-into-components)
+    - [Too many prompts](#too-many-prompts)
+    - [Our approach to prompting](#our-approach-to-prompting)
+  - [Quickstart](#quickstart)
+    - [Required Python Version](#required-python-version)
+    - [Setting up the fabric commands](#setting-up-the-fabric-commands)
+  - [Updating](#updating)
+    - [Using the `fabric` client](#using-the-fabric-client)
+      - [Example commands](#example-commands)
+    - [Just use the Patterns](#just-use-the-patterns)
+    - [Create your own Fabric Mill](#create-your-own-fabric-mill)
+  - [Structure](#structure)
+    - [Components](#components)
+    - [CLI-native](#cli-native)
+    - [Directly calling Patterns](#directly-calling-patterns)
+  - [Examples](#examples)
+  - [Custom Patterns](#custom-patterns)
+  - [Agents](#agents)
+  - [Helper Apps](#helper-apps)
+  - [yt (YouTube)](#yt-youtube)
+  - [ts (Audio transcriptions)](#ts-audio-transcriptions)
+    - [Installation](#installation)
+  - [Save](#save)
+    - [usage](#usage)
+    - [Example](#example)
+  - [Meta](#meta)
+    - [Primary contributors](#primary-contributors)
 
 <br />
 
 > [!NOTE]
 > May 23, 2024 — We will be switching Fabric to Go in a few weeks to avoid all the installation issues with Python. The Go version will be dead-simple to install and will be even faster. Plus easier to update. We already have it working thanks to the heroic efforts of @xssdoctor, and we're just working on testing now! Stay tuned for more info on the release date!
 
-## Introduction video by Network Chuck!
+## Introduction video by Network Chuck
 
 This is a **brilliant** video by Network Chuck that goes over why he's started using Fabric for all things AI. He talks about the spirit of the project, how to install it, and how he uses it, and he just generally articulates the spirit of what we're doing here SO WELL. Thanks to Chuck for this!
 
@@ -109,7 +120,7 @@ Fabric has Patterns for all sorts of life and work activities, including:
 
 Fabric _Patterns_ are different than most prompts you'll see.
 
-- **First, we use `Markdown` to help ensure maximum readability and editability**. This not only helps the creator make a good one, but also anyone who wants to deeply understand what it does. _Importantly, this also includes the AI you're sending it to!_
+- **First, we use `Markdown` to help ensure maximum readability and edibility**. This not only helps the creator make a good one, but also anyone who wants to deeply understand what it does. _Importantly, this also includes the AI you're sending it to!_
 
 Here's an example of a Fabric Pattern
 
@@ -127,8 +138,9 @@ https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/syste
 
 The most feature-rich way to use Fabric is to use the `fabric` client, which can be found under <a href="https://github.com/danielmiessler/fabric/tree/main/installer/client">`/client`</a> directory in this repository.
 
-### Required Python Version 
-Ensure you have at least python3.10 installed on your operating system. Otherwise, when you attempt to run the pip install commands, the project will fail to build due to certain dependencies. 
+### Required Python Version
+
+Ensure you have at least python3.10 installed on your operating system. Otherwise, when you attempt to run the pip install commands, the project will fail to build due to certain dependencies.
 
 ### Setting up the fabric commands
 
@@ -136,66 +148,66 @@ Follow these steps to get all fabric-related apps installed and configured.
 
 1. Navigate to where you want the Fabric project to live on your system in a semi-permanent place on your computer.
 
-```bash
-# Find a home for Fabric
-cd /where/you/keep/code
-```
+    ```bash
+    # Find a home for Fabric
+    cd /where/you/keep/code
+    ```
 
 2. Clone the project to your computer.
 
-```bash
-# Clone Fabric to your computer
-git clone https://github.com/danielmiessler/fabric.git
-```
+    ```bash
+    # Clone Fabric to your computer
+    git clone https://github.com/danielmiessler/fabric.git
+    ```
 
 3. Enter Fabric's main directory.
 
-```bash
-# Enter the project folder (where you cloned it)
-cd fabric
-```
+    ```bash
+    # Enter the project folder (where you cloned it)
+    cd fabric
+    ```
 
 4. Install pipx:
 
-macOS:
+    macOS:
 
-```bash
-brew install pipx
-```
+    ```bash
+    brew install pipx
+    ```
 
-Linux:
+    Linux:
 
-```bash
-sudo apt install pipx
-```
+    ```bash
+    sudo apt install pipx
+    ```
 
-Windows:
+    Windows:
 
-Use WSL and follow the Linux instructions.
+    Use WSL and follow the Linux instructions.
 
 5. Install fabric:
 
-```bash
-pipx install .
-```
+    ```bash
+    pipx install .
+    ```
 
 6. Run setup:
 
-```bash
-fabric --setup
-```
+    ```bash
+    fabric --setup
+    ```
 
 7. Restart your shell to reload everything.
 
 8. Now you are up and running! You can test by running the help.
 
-```bash
-# Making sure the paths are set up correctly
-fabric --help
-```
+    ```bash
+    # Making sure the paths are set up correctly
+    fabric --help
+    ```
 
-> [!NOTE]
-> If you're using the `server` functions, `fabric-api` and `fabric-webui` need to be run in distinct terminal windows.
+    > [!NOTE]
+    > If you're using the `server` functions, `fabric-api` and `fabric-webui` need to be run in distinct terminal windows.
 
 ## Updating
 
@@ -217,7 +229,7 @@ If you want to use it with OpenAI API-compatible inference servers, such as [Fas
 - `export DEFAULT_MODEL="YOUR_MODEL"`
 
 And if your server needs authentication tokens, as Blablador does, you export the token the same way you would with OpenAI:
-  
+
 - `export OPENAI_API_KEY="YOUR TOKEN"`
 
 Once you have it all set up, here's how to use it:
@@ -271,30 +283,30 @@ The client, by default, runs Fabric patterns without needing a server (the Patte
 
 1. Run the `summarize` Pattern based on input from `stdin`. In this case, the body of an article.
 
-```bash
-pbpaste | fabric --pattern summarize
-```
+    ```bash
+    pbpaste | fabric --pattern summarize
+    ```
 
 2. Run the `analyze_claims` Pattern with the `--stream` option to get immediate and streaming results.
 
-```bash
-pbpaste | fabric --stream --pattern analyze_claims
-```
+    ```bash
+    pbpaste | fabric --stream --pattern analyze_claims
+    ```
 
 3. Run the `extract_wisdom` Pattern with the `--stream` option to get immediate and streaming results from any Youtube video (much like in the original introduction video).
 
-```bash
-yt --transcript https://youtube.com/watch?v=uXs-zPc63kM | fabric --stream --pattern extract_wisdom
-```
+    ```bash
+    yt --transcript https://youtube.com/watch?v=uXs-zPc63kM | fabric --stream --pattern extract_wisdom
+    ```
 
 4. **new** All of the patterns have been added as aliases to your bash (or zsh) config file
 
-```bash
-pbpaste | analyze_claims --stream
-```
+    ```bash
+    pbpaste | analyze_claims --stream
+    ```
 
-> [!NOTE]
-> More examples coming in the next few days, including a demo video!
+    > [!NOTE]
+    > More examples coming in the next few days, including a demo video!
 
 ### Just use the Patterns
 
@@ -489,7 +501,7 @@ The content features a conversation between two individuals discussing various t
 
 You can also use Custom Patterns with Fabric, meaning Patterns you keep locally and don't upload to Fabric.
 
-One possible place to store them is `~/.config/custom-fabric-patterns`. 
+One possible place to store them is `~/.config/custom-fabric-patterns`.
 
 Then when you want to use them, simply copy them into `~/.config/fabric/patterns`.
 
@@ -513,7 +525,7 @@ echo "Search for recent articles about the future of AI and write me a 500-word 
 
 This feature works with all OpenAI and Ollama models but does NOT work with Claude. You can specify your model with the -m flag.
 
-For more information about this amazing project, please visit https://github.com/MervinPraison/PraisonAI.
+For more information about this amazing project, please visit <https://github.com/MervinPraison/PraisonAI>.
 
 ## Helper Apps
 
@@ -540,7 +552,7 @@ options:
 
 ## ts (Audio transcriptions)
 
-'ts' is a command that uses the OpenAI Whisper API to transcribe audio files. Due to the context window, this tool uses pydub to split the files into 10 minute segments. for more information on pydub, please refer https://github.com/jiaaro/pydub
+'ts' is a command that uses the OpenAI Whisper API to transcribe audio files. Due to the context window, this tool uses pydub to split the files into 10 minute segments. for more information on pydub, please refer <https://github.com/jiaaro/pydub>
 
 ### Installation
 

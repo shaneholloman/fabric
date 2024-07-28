@@ -1,4 +1,5 @@
-import sys
+"""Automate GitHub workflow tasks including fork updates, branch creation, and PR submission."""
+
 import argparse
 import subprocess
 
@@ -6,16 +7,19 @@ import subprocess
 def get_github_username():
     """Retrieve GitHub username from local Git configuration."""
     result = subprocess.run(
-        ["git", "config", "--get", "user.name"], capture_output=True, text=True
+        ["git", "config", "--get", "user.name"],
+        capture_output=True,
+        text=True,
+        check=True,
     )
-    if result.returncode == 0 and result.stdout:
+    if result.stdout:
         return result.stdout.strip()
     else:
-        raise Exception("Failed to retrieve GitHub username from Git config.")
+        raise RuntimeError("Failed to retrieve GitHub username from Git config.")
 
 
 def update_fork():
-    # Sync your fork's main branch with the original repository's main branch
+    """Sync fork's main branch with the original repository's main branch."""
     print("Updating fork...")
     subprocess.run(
         ["git", "fetch", "upstream"], check=True
@@ -33,13 +37,13 @@ def update_fork():
 
 
 def create_branch(branch_name):
+    """Create a new Git branch and switch to it."""
     print(f"Creating new branch '{branch_name}'...")
     subprocess.run(["git", "checkout", "-b", branch_name], check=True)
-    print(f"Branch '{branch_name}' created and switched to.")
 
 
 def push_changes(branch_name, commit_message):
-    # Push your local changes to your fork on GitHub
+    """Push your local changes to your fork on GitHub"""
     print("Pushing changes to fork...")
     subprocess.run(
         ["git", "checkout", branch_name], check=True
@@ -55,7 +59,7 @@ def push_changes(branch_name, commit_message):
 
 
 def create_pull_request(branch_name, pr_title, pr_file):
-    # Create a pull request on GitHub using the GitHub CLI
+    """Create a pull request on GitHub using the GitHub CLI"""
     print("Creating pull request...")
     github_username = get_github_username()
     with open(pr_file, "r", encoding="utf-8") as file:
@@ -80,11 +84,13 @@ def create_pull_request(branch_name, pr_title, pr_file):
 
 
 def main():
+    """Parse command-line arguments and execute the corresponding GitHub workflow tasks."""
+
     parser = argparse.ArgumentParser(description="Automate your GitHub workflow")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Subparser for updating fork
-    parser_update = subparsers.add_parser(
+    subparsers.add_parser(
         "update-fork", help="Update fork with the latest from the original repository"
     )
 
