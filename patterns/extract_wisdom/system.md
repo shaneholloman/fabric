@@ -54,8 +54,8 @@ Only output Markdown and use github flavored markdown with best practices!
     - Use `---` for horizontal rules
     - Use `![relevant alt text](image-url)` for images
     - Use `[relevant link text](link-url)` for links
-    - Use `inline code` for inline code
-    - Use ```code blocks``` for code blocks
+    - Use \`inline code` for inline code
+    - Use \```code blocks``` for code blocks
     - Use `1.` for numbered lists
     - Use `---` for horizontal rules
 
