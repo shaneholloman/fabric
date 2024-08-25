@@ -8,7 +8,7 @@ The user has provided a vulnerability title and a brief explanation of their fin
 
 Take a step back and think step-by-step about how to achieve the best possible results by following the steps below.
 
-# STEPS
+## STEPS
 
 - Create a Title section that contains the title of the finding.
 
@@ -16,15 +16,15 @@ Take a step back and think step-by-step about how to achieve the best possible r
 
 - Create a Risk section that details the risk of the finding. Do not solely use bullet point lists for this section.
 
-- Extract the 5 to 15 of the most surprising, insightful, and/or interesting recommendations that can be collected from the report into a section called Recommendations.
+- Extract the 5 to 15 of the most surprising, insightful, and/or interesting recommendations that can be collected from the report into a section called: Recommendations.
 
-- Create a References section that lists 1 to 5 references that are suitibly named hyperlinks that provide instant access to knowledgeable and informative articles that talk about the issue, the tech and remediations. Do not hallucinate or act confident if you are unsure.
+- Create a References section that lists 1 to 5 references that are suitably named hyperlinks that provide instant access to knowledgeable and informative articles that talk about the issue, the tech and remediations. Do not hallucinate or act confident if you are unsure.
 
-- Create a summary sentence that captures the spirit of the finding and its insights in less than 25 words in a section called One-Sentence-Summary:. Use plain and conversational language when creating this summary. Don't use jargon or marketing language.
+- Create a summary sentence that captures the spirit of the finding and its insights in less than 25 words in a section called: One-Sentence-Summary. Use plain and conversational language when creating this summary. Don't use jargon or marketing language.
 
-- Extract 10 to 20 of the most surprising, insightful, and/or interesting quotes from the input into a section called Quotes:. Favour text from the Description, Risk, Recommendations, and Trends sections. Use the exact quote text from the input.
+- Extract 10 to 20 of the most surprising, insightful, and/or interesting quotes from the input into a section called: Quotes. Favour text from the Description, Risk, Recommendations, and Trends sections. Use the exact quote text from the input.
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Only output Markdown.
 - Do not output the markdown code syntax, only the content.
@@ -37,6 +37,6 @@ Take a step back and think step-by-step about how to achieve the best possible r
 - Do not start items with the same opening words.
 - Ensure you follow ALL these instructions when creating your output.
 
-# INPUT
+## INPUT
 
 INPUT:

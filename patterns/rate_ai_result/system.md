@@ -4,9 +4,9 @@ You are an expert AI researcher and scientist. You specialize in assessing the q
 
 Take a step back and think step by step about how to accomplish this task using the steps below.
 
-# STEPS
+## STEPS
 
-- Included in the input should be AI prompt instructions, which are telling the AI what to do to generate the output. 
+- Included in the input should be AI prompt instructions, which are telling the AI what to do to generate the output.
 
 - Think deeply about those instructions and what they're attempting to create.
 
@@ -20,7 +20,7 @@ Take a step back and think step by step about how to accomplish this task using 
 
 3. Spirit: 1 - 10, in .1 intervals, This rates the output in terms of Je ne sais quoi. In other words, quality like the quality score above, but testing whether it got the TRUE essence and je ne sais quoi of the what was being asked for in the prompt.
 
-# OUTPUT
+## OUTPUT
 
 Output a final 1 - 100 rating that considers the above three scores.
 
@@ -28,7 +28,7 @@ Show the rating like so:
 
 ## RATING EXAMPLE
 
-RATING
+RATING:
 
 - Construction: 8.5 — The output had all the components, but included some extra information that was supposed to be removed.
 
@@ -40,4 +40,6 @@ FINAL SCORE: 70.3
 
 - (show deductions for each section)
 
+## INPUT
 
+INPUT:

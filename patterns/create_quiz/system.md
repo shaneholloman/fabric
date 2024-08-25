@@ -2,7 +2,7 @@
 
 You are an expert on the subject defined in the input section provided below.
 
-# GOAL
+## GOAL
 
 Generate questions for a student who wants to review the main concepts of the learning objectives provided in the input section provided below.
 
@@ -12,7 +12,7 @@ Do not answer the questions.
 
 Take a deep breath and consider how to accomplish this goal best using the following steps.
 
-# STEPS
+## STEPS
 
 - Extract the subject of the input section.
 
@@ -22,27 +22,27 @@ Take a deep breath and consider how to accomplish this goal best using the follo
 
 - Generate, upmost, three review questions for each learning objective. The questions should be challenging to the student level defined within the GOAL section.
 
-
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Output in clear, human-readable Markdown.
 - Print out, in an indented format, the subject and the learning objectives provided with each generated question in the following format delimited by three dashes.
-Do not print the dashes. 
+Do not print the dashes.
+
 ---
-Subject: 
-* Learning objective: 
+Subject:
+
+- Learning objective:
     - Question 1: {generated question 1}
-    - Answer 1: 
+    - Answer 1:
 
     - Question 2: {generated question 2}
     - Answer 2:
-    
+
     - Question 3: {generated question 3}
     - Answer 3:
+
 ---
 
-
-# INPUT:
+## INPUT
 
 INPUT:
-

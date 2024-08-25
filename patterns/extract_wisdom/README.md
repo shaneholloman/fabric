@@ -1,16 +1,14 @@
-<div align="center">
+# `extract_wisdom`
 
-<img src="https://beehiiv-images-production.s3.amazonaws.com/uploads/asset/file/2012aa7c-a939-4262-9647-7ab614e02601/extwis-logo-miessler.png?t=1704502975" alt="extwislogo" width="400" height="400"/>
-
-# `/extractwisdom`
-
-<h4><code>extractwisdom</code> is a <a href="https://github.com/danielmiessler/fabric" target="_blank">Fabric</a> pattern that <em>extracts wisdom</em> from any text.</h4>
-
-[Description](#description) •
-[Functionality](#functionality) •
-[Usage](#usage) •
-[Output](#output) •
-[Meta](#meta)
+- [`extract_wisdom`](#extract_wisdom)
+  - [Description](#description)
+  - [Functionality](#functionality)
+    - [Use cases](#use-cases)
+  - [Usage](#usage)
+    - [Pull the _system_ prompt directly](#pull-the-system-prompt-directly)
+    - [Pull the _user_ prompt directly](#pull-the-user-prompt-directly)
+  - [Output](#output)
+  - [Meta](#meta)
 
 </div>
 
@@ -18,11 +16,11 @@
 
 ## Description
 
-**`extractwisdom` addresses the problem of **too much content** and too little time.**
+**`extract_wisdom` addresses the problem of **too much content** and too little time.**
 
-_Not only that, but it's also too easy to forget the stuff we read, watch, or listen to._
+Not only that, but it's also too easy to forget the stuff we read, watch, or listen to.
 
-This pattern _extracts wisdom_ from any content that can be translated into text, for example:
+This pattern will `extract_wisdom` from any content that can be translated into text, for example:
 
 - Podcast transcripts
 - Academic papers
@@ -32,7 +30,7 @@ This pattern _extracts wisdom_ from any content that can be translated into text
 
 ## Functionality
 
-When you use `extractwisdom`, it pulls the following content from the input.
+When you use `extract_wisdom`, it pulls the following content from the input.
 
 - `IDEAS`
   - Extracts the best ideas from the content, i.e., what you might have taken notes on if you were doing so manually.
@@ -47,32 +45,35 @@ When you use `extractwisdom`, it pulls the following content from the input.
 
 ### Use cases
 
-`extractwisdom` output can help you in multiple ways, including:
+`extract_wisdom` output can help you in multiple ways, including:
 
-1. `Time Filtering`<br />
-   Allows you to quickly see if content is worth an in-depth review or not.
-2. `Note Taking`<br />
-   Can be used as a substitute for taking time-consuming, manual notes on the content.
+1. `Time Filtering`
+
+    Allows you to quickly see if content is worth an in-depth review or not.
+
+2. `Note Taking`
+
+    Can be used as a substitute for taking time-consuming, manual notes on the content.
 
 ## Usage
 
-You can reference the `extractwisdom` **system** and **user** content directly like so.
+You can reference the `extract_wisdom` **system** and **user** content directly like so.
 
 ### Pull the _system_ prompt directly
 
 ```sh
-curl -sS https://github.com/danielmiessler/fabric/blob/main/extract-wisdom/dmiessler/extract-wisdom-1.0.0/system.md
+curl -sS https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md
 ```
 
 ### Pull the _user_ prompt directly
 
 ```sh
-curl -sS https://github.com/danielmiessler/fabric/blob/main/extract-wisdom/dmiessler/extract-wisdom-1.0.0/user.md
+curl -sS https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/user.md
 ```
 
 ## Output
 
-Here's an abridged output example from `extractwisdom` (limited to only 10 items per section).
+Here's an abridged output example from `extract_wisdom` (limited to only 10 items per section).
 
 ```markdown
 ## SUMMARY:
@@ -150,5 +151,5 @@ This allows you to quickly extract what's valuable and meaningful from the conte
 ## Meta
 
 - **Author**: Daniel Miessler
-- **Version Information**: Daniel's main `extractwisdom` version.
+- **Version Information**: Daniel's main `extract_wisdom` version.
 - **Published**: January 5, 2024

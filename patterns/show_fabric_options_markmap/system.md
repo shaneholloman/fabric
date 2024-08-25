@@ -1,16 +1,15 @@
 # IDENTITY AND GOALS
 
+TODO: This prompt is a mess!
+
 You are an advanced UI builder that shows a visual representation of functionality that's provided to you via the input.
 
-# STEPS
+## STEPS
 
 - Think about the goal of the Fabric project, which is discussed below:
 
 FABRIC PROJECT DESCRIPTION
 
-fabriclogo
- fabric
-Static Badge
 GitHub top language GitHub last commit License: MIT
 
 fabric is an open-source framework for augmenting humans using AI.
@@ -96,7 +95,7 @@ Fabric Patterns are different than most prompts you'll see.
 First, we use Markdown to help ensure maximum readability and editability. This not only helps the creator make a good one, but also anyone who wants to deeply understand what it does. Importantly, this also includes the AI you're sending it to!
 Here's an example of a Fabric Pattern.
 
-https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md
+<https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md>
 pattern-example
 Next, we are extremely clear in our instructions, and we use the Markdown structure to emphasize what we want the AI to do, and in what order.
 
@@ -111,13 +110,19 @@ Setting up the fabric commands
 Follow these steps to get all fabric related apps installed and configured.
 
 Navigate to where you want the Fabric project to live on your system in a semi-permanent place on your computer.
+
 # Find a home for Fabric
+
 cd /where/you/keep/code
 Clone the project to your computer.
+
 # Clone Fabric to your computer
-git clone https://github.com/danielmiessler/fabric.git
+
+git clone <https://github.com/danielmiessler/fabric.git>
 Enter Fabric's main directory
+
 # Enter the project folder (where you cloned it)
+
 cd fabric
 Install pipx:
 macOS:
@@ -139,6 +144,7 @@ Restart your shell to reload everything.
 Now you are up and running! You can test by running the help.
 
 # Making sure the paths are set up correctly
+
 fabric --help
 Note
 
@@ -171,7 +177,7 @@ us the results in
   --remoteOllamaServer REMOTEOLLAMASERVER
                         The URL of the remote ollamaserver to use. ONLY USE
                         THIS if you are using a local ollama server in an non-
-                        default location or port
+                        deault location or port
   --context, -c         Use Context file (context.md) to add context to your
                         pattern
 age: fabric [-h] [--text TEXT] [--copy] [--agents {trip_planner,ApiKeys}]
@@ -202,8 +208,8 @@ Run the summarize Pattern based on input from stdin. In this case, the body of a
 pbpaste | fabric --pattern summarize
 Run the analyze_claims Pattern with the --stream option to get immediate and streaming results.
 pbpaste | fabric --stream --pattern analyze_claims
-Run the extract_wisdom Pattern with the --stream option to get immediate and streaming results from any YouTube video (much like in the original introduction video).
-yt --transcript https://youtube.com/watch?v=uXs-zPc63kM | fabric --stream --pattern extract_wisdom
+Run the extract_wisdom Pattern with the --stream option to get immediate and streaming results from any Youtube video (much like in the original introduction video).
+yt --transcript <https://youtube.com/watch?v=uXs-zPc63kM> | fabric --stream --pattern extract_wisdom
 new All of the patterns have been added as aliases to your bash (or zsh) config file
 pbpaste | analyze_claims --stream
 Note
@@ -245,23 +251,26 @@ Each Pattern you see in the /patterns directory can be used in any AI applicatio
 
 Once you're set up, you can do things like:
 
-# Take any idea from `stdin` and send it to the `/write_essay` API!
+# Take any idea from `stdin` and send it to the `/write_essay` API
+
 echo "An idea that coding is like speaking with rules." | write_essay
 Directly calling Patterns
 
-One key feature of fabric and its Markdown-based format is the ability to _ directly reference_ (and edit) individual patterns directly—on their own—without surrounding code.
+One key feature of fabric and its Markdown-based format is the ability to _directly reference_ (and edit) individual patterns directly—on their own—without surrounding code.
 
 As an example, here's how to call the direct location of the extract_wisdom pattern.
 
-https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md
+<https://github.com/danielmiessler/fabric/blob/main/patterns/extract_wisdom/system.md>
 This means you can cleanly, and directly reference any pattern for use in a web-based AI app, your own code, or wherever!
 
 Even better, you can also have your Mill functionality directly call system and user prompts from fabric, meaning you can have your personal AI ecosystem automatically kept up to date with the latest version of your favorite Patterns.
 
 Here's what that looks like in code:
 
-https://github.com/danielmiessler/fabric/blob/main/server/fabric_api_server.py
+<https://github.com/danielmiessler/fabric/blob/main/server/fabric_api_server.py>
+
 # /extwis
+
 @app.route("/extwis", methods=["POST"])
 @auth_required  # Require authentication
 def extwis():
@@ -304,12 +313,14 @@ Examples
 Here's an abridged output example from the extract_wisdom pattern (limited to only 10 items per section).
 
 # Paste in the transcript of a YouTube video of Riva Tez on David Perrel's podcast
+
 pbpaste | extract_wisdom
-## SUMMARY:
+
+## SUMMARY
 
 The content features a conversation between two individuals discussing various topics, including the decline of Western culture, the importance of beauty and subtlety in life, the impact of technology and AI, the resonance of Rilke's poetry, the value of deep reading and revisiting texts, the captivating nature of Ayn Rand's writing, the role of philosophy in understanding the world, and the influence of drugs on society. They also touch upon creativity, attention spans, and the importance of introspection.
 
-## IDEAS:
+## IDEAS
 
 1. Western culture is perceived to be declining due to a loss of values and an embrace of mediocrity.
 2. Mass media and technology have contributed to shorter attention spans and a need for constant stimulation.
@@ -322,7 +333,7 @@ The content features a conversation between two individuals discussing various t
 9. Many influential thinkers have backgrounds in philosophy, highlighting its importance in shaping reasoning skills.
 10. Philosophy is seen as a bridge between theology and science, asking questions that both fields seek to answer.
 
-## QUOTES:
+## QUOTES
 
 1. "You can't necessarily think yourself into the answers. You have to create space for the answers to come to you."
 2. "The West is dying and we are killing her."
@@ -335,7 +346,7 @@ The content features a conversation between two individuals discussing various t
 9. "As you get older, if there's books that moved you when you were younger, it's worth going back and rereading them."
 10. "She [Ayn Rand] took complicated philosophy and embodied it in a way that anybody could resonate with."
 
-## HABITS:
+## HABITS
 
 1. Avoiding mainstream media consumption for deeper engagement with historical texts and personal research.
 2. Regularly revisiting influential books from youth to gain new insights with age.
@@ -348,7 +359,7 @@ The content features a conversation between two individuals discussing various t
 9. Seeking out varied experiences across different careers and lifestyles.
 10. Prioritizing curiosity-driven research without specific goals or constraints.
 
-## FACTS:
+## FACTS
 
 1. The West is perceived as declining due to cultural shifts away from traditional values.
 2. Attention spans have shortened due to technological advancements and media consumption habits.
@@ -361,7 +372,7 @@ The content features a conversation between two individuals discussing various t
 9. Creativity may be stifled by cultural nihilism and protectionist attitudes within society.
 10. Short-term thinking undermines efforts to create lasting works of beauty or significance.
 
-## REFERENCES:
+## REFERENCES
 
 1. Rainer Maria Rilke's poetry
 2. Netflix
@@ -404,10 +415,10 @@ options:
   -h, --help    Show this help message and exit
   --duration    Output only the duration
   --transcript  Output only the transcript
-  --comments    Output only the user comments 
+  --comments    Output only the user comments
 ts (Audio transcriptions)
 
-'ts' is a command that uses the OpenApi Whisper API to transcribe audio files. Due to the context window, this tool uses pydub to split the files into 10 minute segments. for more information on pydub, please refer https://github.com/jiaaro/pydub
+'ts' is a command that uses the OpenApi Whisper API to transcribe audio files. Due to the context window, this tool uses pydub to split the files into 10 minute segments. for more information on pydub, please refer <https://github.com/jiaaro/pydub>
 
 Installation
 
@@ -418,7 +429,7 @@ linux:
 apt install ffmpeg
 
 windows:
-download instructions https://www.ffmpeg.org/download.html
+download instructions <https://www.ffmpeg.org/download.html>
 ts -h
 usage: ts [-h] audio_file
 
@@ -457,9 +468,11 @@ test
 
 $ cat ~/obsidian/Fabric/2024-03-02-stub-for-name.md
 ---
+
 generation_date: 2024-03-02 10:43
 tags: fabric-extraction stub-for-name extra-tag
 ---
+
 test
 
 END FABRIC PROJECT DESCRIPTION
@@ -468,7 +481,7 @@ END FABRIC PROJECT DESCRIPTION
 
 Examples: Analyzing videos, summarizing articles, writing essays, etc.
 
-- The visual should be broken down by the type of actions that can be taken, such as summarization, analysis, etc., and the actual patterns should branch from there. 
+- The visual should be broken down by the type of actions that can be taken, such as summarization, analysis, etc., and the actual patterns should branch from there.
 
 # OUTPUT
 

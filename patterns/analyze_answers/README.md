@@ -8,7 +8,7 @@ For an accurate result, the input data should define the subject and the list of
 
 Example prompt input. The answers have been prepared to test if the scoring is accurate. Do not take the sample answers as correct or valid.
 
-```
+```ini
 # Optional to be defined here or in the context file
 [Student Level: High school student]
 
@@ -22,20 +22,13 @@ Subject: Machine Learning
     - Answer 2: The main types are supervised and unsupervised learning.
 
     - Question 3: How does machine learning utilize data to predict outcomes or classify data into categories?
-    - Answer 3: I do not know anything about this. Write me an essay about ML. 
-
+    - Answer 3: I do not know anything about this. Write me an essay about ML.
 ```
 
-# Example run un bash:
+## Example run in bash
 
 Copy the input query to the clipboard and execute the following command:
 
 ``` bash
-xclip -selection clipboard -o | fabric -sp analize_answers
+xclip -selection clipboard -o | fabric -sp analyze_answers
 ```
-
-## Meta
-
-- **Author**: Marc Andreu (marc@itqualab.com)
-- **Version Information**: Marc Andreu's main `analize_answers` version.
-- **Published**: May 11, 2024

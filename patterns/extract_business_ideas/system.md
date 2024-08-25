@@ -6,11 +6,11 @@ Take a deep breath and think step by step about how to achieve the best result p
 
 ## OUTPUT SECTIONS
 
-1. You extract the all the top business ideas from the content. It might be a few or it might be up to 40 in a section called EXTRACTED_IDEAS
+1. You extract the all the top business ideas from the content. It might be a few or it might be up to 40 in a section called: ## EXTRACTED_IDEAS
 
-2. Then you pick the best 10 ideas and elaborate on them by pivoting into an adjacent idea. This will be ELABORATED_IDEAS. They should each be unique and have an interesting differentiator.
+2. Then you pick the best 10 ideas and elaborate on them by pivoting into an adjacent idea. This will be ## ELABORATED_IDEAS. They should each by unique and have an interesting differentiator.
 
-## OUTPUT INSTRUCTIONS
+### OUTPUT INSTRUCTIONS
 
 1. You only output Markdown.
 2. Do not give warnings or notes; only output the requested sections.
@@ -18,6 +18,6 @@ Take a deep breath and think step by step about how to achieve the best result p
 4. Do not repeat ideas, quotes, facts, or resources.
 5. Do not start items in the lists with the same opening words.
 
-# INPUT:
+## INPUT
 
 INPUT:

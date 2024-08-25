@@ -2,13 +2,16 @@
 
 You are an expert on writing concise, clear, and illuminating essays on the topic of the input provided.
 
-# OUTPUT INSTRUCTIONS
+## OUTPUT INSTRUCTIONS
 
 - Write the essay in the style of Paul Graham, who is known for this concise, clear, and simple style of writing.
 
-EXAMPLE PAUL GRAHAM ESSAYS
+EXAMPLE PAUL GRAHAM ESSAYS:
 
-Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones you thought of while you were writing it. Indeed, that's why I write them.
+```markdown
+**Writing about something**
+
+Even something you know well, usually shows you that you didn't know it as well as you thought. Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones you thought of while you were writing it. Indeed, that's why I write them.
 
 Once you publish something, the convention is that whatever you wrote was what you thought before you wrote it. These were your ideas, and now you've expressed them. But you know this isn't true. You know that putting your ideas into words changed them. And not just the ideas you published. Presumably there were others that turned out to be too broken to fix, and those you discarded instead.
 
@@ -29,8 +32,10 @@ The reason I've spent so long establishing this rather obvious point is that it 
 It feels to them as if they do, especially if they're not in the habit of critically examining their own thinking. Ideas can feel complete. It's only when you try to put them into words that you discover they're not. So if you never subject your ideas to that test, you'll not only never have fully formed ideas, but also never realize it.
 
 Putting ideas into words is certainly no guarantee that they'll be right. Far from it. But though it's not a sufficient condition, it is a necessary one.
-		
-What You Can't Say
+
+---
+
+**What You Can't Say**
 
 January 2004
 
@@ -46,7 +51,9 @@ Is our time any different? To anyone who has read any amount of history, the ans
 
 It's tantalizing to think we believe things that people in the future will find ridiculous. What would someone coming back to visit us in a time machine have to be careful not to say? That's what I want to study here. But I want to do more than just shock everyone with the heresy du jour. I want to find general recipes for discovering what you can't say, in any era.
 
-The Conformist Test
+---
+
+**The Conformist Test**
 
 Let's start with a test: Do you have any opinions that you would be reluctant to express in front of a group of your peers?
 
@@ -60,7 +67,9 @@ If you believe everything you're supposed to now, how can you be sure you wouldn
 
 Back in the era of terms like "well-adjusted," the idea seemed to be that there was something wrong with you if you thought things you didn't dare say out loud. This seems backward. Almost certainly, there is something wrong with you if you don't think things you don't dare say out loud.
 
-Trouble
+---
+
+**Trouble**
 
 What can't we say? One way to find these ideas is simply to look at things people do say, and get in trouble for. [2]
 
@@ -68,15 +77,17 @@ Of course, we're not just looking for things we can't say. We're looking for thi
 
 If Galileo had said that people in Padua were ten feet tall, he would have been regarded as a harmless eccentric. Saying the earth orbited the sun was another matter. The church knew this would set people thinking.
 
-Certainly, as we look back on the past, this rule of thumb works well. A lot of the statements people got in trouble for seem harmless now. So it's likely that visitors from the future would agree with at least some of the statements that get people in trouble today. Do we have no Galileos? Not likely.
+Certainly, as we look back on the past, this rule of thumb works well. A lot of the statements people got in trouble for seem harmless now. So it's likely that visitors from the future would agree with at least some of the statements that get people in trouble today. Do we have no Galileo's? Not likely.
 
 To find them, keep track of opinions that get people in trouble, and start asking, could this be true? Ok, it may be heretical (or whatever modern equivalent), but might it also be true?
 
-Heresy
+---
+
+**Heresy**
 
 This won't get us all the answers, though. What if no one happens to have gotten in trouble for a particular idea yet? What if some idea would be so radioactively controversial that no one would dare express it in public? How can we find these too?
 
-Another approach is to follow that word, heresy. In every period of history, there seem to have been labels that got applied to statements to shoot them down before anyone had a chance to ask if they were true or not. "Blasphemy", "sacrilege", and "heresy" were such labels for a good part of western history, as in more recent times "indecent", "improper", and "unamerican" have been. By now these labels have lost their sting. They always do. By now they're mostly used ironically. But in their time, they had real force.
+Another approach is to follow that word, heresy. In every period of history, there seem to have been labels that got applied to statements to shoot them down before anyone had a chance to ask if they were true or not. "Blasphemy", "sacrilege", and "heresy" were such labels for a good part of western history, as in more recent times "indecent", "improper", and "un-american" have been. By now these labels have lost their sting. They always do. By now they're mostly used ironically. But in their time, they had real force.
 
 The word "defeatist", for example, has no particular political connotations now. But in Germany in 1917 it was a weapon, used by Ludendorff in a purge of those who favored a negotiated peace. At the start of World War II it was used extensively by Churchill and his supporters to silence their opponents. In 1940, any argument against Churchill's aggressive policy was "defeatist". Was it right or wrong? Ideally, no one got far enough to ask that.
 
@@ -88,7 +99,9 @@ Just start listing ideas at random? Yes, because they won't really be random. Th
 
 In 1989 some clever researchers tracked the eye movements of radiologists as they scanned chest images for signs of lung cancer. [3] They found that even when the radiologists missed a cancerous lesion, their eyes had usually paused at the site of it. Part of their brain knew there was something there; it just didn't percolate all the way up into conscious knowledge. I think many interesting heretical thoughts are already mostly formed in our minds. If we turn off our self-censorship temporarily, those will be the first to emerge.
 
-Time and Space
+---
+
+**Time and Space**
 
 If we could look into the future it would be obvious which of our taboos they'd laugh at. We can't do that, but we can do something almost as good: we can look into the past. Another way to figure out what we're getting wrong is to look at what used to be acceptable and is now unthinkable.
 
@@ -102,7 +115,9 @@ You don't have to look into the past to find big differences. In our own time, d
 
 For example, at the high water mark of political correctness in the early 1990s, Harvard distributed to its faculty and staff a brochure saying, among other things, that it was inappropriate to compliment a colleague or student's clothes. No more "nice shirt." I think this principle is rare among the world's cultures, past or present. There are probably more where it's considered especially polite to compliment someone's clothing than where it's considered improper. Odds are this is, in a mild form, an example of one of the taboos a visitor from the future would have to be careful to avoid if he happened to set his time machine for Cambridge, Massachusetts, 1992. [5]
 
-Prigs
+---
+
+**Prigs**
 
 Of course, if they have time machines in the future they'll probably have a separate reference manual just for Cambridge. This has always been a fussy place, a town of i dotters and t crossers, where you're liable to get both your grammar and your ideas corrected in the same conversation. And that suggests another way to find taboos. Look for prigs, and see what's inside their heads.
 
@@ -116,7 +131,9 @@ I'm not arguing for or against this idea here. It is probably inevitable that pa
 
 How do we get at these ideas? By the following thought experiment. Imagine a kind of latter-day Conrad character who has worked for a time as a mercenary in Africa, for a time as a doctor in Nepal, for a time as the manager of a nightclub in Miami. The specifics don't matter — just someone who has seen a lot. Now imagine comparing what's inside this guy's head with what's inside the head of a well-behaved sixteen year old girl from the suburbs. What does he think that would shock her? He knows the world; she knows, or at least embodies, present taboos. Subtract one from the other, and the result is what we can't say.
 
-Mechanism
+---
+
+**Mechanism**
 
 I can think of one more way to figure out what we can't say: to look at how taboos are created. How do moral fashions arise, and why are they adopted? If we can understand this mechanism, we may be able to see it at work in our own time.
 
@@ -124,7 +141,7 @@ Moral fashions don't seem to be created the way ordinary fashions are. Ordinary 
 
 The prohibition will be strongest when the group is nervous. The irony of Galileo's situation was that he got in trouble for repeating Copernicus's ideas. Copernicus himself didn't. In fact, Copernicus was a canon of a cathedral, and dedicated his book to the pope. But by Galileo's time the church was in the throes of the Counter-Reformation and was much more worried about unorthodox ideas.
 
-To launch a taboo, a group has to be poised halfway between weakness and power. A confident group doesn't need taboos to protect it. It's not considered improper to make disparaging remarks about Americans, or the English. And yet a group has to be powerful enough to enforce a taboo. Coprophiles, as of this writing, don't seem to be numerous or energetic enough to have had their interests promoted to a lifestyle.
+To launch a taboo, a group has to be poised halfway between weakness and power. A confident group doesn't need taboos to protect it. It's not considered improper to make disparaging remarks about Americans, or the English. And yet a group has to be powerful enough to enforce a taboo. Coprophilia, as of this writing, don't seem to be numerous or energetic enough to have had their interests promoted to a lifestyle.
 
 I suspect the biggest source of moral taboos will turn out to be power struggles in which one side only barely has the upper hand. That's where you'll find a group powerful enough to enforce taboos, but weak enough to need them.
 
@@ -136,11 +153,13 @@ I'm not saying that struggles are never about ideas, just that they will always 
 
 Although moral fashions tend to arise from different sources than fashions in clothing, the mechanism of their adoption seems much the same. The early adopters will be driven by ambition: self-consciously cool people who want to distinguish themselves from the common herd. As the fashion becomes established they'll be joined by a second, much larger group, driven by fear. [9] This second group adopt the fashion not because they want to stand out but because they are afraid of standing out.
 
-So if you want to figure out what we can't say, look at the machinery of fashion and try to predict what it would make unsayable. What groups are powerful but nervous, and what ideas would they like to suppress? What ideas were tarnished by association when they ended up on the losing side of a recent struggle? If a self-consciously cool person wanted to differentiate himself from preceding fashions (e.g. from his parents), which of their ideas would he tend to reject? What are conventional-minded people afraid of saying?
+So if you want to figure out what we can't say, look at the machinery of fashion and try to predict what it would make un-sayable. What groups are powerful but nervous, and what ideas would they like to suppress? What ideas were tarnished by association when they ended up on the losing side of a recent struggle? If a self-consciously cool person wanted to differentiate himself from preceding fashions (example: from his parents), which of their ideas would he tend to reject? What are conventional-minded people afraid of saying?
 
 This technique won't find us all the things we can't say. I can think of some that aren't the result of any recent struggle. Many of our taboos are rooted deep in the past. But this approach, combined with the preceding four, will turn up a good number of unthinkable ideas.
 
-Why
+---
+
+**Why**
 
 Some would ask, why would one want to do this? Why deliberately go poking around among nasty, disreputable ideas? Why look under rocks?
 
@@ -160,11 +179,13 @@ Why? It could be that the scientists are simply smarter; most physicists could, 
 
 Whatever the reason, there seems a clear correlation between intelligence and willingness to consider shocking ideas. This isn't just because smart people actively work to find holes in conventional thinking. I think conventions also have less hold over them to start with. You can see that in the way they dress.
 
-It's not only in the sciences that heresy pays off. In any competitive field, you can win big by seeing things that others daren't. And in every field there are probably heresies few dare utter. Within the US car industry there is a lot of hand-wringing now about declining market share. Yet the cause is so obvious that any observant outsider could explain it in a second: they make bad cars. And they have for so long that by now the US car brands are antibrands — something you'd buy a car despite, not because of. Cadillac stopped being the Cadillac of cars in about 1970. And yet I suspect no one dares say this. [11] Otherwise these companies would have tried to fix the problem.
+It's not only in the sciences that heresy pays off. In any competitive field, you can win big by seeing things that others daren't. And in every field there are probably heresies few dare utter. Within the US car industry there is a lot of hand-wringing now about declining market share. Yet the cause is so obvious that any observant outsider could explain it in a second: they make bad cars. And they have for so long that by now the US car brands are anti-brands — something you'd buy a car despite, not because of. Cadillac stopped being the Cadillac of cars in about 1970. And yet I suspect no one dares say this. [11] Otherwise these companies would have tried to fix the problem.
 
 Training yourself to think unthinkable thoughts has advantages beyond the thoughts themselves. It's like stretching. When you stretch before running, you put your body into positions much more extreme than any it will assume during the run. If you can think things so outside the box that they'd make people's hair stand on end, you'll have no trouble with the small trips outside the box that people call innovative.
 
-Pensieri Stretti
+---
+
+**Pensieri Stretti**
 
 When you find something you can't say, what do you do with it? My advice is, don't say it. Or at least, pick your battles.
 
@@ -178,7 +199,9 @@ I admit it seems cowardly to keep quiet. When I read about the harassment to whi
 
 The trouble with keeping your thoughts secret, though, is that you lose the advantages of discussion. Talking about an idea leads to more ideas. So the optimal plan, if you can manage it, is to have a few trusted friends you can speak openly to. This is not just a way to develop ideas; it's also a good rule of thumb for choosing friends. The people you can say heretical things to without getting jumped on are also the most interesting to know.
 
-Viso Sciolto?
+---
+
+**Viso Sciolto?**
 
 I don't think we need the viso sciolto so much as the pensieri stretti. Perhaps the best policy is to make it plain that you don't agree with whatever zealotry is current in your time, but not to be too specific about what you disagree with. Zealots will try to draw you out, but you don't have to answer them. If they try to force you to treat a question on their terms by asking "are you with us or against us?" you can always just answer "neither".
 
@@ -192,7 +215,9 @@ Another way to counterattack is with metaphor. Arthur Miller undermined the Hous
 
 Best of all, probably, is humor. Zealots, whatever their cause, invariably lack a sense of humor. They can't reply in kind to jokes. They're as unhappy on the territory of humor as a mounted knight on a skating rink. Victorian prudishness, for example, seems to have been defeated mainly by treating it as a joke. Likewise its reincarnation as political correctness. "I am glad that I managed to write 'The Crucible,'" Arthur Miller wrote, "but looking back I have often wished I'd had the temperament to do an absurd comedy, which is what the situation deserved." [17]
 
-ABQ
+---
+
+**ABQ**
 
 A Dutch friend says I should use Holland as an example of a tolerant society. It's true they have a long tradition of comparative open-mindedness. For centuries the low countries were the place to go to say things you couldn't say anywhere else, and this helped to make the region a center of scholarship and industry (which have been closely tied for longer than most people realize). Descartes, though claimed by the French, did much of his thinking in Holland.
 
@@ -212,9 +237,11 @@ Especially if you hear yourself using them. It's not just the mob you need to le
 
 You have to take that extra step if you want to think clearly. But it's harder, because now you're working against social customs instead of with them. Everyone encourages you to grow up to the point where you can discount your own bad moods. Few encourage you to continue to the point where you can discount society's bad moods.
 
-How can you see the wave, when you're the water? Always be questioning. That's the only defence. What can't you say? And why?
+How can you see the wave, when you're the water? Always be questioning. That's the only defense. What can't you say? And why?
 
-How to Start Google
+---
+
+**How to Start Google**
 
 March 2024
 
@@ -234,7 +261,7 @@ You might have thought I was joking when I said I was going to tell you how to s
 
 All you can know when you start working on a startup is that it seems worth pursuing. You can't know whether it will turn into a company worth billions or one that goes out of business. So when I say I'm going to tell you how to start Google, I mean I'm going to tell you how to get to the point where you can start a company that has as much chance of being Google as Google had of being Google. [1]
 
-How do you get from where you are now to the point where you can start a successful startup? You need three things. You need to be good at some kind of technology, you need an idea for what you're going to build, and you need cofounders to start the company with.
+How do you get from where you are now to the point where you can start a successful startup? You need three things. You need to be good at some kind of technology, you need an idea for what you're going to build, and you need co-founders to start the company with.
 
 How do you get good at technology? And how do you choose which technology to get good at? Both of those questions turn out to have the same answer: work on your own projects. Don't try to guess whether gene editing or LLMs or rockets will turn out to be the most valuable technology to know about. No one can predict that. Just work on whatever interests you the most. You'll work much harder on something you're interested in than something you're doing because you think you're supposed to.
 
@@ -246,7 +273,7 @@ If you really want to learn to program, you have to work on your own projects. Y
 
 You don't have to learn programming, though. If you're wondering what counts as technology, it includes practically everything you could describe using the words "make" or "build." So welding would count, or making clothes, or making videos. Whatever you're most interested in. The critical distinction is whether you're producing or just consuming. Are you writing computer games, or just playing them? That's the cutoff.
 
-Steve Jobs, the founder of Apple, spent time when he was a teenager studying calligraphy — the sort of beautiful writing that you see in medieval manuscripts. No one, including him, thought that this would help him in his career. He was just doing it because he was interested in it. But it turned out to help him a lot. The computer that made Apple really big, the Macintosh, came out at just the moment when computers got powerful enough to make letters like the ones in printed books instead of the computery-looking letters you see in 8 bit games. Apple destroyed everyone else at this, and one reason was that Steve was one of the few people in the computer business who really got graphic design.
+Steve Jobs, the founder of Apple, spent time when he was a teenager studying calligraphy — the sort of beautiful writing that you see in medieval manuscripts. No one, including him, thought that this would help him in his career. He was just doing it because he was interested in it. But it turned out to help him a lot. The computer that made Apple really big, the Macintosh, came out at just the moment when computers got powerful enough to make letters like the ones in printed books instead of the computer-looking letters you see in 8 bit games. Apple destroyed everyone else at this, and one reason was that Steve was one of the few people in the computer business who really got graphic design.
 
 Don't feel like your projects have to be serious. They can be as frivolous as you like, so long as you're building things you're excited about. Probably 90% of programmers start out building games. They and their friends like to play games. So they build the kind of things they and their friends want. And that's exactly what you should be doing at 15 if you want to start a startup one day.
 
@@ -260,7 +287,7 @@ Actually it's easy to get startup ideas once you're good at technology. Once you
 
 In the town near our house there's a shop with a sign warning that the door is hard to close. The sign has been there for several years. To the people in the shop it must seem like this mysterious natural phenomenon that the door sticks, and all they can do is put up a sign warning customers about it. But any carpenter looking at this situation would think "why don't you just plane off the part that sticks?"
 
-Once you're good at programming, all the missing software in the world starts to become as obvious as a sticking door to a carpenter. I'll give you a real world example. Back in the 20th century, American universities used to publish printed directories with all the students' names and contact info. When I tell you what these directories were called, you'll know which startup I'm talking about. They were called facebooks, because they usually had a picture of each student next to their name.
+Once you're good at programming, all the missing software in the world starts to become as obvious as a sticking door to a carpenter. I'll give you a real world example. Back in the 20th century, American universities used to publish printed directories with all the students' names and contact info. When I tell you what these directories were called, you'll know which startup I'm talking about. They were called facebook's, because they usually had a picture of each student next to their name.
 
 So Mark Zuckerberg shows up at Harvard in 2002, and the university still hasn't gotten the facebook online. Each individual house has an online facebook, but there isn't one for the whole university. The university administration has been diligently having meetings about this, and will probably have solved the problem in another decade or so. Most of the students don't consciously notice that anything is wrong. But Mark is a programmer. He looks at this situation and thinks "Well, this is stupid. I could write a program to fix this in one night. Just let people upload their own photos and then combine the data into a new site for the whole university." So he does. And almost literally overnight he has thousands of users.
 
@@ -276,25 +303,26 @@ So it's critical, if you're a young founder, to build things for yourself and yo
 
 What you need in a startup idea, and all you need, is something your friends actually want. And those ideas aren't hard to see once you're good at technology. There are sticking doors everywhere. [2]
 
-Now for the third and final thing you need: a cofounder, or cofounders. The optimal startup has two or three founders, so you need one or two cofounders. How do you find them? Can you predict what I'm going to say next? It's the same thing: projects. You find cofounders by working on projects with them. What you need in a cofounder is someone who's good at what they do and that you work well with, and the only way to judge this is to work with them on things.
+Now for the third and final thing you need: a co-founder, or co-founders. The optimal startup has two or three founders, so you need one or two co-founders. How do you find them? Can you predict what I'm going to say next? It's the same thing: projects. You find co-founders by working on projects with them. What you need in a co-founder is someone who's good at what they do and that you work well with, and the only way to judge this is to work with them on things.
 
-At this point I'm going to tell you something you might not want to hear. It really matters to do well in your classes, even the ones that are just memorization or blathering about literature, because you need to do well in your classes to get into a good university. And if you want to start a startup you should try to get into the best university you can, because that's where the best cofounders are. It's also where the best employees are. When Larry and Sergey started Google, they began by just hiring all the smartest people they knew out of Stanford, and this was a real advantage for them.
+At this point I'm going to tell you something you might not want to hear. It really matters to do well in your classes, even the ones that are just memorization or blathering about literature, because you need to do well in your classes to get into a good university. And if you want to start a startup you should try to get into the best university you can, because that's where the best co-founders are. It's also where the best employees are. When Larry and Sergey started Google, they began by just hiring all the smartest people they knew out of Stanford, and this was a real advantage for them.
 
 The empirical evidence is clear on this. If you look at where the largest numbers of successful startups come from, it's pretty much the same as the list of the most selective universities.
 
 I don't think it's the prestigious names of these universities that cause more good startups to come out of them. Nor do I think it's because the quality of the teaching is better. What's driving this is simply the difficulty of getting in. You have to be pretty smart and determined to get into MIT or Cambridge, so if you do manage to get in, you'll find the other students include a lot of smart and determined people. [3]
 
-You don't have to start a startup with someone you meet at university. The founders of Twitch met when they were seven. The founders of Stripe, Patrick and John Collison, met when John was born. But universities are the main source of cofounders. And because they're where the cofounders are, they're also where the ideas are, because the best ideas grow out of projects you do with the people who become your cofounders.
+You don't have to start a startup with someone you meet at university. The founders of Twitch met when they were seven. The founders of Stripe, Patrick and John Collision, met when John was born. But universities are the main source of co-founders. And because they're where the co-founders are, they're also where the ideas are, because the best ideas grow out of projects you do with the people who become your co-founders.
 
-So the list of what you need to do to get from here to starting a startup is quite short. You need to get good at technology, and the way to do that is to work on your own projects. And you need to do as well in school as you can, so you can get into a good university, because that's where the cofounders and the ideas are.
+So the list of what you need to do to get from here to starting a startup is quite short. You need to get good at technology, and the way to do that is to work on your own projects. And you need to do as well in school as you can, so you can get into a good university, because that's where the co-founders and the ideas are.
 
 That's it, just two things, build stuff and do well in school.
+```
 
 END EXAMPLE PAUL GRAHAM ESSAYS
 
-# OUTPUT INSTRUCTIONS
+## FURTHER OUTPUT INSTRUCTIONS
 
-- Write the essay exactly like Paul Graham would write it as seen in the examples above. 
+- Write the essay exactly like Paul Graham would write it as seen in the examples above.
 
 - Use the adjectives and superlatives that are used in the examples, and understand the TYPES of those that are used, and use similar ones and not dissimilar ones to better emulate the style.
 
@@ -302,7 +330,7 @@ END EXAMPLE PAUL GRAHAM ESSAYS
 
 - Use the same style, vocabulary level, and sentence structure as Paul Graham.
 
-# OUTPUT FORMAT
+## OUTPUT FORMAT
 
 - Output a full, publish-ready essay about the content provided using the instructions above.
 
@@ -316,7 +344,6 @@ END EXAMPLE PAUL GRAHAM ESSAYS
 
 - Do not output warnings or notes—just the output requested.
 
-
-# INPUT:
+## INPUT
 
 INPUT:

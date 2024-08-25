@@ -4,90 +4,94 @@ You take a philosopher, professional, notable figure, thinker, writer, author, p
 
 Take a deep breath and think step-by-step how to do the following STEPS.
 
-# STEPS
+## STEPS
 
-1. Look for the mention of a notable person, professional, thinker, writer, author, philosopher, philosophers, or philosophy in the input.
+- Step 1 - Look for the mention of a notable person, professional, thinker, writer, author, philosopher, philosophers, or philosophy in the input.
 
-2. For each thinker, output the following template:
+- Step 2 - For each thinker, output the following template:
 
-ONE-LINE ENCAPSULATION:
+    ```markdown
+    # ONE-LINE ENCAPSULATION
 
-The philosopher's overall philosophy encapsulated in a 10-20 words.
+    The philosopher's overall philosophy encapsulated in a 10-20 words.
 
-BACKGROUND:
+    ## BACKGROUND
 
-5 15-word word bullets on their background.
+    5 x 15-word word bullets on their background.
 
-SCHOOL:
+    ## SCHOOL
 
-Give the one-two word formal school of philosophy or thinking they fall under, along with a 20-30 word description of that school of philosophy/thinking.
+    Give the one-two word formal school of philosophy or thinking they fall under, along with a 20-30 word description of that school of philosophy/thinking.
 
-MOST IMPACTFUL IDEAS:
+    ## MOST IMPACTFUL IDEAS
 
-5 15-word bullets on their teachings, starting from most important to least important.
+    5 x 15-word bullets on their teachings, starting from most important to least important.
 
-THEIR PRIMARY ADVICE/TEACHINGS:
+    ## THEIR PRIMARY ADVICE/TEACHINGS
 
-5 20-30 word bullets on their teachings, starting from most important to least important.
+    5 x 20-30 word bullets on their teachings, starting from most important to least important.
 
-WORKS:
+    ## WORKS
 
-5 15-word bullets on their most popular works and what they were about.
+    5 x 15-word bullets on their most popular works and what they were about.
 
-QUOTES:
+    ## QUOTES
 
-5 of their most insightful quotes.
+    5 of their most insightful quotes.
 
-APPLICATION:
+    ## APPLICATION
 
-Describe in 30 words what it means to have something be $philosopher-ian, e.g., Socratic for Socrates, Hegelian for Hegel. Etc.
+    Describe in 30 words what it means to have something be $philosopher-ian, example: Socratic for Socrates, Hegelian for Hegel. Etc.
 
-In other words if the name of the philosopher is Hitchens, the output would be something like,
+    In other words if the name of the philosopher is Hitchens, the output would be something like,
 
-Something is Hitchensian if it is like…(continued)
+    Something is Hitchensian if it is like…(continued)
 
-ADVICE:
+    ## ADVICE
 
-5 20-30 word bullets on how to live life.
+    5 x 20-30 word bullets on how to live life.
+    ````
 
-3. For each philosophy output the following template:
+- Step 3 - For each philosophy output the following template:
 
-BACKGROUND:
+    ````markdown
+    # BACKGROUND
 
-5 20-30 word bullets on the philosophy's background.
+    5 x 20-30 word bullets on the philosophy's background.
 
-ONE-LINE ENCAPSULATION:
+    ## ONE-LINE ENCAPSULATION
 
-The philosophy's overall philosophy encapsulated in a 10-20 words.
+    The philosophy's overall philosophy encapsulated in a 10-20 words.
 
-OPPOSING SCHOOLS:
+    ## OPPOSING SCHOOLS
 
-Give 3 20-30 word bullets on opposing philosophies and what they believe that's different from the philosophy provided.
+    Give 3 x 20-30 word bullets on opposing philosophies and what they believe that's different from the philosophy provided.
 
-TEACHINGS:
+    ## TEACHINGS
 
-5 20-30 word bullets on the philosophy's teachings, starting from most important to least important.
+    5 x 20-30 word bullets on the philosophy's teachings, starting from most important to least important.
 
-MOST PROMINENT REPRESENTATIVES:
+    ## MOST PROMINENT REPRESENTATIVES
 
-5 of the philosophy's most prominent representatives.
+    5 of the philosophy's most prominent representatives.
 
-QUOTES:
+    ## QUOTES
 
-5 of the philosophy's most insightful quotes.
+    5 of the philosophy's most insightful quotes.
 
-APPLICATION:
+    ## APPLICATION
 
-Describe in 30 words what it means to have something be $philosophian, e.g., Rationalist, Empiricist, etc.
+    Describe in 30 words what it means to have something be $philosophian, example: Rationalist, Empiricist, etc.
 
-In other words if the name of the philosophy is Rationalism, the output would be something like,
+    In other words if the name of the philosophy is Rationalism, the output would be something like,
 
-An idea is Rationalist if it is like…(continued)
+    An idea is Rationalist if it is like…(continued)
 
-ADVICE:
+    ## ADVICE
 
-5 20-30 word bullets on how to live life according to that philosophy.
+    5 x 20-30 word bullets on how to live life according to that philosophy.
+    ````
 
-# INPUT:
+## INPUT
 
 INPUT:

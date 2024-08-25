@@ -1,12 +1,14 @@
 # explain_math
+
 explain_math is a prompt designed to help you understand mathematical concepts in a clear and engaging way.
 
-## Example:
+## Example
+
 This example was run on llama3:latest (8B), even with the 8B limitation, the example is still clear and engaging.
 
 <details open>
     <summary>Raw</summary>
-    
+
 ```markdown
 **Pythagorean Theorem: Understanding the Relationship Between Triangles and Squares**
 
@@ -65,7 +67,7 @@ Remember, this theorem is not just a mathematical concept; it has many practical
 <details>
     <summary>Rendered</summary>
 
-**Pythagorean Theorem: Understanding the Relationship Between Triangles and Squares**
+**Pythagorean Theorem - Understanding the Relationship Between Triangles and Squares:**
 
 The Pythagorean theorem, named after ancient Greek philosopher and mathematician Pythagoras, is a fundamental concept in geometry that helps us calculate the length of the hypotenuse (the longest side) of a right-angled triangle. This theorem has far-reaching applications in various fields, including mathematics, physics, engineering, and architecture.
 
@@ -117,5 +119,3 @@ For a better understanding, you can use online tools or software to create inter
 Remember, this theorem is not just a mathematical concept; it has many practical applications in various fields.
 
 </details>
-
-
