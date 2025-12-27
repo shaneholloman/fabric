@@ -12,13 +12,8 @@
   import { sessionAPI, sessions } from '$lib/store/session-store';
   import { onMount } from 'svelte';
 
-  let sessionInput = $currentSession || '';
+  let sessionInput = '';
   let sessionsList: string[] = [];
-
-  // Sync sessionInput with currentSession store
-  $: if ($currentSession !== sessionInput) {
-    sessionInput = $currentSession || '';
-  }
 
   // Update sessions list when sessions store changes
   $: if ($sessions) {
@@ -69,6 +64,7 @@
   onMount(() => {
     fetchStrategies();
     sessionAPI.loadSessions();
+    sessionInput = $currentSession || '';
   });
 </script>
 
@@ -104,28 +100,26 @@
     </div>
     <div>
       <Label for="session-input" class="text-xs text-white/70 mb-1 block">Session ID</Label>
-      <div class="flex gap-2">
-        <input
-          id="session-input"
-          type="text"
-          bind:value={sessionInput}
-          on:blur={handleSessionInput}
-          on:keydown={(e) => e.key === 'Enter' && handleSessionInput()}
-          placeholder="Enter or select session..."
-          class="flex-1 px-3 py-2 text-sm bg-primary-800/30 border-none rounded-md hover:bg-primary-800/40 transition-colors text-white placeholder-white/50 focus:ring-1 focus:ring-white/20 focus:outline-none"
-        />
-        {#if sessionsList.length > 0}
-          <select
-            on:change={handleSessionSelect}
-            class="px-3 py-2 text-sm bg-primary-800/30 border-none rounded-md hover:bg-primary-800/40 transition-colors text-white focus:ring-1 focus:ring-white/20 focus:outline-none"
-          >
-            <option value="">Select...</option>
-            {#each sessionsList as session}
-              <option value={session}>{session}</option>
-            {/each}
-          </select>
-        {/if}
-      </div>
+      <input
+        id="session-input"
+        type="text"
+        bind:value={sessionInput}
+        on:blur={handleSessionInput}
+        on:keydown={(e) => e.key === 'Enter' && handleSessionInput()}
+        placeholder="Enter session name..."
+        class="w-full px-3 py-2 text-sm bg-primary-800/30 border-none rounded-md hover:bg-primary-800/40 transition-colors text-white placeholder-white/50 focus:ring-1 focus:ring-white/20 focus:outline-none"
+      />
+      {#if sessionsList.length > 0}
+        <select
+          on:change={handleSessionSelect}
+          class="w-full mt-2 px-3 py-2 text-sm bg-primary-800/30 border-none rounded-md hover:bg-primary-800/40 transition-colors text-white focus:ring-1 focus:ring-white/20 focus:outline-none"
+        >
+          <option value="">Load existing session...</option>
+          {#each sessionsList as session}
+            <option value={session}>{session}</option>
+          {/each}
+        </select>
+      {/if}
     </div>
     <div>
       <Label for="pattern-variables" class="text-xs text-white/70 mb-1 block">Pattern Variables (JSON)</Label>
