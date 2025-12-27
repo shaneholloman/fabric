@@ -1,0 +1,7 @@
+### PR [#1907](https://github.com/danielmiessler/Fabric/pull/1907) by [majiayu000](https://github.com/majiayu000): feat(gui): add Session ID support for multi-turn conversations
+
+- Add Session ID support for multi-turn conversations in GUI chat interface, enabling persistent conversations similar to CLI's --session flag
+- Add SessionName field to PromptRequest in chat.go for backend session management
+- Include sessionName parameter in ChatPrompt interface and ChatService requests
+- Add Session ID input with existing sessions dropdown in DropdownGroup component
+- Fix Session ID input layout issues by removing reactive statement that reset input on keystroke and stacking input and dropdown vertically for better display
