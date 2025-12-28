@@ -13,26 +13,33 @@
     const trimmed = sessionInput.trim();
     if (trimmed) {
       setSession(trimmed);
+    } else {
+      // Clear session when input is empty
+      sessionInput = '';
+      setSession(null);
     }
   }
 
-  async function handleSessionSelect(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const value = target.value;
+  let previousSessionInput = '';
 
-    // If the placeholder option (empty value) is selected, do not clear the session.
-    // Instead, keep the current session and restore the input field to it.
-    if (!value) {
-      sessionInput = $currentSession ?? '';
+  async function handleSessionSelect() {
+    // If the placeholder option (empty value) is selected, restore to previous value
+    if (!sessionInput) {
+      sessionInput = previousSessionInput || $currentSession || '';
       return;
     }
 
-    sessionInput = value;
-    setSession(value);
+    // Skip if session hasn't changed
+    if (sessionInput === $currentSession) {
+      return;
+    }
+
+    previousSessionInput = sessionInput;
+    setSession(sessionInput);
 
     // Load the selected session's message history so the chat reflects prior context
     try {
-      const messages = await sessionAPI.loadSessionMessages(value);
+      const messages = await sessionAPI.loadSessionMessages(sessionInput);
       messageStore.set(messages);
     } catch (error) {
       console.error('Failed to load session messages:', error);
@@ -62,7 +69,7 @@
   />
   {#if sessionsList.length > 0}
     <Select
-      value={sessionInput}
+      bind:value={sessionInput}
       on:change={handleSessionSelect}
       class="mt-2 bg-primary-800/30 border-none hover:bg-primary-800/40 transition-colors"
     >
