@@ -1,7 +1,7 @@
-### PR [#1907](https://github.com/danielmiessler/Fabric/pull/1907) by [majiayu000](https://github.com/majiayu000): feat(gui): add Session ID support for multi-turn conversations
+### PR [#1907](https://github.com/danielmiessler/Fabric/pull/1907) by [majiayu000](https://github.com/majiayu000): feat(gui): add Session Name support for multi-turn conversations
 
-- Add Session ID support for multi-turn conversations with session name parameter to GUI chat interface, enabling persistent multi-turn conversations similar to CLI's --session flag
-- Fix Session ID input and improve layout by removing reactive statement that was resetting input on each keystroke and changing layout to stack input and dropdown vertically
-- Extract SessionSelector component and address PR feedback by creating dedicated SessionSelector.svelte component and using Select component instead of native select
-- Fix Select binding and empty input handling with proper two-way binding and handling empty input to clear session when user clears the field
-- Add session message loading when selecting existing session with proper error handling and simplified reactive statements using nullish coalescing
+- Added Session Name support for multi-turn conversations in GUI chat interface, enabling persistent conversations similar to CLI's --session flag
+- Added SessionName field to PromptRequest and sessionName to ChatPrompt interface for proper session handling
+- Extracted SessionSelector component with Select component instead of native dropdown for better user experience
+- Implemented session message loading when selecting existing sessions with proper error handling
+- Fixed Select component binding and empty input handling to prevent redundant API calls and properly clear sessions
