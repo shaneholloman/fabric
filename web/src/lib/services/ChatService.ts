@@ -211,7 +211,7 @@ export class ChatService {
 			model: config.model,
 			patternName: get(selectedPatternName),
 			strategyName: get(selectedStrategy), // Add selected strategy to prompt
-			sessionName: get(currentSession) || undefined, // Session name for multi-turn conversations
+			sessionName: get(currentSession) ?? undefined, // Session name for multi-turn conversations
 			variables: get(patternVariables), // Add pattern variables
 		};
 	}
