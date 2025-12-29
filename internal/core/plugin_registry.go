@@ -23,6 +23,7 @@ import (
 	"github.com/danielmiessler/fabric/internal/plugins/ai/openai"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/openai_compatible"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/perplexity"
+	"github.com/danielmiessler/fabric/internal/plugins/ai/vertexai"
 	"github.com/danielmiessler/fabric/internal/plugins/strategy"
 
 	"github.com/samber/lo"
@@ -101,6 +102,7 @@ func NewPluginRegistry(db *fsdb.Db) (ret *PluginRegistry, err error) {
 		azure.NewClient(),
 		gemini.NewClient(),
 		anthropic.NewClient(),
+		vertexai.NewClient(),
 		lmstudio.NewClient(),
 		exolab.NewClient(),
 		perplexity.NewClient(), // Added Perplexity client
