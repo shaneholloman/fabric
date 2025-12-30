@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.365 (2025-12-30)
+
+### PR [#1908](https://github.com/danielmiessler/Fabric/pull/1908) by [rodaddy](https://github.com/rodaddy): feat(ai): add VertexAI provider for Claude models
+
+- Added support for Google Cloud Vertex AI as a provider to access Claude models using Application Default Credentials (ADC)
+- Enabled routing of Fabric requests through Google Cloud Platform instead of directly to Anthropic for GCP billing
+- Implemented support for Claude models (Sonnet 4.5, Opus 4.5, Haiku 4.5, etc.) via Vertex AI
+- Added Google ADC authentication support eliminating the need for API keys
+- Configured project ID and region settings with 'global' as default for cost optimization
+
 ## v1.4.364 (2025-12-28)
 
 ### PR [#1907](https://github.com/danielmiessler/Fabric/pull/1907) by [majiayu000](https://github.com/majiayu000): feat(gui): add Session Name support for multi-turn conversations
