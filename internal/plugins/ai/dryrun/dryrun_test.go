@@ -39,7 +39,7 @@ func TestSendStream_SendsMessages(t *testing.T) {
 	opts := &domain.ChatOptions{
 		Model: "dry-run-model",
 	}
-	channel := make(chan string)
+	channel := make(chan domain.StreamUpdate)
 	go func() {
 		err := client.SendStream(msgs, opts, channel)
 		if err != nil {
@@ -48,7 +48,7 @@ func TestSendStream_SendsMessages(t *testing.T) {
 	}()
 	var receivedMessages []string
 	for msg := range channel {
-		receivedMessages = append(receivedMessages, msg)
+		receivedMessages = append(receivedMessages, msg.Content)
 	}
 	if len(receivedMessages) == 0 {
 		t.Errorf("Expected to receive messages, but got none")
