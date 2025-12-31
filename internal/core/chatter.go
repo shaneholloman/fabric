@@ -64,7 +64,7 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 	message := ""
 
 	if o.Stream {
-		responseChan := make(chan string)
+		responseChan := make(chan domain.StreamUpdate)
 		errChan := make(chan error, 1)
 		done := make(chan struct{})
 		printedStream := false
@@ -76,11 +76,19 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 			}
 		}()
 
-		for response := range responseChan {
-			message += response
-			if !opts.SuppressThink {
-				fmt.Print(response)
-				printedStream = true
+		for update := range responseChan {
+			switch update.Type {
+			case domain.StreamTypeContent:
+				message += update.Content
+				if !opts.SuppressThink {
+					fmt.Print(update.Content)
+					printedStream = true
+				}
+			case domain.StreamTypeUsage:
+				// Placeholder for metadata handling
+				// Future logic: Store usage in session or context
+			case domain.StreamTypeError:
+				errChan <- errors.New(update.Content)
 			}
 		}
 
