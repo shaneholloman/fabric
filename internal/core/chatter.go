@@ -77,25 +77,30 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 		}()
 
 		for update := range responseChan {
+			if opts.UpdateChan != nil {
+				opts.UpdateChan <- update
+			}
 			switch update.Type {
 			case domain.StreamTypeContent:
 				message += update.Content
-				if !opts.SuppressThink {
+				if !opts.SuppressThink && !opts.Quiet {
 					fmt.Print(update.Content)
 					printedStream = true
 				}
 			case domain.StreamTypeUsage:
-				if opts.ShowMetadata && update.Usage != nil {
+				if opts.ShowMetadata && update.Usage != nil && !opts.Quiet {
 					fmt.Fprintf(os.Stderr, "\n[Metadata] Input: %d | Output: %d | Total: %d\n",
 						update.Usage.InputTokens, update.Usage.OutputTokens, update.Usage.TotalTokens)
 				}
 			case domain.StreamTypeError:
-				fmt.Fprintf(os.Stderr, "Error: %s\n", update.Content)
+				if !opts.Quiet {
+					fmt.Fprintf(os.Stderr, "Error: %s\n", update.Content)
+				}
 				errChan <- errors.New(update.Content)
 			}
 		}
 
-		if printedStream && !opts.SuppressThink && !strings.HasSuffix(message, "\n") {
+		if printedStream && !opts.SuppressThink && !strings.HasSuffix(message, "\n") && !opts.Quiet {
 			fmt.Println()
 		}
 
