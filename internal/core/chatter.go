@@ -85,9 +85,12 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 					printedStream = true
 				}
 			case domain.StreamTypeUsage:
-				// Placeholder for metadata handling
-				// Future logic: Store usage in session or context
+				if opts.ShowMetadata && update.Usage != nil {
+					fmt.Fprintf(os.Stderr, "\n[Metadata] Input: %d | Output: %d | Total: %d\n",
+						update.Usage.InputTokens, update.Usage.OutputTokens, update.Usage.TotalTokens)
+				}
 			case domain.StreamTypeError:
+				fmt.Fprintf(os.Stderr, "Error: %s\n", update.Content)
 				errChan <- errors.New(update.Content)
 			}
 		}
