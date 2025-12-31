@@ -184,7 +184,7 @@ func parseThinking(level domain.ThinkingLevel) (anthropic.ThinkingConfigParamUni
 }
 
 func (an *Client) SendStream(
-	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string,
+	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) (err error) {
 	messages := an.toMessages(msgs)
 	if len(messages) == 0 {
@@ -210,9 +210,33 @@ func (an *Client) SendStream(
 	for stream.Next() {
 		event := stream.Current()
 
-		// directly send any non-empty delta text
+		// Handle Content
 		if event.Delta.Text != "" {
-			channel <- event.Delta.Text
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: event.Delta.Text,
+			}
+		}
+
+		// Handle Usage
+		if event.Message.Usage.InputTokens != 0 || event.Message.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Message.Usage.InputTokens),
+					OutputTokens: int(event.Message.Usage.OutputTokens),
+					TotalTokens:  int(event.Message.Usage.InputTokens + event.Message.Usage.OutputTokens),
+				},
+			}
+		} else if event.Usage.InputTokens != 0 || event.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Usage.InputTokens),
+					OutputTokens: int(event.Usage.OutputTokens),
+					TotalTokens:  int(event.Usage.InputTokens + event.Usage.OutputTokens),
+				},
+			}
 		}
 	}
 

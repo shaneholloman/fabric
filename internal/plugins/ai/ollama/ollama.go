@@ -106,7 +106,7 @@ func (o *Client) ListModels() (ret []string, err error) {
 	return
 }
 
-func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) (err error) {
+func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) (err error) {
 	ctx := context.Background()
 
 	var req ollamaapi.ChatRequest
@@ -115,7 +115,21 @@ func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 	}
 
 	respFunc := func(resp ollamaapi.ChatResponse) (streamErr error) {
-		channel <- resp.Message.Content
+		channel <- domain.StreamUpdate{
+			Type:    domain.StreamTypeContent,
+			Content: resp.Message.Content,
+		}
+
+		if resp.Done {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  resp.PromptEvalCount,
+					OutputTokens: resp.EvalCount,
+					TotalTokens:  resp.PromptEvalCount + resp.EvalCount,
+				},
+			}
+		}
 		return
 	}
 

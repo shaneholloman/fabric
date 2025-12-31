@@ -43,7 +43,7 @@ func (m *testVendor) Configure() error                      { return nil }
 func (m *testVendor) Setup() error                          { return nil }
 func (m *testVendor) SetupFillEnvFileContent(*bytes.Buffer) {}
 func (m *testVendor) ListModels() ([]string, error)         { return m.models, nil }
-func (m *testVendor) SendStream([]*chat.ChatCompletionMessage, *domain.ChatOptions, chan string) error {
+func (m *testVendor) SendStream([]*chat.ChatCompletionMessage, *domain.ChatOptions, chan domain.StreamUpdate) error {
 	return nil
 }
 func (m *testVendor) Send(context.Context, []*chat.ChatCompletionMessage, *domain.ChatOptions) (string, error) {

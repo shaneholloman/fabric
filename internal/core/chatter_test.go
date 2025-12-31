@@ -14,7 +14,7 @@ import (
 // mockVendor implements the ai.Vendor interface for testing
 type mockVendor struct {
 	sendStreamError error
-	streamChunks    []string
+	streamChunks    []domain.StreamUpdate
 	sendFunc        func(context.Context, []*chat.ChatCompletionMessage, *domain.ChatOptions) (string, error)
 }
 
@@ -45,7 +45,7 @@ func (m *mockVendor) ListModels() ([]string, error) {
 	return []string{"test-model"}, nil
 }
 
-func (m *mockVendor) SendStream(messages []*chat.ChatCompletionMessage, opts *domain.ChatOptions, responseChan chan string) error {
+func (m *mockVendor) SendStream(messages []*chat.ChatCompletionMessage, opts *domain.ChatOptions, responseChan chan domain.StreamUpdate) error {
 	// Send chunks if provided (for successful streaming test)
 	if m.streamChunks != nil {
 		for _, chunk := range m.streamChunks {
@@ -169,7 +169,11 @@ func TestChatter_Send_StreamingSuccessfulAggregation(t *testing.T) {
 	db := fsdb.NewDb(tempDir)
 
 	// Create test chunks that should be aggregated
-	testChunks := []string{"Hello", " ", "world", "!", " This", " is", " a", " test."}
+	chunks := []string{"Hello", " ", "world", "!", " This", " is", " a", " test."}
+	testChunks := make([]domain.StreamUpdate, len(chunks))
+	for i, c := range chunks {
+		testChunks[i] = domain.StreamUpdate{Type: domain.StreamTypeContent, Content: c}
+	}
 	expectedMessage := "Hello world! This is a test."
 
 	// Create a mock vendor that will send chunks successfully

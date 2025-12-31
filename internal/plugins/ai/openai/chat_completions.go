@@ -30,7 +30,7 @@ func (o *Client) sendChatCompletions(ctx context.Context, msgs []*chat.ChatCompl
 
 // sendStreamChatCompletions sends a streaming request using the Chat Completions API
 func (o *Client) sendStreamChatCompletions(
-	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string,
+	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) (err error) {
 	defer close(channel)
 
@@ -39,11 +39,28 @@ func (o *Client) sendStreamChatCompletions(
 	for stream.Next() {
 		chunk := stream.Current()
 		if len(chunk.Choices) > 0 && chunk.Choices[0].Delta.Content != "" {
-			channel <- chunk.Choices[0].Delta.Content
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: chunk.Choices[0].Delta.Content,
+			}
+		}
+
+		if chunk.Usage.TotalTokens > 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(chunk.Usage.PromptTokens),
+					OutputTokens: int(chunk.Usage.CompletionTokens),
+					TotalTokens:  int(chunk.Usage.TotalTokens),
+				},
+			}
 		}
 	}
 	if stream.Err() == nil {
-		channel <- "\n"
+		channel <- domain.StreamUpdate{
+			Type:    domain.StreamTypeContent,
+			Content: "\n",
+		}
 	}
 	return stream.Err()
 }
@@ -65,6 +82,9 @@ func (o *Client) buildChatCompletionParams(
 	ret = openai.ChatCompletionNewParams{
 		Model:    shared.ChatModel(opts.Model),
 		Messages: messages,
+		StreamOptions: openai.ChatCompletionStreamOptionsParam{
+			IncludeUsage: openai.Bool(true),
+		},
 	}
 
 	if !opts.Raw {
