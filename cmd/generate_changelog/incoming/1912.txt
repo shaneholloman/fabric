@@ -1,0 +1,7 @@
+### PR [#1912](https://github.com/danielmiessler/Fabric/pull/1912) by [berniegreen](https://github.com/berniegreen): refactor: implement structured streaming and metadata support
+
+- Feat: add domain types for structured streaming (Phase 1)
+- Refactor: update Vendor interface and Chatter for structured streaming (Phase 2)
+- Refactor: implement structured streaming in all AI vendors (Phase 3)
+- Feat: implement CLI support for metadata display (Phase 4)
+- Feat: implement REST API support for metadata streaming (Phase 5)
