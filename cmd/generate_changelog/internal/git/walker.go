@@ -2,6 +2,8 @@ package git
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -433,12 +435,25 @@ func (w *Walker) IsWorkingDirectoryClean() (bool, error) {
 		return false, fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	// In worktrees, we need to check if files are actually modified in the working directory
-	// Ignore files that are only staged (Added) but not present in the worktree filesystem
-	for _, fileStatus := range status {
-		// Check if there are any changes in the working directory (not just staging)
-		// Worktree status codes: ' ' = unmodified, 'M' = modified, 'D' = deleted, '?' = untracked
+	worktreePath := worktree.Filesystem.Root()
+
+	// In worktrees, files staged in the main repo may appear in status but not exist in the worktree
+	// We need to check both the working directory status AND filesystem existence
+	for file, fileStatus := range status {
+		// Check if there are any changes in the working directory
 		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
+			return false, nil
+		}
+
+		// For staged files (Added, Modified in index), verify they exist in this worktree's filesystem
+		// This handles the worktree case where the main repo has staged files that don't exist here
+		if fileStatus.Staging != git.Unmodified && fileStatus.Staging != git.Untracked {
+			filePath := filepath.Join(worktreePath, file)
+			if _, err := os.Stat(filePath); os.IsNotExist(err) {
+				// File is staged but doesn't exist in this worktree - ignore it
+				continue
+			}
+			// File is staged AND exists in this worktree - not clean
 			return false, nil
 		}
 	}
