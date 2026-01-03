@@ -1,5 +1,40 @@
 # Changelog
 
+## v1.4.366 (2025-12-31)
+
+### PR [#1909](https://github.com/danielmiessler/Fabric/pull/1909) by [copyleftdev](https://github.com/copyleftdev): feat: add greybeard_secure_prompt_engineer pattern
+
+- Added greybeard_secure_prompt_engineer pattern
+- Updated changelog with incoming entry
+
+### Direct commits
+
+- Fix: use native git CLI for add/commit in worktrees
+go-git has issues with worktrees where the object database isn't properly
+shared, causing 'invalid object' errors when trying to commit. Switching
+to native git CLI for add and commit operations resolves this.
+This fixes generate_changelog failing in worktrees with errors like:
+- 'cannot create empty commit: clean working tree'
+
+- 'error: invalid object ... Error building trees'
+Co-Authored-By: Warp <agent@warp.dev>
+- Fix: IsWorkingDirectoryClean to work correctly in worktrees
+
+- Check filesystem existence of staged files to handle worktree scenarios
+- Ignore files staged in main repo that don't exist in worktree
+
+- Allow staged files that exist in worktree to be committed normally
+Co-Authored-By: Warp <agent@warp.dev>
+- Fix: improve git worktree status detection to ignore staged-only files
+
+- Add worktree-specific check for actual working directory changes
+- Filter out files that are only staged but not in worktree
+
+- Check worktree status codes instead of using IsClean method
+- Update GetStatusDetails to only include worktree-modified files
+
+- Ignore unmodified and untracked files in clean check
+
 ## v1.4.365 (2025-12-30)
 
 ### PR [#1908](https://github.com/danielmiessler/Fabric/pull/1908) by [rodaddy](https://github.com/rodaddy): feat(ai): add VertexAI provider for Claude models
