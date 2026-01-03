@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.367 (2026-01-03)
+
+### PR [#1912](https://github.com/danielmiessler/Fabric/pull/1912) by [berniegreen](https://github.com/berniegreen): refactor: implement structured streaming and metadata support
+
+- Feat: add domain types for structured streaming (Phase 1)
+- Refactor: update Vendor interface and Chatter for structured streaming (Phase 2)
+- Refactor: implement structured streaming in all AI vendors (Phase 3)
+- Feat: implement CLI support for metadata display (Phase 4)
+- Feat: implement REST API support for metadata streaming (Phase 5)
+
 ## v1.4.366 (2025-12-31)
 
 ### PR [#1909](https://github.com/danielmiessler/Fabric/pull/1909) by [copyleftdev](https://github.com/copyleftdev): feat: add greybeard_secure_prompt_engineer pattern
