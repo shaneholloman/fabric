@@ -12,6 +12,15 @@ definitions:
     - ThinkingLow
     - ThinkingMedium
     - ThinkingHigh
+  domain.UsageMetadata:
+    properties:
+      input_tokens:
+        type: integer
+      output_tokens:
+        type: integer
+      total_tokens:
+        type: integer
+    type: object
   fsdb.Pattern:
     properties:
       description:
@@ -60,6 +69,8 @@ definitions:
         items:
           $ref: '#/definitions/restapi.PromptRequest'
         type: array
+      quiet:
+        type: boolean
       raw:
         type: boolean
       search:
@@ -68,6 +79,8 @@ definitions:
         type: string
       seed:
         type: integer
+      showMetadata:
+        type: boolean
       suppressThink:
         type: boolean
       temperature:
@@ -82,6 +95,8 @@ definitions:
       topP:
         format: float64
         type: number
+      updateChan:
+        type: object
       voice:
         type: string
     type: object
@@ -102,6 +117,9 @@ definitions:
         type: string
       patternName:
         type: string
+      sessionName:
+        description: Session name for multi-turn conversations
+        type: string
       strategyName:
         description: Optional strategy name
         type: string
@@ -118,14 +136,15 @@ definitions:
   restapi.StreamResponse:
     properties:
       content:
-        description: The actual content
         type: string
       format:
         description: '"markdown", "mermaid", "plain"'
         type: string
       type:
-        description: '"content", "error", "complete"'
+        description: '"content", "usage", "error", "complete"'
         type: string
+      usage:
+        $ref: '#/definitions/domain.UsageMetadata'
     type: object
   restapi.YouTubeRequest:
     properties:

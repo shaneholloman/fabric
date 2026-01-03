@@ -87,13 +87,16 @@ func (c *Client) ListModels() ([]string, error) {
 	return models, nil
 }
 
-func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) (err error) {
+func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) (err error) {
 	url := fmt.Sprintf("%s/chat/completions", c.ApiUrl.Value)
 
 	payload := map[string]any{
 		"messages": msgs,
 		"model":    opts.Model,
 		"stream":   true, // Enable streaming
+		"stream_options": map[string]any{
+			"include_usage": true,
+		},
 	}
 
 	var jsonPayload []byte
@@ -144,13 +147,31 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 			line = after
 		}
 
-		if string(line) == "[DONE]" {
+		if string(bytes.TrimSpace(line)) == "[DONE]" {
 			break
 		}
 
 		var result map[string]any
 		if err = json.Unmarshal(line, &result); err != nil {
 			continue
+		}
+
+		// Handle Usage
+		if usage, ok := result["usage"].(map[string]any); ok {
+			var metadata domain.UsageMetadata
+			if val, ok := usage["prompt_tokens"].(float64); ok {
+				metadata.InputTokens = int(val)
+			}
+			if val, ok := usage["completion_tokens"].(float64); ok {
+				metadata.OutputTokens = int(val)
+			}
+			if val, ok := usage["total_tokens"].(float64); ok {
+				metadata.TotalTokens = int(val)
+			}
+			channel <- domain.StreamUpdate{
+				Type:  domain.StreamTypeUsage,
+				Usage: &metadata,
+			}
 		}
 
 		var choices []any
@@ -166,7 +187,10 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 
 		var content string
 		if content, _ = delta["content"].(string); content != "" {
-			channel <- content
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: content,
+			}
 		}
 	}
 

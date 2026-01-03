@@ -107,7 +107,7 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 	return strings.Join(textParts, ""), nil
 }
 
-func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) error {
+func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
 	if c.client == nil {
 		close(channel)
 		return fmt.Errorf("VertexAI client not initialized")
@@ -133,8 +133,34 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 	// Process stream
 	for stream.Next() {
 		event := stream.Current()
+
+		// Handle Content
 		if event.Delta.Text != "" {
-			channel <- event.Delta.Text
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: event.Delta.Text,
+			}
+		}
+
+		// Handle Usage
+		if event.Message.Usage.InputTokens != 0 || event.Message.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Message.Usage.InputTokens),
+					OutputTokens: int(event.Message.Usage.OutputTokens),
+					TotalTokens:  int(event.Message.Usage.InputTokens + event.Message.Usage.OutputTokens),
+				},
+			}
+		} else if event.Usage.InputTokens != 0 || event.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Usage.InputTokens),
+					OutputTokens: int(event.Usage.OutputTokens),
+					TotalTokens:  int(event.Usage.InputTokens + event.Usage.OutputTokens),
+				},
+			}
 		}
 	}
 

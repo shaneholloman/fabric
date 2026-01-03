@@ -289,6 +289,20 @@ const docTemplate = `{
                 "ThinkingHigh"
             ]
         },
+        "domain.UsageMetadata": {
+            "type": "object",
+            "properties": {
+                "input_tokens": {
+                    "type": "integer"
+                },
+                "output_tokens": {
+                    "type": "integer"
+                },
+                "total_tokens": {
+                    "type": "integer"
+                }
+            }
+        },
         "fsdb.Pattern": {
             "type": "object",
             "properties": {
@@ -360,6 +374,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/restapi.PromptRequest"
                     }
                 },
+                "quiet": {
+                    "type": "boolean"
+                },
                 "raw": {
                     "type": "boolean"
                 },
@@ -371,6 +388,9 @@ const docTemplate = `{
                 },
                 "seed": {
                     "type": "integer"
+                },
+                "showMetadata": {
+                    "type": "boolean"
                 },
                 "suppressThink": {
                     "type": "boolean"
@@ -391,6 +411,9 @@ const docTemplate = `{
                 "topP": {
                     "type": "number",
                     "format": "float64"
+                },
+                "updateChan": {
+                    "type": "object"
                 },
                 "voice": {
                     "type": "string"
@@ -423,6 +446,10 @@ const docTemplate = `{
                 "patternName": {
                     "type": "string"
                 },
+                "sessionName": {
+                    "description": "Session name for multi-turn conversations",
+                    "type": "string"
+                },
                 "strategyName": {
                     "description": "Optional strategy name",
                     "type": "string"
@@ -446,7 +473,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "content": {
-                    "description": "The actual content",
                     "type": "string"
                 },
                 "format": {
@@ -454,8 +480,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
-                    "description": "\"content\", \"error\", \"complete\"",
+                    "description": "\"content\", \"usage\", \"error\", \"complete\"",
                     "type": "string"
+                },
+                "usage": {
+                    "$ref": "#/definitions/domain.UsageMetadata"
                 }
             }
         },
