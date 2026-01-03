@@ -433,7 +433,17 @@ func (w *Walker) IsWorkingDirectoryClean() (bool, error) {
 		return false, fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	return status.IsClean(), nil
+	// In worktrees, we need to check if files are actually modified in the working directory
+	// Ignore files that are only staged (Added) but not present in the worktree filesystem
+	for _, fileStatus := range status {
+		// Check if there are any changes in the working directory (not just staging)
+		// Worktree status codes: ' ' = unmodified, 'M' = modified, 'D' = deleted, '?' = untracked
+		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
+			return false, nil
+		}
+	}
+
+	return true, nil
 }
 
 // GetStatusDetails returns a detailed status of the working directory
@@ -448,13 +458,12 @@ func (w *Walker) GetStatusDetails() (string, error) {
 		return "", fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	if status.IsClean() {
-		return "", nil
-	}
-
 	var details strings.Builder
 	for file, fileStatus := range status {
-		details.WriteString(fmt.Sprintf("  %c%c %s\n", fileStatus.Staging, fileStatus.Worktree, file))
+		// Only include files with actual working directory changes
+		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
+			details.WriteString(fmt.Sprintf("  %c%c %s\n", fileStatus.Staging, fileStatus.Worktree, file))
+		}
 	}
 
 	return details.String(), nil
