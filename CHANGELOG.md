@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.373 (2026-01-04)
+
+### PR [#1914](https://github.com/danielmiessler/Fabric/pull/1914) by [majiayu000](https://github.com/majiayu000): feat(code_helper): add stdin support for piping file lists
+
+- Added stdin support for piping file lists to code_helper, enabling commands like `find . -name '*.go' | code_helper "instructions"` and `git ls-files '*.py' | code_helper "Add type hints"`
+- Implemented automatic detection of stdin pipe mode with single argument (instructions) support
+- Enhanced tool to read file paths from stdin line by line while maintaining backward compatibility with existing directory scanning functionality
+
+### PR [#1915](https://github.com/danielmiessler/Fabric/pull/1915) by [majiayu000](https://github.com/majiayu000): feat: parallelize audio chunk transcription for improved performance
+
+- Parallelize audio chunk transcription using goroutines for improved performance
+
 ## v1.4.372 (2026-01-04)
 
 ### PR [#1913](https://github.com/danielmiessler/Fabric/pull/1913) by [majiayu000](https://github.com/majiayu000): fix: REST API /chat endpoint doesn't pass 'search' parameter to ChatOptions
