@@ -284,6 +284,20 @@ func (g *Generator) CreateNewChangelogEntry(version string) error {
 		}
 	}
 
+	// Update metadata before staging changes so they get committed together
+	if g.cache != nil {
+		// Update last_processed_tag to the version we just processed
+		if err := g.cache.SetLastProcessedTag(version); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: Failed to update last_processed_tag: %v\n", err)
+		}
+
+		// Update last_pr_sync to the version date (not current time)
+		// This ensures future runs will fetch PRs merged after this version
+		if err := g.cache.SetLastPRSync(versionDate); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: Failed to update last_pr_sync: %v\n", err)
+		}
+	}
+
 	if err := g.stageChangesForRelease(); err != nil {
 		return fmt.Errorf("critical: failed to stage changes for release: %w", err)
 	}
