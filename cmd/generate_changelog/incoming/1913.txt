@@ -1,0 +1,3 @@
+### PR [#1913](https://github.com/danielmiessler/Fabric/pull/1913) by [majiayu000](https://github.com/majiayu000): fix: REST API /chat endpoint doesn't pass 'search' parameter to ChatOptions
+
+- Fix: REST API /chat endpoint now properly passes Search and SearchLocation parameters to ChatOptions
