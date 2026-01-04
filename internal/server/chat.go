@@ -145,6 +145,8 @@ func (h *ChatHandler) HandleChat(c *gin.Context) {
 					FrequencyPenalty: request.FrequencyPenalty,
 					PresencePenalty:  request.PresencePenalty,
 					Thinking:         request.Thinking,
+					Search:           request.Search,
+					SearchLocation:   request.SearchLocation,
 					UpdateChan:       streamChan,
 					Quiet:            true,
 				}
