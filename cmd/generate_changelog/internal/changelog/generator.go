@@ -470,7 +470,8 @@ func (g *Generator) generateRawVersionContent(version *git.Version) string {
 	}
 
 	// There are occasionally no PRs or direct commits other than version bumps, so we handle that gracefully
-	if len(prCommits) == 0 && len(directCommits) == 0 {
+	// However, don't return early if we have PRs to output from version.PRNumbers
+	if len(prCommits) == 0 && len(directCommits) == 0 && len(version.PRNumbers) == 0 {
 		return ""
 	}
 
