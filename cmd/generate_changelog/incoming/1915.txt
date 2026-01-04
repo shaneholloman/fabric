@@ -1,0 +1,3 @@
+### PR [#1915](https://github.com/danielmiessler/Fabric/pull/1915) by [majiayu000](https://github.com/majiayu000): feat: parallelize audio chunk transcription for improved performance
+
+- Parallelize audio chunk transcription using goroutines for improved performance
