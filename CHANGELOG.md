@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.368 (2026-01-04)
+
+### PR [#1918](https://github.com/danielmiessler/Fabric/pull/1918) by [ksylvan](https://github.com/ksylvan): Maintenance: Fix  ChangeLog Generation during CI/CD
+
+- Refactor CHANGELOG.md entries with improved formatting and conventional commit prefixes
+- Consolidate git worktree fixes into single PR #1917 entry
+- Reorder PR entries chronologically within version sections
+- Add cache metadata update step before staging release changes
+- Update changelog database binary with new entry formatting
+
 ## v1.4.367 (2026-01-03)
 
 ### PR [#1912](https://github.com/danielmiessler/Fabric/pull/1912) by [berniegreen](https://github.com/berniegreen): refactor: implement structured streaming and metadata support
