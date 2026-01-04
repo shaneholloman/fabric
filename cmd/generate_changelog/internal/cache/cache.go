@@ -204,7 +204,7 @@ func (c *Cache) GetVersions() (map[string]*git.Version, error) {
 		if dateStr.Valid {
 			// Try multiple date formats: SQLite format, RFC3339Nano, and RFC3339
 			dateFormats := []string{
-				"2006-01-02 15:04:05-07:00",   // SQLite DATETIME format
+				"2006-01-02 15:04:05-07:00",           // SQLite DATETIME format
 				"2006-01-02 15:04:05.999999999-07:00", // SQLite with fractional seconds
 				time.RFC3339Nano,
 				time.RFC3339,
