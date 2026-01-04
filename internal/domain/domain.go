@@ -51,6 +51,9 @@ type ChatOptions struct {
 	Voice               string
 	Notification        bool
 	NotificationCommand string
+	ShowMetadata        bool
+	Quiet               bool
+	UpdateChan          chan StreamUpdate
 }
 
 // NormalizeMessages remove empty messages and ensure messages order user-assist-user
