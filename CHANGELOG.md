@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.4.369 (2026-01-04)
+
+### PR [#1919](https://github.com/danielmiessler/Fabric/pull/1919) by [ksylvan](https://github.com/ksylvan): Fix the `last_pr_sync` setting during PR incoming processing
+
+- Fix: update `SetLastPRSync` to use version date instead of current time
+- Change last_pr_sync to use versionDate instead of time.Now()
+- Ensure future runs fetch PRs merged after the version date
+- Add clarifying comments explaining the sync timing logic
+
 ## v1.4.368 (2026-01-04)
 
 ### PR [#1918](https://github.com/danielmiessler/Fabric/pull/1918) by [ksylvan](https://github.com/ksylvan): Maintenance: Fix  ChangeLog Generation during CI/CD
