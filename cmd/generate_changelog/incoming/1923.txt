@@ -1,0 +1,7 @@
+### PR [#1923](https://github.com/danielmiessler/Fabric/pull/1923) by [ksylvan](https://github.com/ksylvan): ChangeLog Generation stability
+
+- Fix: improve date parsing and prevent early return when PR numbers exist
+- Add SQLite datetime formats to version date parsing logic
+- Loop through multiple date formats until one succeeds
+- Include SQLite fractional seconds format support
+- Prevent early return when version has PR numbers to output
