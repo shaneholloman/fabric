@@ -154,7 +154,7 @@ func (c *BedrockClient) ListModels() ([]string, error) {
 }
 
 // SendStream sends the messages to the Bedrock ConverseStream API
-func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) (err error) {
+func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) (err error) {
 	// Ensure channel is closed on all exit paths to prevent goroutine leaks
 	defer func() {
 		if r := recover(); r != nil {
@@ -186,18 +186,35 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 		case *types.ConverseStreamOutputMemberContentBlockDelta:
 			text, ok := v.Value.Delta.(*types.ContentBlockDeltaMemberText)
 			if ok {
-				channel <- text.Value
+				channel <- domain.StreamUpdate{
+					Type:    domain.StreamTypeContent,
+					Content: text.Value,
+				}
 			}
 
 		case *types.ConverseStreamOutputMemberMessageStop:
-			channel <- "\n"
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: "\n",
+			}
 			return nil // Let defer handle the close
+
+		case *types.ConverseStreamOutputMemberMetadata:
+			if v.Value.Usage != nil {
+				channel <- domain.StreamUpdate{
+					Type: domain.StreamTypeUsage,
+					Usage: &domain.UsageMetadata{
+						InputTokens:  int(*v.Value.Usage.InputTokens),
+						OutputTokens: int(*v.Value.Usage.OutputTokens),
+						TotalTokens:  int(*v.Value.Usage.TotalTokens),
+					},
+				}
+			}
 
 		// Unused Events
 		case *types.ConverseStreamOutputMemberMessageStart,
 			*types.ConverseStreamOutputMemberContentBlockStart,
-			*types.ConverseStreamOutputMemberContentBlockStop,
-			*types.ConverseStreamOutputMemberMetadata:
+			*types.ConverseStreamOutputMemberContentBlockStop:
 
 		default:
 			return fmt.Errorf("unknown stream event type: %T", v)

@@ -14,7 +14,7 @@ import (
 // mockVendor implements the ai.Vendor interface for testing
 type mockVendor struct {
 	sendStreamError error
-	streamChunks    []string
+	streamChunks    []domain.StreamUpdate
 	sendFunc        func(context.Context, []*chat.ChatCompletionMessage, *domain.ChatOptions) (string, error)
 }
 
@@ -45,7 +45,7 @@ func (m *mockVendor) ListModels() ([]string, error) {
 	return []string{"test-model"}, nil
 }
 
-func (m *mockVendor) SendStream(messages []*chat.ChatCompletionMessage, opts *domain.ChatOptions, responseChan chan string) error {
+func (m *mockVendor) SendStream(messages []*chat.ChatCompletionMessage, opts *domain.ChatOptions, responseChan chan domain.StreamUpdate) error {
 	// Send chunks if provided (for successful streaming test)
 	if m.streamChunks != nil {
 		for _, chunk := range m.streamChunks {
@@ -169,7 +169,11 @@ func TestChatter_Send_StreamingSuccessfulAggregation(t *testing.T) {
 	db := fsdb.NewDb(tempDir)
 
 	// Create test chunks that should be aggregated
-	testChunks := []string{"Hello", " ", "world", "!", " This", " is", " a", " test."}
+	chunks := []string{"Hello", " ", "world", "!", " This", " is", " a", " test."}
+	testChunks := make([]domain.StreamUpdate, len(chunks))
+	for i, c := range chunks {
+		testChunks[i] = domain.StreamUpdate{Type: domain.StreamTypeContent, Content: c}
+	}
 	expectedMessage := "Hello world! This is a test."
 
 	// Create a mock vendor that will send chunks successfully
@@ -226,5 +230,85 @@ func TestChatter_Send_StreamingSuccessfulAggregation(t *testing.T) {
 
 	if assistantMessage.Content != expectedMessage {
 		t.Errorf("Expected aggregated message %q, got %q", expectedMessage, assistantMessage.Content)
+	}
+}
+
+func TestChatter_Send_StreamingMetadataPropagation(t *testing.T) {
+	// Create a temporary database for testing
+	tempDir := t.TempDir()
+	db := fsdb.NewDb(tempDir)
+
+	// Create test chunks: one content, one usage metadata
+	testChunks := []domain.StreamUpdate{
+		{
+			Type:    domain.StreamTypeContent,
+			Content: "Test content",
+		},
+		{
+			Type: domain.StreamTypeUsage,
+			Usage: &domain.UsageMetadata{
+				InputTokens:  10,
+				OutputTokens: 5,
+				TotalTokens:  15,
+			},
+		},
+	}
+
+	// Create a mock vendor
+	mockVendor := &mockVendor{
+		sendStreamError: nil,
+		streamChunks:    testChunks,
+	}
+
+	// Create chatter with streaming enabled
+	chatter := &Chatter{
+		db:     db,
+		Stream: true,
+		vendor: mockVendor,
+		model:  "test-model",
+	}
+
+	// Create a test request
+	request := &domain.ChatRequest{
+		Message: &chat.ChatCompletionMessage{
+			Role:    chat.ChatMessageRoleUser,
+			Content: "test message",
+		},
+	}
+
+	// Create an update channel to capture stream events
+	updateChan := make(chan domain.StreamUpdate, 10)
+
+	// Create test options with UpdateChan
+	opts := &domain.ChatOptions{
+		Model:      "test-model",
+		UpdateChan: updateChan,
+		Quiet:      true, // Suppress stdout/stderr
+	}
+
+	// Call Send
+	_, err := chatter.Send(request, opts)
+	if err != nil {
+		t.Fatalf("Expected no error, but got: %v", err)
+	}
+	close(updateChan)
+
+	// Verify we received the metadata event
+	var usageReceived bool
+	for update := range updateChan {
+		if update.Type == domain.StreamTypeUsage {
+			usageReceived = true
+			if update.Usage == nil {
+				t.Error("Expected usage metadata to be non-nil")
+			} else {
+				if update.Usage.TotalTokens != 15 {
+					t.Errorf("Expected 15 total tokens, got %d", update.Usage.TotalTokens)
+				}
+			}
+		}
+	}
+
+	if !usageReceived {
+		t.Error("Expected to receive a usage metadata update, but didn't")
 	}
 }

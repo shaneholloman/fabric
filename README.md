@@ -705,6 +705,7 @@ Application Options:
       --yt-dlp-args=                Additional arguments to pass to yt-dlp (e.g. '--cookies-from-browser brave')
       --thinking=                   Set reasoning/thinking level (e.g., off, low, medium, high, or
                                     numeric tokens for Anthropic or Google Gemini)
+      --show-metadata               Print metadata (input/output tokens) to stderr
       --debug=                     Set debug level (0: off, 1: basic, 2: detailed, 3: trace)
 Help Options:
   -h, --help                        Show this help message
