@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.370 (2026-01-04)
+
+### PR [#1921](https://github.com/danielmiessler/Fabric/pull/1921) by [ksylvan](https://github.com/ksylvan): chore: remove redundant `--sync-db` step from changelog workflow
+
+- Remove redundant `--sync-db` step from changelog workflow
+- Remove duplicate database sync command from version workflow
+- Simplify changelog generation to single process-prs step
+- Clean up `heal_person` pattern by removing duplicate content sections
+- Remove duplicate IDENTITY, PURPOSE, STEPS, and OUTPUT INSTRUCTIONS from pattern file
+
 ## v1.4.369 (2026-01-04)
 
 ### PR [#1919](https://github.com/danielmiessler/Fabric/pull/1919) by [ksylvan](https://github.com/ksylvan): Fix the `last_pr_sync` setting during PR incoming processing
