@@ -2,6 +2,9 @@ package git
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -433,7 +436,30 @@ func (w *Walker) IsWorkingDirectoryClean() (bool, error) {
 		return false, fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	return status.IsClean(), nil
+	worktreePath := worktree.Filesystem.Root()
+
+	// In worktrees, files staged in the main repo may appear in status but not exist in the worktree
+	// We need to check both the working directory status AND filesystem existence
+	for file, fileStatus := range status {
+		// Check if there are any changes in the working directory
+		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
+			return false, nil
+		}
+
+		// For staged files (Added, Modified in index), verify they exist in this worktree's filesystem
+		// This handles the worktree case where the main repo has staged files that don't exist here
+		if fileStatus.Staging != git.Unmodified && fileStatus.Staging != git.Untracked {
+			filePath := filepath.Join(worktreePath, file)
+			if _, err := os.Stat(filePath); os.IsNotExist(err) {
+				// File is staged but doesn't exist in this worktree - ignore it
+				continue
+			}
+			// File is staged AND exists in this worktree - not clean
+			return false, nil
+		}
+	}
+
+	return true, nil
 }
 
 // GetStatusDetails returns a detailed status of the working directory
@@ -448,70 +474,65 @@ func (w *Walker) GetStatusDetails() (string, error) {
 		return "", fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	if status.IsClean() {
-		return "", nil
-	}
-
 	var details strings.Builder
 	for file, fileStatus := range status {
-		details.WriteString(fmt.Sprintf("  %c%c %s\n", fileStatus.Staging, fileStatus.Worktree, file))
+		// Only include files with actual working directory changes
+		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
+			details.WriteString(fmt.Sprintf("  %c%c %s\n", fileStatus.Staging, fileStatus.Worktree, file))
+		}
 	}
 
 	return details.String(), nil
 }
 
 // AddFile adds a file to the git index
+// Uses native git CLI instead of go-git to properly handle worktree scenarios
 func (w *Walker) AddFile(filename string) error {
 	worktree, err := w.repo.Worktree()
 	if err != nil {
 		return fmt.Errorf("failed to get worktree: %w", err)
 	}
 
-	_, err = worktree.Add(filename)
+	worktreePath := worktree.Filesystem.Root()
+
+	// Use native git add command to avoid go-git worktree issues
+	cmd := exec.Command("git", "add", filename)
+	cmd.Dir = worktreePath
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("failed to add file %s: %w", filename, err)
+		return fmt.Errorf("failed to add file %s: %w (output: %s)", filename, err, string(output))
 	}
 
 	return nil
 }
 
 // CommitChanges creates a commit with the given message
+// Uses native git CLI instead of go-git to properly handle worktree scenarios
 func (w *Walker) CommitChanges(message string) (plumbing.Hash, error) {
 	worktree, err := w.repo.Worktree()
 	if err != nil {
 		return plumbing.ZeroHash, fmt.Errorf("failed to get worktree: %w", err)
 	}
 
-	// Get git config for author information
-	cfg, err := w.repo.Config()
+	worktreePath := worktree.Filesystem.Root()
+
+	// Use native git commit command to avoid go-git worktree issues
+	cmd := exec.Command("git", "commit", "-m", message)
+	cmd.Dir = worktreePath
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return plumbing.ZeroHash, fmt.Errorf("failed to get git config: %w", err)
+		return plumbing.ZeroHash, fmt.Errorf("failed to commit: %w (output: %s)", err, string(output))
 	}
 
-	var authorName, authorEmail string
-	if cfg.User.Name != "" {
-		authorName = cfg.User.Name
-	} else {
-		authorName = "Changelog Bot"
-	}
-	if cfg.User.Email != "" {
-		authorEmail = cfg.User.Email
-	} else {
-		authorEmail = "bot@changelog.local"
-	}
-
-	commit, err := worktree.Commit(message, &git.CommitOptions{
-		Author: &object.Signature{
-			Name:  authorName,
-			Email: authorEmail,
-			When:  time.Now(),
-		},
-	})
+	// Get the commit hash from HEAD
+	ref, err := w.repo.Head()
 	if err != nil {
-		return plumbing.ZeroHash, fmt.Errorf("failed to commit: %w", err)
+		return plumbing.ZeroHash, fmt.Errorf("failed to get HEAD after commit: %w", err)
 	}
 
-	return commit, nil
+	return ref.Hash(), nil
 }
 
 // PushToRemote pushes the current branch to the remote repository

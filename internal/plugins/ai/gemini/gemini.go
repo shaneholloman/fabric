@@ -129,7 +129,7 @@ func (o *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 	return
 }
 
-func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) (err error) {
+func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) (err error) {
 	ctx := context.Background()
 	defer close(channel)
 
@@ -154,13 +154,30 @@ func (o *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 
 	for response, err := range stream {
 		if err != nil {
-			channel <- fmt.Sprintf("Error: %v\n", err)
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeError,
+				Content: fmt.Sprintf("Error: %v", err),
+			}
 			return err
 		}
 
 		text := o.extractTextFromResponse(response)
 		if text != "" {
-			channel <- text
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: text,
+			}
+		}
+
+		if response.UsageMetadata != nil {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(response.UsageMetadata.PromptTokenCount),
+					OutputTokens: int(response.UsageMetadata.CandidatesTokenCount),
+					TotalTokens:  int(response.UsageMetadata.TotalTokenCount),
+				},
+			}
 		}
 	}
 
