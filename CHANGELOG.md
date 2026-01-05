@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.374 (2026-01-05)
+
+### PR [#1924](https://github.com/danielmiessler/Fabric/pull/1924) by [ksylvan](https://github.com/ksylvan): Rename `code_helper` to `code2context` across documentation and CLI
+
+- Rename `code_helper` command to `code2context` throughout codebase
+- Update README.md table of contents and references
+- Update installation instructions with new binary name
+- Update all usage examples in main.go help text
+- Update create_coding_feature pattern documentation
+
 ## v1.4.373 (2026-01-04)
 
 ### PR [#1914](https://github.com/danielmiessler/Fabric/pull/1914) by [majiayu000](https://github.com/majiayu000): feat(code_helper): add stdin support for piping file lists
