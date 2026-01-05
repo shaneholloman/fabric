@@ -185,7 +185,7 @@ Keep in mind that many of these were recorded when Fabric was Python-based, so r
   - [Helper Apps](#helper-apps)
     - [`to_pdf`](#to_pdf)
     - [`to_pdf` Installation](#to_pdf-installation)
-    - [`code_helper`](#code_helper)
+    - [`code2context`](#code2context)
   - [pbpaste](#pbpaste)
   - [Web Interface (Fabric Web App)](#web-interface-fabric-web-app)
   - [Meta](#meta)
@@ -904,9 +904,9 @@ go install github.com/danielmiessler/fabric/cmd/to_pdf@latest
 
 Make sure you have a LaTeX distribution (like TeX Live or MiKTeX) installed on your system, as `to_pdf` requires `pdflatex` to be available in your system's PATH.
 
-### `code_helper`
+### `code2context`
 
-`code_helper` is used in conjunction with the `create_coding_feature` pattern.
+`code2context` is used in conjunction with the `create_coding_feature` pattern.
 It generates a `json` representation of a directory of code that can be fed into an AI model
 with instructions to create a new feature or edit the code in a specified way.
 
@@ -915,7 +915,7 @@ See [the Create Coding Feature Pattern README](./data/patterns/create_coding_fea
 Install it first using:
 
 ```bash
-go install github.com/danielmiessler/fabric/cmd/code_helper@latest
+go install github.com/danielmiessler/fabric/cmd/code2context@latest
 ```
 
 ## pbpaste

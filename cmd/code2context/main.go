@@ -27,7 +27,7 @@ func main() {
 		// Stdin mode: read file list from stdin, instructions from argument
 		if flag.NArg() != 1 {
 			fmt.Fprintf(os.Stderr, "Error: When piping file list via stdin, provide exactly 1 argument: <instructions>\n")
-			fmt.Fprintf(os.Stderr, "Usage: find . -name '*.go' | code_helper \"instructions\"\n")
+			fmt.Fprintf(os.Stderr, "Usage: find . -name '*.go' | code2context \"instructions\"\n")
 			os.Exit(1)
 		}
 
@@ -90,18 +90,18 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Fprintf(os.Stderr, `code_helper - Code project scanner for use with Fabric AI
+	fmt.Fprintf(os.Stderr, `code2context - Code project scanner for use with Fabric AI
 
 Usage:
-  code_helper [options] <directory> <instructions>
-  <file_list> | code_helper [options] <instructions>
+  code2context [options] <directory> <instructions>
+  <file_list> | code2context [options] <instructions>
 
 Examples:
-  code_helper . "Add input validation to all user inputs"
-  code_helper -depth 4 ./my-project "Implement error handling"
-  code_helper -out project.json ./src "Fix security issues"
-  find . -name '*.go' | code_helper "Refactor error handling"
-  git ls-files '*.py' | code_helper "Add type hints"
+  code2context . "Add input validation to all user inputs"
+  code2context -depth 4 ./my-project "Implement error handling"
+  code2context -out project.json ./src "Fix security issues"
+  find . -name '*.go' | code2context "Refactor error handling"
+  git ls-files '*.py' | code2context "Add type hints"
 
 Options:
 `)
