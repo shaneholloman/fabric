@@ -1,0 +1,7 @@
+### PR [#1924](https://github.com/danielmiessler/Fabric/pull/1924) by [ksylvan](https://github.com/ksylvan): Rename `code_helper` to `code2context` across documentation and CLI
+
+- Rename `code_helper` command to `code2context` throughout codebase
+- Update README.md table of contents and references
+- Update installation instructions with new binary name
+- Update all usage examples in main.go help text
+- Update create_coding_feature pattern documentation
