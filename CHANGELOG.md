@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.4.375 (2026-01-08)
+
+### PR [#1925](https://github.com/danielmiessler/Fabric/pull/1925) by [ksylvan](https://github.com/ksylvan): docs: update README to document new AI providers and features
+
+- Docs: update README to document new AI providers and features
+- List supported native and OpenAI-compatible AI provider integrations
+- Document dry run mode for previewing prompt construction
+- Explain Ollama compatibility mode for exposing API endpoints
+- Detail available prompt strategies like chain-of-thought and reflexion
+
+### PR [#1926](https://github.com/danielmiessler/Fabric/pull/1926) by [henricook](https://github.com/henricook) and [ksylvan](https://github.com/ksylvan): feat(vertexai): add dynamic model listing and multi-model support
+
+- Dynamic model listing from Vertex AI Model Garden API
+- Support for both Gemini (genai SDK) and Claude (Anthropic SDK) models
+- Curated Gemini model list with web search support for Gemini models
+- Thinking/extended thinking support for Gemini
+- TopP parameter support for Claude models
+
 ## v1.4.374 (2026-01-05)
 
 ### PR [#1924](https://github.com/danielmiessler/Fabric/pull/1924) by [ksylvan](https://github.com/ksylvan): Rename `code_helper` to `code2context` across documentation and CLI
