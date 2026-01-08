@@ -127,13 +127,10 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 	return c.sendClaude(ctx, msgs, opts)
 }
 
-// getMaxTokens returns the max tokens to use for a request
+// getMaxTokens returns the max output tokens to use for a request
 func getMaxTokens(opts *domain.ChatOptions) int64 {
 	if opts.MaxTokens > 0 {
 		return int64(opts.MaxTokens)
-	}
-	if opts.ModelContextLength > 0 {
-		return int64(opts.ModelContextLength)
 	}
 	return int64(defaultMaxTokens)
 }

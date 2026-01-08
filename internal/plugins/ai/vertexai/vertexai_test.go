@@ -310,24 +310,19 @@ func TestGetMaxTokens(t *testing.T) {
 		expected int64
 	}{
 		{
-			name:     "MaxTokens takes priority",
-			opts:     &domain.ChatOptions{MaxTokens: 8192, ModelContextLength: 4096},
+			name:     "MaxTokens specified",
+			opts:     &domain.ChatOptions{MaxTokens: 8192},
 			expected: 8192,
 		},
 		{
-			name:     "ModelContextLength used when MaxTokens is 0",
-			opts:     &domain.ChatOptions{MaxTokens: 0, ModelContextLength: 16384},
-			expected: 16384,
-		},
-		{
-			name:     "Default used when both are 0",
-			opts:     &domain.ChatOptions{MaxTokens: 0, ModelContextLength: 0},
+			name:     "Default when MaxTokens is 0",
+			opts:     &domain.ChatOptions{MaxTokens: 0},
 			expected: int64(defaultMaxTokens),
 		},
 		{
-			name:     "MaxTokens negative treated as 0",
-			opts:     &domain.ChatOptions{MaxTokens: -1, ModelContextLength: 2048},
-			expected: 2048,
+			name:     "Default when MaxTokens is negative",
+			opts:     &domain.ChatOptions{MaxTokens: -1},
+			expected: int64(defaultMaxTokens),
 		},
 	}
 
@@ -406,9 +401,9 @@ func TestBuildGeminiConfig(t *testing.T) {
 
 	t.Run("basic config with temperature and TopP", func(t *testing.T) {
 		opts := &domain.ChatOptions{
-			Temperature:        0.7,
-			TopP:               0.9,
-			ModelContextLength: 8192,
+			Temperature: 0.7,
+			TopP:        0.9,
+			MaxTokens:   8192,
 		}
 		config := client.buildGeminiConfig(opts)
 

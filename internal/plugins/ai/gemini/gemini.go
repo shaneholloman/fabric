@@ -214,10 +214,14 @@ func parseThinkingConfig(level domain.ThinkingLevel) (*genai.ThinkingConfig, boo
 func (o *Client) buildGenerateContentConfig(opts *domain.ChatOptions) (*genai.GenerateContentConfig, error) {
 	temperature := float32(opts.Temperature)
 	topP := float32(opts.TopP)
+	var maxTokens int32
+	if opts.MaxTokens > 0 {
+		maxTokens = int32(opts.MaxTokens)
+	}
 	cfg := &genai.GenerateContentConfig{
 		Temperature:     &temperature,
 		TopP:            &topP,
-		MaxOutputTokens: int32(opts.ModelContextLength),
+		MaxOutputTokens: maxTokens,
 	}
 
 	if opts.Search {
