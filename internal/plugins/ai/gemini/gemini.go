@@ -448,4 +448,3 @@ func (o *Client) generateWAVFile(pcmData []byte) ([]byte, error) {
 
 	return result, nil
 }
-

@@ -8,14 +8,12 @@ import (
 	"net/http"
 	"sort"
 	"strings"
-	"time"
 
 	debuglog "github.com/danielmiessler/fabric/internal/log"
 )
 
 const (
 	// API limits
-	apiTimeout         = 10 * time.Second
 	maxResponseSize    = 10 * 1024 * 1024 // 10MB
 	errorResponseLimit = 1024             // 1KB for error messages
 
@@ -37,6 +35,47 @@ type publisherModel struct {
 	Name string `json:"name"` // Format: publishers/{publisher}/models/{model}
 }
 
+// fetchModelsPage makes a single API request and returns the parsed response.
+// Extracted to ensure proper cleanup of HTTP response bodies in pagination loops.
+func fetchModelsPage(ctx context.Context, httpClient *http.Client, url, projectID, publisher string) (*publisherModelsResponse, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.Header.Set("Accept", "application/json")
+	// Set quota project header required by Vertex AI API
+	req.Header.Set("x-goog-user-project", projectID)
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		bodyBytes, _ := io.ReadAll(io.LimitReader(resp.Body, errorResponseLimit))
+		debuglog.Debug(debuglog.Basic, "API error for %s: status %d, url: %s, body: %s\n", publisher, resp.StatusCode, url, string(bodyBytes))
+		return nil, fmt.Errorf("API returned status %d: %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	bodyBytes, err := io.ReadAll(io.LimitReader(resp.Body, maxResponseSize+1))
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response: %w", err)
+	}
+
+	if len(bodyBytes) > maxResponseSize {
+		return nil, fmt.Errorf("response too large (>%d bytes)", maxResponseSize)
+	}
+
+	var response publisherModelsResponse
+	if err := json.Unmarshal(bodyBytes, &response); err != nil {
+		return nil, fmt.Errorf("failed to parse response: %w", err)
+	}
+
+	return &response, nil
+}
+
 // listPublisherModels fetches models from a specific publisher via the Model Garden API
 func listPublisherModels(ctx context.Context, httpClient *http.Client, region, projectID, publisher string) ([]string, error) {
 	// Use default region if global or empty (Model Garden API requires a specific region)
@@ -55,39 +94,9 @@ func listPublisherModels(ctx context.Context, httpClient *http.Client, region, p
 			url = fmt.Sprintf("%s?pageToken=%s", baseURL, pageToken)
 		}
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+		response, err := fetchModelsPage(ctx, httpClient, url, projectID, publisher)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create request: %w", err)
-		}
-
-		req.Header.Set("Accept", "application/json")
-		// Set quota project header required by Vertex AI API
-		req.Header.Set("x-goog-user-project", projectID)
-
-		resp, err := httpClient.Do(req)
-		if err != nil {
-			return nil, fmt.Errorf("request failed: %w", err)
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode != http.StatusOK {
-			bodyBytes, _ := io.ReadAll(io.LimitReader(resp.Body, errorResponseLimit))
-			debuglog.Debug(debuglog.Basic, "API error for %s: status %d, url: %s, body: %s\n", publisher, resp.StatusCode, url, string(bodyBytes))
-			return nil, fmt.Errorf("API returned status %d: %s", resp.StatusCode, string(bodyBytes))
-		}
-
-		bodyBytes, err := io.ReadAll(io.LimitReader(resp.Body, maxResponseSize+1))
-		if err != nil {
-			return nil, fmt.Errorf("failed to read response: %w", err)
-		}
-
-		if len(bodyBytes) > maxResponseSize {
-			return nil, fmt.Errorf("response too large (>%d bytes)", maxResponseSize)
-		}
-
-		var response publisherModelsResponse
-		if err := json.Unmarshal(bodyBytes, &response); err != nil {
-			return nil, fmt.Errorf("failed to parse response: %w", err)
+			return nil, err
 		}
 
 		// Extract model names, stripping the publishers/{publisher}/models/ prefix

@@ -1,4 +1,4 @@
-### PR [#1926](https://github.com/danielmiessler/Fabric/pull/1926) by [henricook](https://github.com/henricook): feat(vertexai): add dynamic model listing and multi-model support
+### PR [#1926](https://github.com/danielmiessler/Fabric/pull/1926) by [henricook](https://github.com/henricook) and [ksylvan](https://github.com/ksylvan): feat(vertexai): add dynamic model listing and multi-model support
 
 - Dynamic model listing from Vertex AI Model Garden API
 - Support for both Gemini (genai SDK) and Claude (Anthropic SDK) models
