@@ -188,16 +188,16 @@ func isConversationalModel(modelName string) bool {
 
 	// Exclude patterns for non-conversational models
 	excludePatterns := []string{
-		"imagen",         // Image generation models
+		"imagen", // Image generation models
 		"imagegeneration",
 		"imagetext",
 		"image-segmentation",
-		"embedding",    // Embedding models
+		"embedding", // Embedding models
 		"textembedding",
 		"multimodalembedding",
-		"text-bison",   // Legacy completion models (not chat)
+		"text-bison", // Legacy completion models (not chat)
 		"text-unicorn",
-		"code-bison",   // Legacy code models
+		"code-bison", // Legacy code models
 		"code-gecko",
 		"codechat-bison", // Deprecated chat model
 		"chat-bison",     // Deprecated chat model
