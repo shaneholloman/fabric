@@ -262,16 +262,19 @@ func (c *Client) sendStreamClaude(msgs []*chat.ChatCompletionMessage, opts *doma
 
 // Gemini methods using genai SDK with Vertex AI backend
 
-func (c *Client) sendGemini(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
-	region := c.Region.Value
-	// Preview models often only available in global endpoint
-	if strings.Contains(strings.ToLower(opts.Model), "preview") {
-		region = "global"
+// getGeminiRegion returns the appropriate region for a Gemini model.
+// Preview models are often only available on the global endpoint.
+func (c *Client) getGeminiRegion(model string) string {
+	if strings.Contains(strings.ToLower(model), "preview") {
+		return "global"
 	}
+	return c.Region.Value
+}
 
+func (c *Client) sendGemini(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
 	client, err := genai.NewClient(ctx, &genai.ClientConfig{
 		Project:  c.ProjectID.Value,
-		Location: region,
+		Location: c.getGeminiRegion(opts.Model),
 		Backend:  genai.BackendVertexAI,
 	})
 	if err != nil {
@@ -343,15 +346,9 @@ func (c *Client) sendStreamGemini(msgs []*chat.ChatCompletionMessage, opts *doma
 	defer close(channel)
 	ctx := context.Background()
 
-	region := c.Region.Value
-	// Preview models often only available in global endpoint
-	if strings.Contains(strings.ToLower(opts.Model), "preview") {
-		region = "global"
-	}
-
 	client, err := genai.NewClient(ctx, &genai.ClientConfig{
 		Project:  c.ProjectID.Value,
-		Location: region,
+		Location: c.getGeminiRegion(opts.Model),
 		Backend:  genai.BackendVertexAI,
 	})
 	if err != nil {
