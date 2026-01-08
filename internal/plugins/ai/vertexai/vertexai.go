@@ -9,13 +9,18 @@ import (
 	"github.com/anthropics/anthropic-sdk-go/vertex"
 	"github.com/danielmiessler/fabric/internal/chat"
 	"github.com/danielmiessler/fabric/internal/domain"
+	debuglog "github.com/danielmiessler/fabric/internal/log"
 	"github.com/danielmiessler/fabric/internal/plugins"
+	"github.com/danielmiessler/fabric/internal/plugins/ai/geminicommon"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/genai"
 )
 
 const (
 	cloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform"
 	defaultRegion      = "global"
-	maxTokens          = 4096
+	defaultMaxTokens   = 4096
 )
 
 // NewClient creates a new Vertex AI client for accessing Claude models via Google Cloud
@@ -59,17 +64,78 @@ func (c *Client) configure() error {
 }
 
 func (c *Client) ListModels() ([]string, error) {
-	// Return Claude models available on Vertex AI
-	return []string{
-		string(anthropic.ModelClaudeSonnet4_5),
-		string(anthropic.ModelClaudeOpus4_5),
-		string(anthropic.ModelClaudeHaiku4_5),
-		string(anthropic.ModelClaude3_7SonnetLatest),
-		string(anthropic.ModelClaude3_5HaikuLatest),
-	}, nil
+	ctx := context.Background()
+
+	// Get ADC credentials for API authentication
+	creds, err := google.FindDefaultCredentials(ctx, cloudPlatformScope)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get Google credentials (ensure ADC is configured): %w", err)
+	}
+	httpClient := oauth2.NewClient(ctx, creds.TokenSource)
+
+	// Query all publishers in parallel for better performance
+	type result struct {
+		models    []string
+		err       error
+		publisher string
+	}
+	// +1 for known Gemini models (no API to list them)
+	results := make(chan result, len(publishers)+1)
+
+	// Query Model Garden API for third-party models
+	for _, pub := range publishers {
+		go func(publisher string) {
+			models, err := listPublisherModels(ctx, httpClient, c.Region.Value, c.ProjectID.Value, publisher)
+			results <- result{models: models, err: err, publisher: publisher}
+		}(pub)
+	}
+
+	// Add known Gemini models (Vertex AI doesn't have a list API for Gemini)
+	go func() {
+		results <- result{models: getKnownGeminiModels(), err: nil, publisher: "gemini"}
+	}()
+
+	// Collect results from all sources
+	var allModels []string
+	for range len(publishers) + 1 {
+		r := <-results
+		if r.err != nil {
+			// Log warning but continue - some sources may not be available
+			debuglog.Debug(debuglog.Basic, "Failed to list %s models: %v\n", r.publisher, r.err)
+			continue
+		}
+		allModels = append(allModels, r.models...)
+	}
+
+	if len(allModels) == 0 {
+		return nil, fmt.Errorf("no models found from any publisher")
+	}
+
+	// Filter to only conversational models and sort
+	filtered := filterConversationalModels(allModels)
+	if len(filtered) == 0 {
+		return nil, fmt.Errorf("no conversational models found")
+	}
+
+	return sortModels(filtered), nil
 }
 
 func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
+	if isGeminiModel(opts.Model) {
+		return c.sendGemini(ctx, msgs, opts)
+	}
+	return c.sendClaude(ctx, msgs, opts)
+}
+
+// getMaxTokens returns the max output tokens to use for a request
+func getMaxTokens(opts *domain.ChatOptions) int64 {
+	if opts.MaxTokens > 0 {
+		return int64(opts.MaxTokens)
+	}
+	return int64(defaultMaxTokens)
+}
+
+func (c *Client) sendClaude(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
 	if c.client == nil {
 		return "", fmt.Errorf("VertexAI client not initialized")
 	}
@@ -80,14 +146,22 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 		return "", fmt.Errorf("no valid messages to send")
 	}
 
-	// Create the request
-	response, err := c.client.Messages.New(ctx, anthropic.MessageNewParams{
-		Model:       anthropic.Model(opts.Model),
-		MaxTokens:   int64(maxTokens),
-		Messages:    anthropicMessages,
-		Temperature: anthropic.Opt(opts.Temperature),
-	})
+	// Build request params
+	params := anthropic.MessageNewParams{
+		Model:     anthropic.Model(opts.Model),
+		MaxTokens: getMaxTokens(opts),
+		Messages:  anthropicMessages,
+	}
 
+	// Only set one of Temperature or TopP as some models don't allow both
+	// (following anthropic.go pattern)
+	if opts.TopP != domain.DefaultTopP {
+		params.TopP = anthropic.Opt(opts.TopP)
+	} else {
+		params.Temperature = anthropic.Opt(opts.Temperature)
+	}
+
+	response, err := c.client.Messages.New(ctx, params)
 	if err != nil {
 		return "", err
 	}
@@ -108,6 +182,13 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 }
 
 func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
+	if isGeminiModel(opts.Model) {
+		return c.sendStreamGemini(msgs, opts, channel)
+	}
+	return c.sendStreamClaude(msgs, opts, channel)
+}
+
+func (c *Client) sendStreamClaude(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
 	if c.client == nil {
 		close(channel)
 		return fmt.Errorf("VertexAI client not initialized")
@@ -122,13 +203,22 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 		return fmt.Errorf("no valid messages to send")
 	}
 
+	// Build request params
+	params := anthropic.MessageNewParams{
+		Model:     anthropic.Model(opts.Model),
+		MaxTokens: getMaxTokens(opts),
+		Messages:  anthropicMessages,
+	}
+
+	// Only set one of Temperature or TopP as some models don't allow both
+	if opts.TopP != domain.DefaultTopP {
+		params.TopP = anthropic.Opt(opts.TopP)
+	} else {
+		params.Temperature = anthropic.Opt(opts.Temperature)
+	}
+
 	// Create streaming request
-	stream := c.client.Messages.NewStreaming(ctx, anthropic.MessageNewParams{
-		Model:       anthropic.Model(opts.Model),
-		MaxTokens:   int64(maxTokens),
-		Messages:    anthropicMessages,
-		Temperature: anthropic.Opt(opts.Temperature),
-	})
+	stream := c.client.Messages.NewStreaming(ctx, params)
 
 	// Process stream
 	for stream.Next() {
@@ -166,6 +256,144 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 
 	return stream.Err()
 }
+
+// Gemini methods using genai SDK with Vertex AI backend
+
+// getGeminiRegion returns the appropriate region for a Gemini model.
+// Preview models are often only available on the global endpoint.
+func (c *Client) getGeminiRegion(model string) string {
+	if strings.Contains(strings.ToLower(model), "preview") {
+		return "global"
+	}
+	return c.Region.Value
+}
+
+func (c *Client) sendGemini(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
+	client, err := genai.NewClient(ctx, &genai.ClientConfig{
+		Project:  c.ProjectID.Value,
+		Location: c.getGeminiRegion(opts.Model),
+		Backend:  genai.BackendVertexAI,
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to create Gemini client: %w", err)
+	}
+
+	contents := geminicommon.ConvertMessages(msgs)
+	if len(contents) == 0 {
+		return "", fmt.Errorf("no valid messages to send")
+	}
+
+	config := c.buildGeminiConfig(opts)
+
+	response, err := client.Models.GenerateContent(ctx, opts.Model, contents, config)
+	if err != nil {
+		return "", err
+	}
+
+	return geminicommon.ExtractTextWithCitations(response), nil
+}
+
+// buildGeminiConfig creates the generation config for Gemini models
+// following the gemini.go pattern for feature parity
+func (c *Client) buildGeminiConfig(opts *domain.ChatOptions) *genai.GenerateContentConfig {
+	temperature := float32(opts.Temperature)
+	topP := float32(opts.TopP)
+	config := &genai.GenerateContentConfig{
+		Temperature:     &temperature,
+		TopP:            &topP,
+		MaxOutputTokens: int32(getMaxTokens(opts)),
+	}
+
+	// Add web search support
+	if opts.Search {
+		config.Tools = []*genai.Tool{{GoogleSearch: &genai.GoogleSearch{}}}
+	}
+
+	// Add thinking support
+	if tc := parseGeminiThinking(opts.Thinking); tc != nil {
+		config.ThinkingConfig = tc
+	}
+
+	return config
+}
+
+// parseGeminiThinking converts thinking level to Gemini thinking config
+func parseGeminiThinking(level domain.ThinkingLevel) *genai.ThinkingConfig {
+	lower := strings.ToLower(strings.TrimSpace(string(level)))
+	switch domain.ThinkingLevel(lower) {
+	case "", domain.ThinkingOff:
+		return nil
+	case domain.ThinkingLow, domain.ThinkingMedium, domain.ThinkingHigh:
+		if budget, ok := domain.ThinkingBudgets[domain.ThinkingLevel(lower)]; ok {
+			b := int32(budget)
+			return &genai.ThinkingConfig{IncludeThoughts: true, ThinkingBudget: &b}
+		}
+	default:
+		// Try parsing as integer token count
+		var tokens int
+		if _, err := fmt.Sscanf(lower, "%d", &tokens); err == nil && tokens > 0 {
+			t := int32(tokens)
+			return &genai.ThinkingConfig{IncludeThoughts: true, ThinkingBudget: &t}
+		}
+	}
+	return nil
+}
+
+func (c *Client) sendStreamGemini(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
+	defer close(channel)
+	ctx := context.Background()
+
+	client, err := genai.NewClient(ctx, &genai.ClientConfig{
+		Project:  c.ProjectID.Value,
+		Location: c.getGeminiRegion(opts.Model),
+		Backend:  genai.BackendVertexAI,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create Gemini client: %w", err)
+	}
+
+	contents := geminicommon.ConvertMessages(msgs)
+	if len(contents) == 0 {
+		return fmt.Errorf("no valid messages to send")
+	}
+
+	config := c.buildGeminiConfig(opts)
+
+	stream := client.Models.GenerateContentStream(ctx, opts.Model, contents, config)
+
+	for response, err := range stream {
+		if err != nil {
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeError,
+				Content: fmt.Sprintf("Error: %v", err),
+			}
+			return err
+		}
+
+		text := geminicommon.ExtractText(response)
+		if text != "" {
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: text,
+			}
+		}
+
+		if response.UsageMetadata != nil {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(response.UsageMetadata.PromptTokenCount),
+					OutputTokens: int(response.UsageMetadata.CandidatesTokenCount),
+					TotalTokens:  int(response.UsageMetadata.TotalTokenCount),
+				},
+			}
+		}
+	}
+
+	return nil
+}
+
+// Claude message conversion
 
 func (c *Client) toMessages(msgs []*chat.ChatCompletionMessage) []anthropic.MessageParam {
 	// Convert messages to Anthropic format with proper role handling
