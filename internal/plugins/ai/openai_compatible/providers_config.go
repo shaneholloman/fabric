@@ -206,6 +206,11 @@ var ProviderMap = map[string]ProviderConfig{
 		ModelsURL:           "static:abacus", // Special marker for static model list
 		ImplementsResponses: false,
 	},
+	"Mammouth": {
+		Name:                "Mammouth",
+		BaseURL:             "https://api.mammouth.ai/v1",
+		ImplementsResponses: false,
+	},
 }
 
 // GetProviderByName returns the provider configuration for a given name with O(1) lookup
