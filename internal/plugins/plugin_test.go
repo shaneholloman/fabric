@@ -8,6 +8,43 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewVendorPluginBase(t *testing.T) {
+	// Test with configure function
+	configureCalled := false
+	configureFunc := func() error {
+		configureCalled = true
+		return nil
+	}
+
+	plugin := NewVendorPluginBase("TestVendor", configureFunc)
+
+	assert.Equal(t, "TestVendor", plugin.Name)
+	assert.Equal(t, "TESTVENDOR_", plugin.EnvNamePrefix)
+	assert.NotNil(t, plugin.ConfigureCustom)
+
+	// Test that configure function is properly stored
+	err := plugin.ConfigureCustom()
+	assert.NoError(t, err)
+	assert.True(t, configureCalled)
+}
+
+func TestNewVendorPluginBase_NilConfigure(t *testing.T) {
+	// Test with nil configure function
+	plugin := NewVendorPluginBase("TestVendor", nil)
+
+	assert.Equal(t, "TestVendor", plugin.Name)
+	assert.Equal(t, "TESTVENDOR_", plugin.EnvNamePrefix)
+	assert.Nil(t, plugin.ConfigureCustom)
+}
+
+func TestNewVendorPluginBase_EnvPrefixWithSpaces(t *testing.T) {
+	// Test that spaces are converted to underscores
+	plugin := NewVendorPluginBase("LM Studio", nil)
+
+	assert.Equal(t, "LM Studio", plugin.Name)
+	assert.Equal(t, "LM_STUDIO_", plugin.EnvNamePrefix)
+}
+
 func TestConfigurable_AddSetting(t *testing.T) {
 	conf := &PluginBase{
 		Settings:      Settings{},

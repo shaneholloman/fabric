@@ -28,11 +28,7 @@ func NewClient() (ret *Client) {
 	vendorName := "VertexAI"
 	ret = &Client{}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: ret.configure,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, ret.configure)
 
 	ret.ProjectID = ret.AddSetupQuestion("Project ID", true)
 	ret.Region = ret.AddSetupQuestion("Region", false)

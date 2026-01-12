@@ -52,11 +52,7 @@ func NewClientCompatibleNoSetupQuestions(vendorName string, configureCustom func
 		configureCustom = ret.configure
 	}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: configureCustom,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, configureCustom)
 
 	return
 }

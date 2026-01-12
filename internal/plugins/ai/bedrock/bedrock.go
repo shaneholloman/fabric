@@ -51,13 +51,9 @@ func NewClient() (ret *BedrockClient) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		// Create a minimal client that will fail gracefully during configuration
-		ret.PluginBase = &plugins.PluginBase{
-			Name:          vendorName,
-			EnvNamePrefix: plugins.BuildEnvVariablePrefix(vendorName),
-			ConfigureCustom: func() error {
-				return fmt.Errorf("unable to load AWS Config: %w", err)
-			},
-		}
+		ret.PluginBase = plugins.NewVendorPluginBase(vendorName, func() error {
+			return fmt.Errorf("unable to load AWS Config: %w", err)
+		})
 		ret.bedrockRegion = ret.PluginBase.AddSetupQuestion("AWS Region", true)
 		return
 	}
@@ -67,11 +63,7 @@ func NewClient() (ret *BedrockClient) {
 	runtimeClient := bedrockruntime.NewFromConfig(cfg)
 	controlPlaneClient := bedrock.NewFromConfig(cfg)
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: ret.configure,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, ret.configure)
 
 	ret.runtimeClient = runtimeClient
 	ret.controlPlaneClient = controlPlaneClient

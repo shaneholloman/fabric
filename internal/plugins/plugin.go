@@ -36,6 +36,16 @@ func (o *PluginBase) GetName() string {
 	return o.Name
 }
 
+// NewVendorPluginBase creates a standardized PluginBase for AI vendor plugins.
+// This centralizes the common initialization pattern used by all vendors.
+func NewVendorPluginBase(name string, configure func() error) *PluginBase {
+	return &PluginBase{
+		Name:            name,
+		EnvNamePrefix:   BuildEnvVariablePrefix(name),
+		ConfigureCustom: configure,
+	}
+}
+
 func (o *PluginBase) GetSetupDescription() (ret string) {
 	if ret = o.SetupDescription; ret == "" {
 		ret = o.GetName()

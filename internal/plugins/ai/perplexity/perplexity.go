@@ -31,11 +31,7 @@ type Client struct {
 
 func NewClient() *Client {
 	c := &Client{}
-	c.PluginBase = &plugins.PluginBase{
-		Name:            providerName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(providerName),
-		ConfigureCustom: c.Configure, // Assign the Configure method
-	}
+	c.PluginBase = plugins.NewVendorPluginBase(providerName, c.Configure)
 	c.APIKey = c.AddSetupQuestion("API_KEY", true)
 	return c
 }

@@ -24,11 +24,7 @@ func NewClient() (ret *Client) {
 	vendorName := "Ollama"
 	ret = &Client{}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: ret.configure,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, ret.configure)
 
 	ret.ApiUrl = ret.AddSetupQuestionCustom("API URL", true,
 		"Enter your Ollama URL (as a reminder, it is usually http://localhost:11434')")

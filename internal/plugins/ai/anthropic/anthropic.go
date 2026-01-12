@@ -29,11 +29,7 @@ func NewClient() (ret *Client) {
 	vendorName := "Anthropic"
 	ret = &Client{}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: ret.configure,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, ret.configure)
 
 	ret.ApiBaseURL = ret.AddSetupQuestion("API Base URL", false)
 	ret.ApiBaseURL.Value = defaultBaseUrl
