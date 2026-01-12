@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.4.376 (2026-01-12)
+
+### PR [#1928](https://github.com/danielmiessler/Fabric/pull/1928) by [ksylvan](https://github.com/ksylvan): Eliminate repetitive boilerplate across eight vendor implementations
+
+- Refactor: add NewVendorPluginBase factory function to reduce duplication
+- Update 8 vendor files (anthropic, bedrock, gemini, lmstudio, ollama, openai, perplexity, vertexai) to use the factory function
+- Add 3 test cases for the new factory function
+- Add centralized factory function for AI vendor plugin initialization
+- Chore: exempt json files from VSCode format-on-save
+
+### Direct commits
+
+- Docs: Add GitHub sponsor section to README
+I spend hundreds of hours a year on open source. If you'd like to help support this project, you can sponsor me here.
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
 ## v1.4.375 (2026-01-08)
 
 ### PR [#1925](https://github.com/danielmiessler/Fabric/pull/1925) by [ksylvan](https://github.com/ksylvan): docs: update README to document new AI providers and features
