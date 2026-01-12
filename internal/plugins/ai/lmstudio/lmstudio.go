@@ -27,11 +27,7 @@ func NewClientCompatible(vendorName string, defaultBaseUrl string, configureCust
 	if configureCustom == nil {
 		configureCustom = ret.configure
 	}
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: configureCustom,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, configureCustom)
 	ret.ApiUrl = ret.AddSetupQuestionCustom("API URL", true,
 		fmt.Sprintf("Enter your %v URL (as a reminder, it is usually %v')", vendorName, defaultBaseUrl))
 	return

@@ -247,5 +247,8 @@
 			]
 		},
 		"MD041": false
+	},
+	"[json]": {
+		"editor.formatOnSave": false
 	}
 }

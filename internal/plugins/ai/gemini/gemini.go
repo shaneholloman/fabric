@@ -46,10 +46,7 @@ func NewClient() (ret *Client) {
 	vendorName := "Gemini"
 	ret = &Client{}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:          vendorName,
-		EnvNamePrefix: plugins.BuildEnvVariablePrefix(vendorName),
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, nil)
 
 	ret.ApiKey = ret.PluginBase.AddSetupQuestion("API key", true)
 
