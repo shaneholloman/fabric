@@ -63,6 +63,9 @@ Fabric organizes prompts by real-world task, allowing people to create, collect,
 
 ## Updates
 
+For a deep dive into Fabric and its internals, read the documentation in the [docs folder](https://github.com/danielmiessler/Fabric/tree/main/docs). There is
+also the extremely useful and regularly updated [DeepWiki](https://deepwiki.com/danielmiessler/Fabric) for Fabric.
+
 <details>
 <summary>Click to view recent updates</summary>
 
@@ -196,6 +199,7 @@ Keep in mind that many of these were recorded when Fabric was Python-based, so r
   - [Meta](#meta)
     - [Primary contributors](#primary-contributors)
     - [Contributors](#contributors)
+  - [💜 Support This Project](#-support-this-project)
 
 <br />
 
@@ -1098,6 +1102,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 <img src="https://img.shields.io/badge/Sponsor-❤️-EA4AAA?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="Sponsor">
 
-**I spend hundreds of hours a year on open source. If you'd like to help support this project, you can sponsor me [here](https://github.com/sponsors/danielmiessler). 🙏🏼**
+**I spend hundreds of hours a year on open source. If you'd like to help support this project, you can [sponsor me here](https://github.com/sponsors/danielmiessler). 🙏🏼**
 
 </div>
