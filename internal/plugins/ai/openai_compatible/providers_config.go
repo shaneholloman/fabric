@@ -47,7 +47,7 @@ func (c *Client) ListModels() ([]string, error) {
 		}
 		// TODO: Handle context properly in Fabric by accepting and propagating a context.Context
 		// instead of creating a new one here.
-		return openai.FetchModelsDirectly(context.Background(), c.modelsURL, c.Client.ApiKey.Value, c.GetName())
+		return openai.FetchModelsDirectly(context.Background(), c.modelsURL, c.Client.ApiKey.Value, c.GetName(), nil)
 	}
 
 	// First try the standard OpenAI SDK approach
@@ -165,6 +165,11 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "http://localhost:4000",
 		ImplementsResponses: false,
 	},
+	"MiniMax": {
+		Name:                "MiniMax",
+		BaseURL:             "https://api.minimaxi.com/v1",
+		ImplementsResponses: false,
+	},
 	"Mistral": {
 		Name:                "Mistral",
 		BaseURL:             "https://api.mistral.ai/v1",
@@ -199,6 +204,11 @@ var ProviderMap = map[string]ProviderConfig{
 		Name:                "Abacus",
 		BaseURL:             "https://routellm.abacus.ai/v1/",
 		ModelsURL:           "static:abacus", // Special marker for static model list
+		ImplementsResponses: false,
+	},
+	"Mammouth": {
+		Name:                "Mammouth",
+		BaseURL:             "https://api.mammouth.ai/v1",
 		ImplementsResponses: false,
 	},
 }

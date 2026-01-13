@@ -20,7 +20,7 @@ func TestFetchModelsDirectly_DirectArray(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider")
+	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider", nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(models))
 	assert.Equal(t, "github-model", models[0])
@@ -36,7 +36,7 @@ func TestFetchModelsDirectly_OpenAIFormat(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider")
+	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider", nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(models))
 	assert.Equal(t, "openai-model", models[0])
@@ -52,7 +52,7 @@ func TestFetchModelsDirectly_EmptyArray(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider")
+	models, err := FetchModelsDirectly(context.Background(), srv.URL, "test-key", "TestProvider", nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 0, len(models))
 }

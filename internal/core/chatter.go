@@ -53,13 +53,9 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 		return
 	}
 
-	if opts.Model == "" {
-		opts.Model = o.model
-	} else {
-		// Ensure opts.Model uses the normalized name from o.model if they refer to the same model
-		// This handles cases where user provides "GPT-5" but we've normalized it to "gpt-5"
-		opts.Model = o.model
-	}
+	// Always use the normalized model name from the Chatter
+	// This handles cases where user provides "GPT-5" but we've normalized it to "gpt-5"
+	opts.Model = o.model
 
 	if opts.ModelContextLength == 0 {
 		opts.ModelContextLength = o.modelContextLength
@@ -68,7 +64,7 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 	message := ""
 
 	if o.Stream {
-		responseChan := make(chan string)
+		responseChan := make(chan domain.StreamUpdate)
 		errChan := make(chan error, 1)
 		done := make(chan struct{})
 		printedStream := false
@@ -80,15 +76,31 @@ func (o *Chatter) Send(request *domain.ChatRequest, opts *domain.ChatOptions) (s
 			}
 		}()
 
-		for response := range responseChan {
-			message += response
-			if !opts.SuppressThink {
-				fmt.Print(response)
-				printedStream = true
+		for update := range responseChan {
+			if opts.UpdateChan != nil {
+				opts.UpdateChan <- update
+			}
+			switch update.Type {
+			case domain.StreamTypeContent:
+				message += update.Content
+				if !opts.SuppressThink && !opts.Quiet {
+					fmt.Print(update.Content)
+					printedStream = true
+				}
+			case domain.StreamTypeUsage:
+				if opts.ShowMetadata && update.Usage != nil && !opts.Quiet {
+					fmt.Fprintf(os.Stderr, "\n[Metadata] Input: %d | Output: %d | Total: %d\n",
+						update.Usage.InputTokens, update.Usage.OutputTokens, update.Usage.TotalTokens)
+				}
+			case domain.StreamTypeError:
+				if !opts.Quiet {
+					fmt.Fprintf(os.Stderr, "Error: %s\n", update.Content)
+				}
+				errChan <- errors.New(update.Content)
 			}
 		}
 
-		if printedStream && !opts.SuppressThink && !strings.HasSuffix(message, "\n") {
+		if printedStream && !opts.SuppressThink && !strings.HasSuffix(message, "\n") && !opts.Quiet {
 			fmt.Println()
 		}
 

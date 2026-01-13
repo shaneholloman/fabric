@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/danielmiessler/fabric/internal/domain"
@@ -30,11 +31,7 @@ type Client struct {
 
 func NewClient() *Client {
 	c := &Client{}
-	c.PluginBase = &plugins.PluginBase{
-		Name:            providerName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(providerName),
-		ConfigureCustom: c.Configure, // Assign the Configure method
-	}
+	c.PluginBase = plugins.NewVendorPluginBase(providerName, c.Configure)
 	c.APIKey = c.AddSetupQuestion("API_KEY", true)
 	return c
 }
@@ -107,21 +104,22 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 		return "", fmt.Errorf("perplexity API request failed: %w", err) // Corrected capitalization
 	}
 
-	content := resp.GetLastContent()
+	var content strings.Builder
+	content.WriteString(resp.GetLastContent())
 
 	// Append citations if available
 	citations := resp.GetCitations()
 	if len(citations) > 0 {
-		content += "\n\n# CITATIONS\n\n"
+		content.WriteString("\n\n# CITATIONS\n\n")
 		for i, citation := range citations {
-			content += fmt.Sprintf("- [%d] %s\n", i+1, citation)
+			content.WriteString(fmt.Sprintf("- [%d] %s\n", i+1, citation))
 		}
 	}
 
-	return content, nil
+	return content.String(), nil
 }
 
-func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) error {
+func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
 	if c.client == nil {
 		if err := c.Configure(); err != nil {
 			close(channel) // Ensure channel is closed on error
@@ -194,7 +192,21 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 					content = resp.Choices[0].Message.Content
 				}
 				if content != "" {
-					channel <- content
+					channel <- domain.StreamUpdate{
+						Type:    domain.StreamTypeContent,
+						Content: content,
+					}
+				}
+			}
+
+			if resp.Usage.TotalTokens != 0 {
+				channel <- domain.StreamUpdate{
+					Type: domain.StreamTypeUsage,
+					Usage: &domain.UsageMetadata{
+						InputTokens:  int(resp.Usage.PromptTokens),
+						OutputTokens: int(resp.Usage.CompletionTokens),
+						TotalTokens:  int(resp.Usage.TotalTokens),
+					},
 				}
 			}
 		}
@@ -203,9 +215,14 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 		if lastResponse != nil {
 			citations := lastResponse.GetCitations()
 			if len(citations) > 0 {
-				channel <- "\n\n# CITATIONS\n\n"
+				var citationsText strings.Builder
+				citationsText.WriteString("\n\n# CITATIONS\n\n")
 				for i, citation := range citations {
-					channel <- fmt.Sprintf("- [%d] %s\n", i+1, citation)
+					citationsText.WriteString(fmt.Sprintf("- [%d] %s\n", i+1, citation))
+				}
+				channel <- domain.StreamUpdate{
+					Type:    domain.StreamTypeContent,
+					Content: citationsText.String(),
 				}
 			}
 		}

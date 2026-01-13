@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -103,6 +104,7 @@ type Flags struct {
 	Notification                    bool                 `long:"notification" yaml:"notification" description:"Send desktop notification when command completes"`
 	NotificationCommand             string               `long:"notification-command" yaml:"notificationCommand" description:"Custom command to run for notifications (overrides built-in notifications)"`
 	Thinking                        domain.ThinkingLevel `long:"thinking" yaml:"thinking" description:"Set reasoning/thinking level (e.g., off, low, medium, high, or numeric tokens for Anthropic or Google Gemini)"`
+	ShowMetadata                    bool                 `long:"show-metadata" description:"Print metadata to stderr"`
 	Debug                           int                  `long:"debug" description:"Set debug level (0=off, 1=basic, 2=detailed, 3=trace)" default:"0"`
 }
 
@@ -115,7 +117,7 @@ func Init() (ret *Flags, err error) {
 
 	// Create mapping from flag names (both short and long) to yaml tag names
 	flagToYamlTag := make(map[string]string)
-	t := reflect.TypeOf(Flags{})
+	t := reflect.TypeFor[Flags]()
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		yamlTag := field.Tag.Get("yaml")
@@ -224,14 +226,14 @@ func Init() (ret *Flags, err error) {
 }
 
 func parseDebugLevel(args []string) int {
-	for i := 0; i < len(args); i++ {
+	for i := range args {
 		arg := args[i]
 		if arg == "--debug" && i+1 < len(args) {
 			if lvl, err := strconv.Atoi(args[i+1]); err == nil {
 				return lvl
 			}
-		} else if strings.HasPrefix(arg, "--debug=") {
-			if lvl, err := strconv.Atoi(strings.TrimPrefix(arg, "--debug=")); err == nil {
+		} else if after, ok := strings.CutPrefix(arg, "--debug="); ok {
+			if lvl, err := strconv.Atoi(after); err == nil {
 				return lvl
 			}
 		}
@@ -241,8 +243,8 @@ func parseDebugLevel(args []string) int {
 
 func extractFlag(arg string) string {
 	var flag string
-	if strings.HasPrefix(arg, "--") {
-		flag = strings.TrimPrefix(arg, "--")
+	if after, ok := strings.CutPrefix(arg, "--"); ok {
+		flag = after
 		if i := strings.Index(flag, "="); i > 0 {
 			flag = flag[:i]
 		}
@@ -282,30 +284,30 @@ func assignWithConversion(targetField, sourceField reflect.Value) error {
 				return nil
 			}
 		}
-		return fmt.Errorf("%s", fmt.Sprintf(i18n.T("cannot_convert_string"), str, targetField.Kind()))
+		return fmt.Errorf(i18n.T("cannot_convert_string"), str, targetField.Kind())
 	}
 
-	return fmt.Errorf("%s", fmt.Sprintf(i18n.T("unsupported_conversion"), sourceField.Kind(), targetField.Kind()))
+	return fmt.Errorf(i18n.T("unsupported_conversion"), sourceField.Kind(), targetField.Kind())
 }
 
 func loadYAMLConfig(configPath string) (*Flags, error) {
 	absPath, err := util.GetAbsolutePath(configPath)
 	if err != nil {
-		return nil, fmt.Errorf("%s", fmt.Sprintf(i18n.T("invalid_config_path"), err))
+		return nil, fmt.Errorf(i18n.T("invalid_config_path"), err)
 	}
 
 	data, err := os.ReadFile(absPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, fmt.Errorf("%s", fmt.Sprintf(i18n.T("config_file_not_found"), absPath))
+			return nil, fmt.Errorf(i18n.T("config_file_not_found"), absPath)
 		}
-		return nil, fmt.Errorf("%s", fmt.Sprintf(i18n.T("error_reading_config_file"), err))
+		return nil, fmt.Errorf(i18n.T("error_reading_config_file"), err)
 	}
 
 	// Use the existing Flags struct for YAML unmarshal
 	config := &Flags{}
 	if err := yaml.Unmarshal(data, config); err != nil {
-		return nil, fmt.Errorf("%s", fmt.Sprintf(i18n.T("error_parsing_config_file"), err))
+		return nil, fmt.Errorf(i18n.T("error_parsing_config_file"), err)
 	}
 
 	debuglog.Debug(debuglog.Detailed, "Config: %v\n", config)
@@ -323,7 +325,7 @@ func readStdin() (ret string, err error) {
 				sb.WriteString(line)
 				break
 			}
-			err = fmt.Errorf("%s", fmt.Sprintf(i18n.T("error_reading_piped_message"), readErr))
+			err = fmt.Errorf(i18n.T("error_reading_piped_message"), readErr)
 			return
 		} else {
 			sb.WriteString(line)
@@ -341,20 +343,18 @@ func validateImageFile(imagePath string) error {
 
 	// Check if file already exists
 	if _, err := os.Stat(imagePath); err == nil {
-		return fmt.Errorf("%s", fmt.Sprintf(i18n.T("image_file_already_exists"), imagePath))
+		return fmt.Errorf(i18n.T("image_file_already_exists"), imagePath)
 	}
 
 	// Check file extension
 	ext := strings.ToLower(filepath.Ext(imagePath))
 	validExtensions := []string{".png", ".jpeg", ".jpg", ".webp"}
 
-	for _, validExt := range validExtensions {
-		if ext == validExt {
-			return nil // Valid extension found
-		}
+	if slices.Contains(validExtensions, ext) {
+		return nil // Valid extension found
 	}
 
-	return fmt.Errorf("%s", fmt.Sprintf(i18n.T("invalid_image_file_extension"), ext))
+	return fmt.Errorf(i18n.T("invalid_image_file_extension"), ext)
 }
 
 // validateImageParameters validates image generation parameters
@@ -370,45 +370,27 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 	// Validate size
 	if size != "" {
 		validSizes := []string{"1024x1024", "1536x1024", "1024x1536", "auto"}
-		valid := false
-		for _, validSize := range validSizes {
-			if size == validSize {
-				valid = true
-				break
-			}
-		}
+		valid := slices.Contains(validSizes, size)
 		if !valid {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("invalid_image_size"), size))
+			return fmt.Errorf(i18n.T("invalid_image_size"), size)
 		}
 	}
 
 	// Validate quality
 	if quality != "" {
 		validQualities := []string{"low", "medium", "high", "auto"}
-		valid := false
-		for _, validQuality := range validQualities {
-			if quality == validQuality {
-				valid = true
-				break
-			}
-		}
+		valid := slices.Contains(validQualities, quality)
 		if !valid {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("invalid_image_quality"), quality))
+			return fmt.Errorf(i18n.T("invalid_image_quality"), quality)
 		}
 	}
 
 	// Validate background
 	if background != "" {
 		validBackgrounds := []string{"opaque", "transparent"}
-		valid := false
-		for _, validBackground := range validBackgrounds {
-			if background == validBackground {
-				valid = true
-				break
-			}
-		}
+		valid := slices.Contains(validBackgrounds, background)
 		if !valid {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("invalid_image_background"), background))
+			return fmt.Errorf(i18n.T("invalid_image_background"), background)
 		}
 	}
 
@@ -418,17 +400,17 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 	// Validate compression (only for jpeg/webp)
 	if compression != 0 { // 0 means not set
 		if ext != ".jpg" && ext != ".jpeg" && ext != ".webp" {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("image_compression_jpeg_webp_only"), ext))
+			return fmt.Errorf(i18n.T("image_compression_jpeg_webp_only"), ext)
 		}
 		if compression < 0 || compression > 100 {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("image_compression_range_error"), compression))
+			return fmt.Errorf(i18n.T("image_compression_range_error"), compression)
 		}
 	}
 
 	// Validate background transparency (only for png/webp)
 	if background == "transparent" {
 		if ext != ".png" && ext != ".webp" {
-			return fmt.Errorf("%s", fmt.Sprintf(i18n.T("transparent_background_png_webp_only"), ext))
+			return fmt.Errorf(i18n.T("transparent_background_png_webp_only"), ext)
 		}
 	}
 
@@ -478,6 +460,7 @@ func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
 		Voice:               o.Voice,
 		Notification:        o.Notification || o.NotificationCommand != "",
 		NotificationCommand: o.NotificationCommand,
+		ShowMetadata:        o.ShowMetadata,
 	}
 	return
 }

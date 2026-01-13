@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins"
 )
 
@@ -21,8 +22,8 @@ func NewClient() (ret *Client) {
 
 	ret = &Client{
 		PluginBase: &plugins.PluginBase{
-			Name:             label,
-			SetupDescription: "Jina AI Service - to grab a webpage as clean, LLM-friendly text",
+			Name:             i18n.T("jina_label"),
+			SetupDescription: i18n.T("jina_setup_description") + " " + i18n.T("optional_marker"),
 			EnvNamePrefix:    plugins.BuildEnvVariablePrefix(label),
 		},
 	}

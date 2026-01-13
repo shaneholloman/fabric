@@ -8,6 +8,43 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewVendorPluginBase(t *testing.T) {
+	// Test with configure function
+	configureCalled := false
+	configureFunc := func() error {
+		configureCalled = true
+		return nil
+	}
+
+	plugin := NewVendorPluginBase("TestVendor", configureFunc)
+
+	assert.Equal(t, "TestVendor", plugin.Name)
+	assert.Equal(t, "TESTVENDOR_", plugin.EnvNamePrefix)
+	assert.NotNil(t, plugin.ConfigureCustom)
+
+	// Test that configure function is properly stored
+	err := plugin.ConfigureCustom()
+	assert.NoError(t, err)
+	assert.True(t, configureCalled)
+}
+
+func TestNewVendorPluginBase_NilConfigure(t *testing.T) {
+	// Test with nil configure function
+	plugin := NewVendorPluginBase("TestVendor", nil)
+
+	assert.Equal(t, "TestVendor", plugin.Name)
+	assert.Equal(t, "TESTVENDOR_", plugin.EnvNamePrefix)
+	assert.Nil(t, plugin.ConfigureCustom)
+}
+
+func TestNewVendorPluginBase_EnvPrefixWithSpaces(t *testing.T) {
+	// Test that spaces are converted to underscores
+	plugin := NewVendorPluginBase("LM Studio", nil)
+
+	assert.Equal(t, "LM Studio", plugin.Name)
+	assert.Equal(t, "LM_STUDIO_", plugin.EnvNamePrefix)
+}
+
 func TestConfigurable_AddSetting(t *testing.T) {
 	conf := &PluginBase{
 		Settings:      Settings{},
@@ -114,6 +151,91 @@ func TestSetupQuestion_Ask(t *testing.T) {
 	err := question.Ask("TestConfigurable")
 	assert.NoError(t, err)
 	assert.Equal(t, "user_value", setting.Value)
+}
+
+func TestSetupQuestion_Ask_Reset(t *testing.T) {
+	// Test that resetting a required field doesn't produce an error
+	setting := &Setting{
+		EnvVariable: "TEST_RESET_SETTING",
+		Value:       "existing_value",
+		Required:    true,
+	}
+	question := &SetupQuestion{
+		Setting:  setting,
+		Question: "Enter test setting:",
+	}
+	input := "reset\n"
+	fmtInput := captureInput(input)
+	defer fmtInput()
+	err := question.Ask("TestConfigurable")
+	// Should NOT return an error even though the field is required
+	assert.NoError(t, err)
+	// Value should be cleared
+	assert.Equal(t, "", setting.Value)
+}
+
+func TestSetupQuestion_OnAnswerWithReset(t *testing.T) {
+	tests := []struct {
+		name        string
+		setting     *Setting
+		answer      string
+		isReset     bool
+		expectError bool
+		expectValue string
+	}{
+		{
+			name: "reset required field should not error",
+			setting: &Setting{
+				EnvVariable: "TEST_SETTING",
+				Value:       "old_value",
+				Required:    true,
+			},
+			answer:      "",
+			isReset:     true,
+			expectError: false,
+			expectValue: "",
+		},
+		{
+			name: "empty answer on required field should error",
+			setting: &Setting{
+				EnvVariable: "TEST_SETTING",
+				Value:       "",
+				Required:    true,
+			},
+			answer:      "",
+			isReset:     false,
+			expectError: true,
+			expectValue: "",
+		},
+		{
+			name: "valid answer on required field should not error",
+			setting: &Setting{
+				EnvVariable: "TEST_SETTING",
+				Value:       "",
+				Required:    true,
+			},
+			answer:      "new_value",
+			isReset:     false,
+			expectError: false,
+			expectValue: "new_value",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			question := &SetupQuestion{
+				Setting:  tt.setting,
+				Question: "Test question",
+			}
+			err := question.OnAnswerWithReset(tt.answer, tt.isReset)
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.expectValue, tt.setting.Value)
+		})
+	}
 }
 
 func TestSettings_IsConfigured(t *testing.T) {

@@ -7,7 +7,9 @@
 		"Anki",
 		"anthropics",
 		"Aoede",
+		"apikey",
 		"aplicar",
+		"Astley",
 		"atotto",
 		"Autonoe",
 		"azureml",
@@ -63,6 +65,7 @@
 		"gjson",
 		"GOARCH",
 		"GODEBUG",
+		"godoc",
 		"godotenv",
 		"GOEXPERIMENT",
 		"gofmt",
@@ -114,6 +117,7 @@
 		"listvendors",
 		"lmstudio",
 		"Makefiles",
+		"Mammouth",
 		"markmap",
 		"matplotlib",
 		"mattn",
@@ -166,12 +170,14 @@
 		"sess",
 		"sgaunet",
 		"shellquote",
+		"skeletonlabs",
 		"SSEHTTP",
 		"storer",
 		"Streamlit",
 		"stretchr",
 		"subchunk",
 		"Sulafat",
+		"swaggo",
 		"synctest",
 		"talkpanel",
 		"Telos",
@@ -187,6 +193,7 @@
 		"updatepatterns",
 		"useb",
 		"USERPROFILE",
+		"varnames",
 		"videoid",
 		"webp",
 		"WEBVTT",
@@ -241,5 +248,8 @@
 			]
 		},
 		"MD041": false
+	},
+	"[json]": {
+		"editor.formatOnSave": false
 	}
 }

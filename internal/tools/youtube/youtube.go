@@ -65,8 +65,8 @@ func NewYouTube() (ret *YouTube) {
 	ret = &YouTube{}
 
 	ret.PluginBase = &plugins.PluginBase{
-		Name:             label,
-		SetupDescription: label + " - to grab video transcripts (via yt-dlp) and comments/metadata (via YouTube API)",
+		Name:             i18n.T("youtube_label"),
+		SetupDescription: i18n.T("youtube_setup_description") + " " + i18n.T("optional_marker"),
 		EnvNamePrefix:    plugins.BuildEnvVariablePrefix(label),
 	}
 

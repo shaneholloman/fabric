@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins"
 )
 
@@ -14,14 +15,14 @@ func NewCustomPatterns() (ret *CustomPatterns) {
 	ret = &CustomPatterns{}
 
 	ret.PluginBase = &plugins.PluginBase{
-		Name:             label,
-		SetupDescription: "Custom Patterns - Set directory for your custom patterns (optional)",
+		Name:             i18n.T("custom_patterns_label"),
+		SetupDescription: i18n.T("custom_patterns_setup_description") + " " + i18n.T("optional_marker"),
 		EnvNamePrefix:    plugins.BuildEnvVariablePrefix(label),
 		ConfigureCustom:  ret.configure,
 	}
 
-	ret.CustomPatternsDir = ret.AddSetupQuestionCustom("Directory", false,
-		"Enter the path to your custom patterns directory (leave empty to skip)")
+	ret.CustomPatternsDir = ret.AddSetupQuestionWithEnvName("Directory", false,
+		i18n.T("custom_patterns_directory_question"))
 
 	return
 }

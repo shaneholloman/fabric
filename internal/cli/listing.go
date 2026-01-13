@@ -30,6 +30,28 @@ func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *cor
 	}
 
 	if currentFlags.ListPatterns {
+		// Check if patterns exist before listing
+		var names []string
+		if names, err = fabricDb.Patterns.GetNames(); err != nil {
+			return true, err
+		}
+
+		if len(names) == 0 && !currentFlags.ShellCompleteOutput {
+			// No patterns found - provide helpful guidance
+			fmt.Println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+			fmt.Println(i18n.T("patterns_not_found_header"))
+			fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+			fmt.Printf("\n%s\n", i18n.T("patterns_required_to_work"))
+			fmt.Println()
+			fmt.Println(i18n.T("patterns_option_run_setup"))
+			fmt.Printf("  %s\n", i18n.T("patterns_option_run_setup_command"))
+			fmt.Println()
+			fmt.Println(i18n.T("patterns_option_run_update"))
+			fmt.Printf("  %s\n", i18n.T("patterns_option_run_update_command"))
+			fmt.Println()
+			return true, nil
+		}
+
 		err = fabricDb.Patterns.ListNames(currentFlags.ShellCompleteOutput)
 		return true, err
 	}

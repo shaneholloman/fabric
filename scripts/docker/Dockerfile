@@ -18,7 +18,7 @@ FROM alpine:latest
 
 LABEL org.opencontainers.image.description="A Docker image for running the Fabric CLI. See https://github.com/danielmiessler/Fabric/tree/main/scripts/docker for details."
 
-RUN apk add --no-cache ca-certificates \
+RUN apk add --no-cache ca-certificates yt-dlp \
     && mkdir -p /root/.config/fabric
 
 COPY --from=builder /fabric /usr/local/bin/fabric

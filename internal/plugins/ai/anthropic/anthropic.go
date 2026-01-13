@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -28,11 +29,7 @@ func NewClient() (ret *Client) {
 	vendorName := "Anthropic"
 	ret = &Client{}
 
-	ret.PluginBase = &plugins.PluginBase{
-		Name:            vendorName,
-		EnvNamePrefix:   plugins.BuildEnvVariablePrefix(vendorName),
-		ConfigureCustom: ret.configure,
-	}
+	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, ret.configure)
 
 	ret.ApiBaseURL = ret.AddSetupQuestion("API Base URL", false)
 	ret.ApiBaseURL.Value = defaultBaseUrl
@@ -52,6 +49,8 @@ func NewClient() (ret *Client) {
 		string(anthropic.ModelClaudeSonnet4_5_20250929),
 		string(anthropic.ModelClaudeOpus4_5_20251101),
 		string(anthropic.ModelClaudeOpus4_5),
+		string(anthropic.ModelClaudeHaiku4_5),
+		string(anthropic.ModelClaudeHaiku4_5_20251001),
 	}
 
 	ret.modelBetas = map[string][]string{
@@ -181,7 +180,7 @@ func parseThinking(level domain.ThinkingLevel) (anthropic.ThinkingConfigParamUni
 }
 
 func (an *Client) SendStream(
-	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string,
+	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) (err error) {
 	messages := an.toMessages(msgs)
 	if len(messages) == 0 {
@@ -207,14 +206,38 @@ func (an *Client) SendStream(
 	for stream.Next() {
 		event := stream.Current()
 
-		// directly send any non-empty delta text
+		// Handle Content
 		if event.Delta.Text != "" {
-			channel <- event.Delta.Text
+			channel <- domain.StreamUpdate{
+				Type:    domain.StreamTypeContent,
+				Content: event.Delta.Text,
+			}
+		}
+
+		// Handle Usage
+		if event.Message.Usage.InputTokens != 0 || event.Message.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Message.Usage.InputTokens),
+					OutputTokens: int(event.Message.Usage.OutputTokens),
+					TotalTokens:  int(event.Message.Usage.InputTokens + event.Message.Usage.OutputTokens),
+				},
+			}
+		} else if event.Usage.InputTokens != 0 || event.Usage.OutputTokens != 0 {
+			channel <- domain.StreamUpdate{
+				Type: domain.StreamTypeUsage,
+				Usage: &domain.UsageMetadata{
+					InputTokens:  int(event.Usage.InputTokens),
+					OutputTokens: int(event.Usage.OutputTokens),
+					TotalTokens:  int(event.Usage.InputTokens + event.Usage.OutputTokens),
+				},
+			}
 		}
 	}
 
 	if stream.Err() != nil {
-		fmt.Printf("Messages stream error: %v\n", stream.Err())
+		fmt.Fprintf(os.Stderr, "Messages stream error: %v\n", stream.Err())
 	}
 	close(channel)
 	return

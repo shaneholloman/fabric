@@ -1,20 +1,19 @@
-import { browser } from '$app/environment';
-import { GlobalWorkerOptions } from 'pdfjs-dist';
+import { browser } from "$app/environment";
 
-// Set up the worker source location - point to static file in public directory
-const workerSrc = '/pdf.worker.min.mjs';
-
-// Configure the worker options only on the client side
-if (browser) {
-  GlobalWorkerOptions.workerSrc = workerSrc;
-}
-
-// Export the configuration
+// Export the configuration - accepts pdfjs module to avoid top-level import
+// This is necessary because pdfjs-dist v5+ uses browser APIs at import time
 export default {
-  initialize: () => {
-    if (browser) {
-      console.log('PDF.js worker initialized at', workerSrc);
-    }
-  }
-};
+	initialize: async () => {
+		if (browser) {
+			// Dynamic import to avoid SSR issues
+			const pdfjs = await import("pdfjs-dist");
+			const { GlobalWorkerOptions, version } = pdfjs;
 
+			// Use CDN-hosted worker to avoid bundling third-party minified code in the repo
+			const workerSrc = `https://unpkg.com/pdfjs-dist@${version}/build/pdf.worker.min.mjs`;
+			GlobalWorkerOptions.workerSrc = workerSrc;
+
+			console.log(`PDF.js worker v${version} initialized from CDN`);
+		}
+	},
+};

@@ -73,14 +73,33 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           goVersion = getGoVersion system;
-        in
-        {
-          default = self.packages.${system}.fabric;
-          fabric = pkgs.callPackage ./nix/pkgs/fabric {
+          fabricSlim = pkgs.callPackage ./nix/pkgs/fabric {
             go = goVersion;
             inherit self;
             inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
           };
+          fabric = pkgs.symlinkJoin {
+            name = "fabric-${fabricSlim.version}";
+            inherit (fabricSlim) version;
+            paths = [
+              fabricSlim
+              pkgs.yt-dlp
+            ];
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/fabric \
+                --prefix PATH : $out/bin
+            '';
+            meta = fabricSlim.meta // {
+              description = "${fabricSlim.meta.description} (includes yt-dlp)";
+              mainProgram = "fabric";
+            };
+          };
+        in
+        {
+          default = fabric;
+          inherit fabric;
+          "fabric-slim" = fabricSlim;
           inherit (gomod2nix.legacyPackages.${system}) gomod2nix;
         }
       );

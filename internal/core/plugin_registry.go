@@ -24,6 +24,7 @@ import (
 	"github.com/danielmiessler/fabric/internal/plugins/ai/openai"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/openai_compatible"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/perplexity"
+	"github.com/danielmiessler/fabric/internal/plugins/ai/vertexai"
 	"github.com/danielmiessler/fabric/internal/plugins/strategy"
 
 	"github.com/samber/lo"
@@ -102,6 +103,7 @@ func NewPluginRegistry(db *fsdb.Db) (ret *PluginRegistry, err error) {
 		azure.NewClient(),
 		gemini.NewClient(),
 		anthropic.NewClient(),
+		vertexai.NewClient(),
 		lmstudio.NewClient(),
 		exolab.NewClient(),
 		perplexity.NewClient(),
@@ -178,29 +180,178 @@ func (o *PluginRegistry) SaveEnvFile() (err error) {
 }
 
 func (o *PluginRegistry) Setup() (err error) {
-	setupQuestion := plugins.NewSetupQuestion("Enter the number of the plugin to setup")
-	groupsPlugins := util.NewGroupsItemsSelector("Available plugins (please configure all required plugins):",
+	// Check if this is a first-time setup
+	isFirstRun := o.isFirstTimeSetup()
+
+	if isFirstRun {
+		err = o.runFirstTimeSetup()
+	} else {
+		err = o.runInteractiveSetup()
+	}
+
+	if err != nil {
+		return
+	}
+
+	// Validate setup after completion
+	o.validateSetup()
+
+	return
+}
+
+// isFirstTimeSetup checks if this is a first-time setup
+func (o *PluginRegistry) isFirstTimeSetup() bool {
+	// Check if patterns and strategies are not configured
+	patternsConfigured := o.PatternsLoader.IsConfigured()
+	strategiesConfigured := o.Strategies.IsConfigured()
+	hasVendor := len(o.VendorManager.Vendors) > 0
+
+	return !patternsConfigured || !strategiesConfigured || !hasVendor
+}
+
+// runFirstTimeSetup handles first-time setup with automatic pattern/strategy download
+func (o *PluginRegistry) runFirstTimeSetup() (err error) {
+	fmt.Println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Println(i18n.T("setup_welcome_header"))
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+	// Step 1: Download patterns (required, automatic)
+	if !o.PatternsLoader.IsConfigured() {
+		fmt.Printf("\n%s\n", i18n.T("setup_step_downloading_patterns"))
+		if err = o.PatternsLoader.Setup(); err != nil {
+			return fmt.Errorf(i18n.T("setup_failed_download_patterns"), err)
+		}
+		if err = o.SaveEnvFile(); err != nil {
+			return
+		}
+	}
+
+	// Step 2: Download strategies (required, automatic)
+	if !o.Strategies.IsConfigured() {
+		fmt.Printf("\n%s\n", i18n.T("setup_step_downloading_strategies"))
+		if err = o.Strategies.Setup(); err != nil {
+			return fmt.Errorf(i18n.T("setup_failed_download_strategies"), err)
+		}
+		if err = o.SaveEnvFile(); err != nil {
+			return
+		}
+	}
+
+	// Step 3: Configure AI vendor (interactive)
+	if len(o.VendorManager.Vendors) == 0 {
+		fmt.Printf("\n%s\n", i18n.T("setup_step_configure_ai_provider"))
+		fmt.Printf("   %s\n", i18n.T("setup_ai_provider_required"))
+		fmt.Printf("   %s\n", i18n.T("setup_add_more_providers_later"))
+		fmt.Println()
+
+		if err = o.runVendorSetup(); err != nil {
+			return
+		}
+	}
+
+	// Step 4: Set default vendor and model
+	if !o.Defaults.IsConfigured() {
+		fmt.Printf("\n%s\n", i18n.T("setup_step_setting_defaults"))
+		if err = o.Defaults.Setup(); err != nil {
+			return fmt.Errorf(i18n.T("setup_failed_set_defaults"), err)
+		}
+		if err = o.SaveEnvFile(); err != nil {
+			return
+		}
+	}
+
+	fmt.Println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Println(i18n.T("setup_complete_header"))
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Printf("\n%s\n", i18n.T("setup_next_steps"))
+	fmt.Printf("  %s\n", i18n.T("setup_list_patterns"))
+	fmt.Printf("  %s\n", i18n.T("setup_try_pattern"))
+	fmt.Printf("  %s\n", i18n.T("setup_configure_more"))
+	fmt.Println()
+
+	return
+}
+
+// runVendorSetup helps user select and configure their first AI vendor
+func (o *PluginRegistry) runVendorSetup() (err error) {
+	setupQuestion := plugins.NewSetupQuestion("Enter the number of the AI provider to configure")
+	groupsPlugins := util.NewGroupsItemsSelector(i18n.T("setup_available_ai_providers"),
 		func(plugin plugins.Plugin) string {
-			var configuredLabel string
-			if plugin.IsConfigured() {
-				configuredLabel = " (configured)"
-			} else {
-				configuredLabel = ""
-			}
-			return fmt.Sprintf("%v%v", plugin.GetSetupDescription(), configuredLabel)
+			return plugin.GetSetupDescription()
 		})
 
-	groupsPlugins.AddGroupItems("AI Vendors [at least one, required]", lo.Map(o.VendorsAll.Vendors,
+	groupsPlugins.AddGroupItems("", lo.Map(o.VendorsAll.Vendors,
 		func(vendor ai.Vendor, _ int) plugins.Plugin {
 			return vendor
 		})...)
 
-	groupsPlugins.AddGroupItems("Tools", o.CustomPatterns, o.Defaults, o.Jina, o.Language, o.PatternsLoader, o.Strategies, o.YouTube)
+	groupsPlugins.Print(false)
+
+	if answerErr := setupQuestion.Ask(i18n.T("setup_enter_ai_provider_number")); answerErr != nil {
+		return answerErr
+	}
+
+	if setupQuestion.Value == "" {
+		return fmt.Errorf("%s", i18n.T("setup_no_ai_provider_selected"))
+	}
+
+	number, parseErr := strconv.Atoi(setupQuestion.Value)
+	if parseErr != nil {
+		return fmt.Errorf(i18n.T("setup_invalid_selection"), setupQuestion.Value)
+	}
+
+	var plugin plugins.Plugin
+	if _, plugin, err = groupsPlugins.GetGroupAndItemByItemNumber(number); err != nil {
+		return
+	}
+
+	if pluginSetupErr := plugin.Setup(); pluginSetupErr != nil {
+		return pluginSetupErr
+	}
+
+	if err = o.SaveEnvFile(); err != nil {
+		return
+	}
+
+	if o.VendorManager.FindByName(plugin.GetName()) == nil {
+		if vendor, ok := plugin.(ai.Vendor); ok {
+			o.VendorManager.AddVendors(vendor)
+		}
+	}
+
+	return
+}
+
+// runInteractiveSetup runs the standard interactive setup menu
+func (o *PluginRegistry) runInteractiveSetup() (err error) {
+	setupQuestion := plugins.NewSetupQuestion(i18n.T("setup_plugin_prompt"))
+	groupsPlugins := util.NewGroupsItemsSelector(i18n.T("setup_available_plugins"),
+		func(plugin plugins.Plugin) string {
+			var configuredLabel string
+			if plugin.IsConfigured() {
+				configuredLabel = i18n.T("plugin_configured")
+			} else {
+				configuredLabel = i18n.T("plugin_not_configured")
+			}
+			return fmt.Sprintf("%v%v", plugin.GetSetupDescription(), configuredLabel)
+		})
+
+	// Add vendors first under REQUIRED section
+	groupsPlugins.AddGroupItems(i18n.T("setup_required_configuration_header"), lo.Map(o.VendorsAll.Vendors,
+		func(vendor ai.Vendor, _ int) plugins.Plugin {
+			return vendor
+		})...)
+
+	// Add required tools
+	groupsPlugins.AddGroupItems(i18n.T("setup_required_tools"), o.Defaults, o.PatternsLoader, o.Strategies)
+
+	// Add optional tools
+	groupsPlugins.AddGroupItems(i18n.T("setup_optional_configuration_header"), o.CustomPatterns, o.Jina, o.Language, o.YouTube)
 
 	for {
 		groupsPlugins.Print(false)
 
-		if answerErr := setupQuestion.Ask("Plugin Number"); answerErr != nil {
+		if answerErr := setupQuestion.Ask(i18n.T("setup_plugin_number")); answerErr != nil {
 			break
 		}
 
@@ -237,6 +388,58 @@ func (o *PluginRegistry) Setup() (err error) {
 	err = o.SaveEnvFile()
 
 	return
+}
+
+// validateSetup checks if required components are configured and warns user
+func (o *PluginRegistry) validateSetup() {
+	fmt.Println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Println(i18n.T("setup_validation_header"))
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+	missingRequired := false
+
+	// Check AI vendor
+	if len(o.VendorManager.Vendors) > 0 {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_ai_provider_configured"))
+	} else {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_ai_provider_missing"))
+		missingRequired = true
+	}
+
+	// Check default model
+	if o.Defaults.IsConfigured() {
+		fmt.Printf("  %s\n", fmt.Sprintf(i18n.T("setup_validation_defaults_configured"), o.Defaults.Vendor.Value, o.Defaults.Model.Value))
+	} else {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_defaults_missing"))
+		missingRequired = true
+	}
+
+	// Check patterns
+	if o.PatternsLoader.IsConfigured() {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_patterns_configured"))
+	} else {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_patterns_missing"))
+		missingRequired = true
+	}
+
+	// Check strategies
+	if o.Strategies.IsConfigured() {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_strategies_configured"))
+	} else {
+		fmt.Printf("  %s\n", i18n.T("setup_validation_strategies_missing"))
+		missingRequired = true
+	}
+
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+	if missingRequired {
+		fmt.Printf("\n%s\n", i18n.T("setup_validation_incomplete_warning"))
+		fmt.Printf("   %s\n", i18n.T("setup_validation_incomplete_help"))
+		fmt.Println()
+	} else {
+		fmt.Printf("\n%s\n", i18n.T("setup_validation_complete"))
+		fmt.Println()
+	}
 }
 
 func (o *PluginRegistry) SetupVendor(vendorName string) (err error) {

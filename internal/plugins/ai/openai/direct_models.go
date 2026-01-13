@@ -30,7 +30,8 @@ const maxResponseSize = 10 * 1024 * 1024 // 10MB
 // standard OpenAI SDK method fails due to a nonstandard format. This is useful
 // for providers that return a direct array of models (e.g., GitHub Models) or
 // other OpenAI-compatible implementations.
-func FetchModelsDirectly(ctx context.Context, baseURL, apiKey, providerName string) ([]string, error) {
+// If httpClient is nil, a new client with default settings will be created.
+func FetchModelsDirectly(ctx context.Context, baseURL, apiKey, providerName string, httpClient *http.Client) ([]string, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -52,10 +53,12 @@ func FetchModelsDirectly(ctx context.Context, baseURL, apiKey, providerName stri
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
 	req.Header.Set("Accept", "application/json")
 
-	// TODO: Consider reusing a single http.Client instance (e.g., as a field on Client) instead of allocating a new one for
-	// each request.
-	client := &http.Client{
-		Timeout: 10 * time.Second,
+	// Reuse provided HTTP client, or create a new one if not provided
+	client := httpClient
+	if client == nil {
+		client = &http.Client{
+			Timeout: 10 * time.Second,
+		}
 	}
 	resp, err := client.Do(req)
 	if err != nil {
