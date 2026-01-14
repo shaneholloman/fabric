@@ -380,6 +380,7 @@ Fabric supports a wide range of AI providers:
 - AIML
 - Cerebras
 - DeepSeek
+- DigitalOcean
 - GitHub Models
 - GrokAI
 - Groq
