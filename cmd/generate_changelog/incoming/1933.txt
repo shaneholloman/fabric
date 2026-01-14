@@ -1,7 +1,0 @@
-### PR [#1933](https://github.com/danielmiessler/Fabric/pull/1933) by [ksylvan](https://github.com/ksylvan): Add DigitalOcean Gradient AI support
-
-- Feat: add DigitalOcean Gradient AI Agents as a new vendor
-- Add DigitalOcean as a new AI provider in plugin registry
-- Implement DigitalOcean client with OpenAI-compatible inference endpoint
-- Support model access key authentication for inference requests
-- Add optional control plane token for model discovery
