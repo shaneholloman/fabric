@@ -1,0 +1,7 @@
+### PR [#1936](https://github.com/danielmiessler/Fabric/pull/1936) by [ksylvan](https://github.com/ksylvan): New Vendor: Microsoft Copilot
+
+- Introduce Microsoft 365 Copilot as a new AI vendor with OAuth2 authentication for delegated user permissions
+- Enable querying of Microsoft 365 data including emails, documents, and chats
+- Support both synchronous and streaming responses from Copilot API
+- Provide comprehensive setup instructions for Azure AD app registration and licensing requirements
+- Fix SendStream interface to use domain.StreamUpdate instead of chan string for compatibility with updated streaming interface
