@@ -184,7 +184,7 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 }
 
 // SendStream sends a message to Copilot and streams the response.
-func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan string) error {
+func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
 	defer close(channel)
 
 	ctx := context.Background()
@@ -312,7 +312,7 @@ func (c *Client) sendChatMessage(ctx context.Context, conversationID, messageTex
 }
 
 // sendChatMessageStream sends a message and streams the response via SSE.
-func (c *Client) sendChatMessageStream(ctx context.Context, conversationID, messageText string, channel chan string) error {
+func (c *Client) sendChatMessageStream(ctx context.Context, conversationID, messageText string, channel chan domain.StreamUpdate) error {
 	url := fmt.Sprintf("%s%s/%s/chatOverStream", c.ApiBaseURL.Value, conversationsPath, conversationID)
 
 	reqBody := chatRequest{
@@ -354,7 +354,7 @@ func (c *Client) sendChatMessageStream(ctx context.Context, conversationID, mess
 }
 
 // parseSSEStream parses the Server-Sent Events stream from Copilot.
-func (c *Client) parseSSEStream(reader io.Reader, channel chan string) error {
+func (c *Client) parseSSEStream(reader io.Reader, channel chan domain.StreamUpdate) error {
 	scanner := bufio.NewScanner(reader)
 	var lastMessageText string
 
@@ -384,11 +384,11 @@ func (c *Client) parseSSEStream(reader io.Reader, channel chan string) error {
 			if strings.HasPrefix(newText, lastMessageText) {
 				delta := strings.TrimPrefix(newText, lastMessageText)
 				if delta != "" {
-					channel <- delta
+					channel <- domain.StreamUpdate{Type: domain.StreamTypeContent, Content: delta}
 				}
 			} else {
 				// Complete message replacement
-				channel <- newText
+				channel <- domain.StreamUpdate{Type: domain.StreamTypeContent, Content: newText}
 			}
 			lastMessageText = newText
 		}
@@ -398,7 +398,7 @@ func (c *Client) parseSSEStream(reader io.Reader, channel chan string) error {
 		return fmt.Errorf("error reading stream: %w", err)
 	}
 
-	channel <- "\n"
+	channel <- domain.StreamUpdate{Type: domain.StreamTypeContent, Content: "\n"}
 	return nil
 }
 
