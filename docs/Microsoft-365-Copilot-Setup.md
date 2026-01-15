@@ -2,6 +2,8 @@
 
 This guide walks you through setting up and using Microsoft 365 Copilot with Fabric CLI. Microsoft 365 Copilot provides AI capabilities grounded in your organization's Microsoft 365 data, including emails, documents, meetings, and more.
 
+> NOTE: As per the conversation in [discussion 1853](https://github.com/danielmiessler/Fabric/discussions/1853) - enterprise users with restrictive consent policies will probably need their IT admin to either create an app registration with the required permissions, or grant admin consent for an existing app like Graph Explorer.
+
 ## Table of Contents
 
 - [What is Microsoft 365 Copilot?](#what-is-microsoft-365-copilot)

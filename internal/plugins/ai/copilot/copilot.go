@@ -381,8 +381,7 @@ func (c *Client) parseSSEStream(reader io.Reader, channel chan domain.StreamUpda
 		newText := c.extractResponseText(event.Messages)
 		if newText != "" && newText != lastMessageText {
 			// Send only the delta (new content)
-			if strings.HasPrefix(newText, lastMessageText) {
-				delta := strings.TrimPrefix(newText, lastMessageText)
+			if delta, ok := strings.CutPrefix(newText, lastMessageText); ok {
 				if delta != "" {
 					channel <- domain.StreamUpdate{Type: domain.StreamTypeContent, Content: delta}
 				}
@@ -474,7 +473,7 @@ type responseMessage struct {
 	ID              string        `json:"id"`
 	Text            string        `json:"text"`
 	CreatedDateTime string        `json:"createdDateTime"`
-	AdaptiveCards   []interface{} `json:"adaptiveCards,omitempty"`
+	AdaptiveCards   []any         `json:"adaptiveCards,omitempty"`
 	Attributions    []attribution `json:"attributions,omitempty"`
 }
 
