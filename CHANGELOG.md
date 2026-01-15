@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.4.379 (2026-01-15)
+
+### PR [#1935](https://github.com/danielmiessler/Fabric/pull/1935) by [dependabot](https://github.com/apps/dependabot): chore(deps): bump the npm_and_yarn group across 1 directory with 2 updates
+
+- Updated @sveltejs/kit from version 2.21.1 to 2.49.5
+- Updated devalue dependency from version 5.3.2 to 5.6.2
+
+## v1.4.378 (2026-01-14)
+
+### PR [#1933](https://github.com/danielmiessler/Fabric/pull/1933) by [ksylvan](https://github.com/ksylvan): Add DigitalOcean Gradient AI support
+
+- Feat: add DigitalOcean Gradient AI Agents as a new vendor
+- Add DigitalOcean as a new AI provider in plugin registry
+- Implement DigitalOcean client with OpenAI-compatible inference endpoint
+- Support model access key authentication for inference requests
+- Add optional control plane token for model discovery
+
+### Direct commits
+
+- Chore: Update README with a links to other docs
+
 ## v1.4.377 (2026-01-12)
 
 ### PR [#1929](https://github.com/danielmiessler/Fabric/pull/1929) by [ksylvan](https://github.com/ksylvan): Add Mammouth as new OpenAI-compatible AI provider
