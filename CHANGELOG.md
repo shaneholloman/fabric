@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.380 (2026-01-16)
+
+### PR [#1936](https://github.com/danielmiessler/Fabric/pull/1936) by [ksylvan](https://github.com/ksylvan): New Vendor: Microsoft Copilot
+
+- Add Microsoft 365 Copilot integration as a new AI vendor with OAuth2 authentication for delegated user permissions
+- Enable querying of Microsoft 365 data including emails, documents, and chats with both synchronous and streaming response support
+- Provide comprehensive setup instructions for Azure AD app registration and detail licensing, technical, and permission requirements
+- Add troubleshooting steps for common authentication and API errors with current API limitations documentation
+- Fix SendStream interface to use domain.StreamUpdate instead of chan string to match current Vendor interface requirements
+
 ## v1.4.379 (2026-01-15)
 
 ### PR [#1935](https://github.com/danielmiessler/Fabric/pull/1935) by [dependabot](https://github.com/apps/dependabot): chore(deps): bump the npm_and_yarn group across 1 directory with 2 updates
