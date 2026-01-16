@@ -77,6 +77,7 @@ Below are the **new features and capabilities** we've added (newest first):
 
 ### Recent Major Features
 
+- [v1.4.380](https://github.com/danielmiessler/fabric/releases/tag/v1.4.380) (Jan 15, 2026) — **Microsoft 365 Copilot Integration**: Added support for corporate Microsoft 365 Copilot, enabling enterprise users to leverage AI grounded in their organization's Microsoft 365 data (emails, documents, meetings.
 - [v1.4.378](https://github.com/danielmiessler/fabric/releases/tag/v1.4.378) (Jan 14, 2026) — **Digital Ocean GenAI Support**: Added support for Digital Ocean GenAI, along with a [guide for how to use it](./docs/DigitalOcean-Agents-Setup.md).
 - [v1.4.356](https://github.com/danielmiessler/fabric/releases/tag/v1.4.356) (Dec 22, 2025) — **Complete Internationalization**: Full i18n support for setup prompts across all 10 languages with intelligent environment variable handling—making Fabric truly accessible worldwide while maintaining configuration consistency.
 - [v1.4.350](https://github.com/danielmiessler/fabric/releases/tag/v1.4.350) (Dec 18, 2025) — **Interactive API Documentation**: Adds Swagger/OpenAPI UI at `/swagger/index.html` with comprehensive REST API documentation, enhanced developer guides, and improved endpoint discoverability for easier integration.
