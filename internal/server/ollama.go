@@ -280,11 +280,16 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 	if err := scanner.Err(); err != nil {
 		log.Printf("Error scanning body: %v", err)
+		errorMsg := fmt.Sprintf("failed to scan SSE response stream: %v", err)
+		// Check for buffer size exceeded error
+		if strings.Contains(err.Error(), "token too long") {
+			errorMsg = "SSE line exceeds 1MB buffer limit - data line too large"
+		}
 		if prompt.Stream {
 			// In streaming mode, send the error in the same streaming format
-			_ = writeOllamaResponse(c, prompt.Model, "Error: failed to scan response stream", true)
+			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", errorMsg), true)
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to scan SSE response stream from Fabric server"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": errorMsg})
 		}
 		return
 	}
@@ -353,7 +358,22 @@ func buildFabricChatURL(addr string) (string, error) {
 	if strings.HasPrefix(addr, ":") {
 		return fmt.Sprintf("http://127.0.0.1%s", addr), nil
 	}
-	return fmt.Sprintf("http://%s", addr), nil
+	// Validate bare addresses (without http/https prefix)
+	parsed, err := url.Parse("http://" + addr)
+	if err != nil {
+		return "", fmt.Errorf("invalid address: %w", err)
+	}
+	if parsed.Host == "" {
+		return "", fmt.Errorf("invalid address: missing host")
+	}
+	if strings.HasPrefix(parsed.Host, ":") {
+		return "", fmt.Errorf("invalid address: missing hostname")
+	}
+	// Bare addresses should be host[:port] only - reject path components
+	if parsed.Path != "" && parsed.Path != "/" {
+		return "", fmt.Errorf("invalid address: path component not allowed in bare address")
+	}
+	return strings.TrimRight(parsed.String(), "/"), nil
 }
 
 func writeOllamaResponse(c *gin.Context, model string, content string, done bool) error {

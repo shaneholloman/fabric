@@ -71,6 +71,18 @@ func TestBuildFabricChatURL(t *testing.T) {
 			want:    "http://192.168.1.1:3000",
 			wantErr: false,
 		},
+		{
+			name:    "bare address with path - invalid",
+			addr:    "localhost:8080/some/path",
+			want:    "",
+			wantErr: true,
+		},
+		{
+			name:    "bare hostname with path - invalid",
+			addr:    "localhost/api",
+			want:    "",
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
