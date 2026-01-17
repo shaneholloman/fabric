@@ -44,11 +44,11 @@ type APIConvert struct {
 }
 
 type OllamaRequestBody struct {
-	Messages []OllamaMessage `json:"messages"`
-	Model    string          `json:"model"`
-	Options  struct {
-	} `json:"options"`
-	Stream bool `json:"stream"`
+	Messages  []OllamaMessage   `json:"messages"`
+	Model     string            `json:"model"`
+	Options   map[string]any    `json:"options,omitempty"`
+	Stream    bool              `json:"stream"`
+	Variables map[string]string `json:"variables,omitempty"` // Fabric-specific: pattern variables (direct)
 }
 
 type OllamaMessage struct {
@@ -164,6 +164,29 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	now := time.Now()
 	var chat ChatRequest
 
+	// Extract variables from either top-level Variables field or Options.variables
+	variables := prompt.Variables
+	if variables == nil && prompt.Options != nil {
+		if optVars, ok := prompt.Options["variables"]; ok {
+			// Options.variables can be either a JSON string or a map
+			switch v := optVars.(type) {
+			case string:
+				// Parse JSON string into map
+				if err := json.Unmarshal([]byte(v), &variables); err != nil {
+					log.Printf("Warning: failed to parse options.variables as JSON: %v", err)
+				}
+			case map[string]any:
+				// Convert map[string]any to map[string]string
+				variables = make(map[string]string)
+				for k, val := range v {
+					if s, ok := val.(string); ok {
+						variables[k] = s
+					}
+				}
+			}
+		}
+	}
+
 	if len(prompt.Messages) == 1 {
 		chat.Prompts = []PromptRequest{{
 			UserInput:   prompt.Messages[0].Content,
@@ -171,6 +194,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			Model:       "",
 			ContextName: "",
 			PatternName: strings.Split(prompt.Model, ":")[0],
+			Variables:   variables,
 		}}
 	} else if len(prompt.Messages) > 1 {
 		var content string
@@ -183,6 +207,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			Model:       "",
 			ContextName: "",
 			PatternName: strings.Split(prompt.Model, ":")[0],
+			Variables:   variables,
 		}}
 	}
 	fabricChatReq, err := json.Marshal(chat)
