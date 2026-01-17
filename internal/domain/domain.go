@@ -53,7 +53,7 @@ type ChatOptions struct {
 	NotificationCommand string
 	ShowMetadata        bool
 	Quiet               bool
-	UpdateChan          chan StreamUpdate
+	UpdateChan          chan StreamUpdate `json:"-"`
 }
 
 // NormalizeMessages remove empty messages and ensure messages order user-assist-user
