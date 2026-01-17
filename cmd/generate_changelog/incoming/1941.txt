@@ -1,0 +1,7 @@
+### PR [#1941](https://github.com/danielmiessler/Fabric/pull/1941) by [ksylvan](https://github.com/ksylvan): Add `greybeard_secure_prompt_engineer` to metadata, also remove duplicate json data file
+
+- Add greybeard_secure_prompt_engineer pattern to metadata (pattern explanations and json index)
+- Refactor build process to use npm hooks for copying JSON files instead of manual copying
+- Update .gitignore to exclude generated data and tmp directories
+- Modify suggest_pattern categories to include new security pattern
+- Delete redundant web static data file and rely on build hooks
