@@ -67,9 +67,9 @@ type OllamaResponse struct {
 	Done               bool   `json:"done"`
 	TotalDuration      int64  `json:"total_duration,omitempty"`
 	LoadDuration       int64  `json:"load_duration,omitempty"`
-	PromptEvalCount    int    `json:"prompt_eval_count,omitempty"`
+	PromptEvalCount    int64  `json:"prompt_eval_count,omitempty"`
 	PromptEvalDuration int64  `json:"prompt_eval_duration,omitempty"`
-	EvalCount          int    `json:"eval_count,omitempty"`
+	EvalCount          int64  `json:"eval_count,omitempty"`
 	EvalDuration       int64  `json:"eval_duration,omitempty"`
 }
 
@@ -272,8 +272,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		if prompt.Stream {
 			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
 				log.Printf("Error writing response: %v", err)
-				// Attempt to send a final error message to properly close the stream
-				_ = writeOllamaResponse(c, prompt.Model, "Error: failed to write response", true)
 				return
 			}
 		}
@@ -346,9 +344,6 @@ func buildFabricChatURL(addr string) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("invalid address: %w", err)
 		}
-		if parsed.Scheme != "http" && parsed.Scheme != "https" {
-			return "", fmt.Errorf("invalid address: scheme must be http or https")
-		}
 		if parsed.Host == "" {
 			return "", fmt.Errorf("invalid address: missing host")
 		}
@@ -411,6 +406,8 @@ func writeOllamaResponseStruct(c *gin.Context, response OllamaResponse) error {
 	if _, err := c.Writer.Write([]byte("\n")); err != nil {
 		return err
 	}
-	c.Writer.Flush()
+	if flusher, ok := c.Writer.(http.Flusher); ok {
+		flusher.Flush()
+	}
 	return nil
 }
