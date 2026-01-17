@@ -202,7 +202,9 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 	req, err = http.NewRequest("POST", fmt.Sprintf("%s/chat", baseURL), bytes.NewBuffer(fabricChatReq))
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Error creating /chat request: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create request"})
+		return
 	}
 
 	req = req.WithContext(ctx)
@@ -226,11 +228,21 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		var fabricResponse FabricResponseFormat
 		if err := json.Unmarshal([]byte(payload), &fabricResponse); err != nil {
 			log.Printf("Error unmarshalling body: %v", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "testing endpoint"})
+			if prompt.Stream {
+				// In streaming mode, send the error in the same streaming format
+				_ = writeOllamaResponse(c, prompt.Model, "Error: failed to parse upstream response", true)
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to unmarshal Fabric response"})
+			}
 			return
 		}
 		if fabricResponse.Type == "error" {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": fabricResponse.Content})
+			if prompt.Stream {
+				// In streaming mode, propagate the upstream error via a final streaming chunk
+				_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", fabricResponse.Content), true)
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fabricResponse.Content})
+			}
 			return
 		}
 		if fabricResponse.Type != "content" {
@@ -238,6 +250,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		}
 		contentBuilder.WriteString(fabricResponse.Content)
 		if prompt.Stream {
+			// Set Content-Type header for streaming responses on first write
+			if contentBuilder.Len() == len(fabricResponse.Content) {
+				c.Header("Content-Type", "application/x-ndjson")
+			}
 			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
 				log.Printf("Error writing response: %v", err)
 				return
@@ -246,7 +262,12 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 	if err := scanner.Err(); err != nil {
 		log.Printf("Error scanning body: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "testing endpoint"})
+		if prompt.Stream {
+			// In streaming mode, send the error in the same streaming format
+			_ = writeOllamaResponse(c, prompt.Model, "Error: failed to scan response stream", true)
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to scan SSE response stream from Fabric server"})
+		}
 		return
 	}
 
@@ -296,8 +317,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
 		log.Printf("Error writing response: %v", err)
 	}
-
-	//c.JSON(200, forwardedResponse)
 }
 
 func buildFabricChatURL(addr string) (string, error) {
