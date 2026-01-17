@@ -215,10 +215,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 	defer fabricRes.Body.Close()
 
-	if prompt.Stream {
-		c.Header("Content-Type", "application/x-ndjson")
-	}
-
 	if fabricRes.StatusCode < http.StatusOK || fabricRes.StatusCode >= http.StatusMultipleChoices {
 		bodyBytes, readErr := io.ReadAll(fabricRes.Body)
 		if readErr != nil {
@@ -234,6 +230,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			c.JSON(fabricRes.StatusCode, gin.H{"error": errorMessage})
 		}
 		return
+	}
+
+	if prompt.Stream {
+		c.Header("Content-Type", "application/x-ndjson")
 	}
 
 	var contentBuilder strings.Builder
@@ -294,6 +294,11 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	// Capture duration once for consistent timing values
 	duration := time.Since(now).Nanoseconds()
+
+	// Check if we received any content from upstream
+	if contentBuilder.Len() == 0 {
+		log.Printf("Warning: no content received from upstream Fabric server")
+	}
 
 	if !prompt.Stream {
 		response := buildFinalOllamaResponse(prompt.Model, contentBuilder.String(), duration)
