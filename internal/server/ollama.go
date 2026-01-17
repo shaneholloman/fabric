@@ -188,7 +188,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	fabricChatReq, err := json.Marshal(chat)
 	if err != nil {
 		log.Printf("Error marshalling body: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	var req *http.Request
@@ -298,6 +298,11 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	// Check if we received any content from upstream
 	if contentBuilder.Len() == 0 {
 		log.Printf("Warning: no content received from upstream Fabric server")
+		// In non-streaming mode, treat absence of content as an error
+		if !prompt.Stream {
+			c.JSON(http.StatusBadGateway, gin.H{"error": "no content received from upstream Fabric server"})
+			return
+		}
 	}
 
 	if !prompt.Stream {
