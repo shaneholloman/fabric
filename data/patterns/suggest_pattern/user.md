@@ -58,6 +58,10 @@ Format predictions for tracking/verification in markdown prediction logs.
 
 Extract insights from AI agent interactions, focusing on learning.
 
+### greybeard_secure_prompt_engineer
+
+Create secure, production-grade system prompts with injection test suites and evaluation rubrics.
+
 ### improve_prompt
 
 Enhance AI prompts by refining clarity and specificity.
@@ -833,6 +837,10 @@ Create narratives for security program improvements in remediation efficiency.
 ### extract_ctf_writeup
 
 Extract techniques from CTF writeups to create learning resources.
+
+### greybeard_secure_prompt_engineer
+
+Create secure, production-grade system prompts with injection test suites and evaluation rubrics.
 
 ### improve_report_finding
 

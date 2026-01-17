@@ -347,6 +347,9 @@ web/package-lock.json
 .gitignore_backup
 web/static/*.png
 
+# Generated data files (copied from scripts/ during build)
+web/static/data/pattern_descriptions.json
+
 # Local tmp directory
 .tmp/
 tmp/

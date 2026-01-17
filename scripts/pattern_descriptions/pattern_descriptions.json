@@ -1932,6 +1932,11 @@
         "SUMMARIZE",
         "BUSINESS"
       ]
+    },
+    {
+      "patternName": "greybeard_secure_prompt_engineer",
+      "description": "Creates secure, production-grade system prompts with NASA-style mission assurance. Outputs include hardened prompts, developer prompts, prompt-injection test suites, and evaluation rubrics. Enforces instruction hierarchy, resists adversarial inputs, and maintains auditability.",
+      "tags": ["security", "prompt-engineering", "system-prompts", "prompt-injection", "llm-security", "hardening"]
     }
   ]
 }
