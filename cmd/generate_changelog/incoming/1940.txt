@@ -1,7 +1,0 @@
-### PR [#1940](https://github.com/danielmiessler/Fabric/pull/1940) by [ksylvan](https://github.com/ksylvan): Rewrite Ollama chat handler to support proper streaming responses
-
-- Refactor Ollama chat handler to support proper streaming responses with real-time SSE data parsing
-- Replace single-read body parsing with streaming bufio.Scanner approach and implement writeOllamaResponse helper function
-- Add comprehensive error handling improvements including proper HTTP error responses instead of log.Fatal to prevent server crashes
-- Fix upstream error handling to return stringified error payloads and validate Fabric chat URL hosts
-- Implement proper request context propagation and align duration fields to int64 nanosecond precision for consistency
