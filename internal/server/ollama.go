@@ -3,7 +3,6 @@ package restapi
 import (
 	"bufio"
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -192,7 +191,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	ctx := context.Background()
 	var req *http.Request
 	baseURL, err := buildFabricChatURL(*f.addr)
 	if err != nil {
@@ -207,7 +205,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		return
 	}
 
-	req = req.WithContext(ctx)
+	req = req.WithContext(c.Request.Context())
 
 	fabricRes, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -274,6 +272,8 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		if prompt.Stream {
 			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
 				log.Printf("Error writing response: %v", err)
+				// Attempt to send a final error message to properly close the stream
+				_ = writeOllamaResponse(c, prompt.Model, "Error: failed to write response", true)
 				return
 			}
 		}
@@ -294,30 +294,26 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		return
 	}
 
+	// Capture duration once for consistent timing values
+	duration := time.Since(now).Nanoseconds()
+
 	if !prompt.Stream {
-		response := OllamaResponse{
-			Model:     prompt.Model,
-			CreatedAt: time.Now().UTC().Format("2006-01-02T15:04:05.999999999Z"),
-			Message: struct {
-				Role    string `json:"role"`
-				Content string `json:"content"`
-			}(struct {
-				Role    string
-				Content string
-			}{Content: contentBuilder.String(), Role: "assistant"}),
-			DoneReason:         "stop",
-			Done:               true,
-			TotalDuration:      time.Since(now).Nanoseconds(),
-			LoadDuration:       time.Since(now).Nanoseconds(),
-			PromptEvalDuration: time.Since(now).Nanoseconds(),
-			EvalDuration:       time.Since(now).Nanoseconds(),
-		}
+		response := buildFinalOllamaResponse(prompt.Model, contentBuilder.String(), duration)
 		c.JSON(200, response)
 		return
 	}
 
-	finalResponse := OllamaResponse{
-		Model:     prompt.Model,
+	finalResponse := buildFinalOllamaResponse(prompt.Model, "", duration)
+	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
+		log.Printf("Error writing response: %v", err)
+	}
+}
+
+// buildFinalOllamaResponse constructs the final OllamaResponse with timing metrics
+// and the complete message content. Used for both streaming and non-streaming final responses.
+func buildFinalOllamaResponse(model string, content string, duration int64) OllamaResponse {
+	return OllamaResponse{
+		Model:     model,
 		CreatedAt: time.Now().UTC().Format("2006-01-02T15:04:05.999999999Z"),
 		Message: struct {
 			Role    string `json:"role"`
@@ -325,19 +321,22 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		}(struct {
 			Role    string
 			Content string
-		}{Content: "", Role: "assistant"}),
+		}{Content: content, Role: "assistant"}),
 		DoneReason:         "stop",
 		Done:               true,
-		TotalDuration:      time.Since(now).Nanoseconds(),
-		LoadDuration:       time.Since(now).Nanoseconds(),
-		PromptEvalDuration: time.Since(now).Nanoseconds(),
-		EvalDuration:       time.Since(now).Nanoseconds(),
-	}
-	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
-		log.Printf("Error writing response: %v", err)
+		TotalDuration:      duration,
+		LoadDuration:       duration,
+		PromptEvalDuration: duration,
+		EvalDuration:       duration,
 	}
 }
 
+// buildFabricChatURL constructs a valid HTTP/HTTPS base URL from various address
+// formats. It accepts fully-qualified URLs (http:// or https://), :port shorthand
+// which is resolved to http://127.0.0.1:port, and bare host[:port] addresses. It
+// returns a normalized URL string without a trailing slash, or an error if the
+// address is empty, invalid, missing a host/hostname, or (for bare addresses)
+// contains a path component.
 func buildFabricChatURL(addr string) (string, error) {
 	if addr == "" {
 		return "", fmt.Errorf("empty address")
@@ -346,6 +345,9 @@ func buildFabricChatURL(addr string) (string, error) {
 		parsed, err := url.Parse(addr)
 		if err != nil {
 			return "", fmt.Errorf("invalid address: %w", err)
+		}
+		if parsed.Scheme != "http" && parsed.Scheme != "https" {
+			return "", fmt.Errorf("invalid address: scheme must be http or https")
 		}
 		if parsed.Host == "" {
 			return "", fmt.Errorf("invalid address: missing host")
@@ -376,6 +378,10 @@ func buildFabricChatURL(addr string) (string, error) {
 	return strings.TrimRight(parsed.String(), "/"), nil
 }
 
+// writeOllamaResponse constructs an Ollama-formatted response chunk and writes it
+// to the streaming output associated with the provided Gin context. The model
+// parameter identifies the model, content is the assistant message text, and
+// done indicates whether this is the final chunk in the stream.
 func writeOllamaResponse(c *gin.Context, model string, content string, done bool) error {
 	response := OllamaResponse{
 		Model:     model,
@@ -392,6 +398,8 @@ func writeOllamaResponse(c *gin.Context, model string, content string, done bool
 	return writeOllamaResponseStruct(c, response)
 }
 
+// writeOllamaResponseStruct marshals the provided OllamaResponse and writes it
+// as newline-delimited JSON to the HTTP response stream.
 func writeOllamaResponseStruct(c *gin.Context, response OllamaResponse) error {
 	marshalled, err := json.Marshal(response)
 	if err != nil {
