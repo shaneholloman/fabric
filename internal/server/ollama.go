@@ -345,6 +345,9 @@ func buildFabricChatURL(addr string) (string, error) {
 		if parsed.Host == "" {
 			return "", fmt.Errorf("invalid address: missing host")
 		}
+		if strings.HasPrefix(parsed.Host, ":") {
+			return "", fmt.Errorf("invalid address: missing hostname")
+		}
 		return strings.TrimRight(parsed.String(), "/"), nil
 	}
 	if strings.HasPrefix(addr, ":") {

@@ -44,8 +44,8 @@ func TestBuildFabricChatURL(t *testing.T) {
 		{
 			name:    "malformed URL - port only with http",
 			addr:    "https://:8080",
-			want:    "https://:8080",
-			wantErr: false,
+			want:    "",
+			wantErr: true,
 		},
 		{
 			name:    "colon-prefixed port",
