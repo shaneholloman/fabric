@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.382 (2026-01-17)
+
+### PR [#1941](https://github.com/danielmiessler/Fabric/pull/1941) by [ksylvan](https://github.com/ksylvan): Add `greybeard_secure_prompt_engineer` to metadata, also remove duplicate json data file
+
+- Add greybeard_secure_prompt_engineer pattern to metadata (pattern explanations and json index)
+- Refactor build process to use npm hooks for copying JSON files instead of manual copying
+- Update .gitignore to exclude generated data and tmp directories
+- Modify suggest_pattern categories to include new security pattern
+- Delete redundant web static data file and rely on build hooks
+
 ## v1.4.381 (2026-01-17)
 
 ### PR [#1940](https://github.com/danielmiessler/Fabric/pull/1940) by [ksylvan](https://github.com/ksylvan): Rewrite Ollama chat handler to support proper streaming responses
