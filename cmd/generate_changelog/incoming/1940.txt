@@ -1,0 +1,7 @@
+### PR [#1940](https://github.com/danielmiessler/Fabric/pull/1940) by [ksylvan](https://github.com/ksylvan): Rewrite Ollama chat handler to support proper streaming responses
+
+- Refactor Ollama chat handler to support proper streaming responses
+- Add `json:"-"` tag to exclude UpdateChan from JSON serialization
+- Extract URL building logic into dedicated `buildFabricChatURL` helper function
+- Replace single-read body parsing with streaming `bufio.Scanner` approach
+- Add proper SSE data prefix parsing for fabric response format
