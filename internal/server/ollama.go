@@ -197,7 +197,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	baseURL, err := buildFabricChatURL(*f.addr)
 	if err != nil {
 		log.Printf("Error building /chat URL: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	req, err = http.NewRequest("POST", fmt.Sprintf("%s/chat", baseURL), bytes.NewBuffer(fabricChatReq))
@@ -212,10 +212,32 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	fabricRes, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Printf("Error getting /chat body: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	defer fabricRes.Body.Close()
+
+	if fabricRes.StatusCode < http.StatusOK || fabricRes.StatusCode >= http.StatusMultipleChoices {
+		bodyBytes, readErr := io.ReadAll(fabricRes.Body)
+		if readErr != nil {
+			log.Printf("Upstream Fabric server returned non-2xx status %d and body could not be read: %v", fabricRes.StatusCode, readErr)
+		} else {
+			log.Printf("Upstream Fabric server returned non-2xx status %d: %s", fabricRes.StatusCode, string(bodyBytes))
+		}
+
+		errorMessage := fmt.Sprintf("upstream Fabric server returned status %d", fabricRes.StatusCode)
+		if prompt.Stream {
+			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", errorMessage), true)
+		} else {
+			c.JSON(fabricRes.StatusCode, gin.H{"error": errorMessage})
+		}
+		return
+	}
+
+	if prompt.Stream {
+		c.Header("Content-Type", "application/x-ndjson")
+	}
+
 	var contentBuilder strings.Builder
 	scanner := bufio.NewScanner(fabricRes.Body)
 	scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
@@ -250,10 +272,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		}
 		contentBuilder.WriteString(fabricResponse.Content)
 		if prompt.Stream {
-			// Set Content-Type header for streaming responses on first write
-			if contentBuilder.Len() == len(fabricResponse.Content) {
-				c.Header("Content-Type", "application/x-ndjson")
-			}
 			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
 				log.Printf("Error writing response: %v", err)
 				return
