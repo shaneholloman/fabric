@@ -217,6 +217,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 	defer fabricRes.Body.Close()
 
+	if prompt.Stream {
+		c.Header("Content-Type", "application/x-ndjson")
+	}
+
 	if fabricRes.StatusCode < http.StatusOK || fabricRes.StatusCode >= http.StatusMultipleChoices {
 		bodyBytes, readErr := io.ReadAll(fabricRes.Body)
 		if readErr != nil {
@@ -232,10 +236,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			c.JSON(fabricRes.StatusCode, gin.H{"error": errorMessage})
 		}
 		return
-	}
-
-	if prompt.Stream {
-		c.Header("Content-Type", "application/x-ndjson")
 	}
 
 	var contentBuilder strings.Builder
@@ -304,9 +304,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			Done:               true,
 			TotalDuration:      time.Since(now).Nanoseconds(),
 			LoadDuration:       int(time.Since(now).Nanoseconds()),
-			PromptEvalCount:    42,
 			PromptEvalDuration: int(time.Since(now).Nanoseconds()),
-			EvalCount:          420,
 			EvalDuration:       time.Since(now).Nanoseconds(),
 		}
 		c.JSON(200, response)
@@ -327,9 +325,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		Done:               true,
 		TotalDuration:      time.Since(now).Nanoseconds(),
 		LoadDuration:       int(time.Since(now).Nanoseconds()),
-		PromptEvalCount:    42,
 		PromptEvalDuration: int(time.Since(now).Nanoseconds()),
-		EvalCount:          420,
 		EvalDuration:       time.Since(now).Nanoseconds(),
 	}
 	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
@@ -345,6 +341,9 @@ func buildFabricChatURL(addr string) (string, error) {
 		parsed, err := url.Parse(addr)
 		if err != nil {
 			return "", fmt.Errorf("invalid address: %w", err)
+		}
+		if parsed.Host == "" {
+			return "", fmt.Errorf("invalid address: missing host")
 		}
 		return strings.TrimRight(parsed.String(), "/"), nil
 	}
