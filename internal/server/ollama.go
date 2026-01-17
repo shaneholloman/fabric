@@ -67,9 +67,9 @@ type OllamaResponse struct {
 	DoneReason         string `json:"done_reason,omitempty"`
 	Done               bool   `json:"done"`
 	TotalDuration      int64  `json:"total_duration,omitempty"`
-	LoadDuration       int    `json:"load_duration,omitempty"`
+	LoadDuration       int64  `json:"load_duration,omitempty"`
 	PromptEvalCount    int    `json:"prompt_eval_count,omitempty"`
-	PromptEvalDuration int    `json:"prompt_eval_duration,omitempty"`
+	PromptEvalDuration int64  `json:"prompt_eval_duration,omitempty"`
 	EvalCount          int    `json:"eval_count,omitempty"`
 	EvalDuration       int64  `json:"eval_duration,omitempty"`
 }
@@ -308,8 +308,8 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			DoneReason:         "stop",
 			Done:               true,
 			TotalDuration:      time.Since(now).Nanoseconds(),
-			LoadDuration:       int(time.Since(now).Nanoseconds()),
-			PromptEvalDuration: int(time.Since(now).Nanoseconds()),
+			LoadDuration:       time.Since(now).Nanoseconds(),
+			PromptEvalDuration: time.Since(now).Nanoseconds(),
 			EvalDuration:       time.Since(now).Nanoseconds(),
 		}
 		c.JSON(200, response)
@@ -329,8 +329,8 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		DoneReason:         "stop",
 		Done:               true,
 		TotalDuration:      time.Since(now).Nanoseconds(),
-		LoadDuration:       int(time.Since(now).Nanoseconds()),
-		PromptEvalDuration: int(time.Since(now).Nanoseconds()),
+		LoadDuration:       time.Since(now).Nanoseconds(),
+		PromptEvalDuration: time.Since(now).Nanoseconds(),
 		EvalDuration:       time.Since(now).Nanoseconds(),
 	}
 	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
