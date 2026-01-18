@@ -283,6 +283,64 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a valid number",
 		},
+		// --- Special float values ---
+		{
+			name:    "float64 NaN",
+			options: map[string]any{"num_ctx": math.NaN()},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		{
+			name:    "float64 positive infinity",
+			options: map[string]any{"num_ctx": math.Inf(1)},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		{
+			name:    "float64 negative infinity",
+			options: map[string]any{"num_ctx": math.Inf(-1)},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		{
+			name:    "float32 NaN",
+			options: map[string]any{"num_ctx": float32(math.NaN())},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		{
+			name:    "float32 positive infinity",
+			options: map[string]any{"num_ctx": float32(math.Inf(1))},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		{
+			name:    "float32 negative infinity",
+			options: map[string]any{"num_ctx": float32(math.Inf(-1))},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be a finite number",
+		},
+		// --- Negative int64 (32-bit wraparound prevention) ---
+		{
+			name:    "negative int64",
+			options: map[string]any{"num_ctx": int64(-1000)},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be positive",
+		},
+		{
+			name:    "negative json.Number",
+			options: map[string]any{"num_ctx": json.Number("-500")},
+			want:    0,
+			wantErr: true,
+			errMsg:  "num_ctx must be positive",
+		},
 	}
 
 	for _, tt := range tests {

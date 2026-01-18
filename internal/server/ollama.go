@@ -107,10 +107,13 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 
 	switch v := val.(type) {
 	case float64:
+		if math.IsNaN(v) || math.IsInf(v, 0) {
+			return 0, fmt.Errorf("num_ctx must be a finite number")
+		}
 		if math.Trunc(v) != v {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// Check for overflow on 32-bit systems (negative values handled by validation at line 165)
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 166)
 		if v > float64(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
@@ -118,10 +121,13 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 
 	case float32:
 		f64 := float64(v)
+		if math.IsNaN(f64) || math.IsInf(f64, 0) {
+			return 0, fmt.Errorf("num_ctx must be a finite number")
+		}
 		if math.Trunc(f64) != f64 {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// Check for overflow on 32-bit systems (negative values handled by validation at line 165)
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 169)
 		if v > float32(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
@@ -131,6 +137,9 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 		contextLength = v
 
 	case int64:
+		if v < 0 {
+			return 0, fmt.Errorf("num_ctx must be positive, got: %d", v)
+		}
 		if v > maxInt {
 			return 0, fmt.Errorf("num_ctx value too large: %d", v)
 		}
@@ -139,8 +148,10 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 	case json.Number:
 		i64, err := v.Int64()
 		if err != nil {
-			// HIGH PRIORITY FIX: Don't expose internal error details
 			return 0, fmt.Errorf("num_ctx must be a valid number")
+		}
+		if i64 < 0 {
+			return 0, fmt.Errorf("num_ctx must be positive, got: %d", i64)
 		}
 		if i64 > maxInt {
 			return 0, fmt.Errorf("num_ctx value too large: %d", i64)
