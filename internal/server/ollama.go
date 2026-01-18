@@ -109,8 +109,8 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 		if v != float64(int(v)) {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// CRITICAL FIX: Check for overflow on 32-bit systems
-		if v > float64(maxInt) || v < 0 {
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 164)
+		if v > float64(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
 		contextLength = int(v)
@@ -119,8 +119,8 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 		if v != float32(int(v)) {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// CRITICAL FIX: Check for overflow on 32-bit systems
-		if v > float32(maxInt) || v < 0 {
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 164)
+		if v > float32(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
 		contextLength = int(v)
@@ -158,7 +158,7 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 		contextLength = parsed
 
 	default:
-		return 0, fmt.Errorf("num_ctx must be a number, got %T", v)
+		return 0, fmt.Errorf("num_ctx must be a number, got invalid type")
 	}
 
 	if contextLength <= 0 {
@@ -260,7 +260,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	numCtx, err := parseOllamaNumCtx(prompt.Options)
 	if err != nil {
 		log.Printf("Invalid num_ctx in request: %v", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid num_ctx: %v", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
