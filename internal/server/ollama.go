@@ -111,7 +111,7 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 			return 0, fmt.Errorf("num_ctx must be a finite number")
 		}
 		if math.Trunc(v) != v {
-			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
+			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
 		}
 		// Check for overflow on 32-bit systems (negative values handled by validation at line 166)
 		if v > float64(maxInt) {
@@ -125,10 +125,10 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 			return 0, fmt.Errorf("num_ctx must be a finite number")
 		}
 		if math.Trunc(f64) != f64 {
-			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
+			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
 		}
 		// Check for overflow on 32-bit systems (negative values handled by validation at line 177)
-		if v > float32(maxInt) {
+		if f64 > float64(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
 		contextLength = int(v)
