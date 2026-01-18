@@ -3,6 +3,7 @@ package restapi
 import (
 	"encoding/json"
 	"math"
+	"strings"
 	"testing"
 )
 
@@ -262,11 +263,11 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "very large float64 (triggers fractional check due to precision)",
+			name:    "very large float64 (overflow)",
 			options: map[string]any{"num_ctx": float64(math.MaxFloat64)},
 			want:    0,
 			wantErr: true,
-			errMsg:  "num_ctx must be an integer",
+			errMsg:  "num_ctx value out of range",
 		},
 		{
 			name:    "large int64 exceeding maxInt on 32-bit",
@@ -292,7 +293,7 @@ func TestParseOllamaNumCtx(t *testing.T) {
 				return
 			}
 			if err != nil && tt.errMsg != "" {
-				if !contains(err.Error(), tt.errMsg) {
+				if !strings.Contains(err.Error(), tt.errMsg) {
 					t.Errorf("parseOllamaNumCtx() error message = %q, want to contain %q", err.Error(), tt.errMsg)
 				}
 			}
@@ -301,19 +302,4 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			}
 		})
 	}
-}
-
-// contains checks if s contains substr
-func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || len(substr) == 0 ||
-		(len(s) > 0 && len(substr) > 0 && searchString(s, substr)))
-}
-
-func searchString(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }

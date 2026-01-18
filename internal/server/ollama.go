@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -106,20 +107,21 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 
 	switch v := val.(type) {
 	case float64:
-		if v != float64(int(v)) {
+		if math.Trunc(v) != v {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// Check for overflow on 32-bit systems (negative values handled by validation at line 164)
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 165)
 		if v > float64(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
 		contextLength = int(v)
 
 	case float32:
-		if v != float32(int(v)) {
+		f64 := float64(v)
+		if math.Trunc(f64) != f64 {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// Check for overflow on 32-bit systems (negative values handled by validation at line 164)
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 165)
 		if v > float32(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
