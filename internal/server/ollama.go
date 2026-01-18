@@ -127,7 +127,7 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 		if math.Trunc(f64) != f64 {
 			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part: %v", v)
 		}
-		// Check for overflow on 32-bit systems (negative values handled by validation at line 169)
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 177)
 		if v > float32(maxInt) {
 			return 0, fmt.Errorf("num_ctx value out of range")
 		}
@@ -161,7 +161,7 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 	case string:
 		parsed, err := strconv.Atoi(v)
 		if err != nil {
-			// HIGH PRIORITY FIX: Truncate long strings in error messages
+			// Truncate long strings in error messages to avoid logging excessively large input
 			errVal := v
 			if len(v) > 50 {
 				errVal = v[:50] + "..."
