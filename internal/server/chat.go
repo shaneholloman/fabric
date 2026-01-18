@@ -35,7 +35,8 @@ type PromptRequest struct {
 
 type ChatRequest struct {
 	Prompts            []PromptRequest `json:"prompts"`
-	Language           string          `json:"language"` // Add Language field to bind from request
+	Language           string          `json:"language"`
+	ModelContextLength int             `json:"modelContextLength,omitempty"` // Context window size
 	domain.ChatOptions                 // Embed the ChatOptions from common package
 }
 
@@ -118,7 +119,7 @@ func (h *ChatHandler) HandleChat(c *gin.Context) {
 					}
 				}
 
-				chatter, err := h.registry.GetChatter(p.Model, 2048, p.Vendor, "", true, false)
+				chatter, err := h.registry.GetChatter(p.Model, request.ModelContextLength, p.Vendor, "", true, false)
 				if err != nil {
 					log.Printf("Error creating chatter: %v", err)
 					streamChan <- domain.StreamUpdate{Type: domain.StreamTypeError, Content: fmt.Sprintf("Error: %v", err)}

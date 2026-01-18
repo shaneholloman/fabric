@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -77,6 +79,111 @@ type FabricResponseFormat struct {
 	Type    string `json:"type"`
 	Format  string `json:"format"`
 	Content string `json:"content"`
+}
+
+// parseOllamaNumCtx extracts and validates the num_ctx parameter from Ollama request options.
+// Returns:
+//   - (0, nil) if num_ctx is not present or is null
+//   - (n, nil) if num_ctx is a valid positive integer
+//   - (0, error) if num_ctx is present but invalid
+func parseOllamaNumCtx(options map[string]any) (int, error) {
+	if options == nil {
+		return 0, nil
+	}
+
+	val, exists := options["num_ctx"]
+	if !exists {
+		return 0, nil // Not provided, caller should use default
+	}
+
+	if val == nil {
+		return 0, nil // Explicit null, treat as not provided
+	}
+
+	var contextLength int
+
+	// Platform-specific max int value for overflow checks
+	const maxInt = int64(^uint(0) >> 1)
+
+	switch v := val.(type) {
+	case float64:
+		if math.IsNaN(v) || math.IsInf(v, 0) {
+			return 0, fmt.Errorf("num_ctx must be a finite number")
+		}
+		if math.Trunc(v) != v {
+			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
+		}
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 166)
+		if v > float64(maxInt) {
+			return 0, fmt.Errorf("num_ctx value out of range")
+		}
+		contextLength = int(v)
+
+	case float32:
+		f64 := float64(v)
+		if math.IsNaN(f64) || math.IsInf(f64, 0) {
+			return 0, fmt.Errorf("num_ctx must be a finite number")
+		}
+		if math.Trunc(f64) != f64 {
+			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
+		}
+		// Check for overflow on 32-bit systems (negative values handled by validation at line 177)
+		if f64 > float64(maxInt) {
+			return 0, fmt.Errorf("num_ctx value out of range")
+		}
+		contextLength = int(v)
+
+	case int:
+		contextLength = v
+
+	case int64:
+		if v < 0 {
+			return 0, fmt.Errorf("num_ctx must be positive, got: %d", v)
+		}
+		if v > maxInt {
+			return 0, fmt.Errorf("num_ctx value too large: %d", v)
+		}
+		contextLength = int(v)
+
+	case json.Number:
+		i64, err := v.Int64()
+		if err != nil {
+			return 0, fmt.Errorf("num_ctx must be a valid number")
+		}
+		if i64 < 0 {
+			return 0, fmt.Errorf("num_ctx must be positive, got: %d", i64)
+		}
+		if i64 > maxInt {
+			return 0, fmt.Errorf("num_ctx value too large: %d", i64)
+		}
+		contextLength = int(i64)
+
+	case string:
+		parsed, err := strconv.Atoi(v)
+		if err != nil {
+			// Truncate long strings in error messages to avoid logging excessively large input
+			errVal := v
+			if len(v) > 50 {
+				errVal = v[:50] + "..."
+			}
+			return 0, fmt.Errorf("num_ctx must be a valid number, got: %s", errVal)
+		}
+		contextLength = parsed
+
+	default:
+		return 0, fmt.Errorf("num_ctx must be a number, got invalid type")
+	}
+
+	if contextLength <= 0 {
+		return 0, fmt.Errorf("num_ctx must be positive, got: %d", contextLength)
+	}
+
+	const maxContextLength = 1000000
+	if contextLength > maxContextLength {
+		return 0, fmt.Errorf("num_ctx exceeds maximum allowed value of %d", maxContextLength)
+	}
+
+	return contextLength, nil
 }
 
 func ServeOllama(registry *core.PluginRegistry, address string, version string) (err error) {
@@ -161,6 +268,15 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "testing endpoint"})
 		return
 	}
+
+	// Extract and validate num_ctx from options
+	numCtx, err := parseOllamaNumCtx(prompt.Options)
+	if err != nil {
+		log.Printf("Invalid num_ctx in request: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	now := time.Now()
 	var chat ChatRequest
 
@@ -210,6 +326,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			Variables:   variables,
 		}}
 	}
+
+	// Set context length from parsed num_ctx
+	chat.ModelContextLength = numCtx
+
 	fabricChatReq, err := json.Marshal(chat)
 	if err != nil {
 		log.Printf("Error marshalling body: %v", err)
