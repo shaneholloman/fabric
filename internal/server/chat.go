@@ -37,7 +37,7 @@ type ChatRequest struct {
 	Prompts            []PromptRequest `json:"prompts"`
 	Language           string          `json:"language"`
 	ModelContextLength int             `json:"modelContextLength,omitempty"` // Context window size
-	domain.ChatOptions                                                       // Embed the ChatOptions from common package
+	domain.ChatOptions                 // Embed the ChatOptions from common package
 }
 
 type StreamResponse struct {
