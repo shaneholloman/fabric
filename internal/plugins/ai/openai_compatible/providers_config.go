@@ -145,6 +145,11 @@ var ProviderMap = map[string]ProviderConfig{
 		ModelsURL:           "https://models.github.ai/catalog", // FetchModelsDirectly will append /models
 		ImplementsResponses: false,
 	},
+	"Infermatic": {
+		Name:                "Infermatic",
+		BaseURL:             "https://api.totalgpt.ai/v1",
+		ImplementsResponses: false,
+	},
 	"GrokAI": {
 		Name:                "GrokAI",
 		BaseURL:             "https://api.x.ai/v1",
