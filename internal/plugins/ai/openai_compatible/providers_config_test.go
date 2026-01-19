@@ -31,6 +31,11 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - Infermatic",
+			provider: "Infermatic",
+			exists:   true,
+		},
+		{
 			name:     "Existing provider - MiniMax",
 			provider: "MiniMax",
 			exists:   true,
