@@ -2,9 +2,7 @@ package git
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -425,64 +423,49 @@ func (w *Walker) Repository() *git.Repository {
 }
 
 // IsWorkingDirectoryClean checks if the working directory has any uncommitted changes
+// Uses native git CLI instead of go-git to properly handle worktree scenarios
 func (w *Walker) IsWorkingDirectoryClean() (bool, error) {
 	worktree, err := w.repo.Worktree()
 	if err != nil {
 		return false, fmt.Errorf("failed to get worktree: %w", err)
 	}
 
-	status, err := worktree.Status()
+	worktreePath := worktree.Filesystem.Root()
+
+	// Use native git status --porcelain to avoid go-git worktree issues
+	// go-git's status API has known bugs with linked worktrees
+	cmd := exec.Command("git", "status", "--porcelain")
+	cmd.Dir = worktreePath
+
+	output, err := cmd.Output()
 	if err != nil {
 		return false, fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	worktreePath := worktree.Filesystem.Root()
-
-	// In worktrees, files staged in the main repo may appear in status but not exist in the worktree
-	// We need to check both the working directory status AND filesystem existence
-	for file, fileStatus := range status {
-		// Check if there are any changes in the working directory
-		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
-			return false, nil
-		}
-
-		// For staged files (Added, Modified in index), verify they exist in this worktree's filesystem
-		// This handles the worktree case where the main repo has staged files that don't exist here
-		if fileStatus.Staging != git.Unmodified && fileStatus.Staging != git.Untracked {
-			filePath := filepath.Join(worktreePath, file)
-			if _, err := os.Stat(filePath); os.IsNotExist(err) {
-				// File is staged but doesn't exist in this worktree - ignore it
-				continue
-			}
-			// File is staged AND exists in this worktree - not clean
-			return false, nil
-		}
-	}
-
-	return true, nil
+	// If output is empty, working directory is clean
+	return len(strings.TrimSpace(string(output))) == 0, nil
 }
 
 // GetStatusDetails returns a detailed status of the working directory
+// Uses native git CLI instead of go-git to properly handle worktree scenarios
 func (w *Walker) GetStatusDetails() (string, error) {
 	worktree, err := w.repo.Worktree()
 	if err != nil {
 		return "", fmt.Errorf("failed to get worktree: %w", err)
 	}
 
-	status, err := worktree.Status()
+	worktreePath := worktree.Filesystem.Root()
+
+	// Use native git status --porcelain to avoid go-git worktree issues
+	cmd := exec.Command("git", "status", "--porcelain")
+	cmd.Dir = worktreePath
+
+	output, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("failed to get git status: %w", err)
 	}
 
-	var details strings.Builder
-	for file, fileStatus := range status {
-		// Only include files with actual working directory changes
-		if fileStatus.Worktree != git.Unmodified && fileStatus.Worktree != git.Untracked {
-			details.WriteString(fmt.Sprintf("  %c%c %s\n", fileStatus.Staging, fileStatus.Worktree, file))
-		}
-	}
-
-	return details.String(), nil
+	return string(output), nil
 }
 
 // AddFile adds a file to the git index
@@ -526,13 +509,17 @@ func (w *Walker) CommitChanges(message string) (plumbing.Hash, error) {
 		return plumbing.ZeroHash, fmt.Errorf("failed to commit: %w (output: %s)", err, string(output))
 	}
 
-	// Get the commit hash from HEAD
-	ref, err := w.repo.Head()
+	// Get the commit hash from HEAD using native git to avoid go-git worktree issues
+	hashCmd := exec.Command("git", "rev-parse", "HEAD")
+	hashCmd.Dir = worktreePath
+
+	hashOutput, err := hashCmd.Output()
 	if err != nil {
 		return plumbing.ZeroHash, fmt.Errorf("failed to get HEAD after commit: %w", err)
 	}
 
-	return ref.Hash(), nil
+	hashStr := strings.TrimSpace(string(hashOutput))
+	return plumbing.NewHash(hashStr), nil
 }
 
 // PushToRemote pushes the current branch to the remote repository
