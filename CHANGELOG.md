@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.384 (2026-01-19)
+
+### PR [#1944](https://github.com/danielmiessler/Fabric/pull/1944) by [ksylvan](https://github.com/ksylvan): Add Infermatic AI Provider Support
+
+- Add Infermatic provider to ProviderMap as part of Phase 1 implementation for issue #1033
+- Add test coverage for the Infermatic AI provider in TestCreateClient to verify provider exists and creates valid client
+- Replace go-git status API with native `git status --porcelain` command to fix worktree compatibility issues
+- Simplify `IsWorkingDirectoryClean` and `GetStatusDetails` functions to use CLI output parsing instead of go-git library
+- Use native `git rev-parse HEAD` to get commit hash after commit and remove unused imports from walker.go
+
 ## v1.4.383 (2026-01-18)
 
 ### PR [#1943](https://github.com/danielmiessler/Fabric/pull/1943) by [ksylvan](https://github.com/ksylvan): fix: Ollama server now respects the default context window
