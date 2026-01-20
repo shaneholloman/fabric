@@ -1,0 +1,7 @@
+### PR [#1949](https://github.com/danielmiessler/Fabric/pull/1949) by [ksylvan](https://github.com/ksylvan): Fix #1931 - Image Generation Feature should warn if the model is not capable of Image Generation
+
+- Add image generation compatibility warnings for unsupported models
+- Add warning to stderr when using incompatible models with image generation
+- Add GPT-5, GPT-5-nano, and GPT-5.2 to supported image generation models
+- Create `checkImageGenerationCompatibility` function in OpenAI plugin
+- Add comprehensive tests for image generation compatibility warnings

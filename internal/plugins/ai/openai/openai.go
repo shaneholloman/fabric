@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"slices"
 	"strings"
 	"time"
@@ -69,6 +70,14 @@ type Client struct {
 // SetResponsesAPIEnabled configures whether to use the Responses API
 func (o *Client) SetResponsesAPIEnabled(enabled bool) {
 	o.ImplementsResponses = enabled
+}
+
+// checkImageGenerationCompatibility warns if the model doesn't support image generation
+func checkImageGenerationCompatibility(model string) {
+	if !supportsImageGeneration(model) {
+		fmt.Fprintf(os.Stderr, "Warning: Model '%s' does not support image generation. Supported models: %s. Consider using -m gpt-4o for image generation.\n",
+			model, strings.Join(ImageGenerationSupportedModels, ", "))
+	}
 }
 
 func (o *Client) configure() (ret error) {
@@ -154,6 +163,11 @@ func (o *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 }
 
 func (o *Client) sendResponses(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (ret string, err error) {
+	// Warn if model doesn't support image generation when image file is specified
+	if opts.ImageFile != "" {
+		checkImageGenerationCompatibility(opts.Model)
+	}
+
 	// Validate model supports image generation if image file is specified
 	if opts.ImageFile != "" && !supportsImageGeneration(opts.Model) {
 		return "", fmt.Errorf("model '%s' does not support image generation. Supported models: %s", opts.Model, strings.Join(ImageGenerationSupportedModels, ", "))
