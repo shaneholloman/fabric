@@ -252,5 +252,8 @@
 	},
 	"[json]": {
 		"editor.formatOnSave": false
+	},
+	"gopls": {
+		"build.buildFlags": ["-tags=integration"]
 	}
 }

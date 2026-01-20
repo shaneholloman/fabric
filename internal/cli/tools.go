@@ -87,5 +87,26 @@ func handleToolProcessing(currentFlags *Flags, registry *core.PluginRegistry) (m
 		}
 	}
 
+	// Handle Spotify podcast/episode metadata
+	if currentFlags.Spotify != "" {
+		if !registry.Spotify.IsConfigured() {
+			err = fmt.Errorf("%s", i18n.T("spotify_not_configured"))
+			return
+		}
+
+		var metadata any
+		if metadata, err = registry.Spotify.GrabMetadataForURL(currentFlags.Spotify); err != nil {
+			return
+		}
+
+		formattedMetadata := registry.Spotify.FormatMetadataAsText(metadata)
+		messageTools = AppendMessage(messageTools, formattedMetadata)
+
+		if !currentFlags.IsChatRequest() {
+			err = currentFlags.WriteOutput(messageTools)
+			return
+		}
+	}
+
 	return
 }

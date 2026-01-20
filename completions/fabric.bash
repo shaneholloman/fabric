@@ -109,6 +109,9 @@ _fabric() {
     # No specific completion suggestions, user types the value
     return 0
     ;;
+  --spotify)
+    return 0
+    ;;
   esac
 
   # If the current word starts with '-', suggest options
