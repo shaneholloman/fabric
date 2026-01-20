@@ -1,0 +1,7 @@
+### PR [#1948](https://github.com/danielmiessler/Fabric/pull/1948) by [cleong14](https://github.com/cleong14): feat(patterns): add create_bd_issue pattern
+
+- Added create_bd_issue pattern that transforms natural language issue descriptions into optimal bd (Beads) issue tracker commands
+- Implemented comprehensive bd create flag reference for better command generation
+- Added intelligent type detection system that automatically categorizes issues as bug, feature, task, epic, or chore
+- Included priority assessment capability that assigns P0-P4 priority levels based on urgency signals in descriptions
+- Integrated smart label selection feature that automatically chooses 1-4 relevant labels for each issue
