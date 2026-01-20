@@ -1,0 +1,7 @@
+### PR [#1947](https://github.com/danielmiessler/Fabric/pull/1947) by [cleong14](https://github.com/cleong14): feat(patterns): add extract_bd_ideas pattern
+
+- Added extract_bd_ideas pattern that extracts actionable ideas from content and transforms them into well-structured bd issue tracker commands
+- Implemented identification system for tasks, problems, ideas, improvements, bugs, and features
+- Added actionability evaluation and appropriate scoping functionality
+- Integrated priority assignment system (P0-P4) with relevant labels
+- Created ready-to-execute bd create commands output format
