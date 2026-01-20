@@ -28,6 +28,9 @@ var ImageGenerationSupportedModels = []string{
 	"gpt-4.1-mini",
 	"gpt-4.1-nano",
 	"o3",
+	"gpt-5",
+	"gpt-5-nano",
+	"gpt-5.2",
 }
 
 // supportsImageGeneration checks if the given model supports the image_generation tool
