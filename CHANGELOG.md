@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.4.385 (2026-01-20)
+
+### PR [#1947](https://github.com/danielmiessler/Fabric/pull/1947) by [cleong14](https://github.com/cleong14): feat(patterns): add extract_bd_ideas pattern
+
+- Added extract_bd_ideas pattern that extracts actionable ideas from content and transforms them into well-structured bd issue tracker commands
+- Implemented identification system for tasks, problems, ideas, improvements, bugs, and features
+- Added actionability evaluation and appropriate scoping functionality
+- Integrated priority assignment system (P0-P4) with relevant labels
+- Created ready-to-execute bd create commands output format
+
+### PR [#1948](https://github.com/danielmiessler/Fabric/pull/1948) by [cleong14](https://github.com/cleong14): feat(patterns): add create_bd_issue pattern
+
+- Added create_bd_issue pattern that transforms natural language issue descriptions into optimal bd (Beads) issue tracker commands
+- Implemented comprehensive bd create flag reference for better command generation
+- Added intelligent type detection system that automatically categorizes issues as bug, feature, task, epic, or chore
+- Included priority assessment capability that assigns P0-P4 priority levels based on urgency signals in descriptions
+- Integrated smart label selection feature that automatically chooses 1-4 relevant labels for each issue
+
+### PR [#1949](https://github.com/danielmiessler/Fabric/pull/1949) by [ksylvan](https://github.com/ksylvan): Fix #1931 - Image Generation Feature should warn if the model is not capable of Image Generation
+
+- Add image generation compatibility warnings for unsupported models
+- Add warning to stderr when using incompatible models with image generation
+- Add GPT-5, GPT-5-nano, and GPT-5.2 to supported image generation models
+- Create `checkImageGenerationCompatibility` function in OpenAI plugin
+- Add comprehensive tests for image generation compatibility warnings
+
 ## v1.4.384 (2026-01-19)
 
 ### PR [#1944](https://github.com/danielmiessler/Fabric/pull/1944) by [ksylvan](https://github.com/ksylvan): Add Infermatic AI Provider Support
