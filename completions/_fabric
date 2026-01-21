@@ -148,6 +148,7 @@ _fabric() {
     '(--debug)--debug[Set debug level (0=off, 1=basic, 2=detailed, 3=trace)]:debug level:(0 1 2 3)' \
     '(--notification)--notification[Send desktop notification when command completes]' \
     '(--notification-command)--notification-command[Custom command to run for notifications]:notification command:' \
+    '(--spotify)--spotify[Spotify podcast or episode URL to grab metadata]:spotify url:' \
     '(-h --help)'{-h,--help}'[Show this help message]' \
     '*:arguments:'
 }
