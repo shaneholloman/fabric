@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.386 (2026-01-21)
+
+### PR [#1945](https://github.com/danielmiessler/Fabric/pull/1945) by [ksylvan](https://github.com/ksylvan): feat: Add Spotify API integration for podcast metadata retrieval
+
+- Add Spotify metadata retrieval via --spotify flag
+- Add Spotify plugin with OAuth token handling and metadata
+- Wire --spotify flag into CLI processing and output
+- Register Spotify in plugin setup, env, and registry
+- Update shell completions to include --spotify option
+
 ## v1.4.385 (2026-01-20)
 
 ### PR [#1947](https://github.com/danielmiessler/Fabric/pull/1947) by [cleong14](https://github.com/cleong14): feat(patterns): add extract_bd_ideas pattern
