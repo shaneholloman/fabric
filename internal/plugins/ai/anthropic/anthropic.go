@@ -395,7 +395,7 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 				continue
 			}
 			if systemContent != "" {
-				systemContent += "\\n" + systemText
+				systemContent += "\n" + systemText
 			} else {
 				systemContent = systemText
 			}
@@ -454,7 +454,7 @@ func messageTextFromParts(msg *chat.ChatCompletionMessage) string {
 			textParts = append(textParts, part.Text)
 		}
 	}
-	return strings.Join(textParts, "\\n")
+	return strings.Join(textParts, "\n")
 }
 
 func contentBlocksFromMessage(msg *chat.ChatCompletionMessage) []anthropic.ContentBlockParamUnion {
@@ -485,7 +485,7 @@ func prependSystemContentToBlocks(systemContent string, blocks []anthropic.Conte
 		return []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}
 	}
 	if blocks[0].OfText != nil {
-		blocks[0].OfText.Text = systemContent + "\\n\\n" + blocks[0].OfText.Text
+		blocks[0].OfText.Text = systemContent + "\n\n" + blocks[0].OfText.Text
 		return blocks
 	}
 	return append([]anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}, blocks...)
