@@ -444,6 +444,8 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 	return anthropicMessages
 }
 
+// messageTextFromParts extracts and concatenates all text content from a message,
+// combining both the Content field and any text parts in MultiContent.
 func messageTextFromParts(msg *chat.ChatCompletionMessage) string {
 	textParts := []string{}
 	if strings.TrimSpace(msg.Content) != "" {
@@ -457,6 +459,8 @@ func messageTextFromParts(msg *chat.ChatCompletionMessage) string {
 	return strings.Join(textParts, "\n")
 }
 
+// contentBlocksFromMessage converts a chat message into Anthropic content blocks,
+// handling text content, image URLs (both data URLs and remote URLs), and PDF attachments.
 func contentBlocksFromMessage(msg *chat.ChatCompletionMessage) []anthropic.ContentBlockParamUnion {
 	var blocks []anthropic.ContentBlockParamUnion
 	if strings.TrimSpace(msg.Content) != "" {
@@ -480,6 +484,8 @@ func contentBlocksFromMessage(msg *chat.ChatCompletionMessage) []anthropic.Conte
 	return blocks
 }
 
+// prependSystemContentToBlocks prepends system content to content blocks. If the first
+// block is text, it merges the system content with it; otherwise, it prepends a new text block.
 func prependSystemContentToBlocks(systemContent string, blocks []anthropic.ContentBlockParamUnion) []anthropic.ContentBlockParamUnion {
 	if len(blocks) == 0 {
 		return []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}
@@ -491,6 +497,10 @@ func prependSystemContentToBlocks(systemContent string, blocks []anthropic.Conte
 	return append([]anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}, blocks...)
 }
 
+// contentBlockFromAttachmentURL converts an attachment URL into an Anthropic content block.
+// For data URLs, it parses the MIME type and base64 data to create image or PDF blocks.
+// For remote URLs, it creates URL-based image blocks, or PDF document blocks if the URL ends in .pdf.
+// Returns the content block and true on success, or an empty block and false if unsupported.
 func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion, bool) {
 	if strings.HasPrefix(url, "data:") {
 		mimeType, data, ok := parseDataURL(url)
@@ -513,6 +523,8 @@ func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion
 	return anthropic.NewImageBlock(anthropic.URLImageSourceParam{URL: url}), true
 }
 
+// parseDataURL parses an RFC 2397 data URL, extracting the MIME type and base64-encoded data.
+// Only base64-encoded data URLs are supported; URL-encoded data URLs will return ok=false.
 func parseDataURL(value string) (mimeType string, data string, ok bool) {
 	if !strings.HasPrefix(value, "data:") {
 		return "", "", false
@@ -550,14 +562,15 @@ func parseDataURL(value string) (mimeType string, data string, ok bool) {
 // by the Anthropic API. Supported formats: image/jpeg, image/png, image/gif, image/webp.
 // See: https://docs.anthropic.com/en/docs/build-with-claude/vision
 func normalizeImageMimeType(mimeType string) string {
-	normalized := strings.ToLower(strings.TrimSpace(mimeType))
-	switch normalized {
-	case "image/jpg":
-		normalized = "image/jpeg"
-	}
-	switch normalized {
-	case "image/jpeg", "image/png", "image/gif", "image/webp":
-		return normalized
+	switch strings.ToLower(strings.TrimSpace(mimeType)) {
+	case "image/jpg", "image/jpeg":
+		return "image/jpeg"
+	case "image/png":
+		return "image/png"
+	case "image/gif":
+		return "image/gif"
+	case "image/webp":
+		return "image/webp"
 	default:
 		return ""
 	}
