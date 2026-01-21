@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	neturl "net/url"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -381,22 +383,29 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 	lastRoleWasUser := false
 
 	for _, msg := range msgs {
-		if strings.TrimSpace(msg.Content) == "" {
+		if strings.TrimSpace(msg.Content) == "" && len(msg.MultiContent) == 0 {
 			continue // Skip empty messages
 		}
 
 		switch msg.Role {
 		case chat.ChatMessageRoleSystem:
 			// Accumulate system content. It will be prepended to the first user message.
+			systemText := messageTextFromParts(msg)
+			if systemText == "" {
+				continue
+			}
 			if systemContent != "" {
-				systemContent += "\\n" + msg.Content
+				systemContent += "\\n" + systemText
 			} else {
-				systemContent = msg.Content
+				systemContent = systemText
 			}
 		case chat.ChatMessageRoleUser:
-			userContent := msg.Content
+			blocks := contentBlocksFromMessage(msg)
+			if len(blocks) == 0 {
+				continue
+			}
 			if isFirstUserMessage && systemContent != "" {
-				userContent = systemContent + "\\n\\n" + userContent
+				blocks = prependSystemContentToBlocks(systemContent, blocks)
 				isFirstUserMessage = false // System content now consumed
 			}
 			if lastRoleWasUser {
@@ -404,7 +413,7 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 				// This shouldn't happen with current chatter.go logic but is a safeguard.
 				anthropicMessages = append(anthropicMessages, anthropic.NewAssistantMessage(anthropic.NewTextBlock("Okay.")))
 			}
-			anthropicMessages = append(anthropicMessages, anthropic.NewUserMessage(anthropic.NewTextBlock(userContent)))
+			anthropicMessages = append(anthropicMessages, anthropic.NewUserMessage(blocks...))
 			lastRoleWasUser = true
 		case chat.ChatMessageRoleAssistant:
 			// If the first message is an assistant message, and we have system content,
@@ -433,6 +442,127 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 	}
 
 	return anthropicMessages
+}
+
+func messageTextFromParts(msg *chat.ChatCompletionMessage) string {
+	textParts := []string{}
+	if strings.TrimSpace(msg.Content) != "" {
+		textParts = append(textParts, msg.Content)
+	}
+	for _, part := range msg.MultiContent {
+		if part.Type == chat.ChatMessagePartTypeText && strings.TrimSpace(part.Text) != "" {
+			textParts = append(textParts, part.Text)
+		}
+	}
+	return strings.Join(textParts, "\\n")
+}
+
+func contentBlocksFromMessage(msg *chat.ChatCompletionMessage) []anthropic.ContentBlockParamUnion {
+	var blocks []anthropic.ContentBlockParamUnion
+	if strings.TrimSpace(msg.Content) != "" {
+		blocks = append(blocks, anthropic.NewTextBlock(msg.Content))
+	}
+	for _, part := range msg.MultiContent {
+		switch part.Type {
+		case chat.ChatMessagePartTypeText:
+			if strings.TrimSpace(part.Text) != "" {
+				blocks = append(blocks, anthropic.NewTextBlock(part.Text))
+			}
+		case chat.ChatMessagePartTypeImageURL:
+			if part.ImageURL == nil || strings.TrimSpace(part.ImageURL.URL) == "" {
+				continue
+			}
+			if block, ok := contentBlockFromAttachmentURL(part.ImageURL.URL); ok {
+				blocks = append(blocks, block)
+			}
+		}
+	}
+	return blocks
+}
+
+func prependSystemContentToBlocks(systemContent string, blocks []anthropic.ContentBlockParamUnion) []anthropic.ContentBlockParamUnion {
+	if len(blocks) == 0 {
+		return []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}
+	}
+	if blocks[0].OfText != nil {
+		blocks[0].OfText.Text = systemContent + "\\n\\n" + blocks[0].OfText.Text
+		return blocks
+	}
+	return append([]anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}, blocks...)
+}
+
+func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion, bool) {
+	if strings.HasPrefix(url, "data:") {
+		mimeType, data, ok := parseDataURL(url)
+		if !ok {
+			return anthropic.ContentBlockParamUnion{}, false
+		}
+		if strings.EqualFold(mimeType, "application/pdf") {
+			return anthropic.NewDocumentBlock(anthropic.Base64PDFSourceParam{Data: data}), true
+		}
+		if normalized := normalizeImageMimeType(mimeType); normalized != "" {
+			return anthropic.NewImageBlockBase64(normalized, data), true
+		}
+		return anthropic.ContentBlockParamUnion{}, false
+	}
+	if isPDFURL(url) {
+		return anthropic.NewDocumentBlock(anthropic.URLPDFSourceParam{URL: url}), true
+	}
+	return anthropic.NewImageBlock(anthropic.URLImageSourceParam{URL: url}), true
+}
+
+func parseDataURL(value string) (mimeType string, data string, ok bool) {
+	if !strings.HasPrefix(value, "data:") {
+		return "", "", false
+	}
+	withoutPrefix := strings.TrimPrefix(value, "data:")
+	parts := strings.SplitN(withoutPrefix, ",", 2)
+	if len(parts) != 2 {
+		return "", "", false
+	}
+	meta := strings.TrimSpace(parts[0])
+	data = strings.TrimSpace(parts[1])
+	if data == "" {
+		return "", "", false
+	}
+	metaParts := strings.Split(meta, ";")
+	mimeType = strings.TrimSpace(metaParts[0])
+	if mimeType == "" {
+		return "", "", false
+	}
+	hasBase64 := false
+	for _, part := range metaParts[1:] {
+		if strings.EqualFold(strings.TrimSpace(part), "base64") {
+			hasBase64 = true
+			break
+		}
+	}
+	if !hasBase64 {
+		return "", "", false
+	}
+	return mimeType, data, true
+}
+
+func normalizeImageMimeType(mimeType string) string {
+	normalized := strings.ToLower(strings.TrimSpace(mimeType))
+	switch normalized {
+	case "image/jpg":
+		normalized = "image/jpeg"
+	}
+	switch normalized {
+	case "image/jpeg", "image/png", "image/gif", "image/webp":
+		return normalized
+	default:
+		return ""
+	}
+}
+
+func isPDFURL(url string) bool {
+	parsedURL, err := neturl.Parse(url)
+	if err != nil {
+		return false
+	}
+	return strings.EqualFold(path.Ext(parsedURL.Path), ".pdf")
 }
 
 func (an *Client) NeedsRawMode(modelName string) bool {
