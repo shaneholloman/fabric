@@ -495,6 +495,7 @@ func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion
 	if strings.HasPrefix(url, "data:") {
 		mimeType, data, ok := parseDataURL(url)
 		if !ok {
+			debuglog.Debug(debuglog.Basic, "contentBlockFromAttachmentURL: failed to parse data URL")
 			return anthropic.ContentBlockParamUnion{}, false
 		}
 		if strings.EqualFold(mimeType, "application/pdf") {
@@ -503,6 +504,7 @@ func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion
 		if normalized := normalizeImageMimeType(mimeType); normalized != "" {
 			return anthropic.NewImageBlockBase64(normalized, data), true
 		}
+		debuglog.Debug(debuglog.Basic, "contentBlockFromAttachmentURL: unsupported MIME type %s", mimeType)
 		return anthropic.ContentBlockParamUnion{}, false
 	}
 	if isPDFURL(url) {
@@ -538,11 +540,15 @@ func parseDataURL(value string) (mimeType string, data string, ok bool) {
 		}
 	}
 	if !hasBase64 {
+		debuglog.Debug(debuglog.Basic, "parseDataURL: data URL without base64 encoding is not supported")
 		return "", "", false
 	}
 	return mimeType, data, true
 }
 
+// normalizeImageMimeType validates and normalizes image MIME types to those supported
+// by the Anthropic API. Supported formats: image/jpeg, image/png, image/gif, image/webp.
+// See: https://docs.anthropic.com/en/docs/build-with-claude/vision
 func normalizeImageMimeType(mimeType string) string {
 	normalized := strings.ToLower(strings.TrimSpace(mimeType))
 	switch normalized {
@@ -557,6 +563,11 @@ func normalizeImageMimeType(mimeType string) string {
 	}
 }
 
+// isPDFURL checks if a URL appears to point to a PDF based on its path extension.
+// NOTE: This only checks the URL path extension (.pdf) and will not detect PDFs served
+// from extension-less endpoints (e.g., /documents/12345) or based on Content-Type headers.
+// This is an intentional limitation; callers should not assume this guarantees the
+// remote resource is actually a PDF.
 func isPDFURL(url string) bool {
 	parsedURL, err := neturl.Parse(url)
 	if err != nil {
