@@ -1,0 +1,7 @@
+### PR [#1951](https://github.com/danielmiessler/Fabric/pull/1951) by [ksylvan](https://github.com/ksylvan): Add `extract_wisdom_with_attribution` pattern for speaker-attributed quotes
+
+- Add new `extract_wisdom_with_attribution` pattern that extends `extract_wisdom` functionality with speaker attribution capabilities
+- Create comprehensive documentation including README and system.md files for the new pattern
+- Update pattern_explanations.md with detailed entry for the new pattern
+- Add pattern to suggest_pattern category lists for improved discoverability
+- Update pattern metadata files including pattern_descriptions.json and pattern_extracts.json with relevant tags and content

@@ -494,6 +494,10 @@ Extract pure wisdom from content without metadata.
 
 Extract condensed  insightful ideas and recommendations focusing on life wisdom.
 
+### extract_wisdom_with_attribution
+
+Extract insightful ideas and recommendations with speaker attribution for quotes.
+
 ### t_extract_intro_sentences
 
 Extract intro sentences to identify engagement strategies.
