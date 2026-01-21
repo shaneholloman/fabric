@@ -1,0 +1,6 @@
+### PR [#1950](https://github.com/danielmiessler/Fabric/pull/1950) by [cleong14](https://github.com/cleong14): feat: add suggest_gt_command pattern
+
+- Added new suggest_gt_command pattern that suggests Gas Town (gt) CLI commands based on natural language descriptions
+- Covers 85+ commands across work management, agents, communication, services, diagnostics, and recovery
+- Includes pipe-friendly output with raw command on first line for easy command extraction
+- Integrates with Gas Town CLI tool for enhanced command-line workflow automation
