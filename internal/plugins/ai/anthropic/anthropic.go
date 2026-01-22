@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	neturl "net/url"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -381,22 +383,29 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 	lastRoleWasUser := false
 
 	for _, msg := range msgs {
-		if strings.TrimSpace(msg.Content) == "" {
+		if strings.TrimSpace(msg.Content) == "" && len(msg.MultiContent) == 0 {
 			continue // Skip empty messages
 		}
 
 		switch msg.Role {
 		case chat.ChatMessageRoleSystem:
 			// Accumulate system content. It will be prepended to the first user message.
+			systemText := messageTextFromParts(msg)
+			if systemText == "" {
+				continue
+			}
 			if systemContent != "" {
-				systemContent += "\\n" + msg.Content
+				systemContent += "\n" + systemText
 			} else {
-				systemContent = msg.Content
+				systemContent = systemText
 			}
 		case chat.ChatMessageRoleUser:
-			userContent := msg.Content
+			blocks := contentBlocksFromMessage(msg)
+			if len(blocks) == 0 {
+				continue
+			}
 			if isFirstUserMessage && systemContent != "" {
-				userContent = systemContent + "\\n\\n" + userContent
+				blocks = prependSystemContentToBlocks(systemContent, blocks)
 				isFirstUserMessage = false // System content now consumed
 			}
 			if lastRoleWasUser {
@@ -404,7 +413,7 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 				// This shouldn't happen with current chatter.go logic but is a safeguard.
 				anthropicMessages = append(anthropicMessages, anthropic.NewAssistantMessage(anthropic.NewTextBlock("Okay.")))
 			}
-			anthropicMessages = append(anthropicMessages, anthropic.NewUserMessage(anthropic.NewTextBlock(userContent)))
+			anthropicMessages = append(anthropicMessages, anthropic.NewUserMessage(blocks...))
 			lastRoleWasUser = true
 		case chat.ChatMessageRoleAssistant:
 			// If the first message is an assistant message, and we have system content,
@@ -433,6 +442,151 @@ func (an *Client) toMessages(msgs []*chat.ChatCompletionMessage) (ret []anthropi
 	}
 
 	return anthropicMessages
+}
+
+// messageTextFromParts extracts and concatenates all text content from a message,
+// combining both the Content field and any text parts in MultiContent.
+func messageTextFromParts(msg *chat.ChatCompletionMessage) string {
+	textParts := []string{}
+	if strings.TrimSpace(msg.Content) != "" {
+		textParts = append(textParts, msg.Content)
+	}
+	for _, part := range msg.MultiContent {
+		if part.Type == chat.ChatMessagePartTypeText && strings.TrimSpace(part.Text) != "" {
+			textParts = append(textParts, part.Text)
+		}
+	}
+	return strings.Join(textParts, "\n")
+}
+
+// contentBlocksFromMessage converts a chat message into Anthropic content blocks,
+// handling text content, image URLs (both data URLs and remote URLs), and PDF attachments.
+func contentBlocksFromMessage(msg *chat.ChatCompletionMessage) []anthropic.ContentBlockParamUnion {
+	var blocks []anthropic.ContentBlockParamUnion
+	if strings.TrimSpace(msg.Content) != "" {
+		blocks = append(blocks, anthropic.NewTextBlock(msg.Content))
+	}
+	for _, part := range msg.MultiContent {
+		switch part.Type {
+		case chat.ChatMessagePartTypeText:
+			if strings.TrimSpace(part.Text) != "" {
+				blocks = append(blocks, anthropic.NewTextBlock(part.Text))
+			}
+		case chat.ChatMessagePartTypeImageURL:
+			if part.ImageURL == nil || strings.TrimSpace(part.ImageURL.URL) == "" {
+				continue
+			}
+			if block, ok := contentBlockFromAttachmentURL(part.ImageURL.URL); ok {
+				blocks = append(blocks, block)
+			}
+		}
+	}
+	return blocks
+}
+
+// prependSystemContentToBlocks prepends system content to content blocks. If the first
+// block is text, it merges the system content with it; otherwise, it prepends a new text block.
+func prependSystemContentToBlocks(systemContent string, blocks []anthropic.ContentBlockParamUnion) []anthropic.ContentBlockParamUnion {
+	if len(blocks) == 0 {
+		return []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}
+	}
+	if blocks[0].OfText != nil {
+		blocks[0].OfText.Text = systemContent + "\n\n" + blocks[0].OfText.Text
+		return blocks
+	}
+	return append([]anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(systemContent)}, blocks...)
+}
+
+// contentBlockFromAttachmentURL converts an attachment URL into an Anthropic content block.
+// For data URLs, it parses the MIME type and base64 data to create image or PDF blocks.
+// For remote URLs, it creates URL-based image blocks, or PDF document blocks if the URL ends in .pdf.
+// Returns the content block and true on success, or an empty block and false if unsupported.
+func contentBlockFromAttachmentURL(url string) (anthropic.ContentBlockParamUnion, bool) {
+	if strings.HasPrefix(url, "data:") {
+		mimeType, data, ok := parseDataURL(url)
+		if !ok {
+			debuglog.Debug(debuglog.Basic, "contentBlockFromAttachmentURL: failed to parse data URL")
+			return anthropic.ContentBlockParamUnion{}, false
+		}
+		if strings.EqualFold(mimeType, "application/pdf") {
+			return anthropic.NewDocumentBlock(anthropic.Base64PDFSourceParam{Data: data}), true
+		}
+		if normalized := normalizeImageMimeType(mimeType); normalized != "" {
+			return anthropic.NewImageBlockBase64(normalized, data), true
+		}
+		debuglog.Debug(debuglog.Basic, "contentBlockFromAttachmentURL: unsupported MIME type %s", mimeType)
+		return anthropic.ContentBlockParamUnion{}, false
+	}
+	if isPDFURL(url) {
+		return anthropic.NewDocumentBlock(anthropic.URLPDFSourceParam{URL: url}), true
+	}
+	return anthropic.NewImageBlock(anthropic.URLImageSourceParam{URL: url}), true
+}
+
+// parseDataURL parses an RFC 2397 data URL, extracting the MIME type and base64-encoded data.
+// Only base64-encoded data URLs are supported; URL-encoded data URLs will return ok=false.
+func parseDataURL(value string) (mimeType string, data string, ok bool) {
+	if !strings.HasPrefix(value, "data:") {
+		return "", "", false
+	}
+	withoutPrefix := strings.TrimPrefix(value, "data:")
+	parts := strings.SplitN(withoutPrefix, ",", 2)
+	if len(parts) != 2 {
+		return "", "", false
+	}
+	meta := strings.TrimSpace(parts[0])
+	data = strings.TrimSpace(parts[1])
+	if data == "" {
+		return "", "", false
+	}
+	metaParts := strings.Split(meta, ";")
+	mimeType = strings.TrimSpace(metaParts[0])
+	if mimeType == "" {
+		return "", "", false
+	}
+	hasBase64 := false
+	for _, part := range metaParts[1:] {
+		if strings.EqualFold(strings.TrimSpace(part), "base64") {
+			hasBase64 = true
+			break
+		}
+	}
+	if !hasBase64 {
+		debuglog.Debug(debuglog.Basic, "parseDataURL: data URL without base64 encoding is not supported")
+		return "", "", false
+	}
+	return mimeType, data, true
+}
+
+// normalizeImageMimeType validates and normalizes image MIME types to those supported
+// by the Anthropic API. Supported formats: image/jpeg, image/png, image/gif, image/webp.
+// See: https://docs.anthropic.com/en/docs/build-with-claude/vision
+func normalizeImageMimeType(mimeType string) string {
+	switch strings.ToLower(strings.TrimSpace(mimeType)) {
+	case "image/jpg", "image/jpeg":
+		return "image/jpeg"
+	case "image/png":
+		return "image/png"
+	case "image/gif":
+		return "image/gif"
+	case "image/webp":
+		return "image/webp"
+	default:
+		return ""
+	}
+}
+
+// isPDFURL checks if a URL appears to point to a PDF based on its path extension.
+// NOTE: This only checks the URL path extension (.pdf) and will not detect PDFs served
+// from extension-less endpoints (e.g., /documents/12345) or based on Content-Type headers.
+// This is an intentional limitation; callers should not assume this guarantees the
+// remote resource is actually a PDF.
+func isPDFURL(url string) bool {
+	parsedURL, err := neturl.Parse(url)
+	if err != nil {
+		return false
+	}
+	return strings.EqualFold(path.Ext(parsedURL.Path), ".pdf")
 }
 
 func (an *Client) NeedsRawMode(modelName string) bool {
