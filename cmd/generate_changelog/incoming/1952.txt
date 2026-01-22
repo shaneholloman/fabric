@@ -1,7 +1,0 @@
-### PR [#1952](https://github.com/danielmiessler/Fabric/pull/1952) by [ksylvan](https://github.com/ksylvan): Fix: using attachments with Anthropic models
-
-- Feat: add multi-content support for images and PDFs in Anthropic client
-- Update toMessages to handle multi-content messages with text and attachments
-- Add contentBlocksFromMessage to convert message parts to Anthropic blocks
-- Implement support for image URLs including data URLs and base64 images
-- Add PDF attachment handling via data URLs and URL-based PDFs

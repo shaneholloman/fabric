@@ -1,5 +1,30 @@
 # Changelog
 
+## v1.4.387 (2026-01-21)
+
+### PR [#1950](https://github.com/danielmiessler/Fabric/pull/1950) by [cleong14](https://github.com/cleong14): feat: add suggest_gt_command pattern
+
+- Added new suggest_gt_command pattern that suggests Gas Town (gt) CLI commands based on natural language descriptions
+- Covers 85+ commands across work management, agents, communication, services, diagnostics, and recovery
+- Includes pipe-friendly output with raw command on first line for easy command extraction
+- Integrates with Gas Town CLI tool for enhanced command-line workflow automation
+
+### PR [#1951](https://github.com/danielmiessler/Fabric/pull/1951) by [ksylvan](https://github.com/ksylvan): Add `extract_wisdom_with_attribution` pattern for speaker-attributed quotes
+
+- Add new `extract_wisdom_with_attribution` pattern that extends `extract_wisdom` functionality with speaker attribution capabilities
+- Create comprehensive documentation including README and system.md files for the new pattern
+- Update pattern_explanations.md with detailed entry for the new pattern
+- Add pattern to suggest_pattern category lists for improved discoverability
+- Update pattern metadata files including pattern_descriptions.json and pattern_extracts.json with relevant tags and content
+
+### PR [#1952](https://github.com/danielmiessler/Fabric/pull/1952) by [ksylvan](https://github.com/ksylvan): Fix: using attachments with Anthropic models
+
+- Feat: add multi-content support for images and PDFs in Anthropic client
+- Update toMessages to handle multi-content messages with text and attachments
+- Add contentBlocksFromMessage to convert message parts to Anthropic blocks
+- Implement support for image URLs including data URLs and base64 images
+- Add PDF attachment handling via data URLs and URL-based PDFs
+
 ## v1.4.386 (2026-01-21)
 
 ### PR [#1945](https://github.com/danielmiessler/Fabric/pull/1945) by [ksylvan](https://github.com/ksylvan): feat: Add Spotify API integration for podcast metadata retrieval
