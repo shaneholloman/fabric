@@ -1,3 +1,0 @@
-### PR [#1960](https://github.com/danielmiessler/Fabric/pull/1960) by [ksylvan](https://github.com/ksylvan): fix: consume all positional arguments as input
-
-- Fix: consume all positional arguments as input by joining all positional arguments with spaces instead of using only the last argument, allowing commands to process entire phrases correctly

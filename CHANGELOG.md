@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.389 (2026-01-23)
+
+### PR [#1960](https://github.com/danielmiessler/Fabric/pull/1960) by [ksylvan](https://github.com/ksylvan): fix: consume all positional arguments as input
+
+- Fix: consume all positional arguments as input by joining all positional arguments with spaces instead of using only the last argument, allowing commands to process entire phrases correctly
+
 ## v1.4.388 (2026-01-23)
 
 ### PR [#1957](https://github.com/danielmiessler/Fabric/pull/1957) by [ksylvan](https://github.com/ksylvan): Add Novita AI as a new OpenAI-compatible provider
