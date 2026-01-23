@@ -213,7 +213,7 @@ func Init() (ret *Flags, err error) {
 
 	// Append positional arguments to the message (custom message)
 	if len(args) > 0 {
-		ret.Message = AppendMessage(ret.Message, args[len(args)-1])
+		ret.Message = AppendMessage(ret.Message, strings.Join(args, " "))
 	}
 
 	if pipedToStdin {
