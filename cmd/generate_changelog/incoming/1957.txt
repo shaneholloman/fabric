@@ -1,0 +1,6 @@
+### PR [#1957](https://github.com/danielmiessler/Fabric/pull/1957) by [ksylvan](https://github.com/ksylvan): Add Novita AI as a new OpenAI-compatible provider
+
+- Add Novita AI as a new OpenAI-compatible provider
+- Add Novita AI provider configuration with API endpoint
+- Update README to include Novita AI in supported providers list
+- Configure Novita AI to use OpenAI-compatible interface

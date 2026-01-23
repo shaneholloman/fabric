@@ -180,6 +180,11 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.mistral.ai/v1",
 		ImplementsResponses: false,
 	},
+	"Novita AI": {
+		Name:                "Novita AI",
+		BaseURL:             "https://api.novita.ai/openai/v1",
+		ImplementsResponses: false,
+	},
 	"OpenRouter": {
 		Name:                "OpenRouter",
 		BaseURL:             "https://openrouter.ai/api/v1",

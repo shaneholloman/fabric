@@ -390,6 +390,7 @@ Fabric supports a wide range of AI providers:
 - LiteLLM
 - MiniMax
 - Mistral
+- Novita AI
 - OpenRouter
 - SiliconCloud
 - Together
