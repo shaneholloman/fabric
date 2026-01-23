@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.4.388 (2026-01-23)
+
+### PR [#1957](https://github.com/danielmiessler/Fabric/pull/1957) by [ksylvan](https://github.com/ksylvan): Add Novita AI as a new OpenAI-compatible provider
+
+- Add Novita AI as a new OpenAI-compatible provider
+- Add Novita AI provider configuration with API endpoint
+- Update README to include Novita AI in supported providers list
+- Configure Novita AI to use OpenAI-compatible interface
+
 ## v1.4.387 (2026-01-21)
 
 ### PR [#1950](https://github.com/danielmiessler/Fabric/pull/1950) by [cleong14](https://github.com/cleong14): feat: add suggest_gt_command pattern
