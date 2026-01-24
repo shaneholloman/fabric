@@ -79,13 +79,13 @@ func (oi *Client) configure() error {
 func azureDeploymentMiddleware(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
 	// Routes that need deployment name injection
 	deploymentRoutes := map[string]bool{
-		"/chat/completions":      true,
-		"/completions":           true,
-		"/embeddings":            true,
-		"/audio/speech":          true,
-		"/audio/transcriptions":  true,
-		"/audio/translations":    true,
-		"/images/generations":    true,
+		"/chat/completions":     true,
+		"/completions":          true,
+		"/embeddings":           true,
+		"/audio/speech":         true,
+		"/audio/transcriptions": true,
+		"/audio/translations":   true,
+		"/images/generations":   true,
 	}
 
 	path := req.URL.Path
