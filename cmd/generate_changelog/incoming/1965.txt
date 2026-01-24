@@ -1,0 +1,8 @@
+MiniMax unexpected status code: 404 from provider MiniMax, response body: 404 page not found
+### PR [#1965](https://github.com/danielmiessler/Fabric/pull/1965) by [infinitelyloopy-bt](https://github.com/infinitelyloopy-bt): fix(azure): Fix deployment URL path for Azure OpenAI API
+
+- Fixed deployment URL path construction for Azure OpenAI API to correctly include deployment names in request URLs
+- Added custom middleware to transform API paths and extract deployment names from request body model fields
+- Moved StreamOptions configuration to only apply to streaming requests, as Azure rejects stream_options for non-streaming requests
+- Added Azure OpenAI troubleshooting documentation with technical details and configuration guidance
+- Resolved SDK route matching bug that was preventing proper URL generation for Azure OpenAI endpoints
