@@ -35,6 +35,10 @@ func (o *Client) sendStreamChatCompletions(
 	defer close(channel)
 
 	req := o.buildChatCompletionParams(msgs, opts)
+	// Set StreamOptions only for streaming requests (required to get usage stats)
+	req.StreamOptions = openai.ChatCompletionStreamOptionsParam{
+		IncludeUsage: openai.Bool(true),
+	}
 	stream := o.ApiClient.Chat.Completions.NewStreaming(context.Background(), req)
 	for stream.Next() {
 		chunk := stream.Current()
@@ -82,9 +86,6 @@ func (o *Client) buildChatCompletionParams(
 	ret = openai.ChatCompletionNewParams{
 		Model:    shared.ChatModel(opts.Model),
 		Messages: messages,
-		StreamOptions: openai.ChatCompletionStreamOptionsParam{
-			IncludeUsage: openai.Bool(true),
-		},
 	}
 
 	if !opts.Raw {
