@@ -1953,6 +1953,32 @@
         "WISDOM",
         "SELF"
       ]
+    },
+    {
+      "patternName": "analyze_discord_structure",
+      "description": "Analyze Discord server structures for organizational issues, permissions, and optimization.",
+      "tags": [
+        "ANALYSIS",
+        "BUSINESS"
+      ]
+    },
+    {
+      "patternName": "create_design_system",
+      "description": "Create comprehensive CSS design systems with tokens, typography, spacing, and components.",
+      "tags": [
+        "DEVELOPMENT",
+        "VISUALIZE",
+        "WRITING"
+      ]
+    },
+    {
+      "patternName": "create_golden_rules",
+      "description": "Extract enforceable rules from codebases to prevent common mistakes and ensure consistency.",
+      "tags": [
+        "ANALYSIS",
+        "DEVELOPMENT",
+        "EXTRACT"
+      ]
     }
   ]
 }
