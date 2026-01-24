@@ -1,0 +1,7 @@
+### PR [#1967](https://github.com/danielmiessler/Fabric/pull/1967) by [ksylvan](https://github.com/ksylvan): chore: add MiniMax provider support and update API endpoints
+
+- Add MiniMax provider configuration with API endpoint updates
+- Implement NeedsRawMode method for MiniMax model handling
+- Define static MiniMax model list with M2 variants
+- Add Infermatic and Novita to VS Code extensions
+- Configure MiniMax models as static discovery
