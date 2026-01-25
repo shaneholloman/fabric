@@ -1979,6 +1979,37 @@
         "DEVELOPMENT",
         "EXTRACT"
       ]
+    },
+    {
+      "patternName": "create_bd_issue",
+      "description": "Transform natural language descriptions into optimal bd create commands for issue tracking.",
+      "tags": [
+        "DEVELOPMENT"
+      ]
+    },
+    {
+      "patternName": "extract_all_quotes",
+      "description": "Extract all inspirational and educational quotes from content including podcasts and essays.",
+      "tags": [
+        "EXTRACT"
+      ]
+    },
+    {
+      "patternName": "extract_bd_ideas",
+      "description": "Extract actionable ideas from content and transform into bd create commands.",
+      "tags": [
+        "EXTRACT",
+        "ANALYSIS",
+        "DEVELOPMENT"
+      ]
+    },
+    {
+      "patternName": "suggest_gt_command",
+      "description": "Suggest optimal Gas Town (GT) commands based on user intent and task description.",
+      "tags": [
+        "DEVELOPMENT",
+        "ANALYSIS"
+      ]
     }
   ]
 }

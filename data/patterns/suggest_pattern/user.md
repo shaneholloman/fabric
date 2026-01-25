@@ -120,6 +120,10 @@ Analyze user comments for sentiment, extract praise/criticism, and summarize rec
 
 Analyze debates identifying arguments, agreements, and emotional intensity.
 
+### analyze_discord_structure
+
+Analyze Discord server structures for organizational issues, permissions, and optimization.
+
 ### analyze_interviewer_techniques
 
 Study interviewer questions/methods to identify effective interview techniques.
@@ -212,6 +216,10 @@ Identify automation risks and career resilience strategies.
 
 Develop positive mental frameworks for challenging situations.
 
+### create_golden_rules
+
+Extract enforceable rules from codebases to prevent common mistakes and ensure consistency.
+
 ### create_story_about_people_interaction
 
 Analyze two personas, compare their dynamics, and craft a realistic, character-driven story from those insights.
@@ -231,6 +239,10 @@ Generate single-word tags for content categorization and mind mapping.
 ### extract_core_message
 
 Distill the fundamental message into a single, impactful sentence.
+
+### extract_bd_ideas
+
+Extract actionable ideas from content and transform into bd create commands.
 
 ### extract_extraordinary_claims
 
@@ -344,6 +356,10 @@ Convert board meeting transcripts into formal meeting notes for corporate record
 
 Summarize AI prompts to identify instructions and outputs.
 
+### suggest_gt_command
+
+Suggest optimal Gas Town (GT) commands based on user intent and task description.
+
 ### t_analyze_challenge_handling
 
 Evaluate challenge handling by analyzing response strategies.
@@ -382,6 +398,10 @@ Generate annual reviews by analyzing achievements and learnings.
 
 Compile relevant, attributed aphorisms from historical figures on topics.
 
+### create_golden_rules
+
+Extract enforceable rules from codebases to prevent common mistakes and ensure consistency.
+
 ### create_upgrade_pack
 
 Extract world model updates/algorithms to improve decision-making.
@@ -398,6 +418,10 @@ Extract recommendations for improving algorithms, focusing on steps.
 
 Extracts the most novel and surprising ideas ("alpha") from content, inspired by information theory.
 
+### extract_all_quotes
+
+Extract all inspirational and educational quotes from content including podcasts and essays.
+
 ### extract_article_wisdom
 
 Extract wisdom from articles, organizing into actionable takeaways.
@@ -409,6 +433,10 @@ Extract novel ideas from books to inspire new projects.
 ### extract_book_recommendations
 
 Extract/prioritize practical advice from books.
+
+### extract_bd_ideas
+
+Extract actionable ideas from content and transform into bd create commands.
 
 ### extract_characters
 
@@ -489,10 +517,6 @@ Extract learnings from DMs, focusing on personal growth.
 ### extract_wisdom_nometa
 
 Extract pure wisdom from content without metadata.
-
-### extract_wisdom_short
-
-Extract condensed  insightful ideas and recommendations focusing on life wisdom.
 
 ### extract_wisdom_with_attribution
 
@@ -581,6 +605,10 @@ Transform content into academic papers using LaTeX layout.
 ### create_diy
 
 Create step-by-step DIY tutorials with clear instructions and materials.
+
+### create_design_system
+
+Create comprehensive CSS design systems with tokens, typography, spacing, and components.
 
 ### create_formal_email
 
@@ -688,6 +716,10 @@ Generate appropriate responses to technical interview questions.
 
 Expert software dev. guidance focusing on Java, Spring, frontend, and best practices.
 
+### create_bd_issue
+
+Transform natural language descriptions into optimal bd create commands for issue tracking.
+
 ### coding_master
 
 Explain coding concepts/languages for beginners
@@ -704,9 +736,17 @@ Design coding projects with clear architecture, steps, and best practices.
 
 Create software architecture docs using C4 model.
 
+### create_design_system
+
+Create comprehensive CSS design systems with tokens, typography, spacing, and components.
+
 ### create_git_diff_commit
 
 Generate clear git commit messages and commands for code changes.
+
+### create_golden_rules
+
+Extract enforceable rules from codebases to prevent common mistakes and ensure consistency.
 
 ### create_loe_document
 
@@ -727,6 +767,10 @@ Analyze/explain code, security tool outputs, and configs.
 ### explain_project
 
 Create project overviews with instructions and usage examples.
+
+### extract_bd_ideas
+
+Extract actionable ideas from content and transform into bd create commands.
 
 ### extract_poc
 
@@ -751,6 +795,10 @@ Performs a comprehensive code review, providing detailed feedback on correctness
 ### review_design
 
 Evaluate software designs for scalability and security.
+
+### suggest_gt_command
+
+Suggest optimal Gas Town (GT) commands based on user intent and task description.
 
 ### summarize_git_changes
 
@@ -868,6 +916,10 @@ Create Semgrep rules for static code analysis.
 
 ## BUSINESS PATTERNS
 
+### analyze_discord_structure
+
+Analyze Discord server structures for organizational issues, permissions, and optimization.
+
 ### create_hormozi_offer
 
 Create compelling business offers using Alex Hormozi's methodology.
@@ -911,6 +963,10 @@ Convert content into flashcard format for learning.
 ### create_conceptmap
 
 Transform unstructured text or markdown content into interactive HTML concept maps using Vis.js by extracting key concepts and their logical relationships.
+
+### create_design_system
+
+Create comprehensive CSS design systems with tokens, typography, spacing, and components.
 
 ### create_excalidraw_visualization
 

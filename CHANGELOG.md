@@ -2,7 +2,6 @@
 
 ## v1.4.391 (2026-01-24)
 
-MiniMax unexpected status code: 404 from provider MiniMax, response body: 404 page not found
 ### PR [#1965](https://github.com/danielmiessler/Fabric/pull/1965) by [infinitelyloopy-bt](https://github.com/infinitelyloopy-bt): fix(azure): Fix deployment URL path for Azure OpenAI API
 
 - Fixed deployment URL path construction for Azure OpenAI API to correctly include deployment names in request URLs
@@ -13,11 +12,10 @@ MiniMax unexpected status code: 404 from provider MiniMax, response body: 404 pa
 
 ## v1.4.390 (2026-01-24)
 
-MiniMax unexpected status code: 404 from provider MiniMax, response body: 404 page not found
 ### PR [#1964](https://github.com/danielmiessler/Fabric/pull/1964) by [jessesep](https://github.com/jessesep): feat: add design system, golden rules, and discord structure patterns
 
 - Added create_design_system pattern to generate CSS design systems with tokens, typography scales, and dark/light mode support from requirements
-- Added create_golden_rules pattern to extract implicit and explicit rules from codebases into testable, enforceable guidelines  
+- Added create_golden_rules pattern to extract implicit and explicit rules from codebases into testable, enforceable guidelines
 - Added analyze_discord_structure pattern to audit Discord server organization, permissions, and naming conventions
 
 ### PR [#1967](https://github.com/danielmiessler/Fabric/pull/1967) by [ksylvan](https://github.com/ksylvan): chore: add MiniMax provider support and update API endpoints
