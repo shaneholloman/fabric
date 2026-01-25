@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.392 (2026-01-25)
+
+### PR [#1968](https://github.com/danielmiessler/Fabric/pull/1968) by [ksylvan](https://github.com/ksylvan): New `extract_all_quotes` and move misplaced patterns
+
+- Move orphaned pattern files from patterns/ to data/patterns/
+- Add extract_all_quotes pattern for quote extraction
+- The extract_all_quotes is originally from [PR #176](https://github.com/danielmiessler/Fabric/pull/176) by [@CPAtoCybersecurity](https://github.com/CPAtoCybersecurity)
+- The `suggest_pattern` pattern is updated with the following additions.
+  - extract_bd_ideas for actionable idea extraction
+  - suggest_gt_command for GT command suggestions
+  - create_bd_issue for issue tracking commands
+
 ## v1.4.391 (2026-01-24)
 
 ### PR [#1965](https://github.com/danielmiessler/Fabric/pull/1965) by [infinitelyloopy-bt](https://github.com/infinitelyloopy-bt): fix(azure): Fix deployment URL path for Azure OpenAI API
