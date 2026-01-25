@@ -1672,15 +1672,6 @@
       ]
     },
     {
-      "patternName": "extract_wisdom_short",
-      "description": "Extract condensed  insightful ideas and recommendations focusing on life wisdom.",
-      "tags": [
-        "EXTRACT",
-        "WISDOM",
-        "SELF"
-      ]
-    },
-    {
       "patternName": "analyze_bill",
       "description": "Analyze a legislative bill and implications.",
       "tags": [
