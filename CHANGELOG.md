@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.4.393 (2026-01-25)
+
+### PR [#1969](https://github.com/danielmiessler/Fabric/pull/1969) by [ksylvan](https://github.com/ksylvan): Critical and High Impact NPM dependabot issues fixed
+
+- Security: fix critical and high priority npm vulnerabilities including form-data upgrade to 4.0.5, glob upgrade to ≥10.5.0, and qs upgrade to 6.14.1
+- Security: fix critical ollama authentication vulnerability by updating from v0.13.5 to v0.15.1 to prevent unauthorized model management operations
+- Security: add npm support with package-lock.json for dual package manager compatibility, enabling both npm and pnpm users to maintain consistent security posture
+
+### Direct commits
+
+- Chore: remove deprecated wisdom extraction patterns from pattern libraries
+
+- Remove extract_wisdom_short from pattern descriptions catalog
+- Drop extract_wisdomjm pattern extract definition
+
+- Delete extract_wisdom_short extract template block
+
 ## v1.4.392 (2026-01-25)
 
 ### PR [#1968](https://github.com/danielmiessler/Fabric/pull/1968) by [ksylvan](https://github.com/ksylvan): New `extract_all_quotes` and move misplaced patterns
