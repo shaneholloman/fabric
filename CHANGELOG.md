@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.395 (2026-01-25)
+
+### PR [#1972](https://github.com/danielmiessler/Fabric/pull/1972) by [ksylvan](https://github.com/ksylvan): More node package updates: remove cn, fix string and request vulnerabilities
+
+- Removed cn (Chuck Norris jokes) package to resolve security vulnerabilities
+- Fixed 5 Dependabot alerts including ReDoS vulnerabilities in string package and SSRF/Remote Memory Exposure issues in request package
+- Enhanced security posture by eliminating vulnerable dependencies with no available patches
+
 ## v1.4.394 (2026-01-25)
 
 ### PR [#1971](https://github.com/danielmiessler/Fabric/pull/1971) by [ksylvan](https://github.com/ksylvan): Security fix high medium low priority dependabot alerts for npm dependencies
