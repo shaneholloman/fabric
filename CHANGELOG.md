@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.394 (2026-01-25)
+
+### PR [#1971](https://github.com/danielmiessler/Fabric/pull/1971) by [ksylvan](https://github.com/ksylvan): Security fix high medium low priority dependabot alerts for npm dependencies
+
+- Fixed medium severity esbuild vulnerability that allowed websites to send requests to development server and read responses
+- Updated esbuild from vulnerable version 0.21.5 to secure version 0.27.2
+- Fixed low severity @eslint/plugin-kit ReDoS vulnerability through ConfigCommentParser
+- Updated @eslint/plugin-kit from vulnerable version 0.2.8 to secure version 0.5.1
+- Verified all builds and tests pass successfully after security updates
+
 ## v1.4.393 (2026-01-25)
 
 ### PR [#1969](https://github.com/danielmiessler/Fabric/pull/1969) by [ksylvan](https://github.com/ksylvan): Critical and High Impact NPM dependabot issues fixed
