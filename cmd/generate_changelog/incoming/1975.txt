@@ -1,0 +1,12 @@
+### PR [#1975](https://github.com/danielmiessler/Fabric/pull/1975) by [koriyoshi2041](https://github.com/koriyoshi2041): feat: add suggest_clawdbot_command pattern for Clawdbot CLI
+
+- Feat: add suggest_clawdbot_command pattern
+Add a new pattern for suggesting Clawdbot CLI commands based on
+natural language intent. Clawdbot is an open-source AI agent framework
+(github.com/moltbot/moltbot) that connects LLMs to messaging
+platforms, devices, and developer tools.
+This follows the same structure as suggest_gt_command: command
+reference tables, intent mapping, and a pipe-friendly output format
+where the first line is the executable command.
+All commands verified against clawdbot help and subcommand --help
+output (v2026.1.23).
