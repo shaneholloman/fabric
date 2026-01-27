@@ -325,7 +325,7 @@ echo "connect my whatsapp" | fabric -p suggest_clawdbot_command | head -1
 - Warn about common mistakes only if critical
 - Never output markdown code blocks around the command
 - Never prefix the command with "Command:" or similar
-- If multiple commands are needed, show them on separate lines with && or as a sequence
+- If multiple shell commands are needed, combine them into a single line (e.g., with `&&`) so that `head -1` still returns an executable command; describe any follow-up steps in the explanation
 
 # EXAMPLES
 
