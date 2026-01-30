@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.4.396 (2026-01-30)
+
+### PR [#1975](https://github.com/danielmiessler/Fabric/pull/1975) by [koriyoshi2041](https://github.com/koriyoshi2041): feat: add suggest_moltbot_command pattern for Moltbot (formerly Clawdbot) CLI
+
+- Added new pattern for suggesting Moltbot CLI commands based on natural language intent
+- Fixed multi-command output format inconsistency to preserve pipe-friendly behavior
+- Updated all CLI references and command examples to use new `moltbot` binary name
+- Added new dictionary words for VSCode spellcheck and fixed markdown table formatting
+
+### PR [#1978](https://github.com/danielmiessler/Fabric/pull/1978) by [ksylvan](https://github.com/ksylvan): chore: remove OAuth support from Anthropic client
+
+- Remove OAuth support from Anthropic client and delete related OAuth files
+- Simplify configuration handling to check only API key instead of OAuth credentials
+- Clean up imports and unused variables in anthropic.go
+- Update server configuration methods to remove OAuth references
+- Remove OAuth-related environment variables from configuration
+
+### Direct commits
+
+- Docs: fix ChangeLog snippet for PR 1975
+
 ## v1.4.395 (2026-01-25)
 
 ### PR [#1972](https://github.com/danielmiessler/Fabric/pull/1972) by [ksylvan](https://github.com/ksylvan): More node package updates: remove cn, fix string and request vulnerabilities
