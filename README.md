@@ -114,7 +114,6 @@ Below are the **new features and capabilities** we've added (newest first):
 - [v1.4.246](https://github.com/danielmiessler/fabric/releases/tag/v1.4.246) (Jul 14, 2025) — **Automatic ChangeLog Updates**: Add AI-powered changelog generation with high-performance Go tool and comprehensive caching
 - [v1.4.245](https://github.com/danielmiessler/fabric/releases/tag/v1.4.245) (Jul 11, 2025) — **Together AI**: Together AI Support with OpenAI Fallback Mechanism Added
 - [v1.4.232](https://github.com/danielmiessler/fabric/releases/tag/v1.4.232) (Jul 6, 2025) — **Add Custom**: Add Custom Patterns Directory Support
-- [v1.4.231](https://github.com/danielmiessler/fabric/releases/tag/v1.4.231) (Jul 5, 2025) — **OAuth Auto-Auth**: OAuth Authentication Support for Anthropic (Use your Max Subscription)
 - [v1.4.230](https://github.com/danielmiessler/fabric/releases/tag/v1.4.230) (Jul 5, 2025) — **Model Management**: Add advanced image generation parameters for OpenAI models with four new CLI flags
 - [v1.4.227](https://github.com/danielmiessler/fabric/releases/tag/v1.4.227) (Jul 4, 2025) — **Add Image**: Add Image Generation Support to Fabric
 - [v1.4.226](https://github.com/danielmiessler/fabric/releases/tag/v1.4.226) (Jul 4, 2025) — **Web Search**: OpenAI Plugin Now Supports Web Search Functionality
