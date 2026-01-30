@@ -3,7 +3,6 @@ package anthropic
 import (
 	"context"
 	"fmt"
-	"net/http"
 	neturl "net/url"
 	"os"
 	"path"
@@ -16,7 +15,6 @@ import (
 	"github.com/danielmiessler/fabric/internal/domain"
 	debuglog "github.com/danielmiessler/fabric/internal/log"
 	"github.com/danielmiessler/fabric/internal/plugins"
-	"github.com/danielmiessler/fabric/internal/util"
 )
 
 const defaultBaseUrl = "https://api.anthropic.com/"
@@ -24,8 +22,6 @@ const defaultBaseUrl = "https://api.anthropic.com/"
 const webSearchToolName = "web_search"
 const webSearchToolType = "web_search_20250305"
 const sourcesHeader = "## Sources"
-
-const authTokenIdentifier = "claude"
 
 func NewClient() (ret *Client) {
 	vendorName := "Anthropic"
@@ -35,7 +31,6 @@ func NewClient() (ret *Client) {
 
 	ret.ApiBaseURL = ret.AddSetupQuestion("API Base URL", false)
 	ret.ApiBaseURL.Value = defaultBaseUrl
-	ret.UseOAuth = ret.AddSetupQuestionBool("Use OAuth login", false)
 	ret.ApiKey = ret.PluginBase.AddSetupQuestion("API key", false)
 
 	ret.maxTokens = 4096
@@ -64,32 +59,10 @@ func NewClient() (ret *Client) {
 	return
 }
 
-// IsConfigured returns true if either the API key or OAuth is configured
+// IsConfigured returns true if the API key is configured
 func (an *Client) IsConfigured() bool {
 	// Check if API key is configured
 	if an.ApiKey.Value != "" {
-		return true
-	}
-
-	// Check if OAuth is enabled and has a valid token
-	if plugins.ParseBoolElseFalse(an.UseOAuth.Value) {
-		storage, err := util.NewOAuthStorage()
-		if err != nil {
-			return false
-		}
-
-		// If no valid token exists, automatically run OAuth flow
-		if !storage.HasValidToken(authTokenIdentifier, 5) {
-			fmt.Println("OAuth enabled but no valid token found. Starting authentication...")
-			_, err := RunOAuthFlow(authTokenIdentifier)
-			if err != nil {
-				fmt.Printf("OAuth authentication failed: %v\n", err)
-				return false
-			}
-			// After successful OAuth flow, check again
-			return storage.HasValidToken(authTokenIdentifier, 5)
-		}
-
 		return true
 	}
 
@@ -100,7 +73,6 @@ type Client struct {
 	*plugins.PluginBase
 	ApiBaseURL *plugins.SetupQuestion
 	ApiKey     *plugins.SetupQuestion
-	UseOAuth   *plugins.SetupQuestion
 
 	maxTokens                  int
 	defaultRequiredUserMessage string
@@ -115,21 +87,6 @@ func (an *Client) Setup() (err error) {
 		return
 	}
 
-	if plugins.ParseBoolElseFalse(an.UseOAuth.Value) {
-		// Check if we have a valid stored token
-		storage, err := util.NewOAuthStorage()
-		if err != nil {
-			return err
-		}
-
-		if !storage.HasValidToken(authTokenIdentifier, 5) {
-			// No valid token, run OAuth flow
-			if _, err = RunOAuthFlow(authTokenIdentifier); err != nil {
-				return err
-			}
-		}
-	}
-
 	err = an.configure()
 	return
 }
@@ -141,17 +98,7 @@ func (an *Client) configure() (err error) {
 		opts = append(opts, option.WithBaseURL(an.ApiBaseURL.Value))
 	}
 
-	if plugins.ParseBoolElseFalse(an.UseOAuth.Value) {
-		// For OAuth, use Bearer token with custom headers
-		// Create custom HTTP client that adds OAuth Bearer token and beta header
-		baseTransport := &http.Transport{}
-		httpClient := &http.Client{
-			Transport: NewOAuthTransport(an, baseTransport),
-		}
-		opts = append(opts, option.WithHTTPClient(httpClient))
-	} else {
-		opts = append(opts, option.WithAPIKey(an.ApiKey.Value))
-	}
+	opts = append(opts, option.WithAPIKey(an.ApiKey.Value))
 
 	an.client = anthropic.NewClient(opts...)
 	return
@@ -262,17 +209,6 @@ func (an *Client) buildMessageParams(msgs []anthropic.MessageParam, opts *domain
 	} else {
 		// Use temperature (always set to ensure Fabric's default of 0.7, not Anthropic's 1.0)
 		params.Temperature = anthropic.Opt(opts.Temperature)
-	}
-
-	// Add Claude Code spoofing system message for OAuth authentication
-	if plugins.ParseBoolElseFalse(an.UseOAuth.Value) {
-		params.System = []anthropic.TextBlockParam{
-			{
-				Type: "text",
-				Text: "You are Claude Code, Anthropic's official CLI for Claude.",
-			},
-		}
-
 	}
 
 	if opts.Search {
