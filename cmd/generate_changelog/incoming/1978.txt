@@ -1,0 +1,7 @@
+### PR [#1978](https://github.com/danielmiessler/Fabric/pull/1978) by [ksylvan](https://github.com/ksylvan): chore: remove OAuth support from Anthropic client
+
+- Remove OAuth support from Anthropic client and delete related OAuth files
+- Simplify configuration handling to check only API key instead of OAuth credentials
+- Clean up imports and unused variables in anthropic.go
+- Update server configuration methods to remove OAuth references
+- Remove OAuth-related environment variables from configuration
