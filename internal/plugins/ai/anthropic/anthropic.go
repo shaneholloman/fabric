@@ -36,22 +36,32 @@ func NewClient() (ret *Client) {
 	ret.maxTokens = 4096
 	ret.defaultRequiredUserMessage = "Hi"
 	ret.models = []string{
+		// The following models will be deprecated on February 19, 2026
 		string(anthropic.ModelClaude3_7SonnetLatest), string(anthropic.ModelClaude3_7Sonnet20250219),
 		string(anthropic.ModelClaude3_5HaikuLatest), string(anthropic.ModelClaude3_5Haiku20241022),
-		string(anthropic.ModelClaude3OpusLatest), string(anthropic.ModelClaude_3_Opus_20240229),
-		string(anthropic.ModelClaude_3_Haiku_20240307),
-		string(anthropic.ModelClaudeOpus4_20250514), string(anthropic.ModelClaudeSonnet4_20250514),
-		string(anthropic.ModelClaudeOpus4_1_20250805),
-		string(anthropic.ModelClaudeSonnet4_5),
-		string(anthropic.ModelClaudeSonnet4_5_20250929),
+		// The following are the current supported models
 		string(anthropic.ModelClaudeOpus4_5_20251101),
 		string(anthropic.ModelClaudeOpus4_5),
 		string(anthropic.ModelClaudeHaiku4_5),
 		string(anthropic.ModelClaudeHaiku4_5_20251001),
+		string(anthropic.ModelClaudeSonnet4_20250514),
+		string(anthropic.ModelClaudeSonnet4_0),
+		string(anthropic.ModelClaude4Sonnet20250514),
+		string(anthropic.ModelClaudeSonnet4_5),
+		string(anthropic.ModelClaudeSonnet4_5_20250929),
+		string(anthropic.ModelClaudeOpus4_0),
+		string(anthropic.ModelClaudeOpus4_20250514),
+		string(anthropic.ModelClaude4Opus20250514),
+		string(anthropic.ModelClaudeOpus4_1_20250805),
+		string(anthropic.ModelClaude_3_Haiku_20240307),
 	}
 
 	ret.modelBetas = map[string][]string{
-		string(anthropic.ModelClaudeSonnet4_20250514):   {"context-1m-2025-08-07"},
+		// Claude Sonnet 4 variants (1M context support)
+		string(anthropic.ModelClaudeSonnet4_20250514): {"context-1m-2025-08-07"},
+		string(anthropic.ModelClaudeSonnet4_0):        {"context-1m-2025-08-07"},
+		string(anthropic.ModelClaude4Sonnet20250514):  {"context-1m-2025-08-07"},
+		// Claude Sonnet 4.5 variants (1M context support)
 		string(anthropic.ModelClaudeSonnet4_5):          {"context-1m-2025-08-07"},
 		string(anthropic.ModelClaudeSonnet4_5_20250929): {"context-1m-2025-08-07"},
 	}
