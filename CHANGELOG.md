@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.397 (2026-01-31)
+
+### PR [#1979](https://github.com/danielmiessler/Fabric/pull/1979) by [ksylvan](https://github.com/ksylvan): Update Anthropic SDK to v1.20.0 and reorganize model definitions
+
+- Feat: update Anthropic SDK to v1.20.0 and reorganize model definitions
+- Bump `anthropic-sdk-go` dependency from v1.19.0 to v1.20.0
+- Add deprecation notice for pre-February 2026 legacy models
+- Add new Claude Sonnet 4.0 and Opus 4.0 model aliases
+- Extend 1M context beta support to all Sonnet 4 variants
+
 ## v1.4.396 (2026-01-30)
 
 ### PR [#1975](https://github.com/danielmiessler/Fabric/pull/1975) by [koriyoshi2041](https://github.com/koriyoshi2041): feat: add suggest_moltbot_command pattern for Moltbot (formerly Clawdbot) CLI

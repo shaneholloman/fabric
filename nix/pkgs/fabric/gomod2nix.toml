@@ -38,8 +38,8 @@ schema = 3
     version = "v1.3.3"
     hash = "sha256-jv7ZshpSd7FZzKKN6hqlUgiR8C3y85zNIS/hq7g76Ho="
   [mod."github.com/anthropics/anthropic-sdk-go"]
-    version = "v1.19.0"
-    hash = "sha256-ubYeau5XL0tx4c/79L58rzJGOdOWs9z6WQOtN6mpgxw="
+    version = "v1.20.0"
+    hash = "sha256-lIOrVT0vWNWhshc/3/UGOR4/EyBzNvTuXcgFQq3HR0k="
   [mod."github.com/apache/arrow/go/arrow"]
     version = "v0.0.0-20211112161151-bc219186db40"
     hash = "sha256-hcVrZsJuiRIDx13QDKCxUtZgmze6iFkwyjDvQxkzcR8="
