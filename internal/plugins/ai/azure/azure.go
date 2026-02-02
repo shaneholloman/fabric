@@ -156,4 +156,3 @@ func (oi *Client) ListModels() (ret []string, err error) {
 	ret = oi.apiDeployments
 	return
 }
-
