@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.399 (2026-02-03)
+
+### PR [#1983](https://github.com/danielmiessler/Fabric/pull/1983) by [dependabot](https://github.com/apps/dependabot): chore(deps): bump @isaacs/brace-expansion from 5.0.0 to 5.0.1 in /web in the npm_and_yarn group across 1 directory
+
+- Updated @isaacs/brace-expansion dependency from version 5.0.0 to 5.0.1 in the web directory
+
 ## v1.4.398 (2026-02-03)
 
 ### PR [#1981](https://github.com/danielmiessler/Fabric/pull/1981) by [infinitelyloopy-bt](https://github.com/infinitelyloopy-bt): fix(azure): support GPT-5 and o-series reasoning models
