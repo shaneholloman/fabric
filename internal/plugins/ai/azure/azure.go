@@ -35,7 +35,7 @@ type Client struct {
 	apiDeployments []string
 }
 
-const defaultAPIVersion = "2024-05-01-preview"
+const defaultAPIVersion = "2025-04-01-preview"
 
 func (oi *Client) configure() error {
 	oi.apiDeployments = parseDeployments(oi.ApiDeployments.Value)
@@ -86,6 +86,7 @@ func azureDeploymentMiddleware(req *http.Request, next option.MiddlewareNext) (*
 		"/audio/transcriptions": true,
 		"/audio/translations":   true,
 		"/images/generations":   true,
+		"/responses":            true,
 	}
 
 	path := req.URL.Path
@@ -154,8 +155,4 @@ func parseDeployments(value string) []string {
 func (oi *Client) ListModels() (ret []string, err error) {
 	ret = oi.apiDeployments
 	return
-}
-
-func (oi *Client) NeedsRawMode(modelName string) bool {
-	return false
 }
