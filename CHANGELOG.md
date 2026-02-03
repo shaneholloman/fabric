@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.398 (2026-02-03)
+
+### PR [#1981](https://github.com/danielmiessler/Fabric/pull/1981) by [infinitelyloopy-bt](https://github.com/infinitelyloopy-bt): fix(azure): support GPT-5 and o-series reasoning models
+
+- Fix Azure OpenAI integration to support GPT-5 and o-series reasoning models
+- Update default API version from 2024-05-01-preview to 2025-04-01-preview (required for o-series and GPT-5 models)
+- Remove NeedsRawMode override that always returned false, inheriting parent logic that correctly skips temperature/top_p for reasoning models
+- Add /responses route to deployment middleware for future v1 API support
+- Style: remove trailing blank line in azure.go to fix gofmt check
+
 ## v1.4.397 (2026-01-31)
 
 ### PR [#1979](https://github.com/danielmiessler/Fabric/pull/1979) by [ksylvan](https://github.com/ksylvan): Update Anthropic SDK to v1.20.0 and reorganize model definitions
