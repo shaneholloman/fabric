@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.400 (2026-02-05)
+
+### PR [#1986](https://github.com/danielmiessler/Fabric/pull/1986) by [ksylvan](https://github.com/ksylvan): Support Anthropic Opus 4.6
+
+- Upgrade anthropic-sdk-go from v1.20.0 to v1.21.0
+- Add `ClaudeOpus4_6` to supported Anthropic model list
+- Remove unused indirect dependencies from go.mod and go.sum
+- Clean up legacy protobuf and gRPC version references
+- Drop unused table writer and console dependencies
+
 ## v1.4.399 (2026-02-03)
 
 ### PR [#1983](https://github.com/danielmiessler/Fabric/pull/1983) by [dependabot](https://github.com/apps/dependabot): chore(deps): bump @isaacs/brace-expansion from 5.0.0 to 5.0.1 in /web in the npm_and_yarn group across 1 directory
