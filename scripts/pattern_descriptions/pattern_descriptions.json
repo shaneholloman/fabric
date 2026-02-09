@@ -2017,6 +2017,39 @@
         "DEVELOPMENT",
         "ANALYSIS"
       ]
+    },
+    {
+      "patternName": "check_falsifiability",
+      "description": "Evaluate whether claims, definitions, and arguments are falsifiable and can be proven wrong.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
+    },
+    {
+      "patternName": "detect_mind_virus",
+      "description": "Detect manipulative belief systems that spread by exploiting cognitive shortcuts while resisting correction.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
+    },
+    {
+      "patternName": "extract_ethical_framework",
+      "description": "Extract and analyze the implicit ethical framework embedded in policies, proposals, or any prescriptive text.",
+      "tags": [
+        "ANALYSIS",
+        "EXTRACT",
+        "CR THINKING"
+      ]
+    },
+    {
+      "patternName": "ultimate_law_safety",
+      "description": "Evaluate actions and policies against the Ultimate Law framework to identify violations creating unwilling victims.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
     }
   ]
 }

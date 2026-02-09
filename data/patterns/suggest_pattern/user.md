@@ -200,6 +200,10 @@ Apply standardized content tags to categorize topics like AI, cybersecurity, pol
 
 Review contract to identify stipulations, issues, and changes for negotiation.
 
+### check_falsifiability
+
+Evaluate whether claims, definitions, and arguments are falsifiable and can be proven wrong.
+
 ### compare_and_contrast
 
 Create comparisons table, highlighting key differences and similarities.
@@ -235,6 +239,10 @@ Break down tasks into hierarchical, actionable components via decomposition.
 ### create_tags
 
 Generate single-word tags for content categorization and mind mapping.
+
+### detect_mind_virus
+
+Detect manipulative belief systems that spread by exploiting cognitive shortcuts while resisting correction.
 
 ### explain_terms_and_conditions
 
@@ -400,6 +408,10 @@ Apply adversarial thinking to identify weaknesses.
 
 Generate annual reviews by analyzing achievements and learnings.
 
+### ultimate_law_safety
+
+Evaluate actions and policies against the Ultimate Law framework to identify violations creating unwilling victims.
+
 ## EXTRACTION PATTERNS
 
 ### create_aphorisms
@@ -457,6 +469,10 @@ Analyze contentious viewpoints while maintaining objective analysis.
 ### extract_domains
 
 Extract key content and source.
+
+### extract_ethical_framework
+
+Extract and analyze the implicit ethical framework embedded in policies, proposals, or any prescriptive text.
 
 ### extract_ideas
 
