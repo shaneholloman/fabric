@@ -1,0 +1,3 @@
+### PR [#1990](https://github.com/danielmiessler/Fabric/pull/1990) by [davejpeters](https://github.com/davejpeters): add pattern `explain_terms_and_conditions`
+
+- Added new pattern to analyze terms and conditions documents with focus on legal translation and consumer protection
