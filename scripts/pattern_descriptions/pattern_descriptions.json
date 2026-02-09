@@ -2001,6 +2001,22 @@
         "DEVELOPMENT",
         "ANALYSIS"
       ]
+    },
+    {
+      "patternName": "explain_terms_and_conditions",
+      "description": "Analyze legal agreements translating complex legalese into plain English with red flags.",
+      "tags": [
+        "ANALYSIS",
+        "SELF"
+      ]
+    },
+    {
+      "patternName": "suggest_openclaw_pattern",
+      "description": "Suggest optimal Openclaw CLI commands based on user intent and task description.",
+      "tags": [
+        "DEVELOPMENT",
+        "ANALYSIS"
+      ]
     }
   ]
 }
