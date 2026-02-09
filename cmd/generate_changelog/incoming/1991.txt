@@ -1,7 +1,0 @@
-### PR [#1991](https://github.com/danielmiessler/Fabric/pull/1991) by [ksylvan](https://github.com/ksylvan): Upgrade project dependencies including AWS, Anthropic, and Google SDKs
-
-- Chore: upgrade project dependencies including AWS, Anthropic, and Google SDKs
-- Update Anthropic SDK to version 1.22.0 for improved functionality
-- Bump AWS SDK and Bedrock runtime to improve cloud integration
-- Upgrade Ollama dependency to version 0.15.6 for model support
-- Refresh Google API and GenAI libraries to current stable releases

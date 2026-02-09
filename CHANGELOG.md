@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.4.401 (2026-02-09)
+
+# Release Notes
+
+### PR [#1988](https://github.com/danielmiessler/Fabric/pull/1988) by [ghrom](https://github.com/ghrom) and [ksylvan](https://github.com/ksylvan): feat: add Ultimate Law AGI safety pattern suite
+
+- Add four patterns implementing minimal, falsifiable ethical constraints for AGI safety evaluation
+- Add `ultimate_law_safety` pattern for evaluating actions against "no unwilling victims" principle
+- Add `detect_mind_virus` pattern for identifying manipulative reasoning that resists correction
+- Add `check_falsifiability` pattern for verifying claims can be tested and proven wrong
+- Add `extract_ethical_framework` pattern for surfacing implicit ethics in documents and policies
+
+### PR [#1990](https://github.com/danielmiessler/Fabric/pull/1990) by [davejpeters](https://github.com/davejpeters) and [ksylvan](https://github.com/ksylvan): add pattern `explain_terms_and_conditions`
+
+- Added `explain_terms_and_conditions` pattern for comprehensive legal agreement analysis with focus on consumer protection
+- Renamed `suggest_moltbot_command` to `suggest_openclaw_pattern` with updated branding
+- Registered new patterns in pattern descriptions and extracts JSON
+- Updated `suggest_pattern` documentation with new pattern summaries
+- Removed deprecated `suggest_moltbot_command` pattern
+
+### PR [#1991](https://github.com/danielmiessler/Fabric/pull/1991) by [ksylvan](https://github.com/ksylvan): Upgrade project dependencies including AWS, Anthropic, and Google SDKs
+
+- Chore: upgrade project dependencies including AWS, Anthropic, and Google SDKs
+- Update Anthropic SDK to version 1.22.0 for improved functionality
+- Bump AWS SDK and Bedrock runtime to improve cloud integration
+- Upgrade Ollama dependency to version 0.15.6 for model support
+- Refresh Google API and GenAI libraries to current stable releases
+
 ## v1.4.400 (2026-02-05)
 
 ### PR [#1986](https://github.com/danielmiessler/Fabric/pull/1986) by [ksylvan](https://github.com/ksylvan): Support Anthropic Opus 4.6

@@ -1,9 +1,0 @@
-# Release Notes
-
-### PR [#1988](https://github.com/danielmiessler/Fabric/pull/1988) by [ghrom](https://github.com/ghrom) and [ksylvan](https://github.com/ksylvan): feat: add Ultimate Law AGI safety pattern suite
-
-- Add four patterns implementing minimal, falsifiable ethical constraints for AGI safety evaluation
-- Add `ultimate_law_safety` pattern for evaluating actions against "no unwilling victims" principle
-- Add `detect_mind_virus` pattern for identifying manipulative reasoning that resists correction
-- Add `check_falsifiability` pattern for verifying claims can be tested and proven wrong
-- Add `extract_ethical_framework` pattern for surfacing implicit ethics in documents and policies
