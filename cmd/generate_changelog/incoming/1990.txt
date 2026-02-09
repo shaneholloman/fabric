@@ -1,0 +1,7 @@
+### PR [#1990](https://github.com/danielmiessler/Fabric/pull/1990) by [davejpeters](https://github.com/davejpeters) and [ksylvan](https://github.com/ksylvan): add pattern `explain_terms_and_conditions`
+
+- Added `explain_terms_and_conditions` pattern for comprehensive legal agreement analysis with focus on consumer protection
+- Renamed `suggest_moltbot_command` to `suggest_openclaw_pattern` with updated branding
+- Registered new patterns in pattern descriptions and extracts JSON
+- Updated `suggest_pattern` documentation with new pattern summaries
+- Removed deprecated `suggest_moltbot_command` pattern

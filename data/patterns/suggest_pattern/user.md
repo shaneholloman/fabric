@@ -236,6 +236,10 @@ Break down tasks into hierarchical, actionable components via decomposition.
 
 Generate single-word tags for content categorization and mind mapping.
 
+### explain_terms_and_conditions
+
+Analyze legal agreements translating complex legalese into plain English with red flags.
+
 ### extract_core_message
 
 Distill the fundamental message into a single, impactful sentence.
@@ -359,6 +363,10 @@ Summarize AI prompts to identify instructions and outputs.
 ### suggest_gt_command
 
 Suggest optimal Gas Town (GT) commands based on user intent and task description.
+
+### suggest_openclaw_pattern
+
+Suggest optimal Openclaw CLI commands based on user intent and task description.
 
 ### t_analyze_challenge_handling
 
@@ -800,6 +808,10 @@ Evaluate software designs for scalability and security.
 
 Suggest optimal Gas Town (GT) commands based on user intent and task description.
 
+### suggest_openclaw_pattern
+
+Suggest optimal Openclaw CLI commands based on user intent and task description.
+
 ### summarize_git_changes
 
 Summarize git changes highlighting key modifications.
@@ -1033,6 +1045,10 @@ Identify neglected goals to surface opportunities.
 ### create_story_about_person
 
 Infer everyday challenges and realistic coping strategies from a psychological profile and craft an empathetic 500–700-word story consistent with the character.
+
+### explain_terms_and_conditions
+
+Analyze legal agreements translating complex legalese into plain English with red flags.
 
 ### extract_recipe
 
