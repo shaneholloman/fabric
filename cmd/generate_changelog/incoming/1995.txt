@@ -1,0 +1,7 @@
+### PR [#1995](https://github.com/danielmiessler/Fabric/pull/1995) by [ksylvan](https://github.com/ksylvan): OpenAI gpt-4o, GPT-4 deprecations, plus other model list updates
+
+- Update default summarize model to `claude-sonnet-4-5`
+- Replace `gpt-4o` and `gpt-4o-mini` references with `gpt-5.2` and `gpt-5-mini` throughout documentation and code
+- Remove deprecated GPT-4 models (`gpt-4o`, `gpt-4o-mini`, `gpt-4.1`, `gpt-4.1-mini`) from image generation supported list, effective February 13, 2026
+- Add MiniMax-M2.5 and M2.5-lightning to static models list
+- Update tests to use `gpt-5.2` instead of `gpt-4o` as the example supported model
