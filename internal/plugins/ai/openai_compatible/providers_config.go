@@ -236,7 +236,7 @@ var ProviderMap = map[string]ProviderConfig{
 	"GrokAI": {
 		Name:                "GrokAI",
 		BaseURL:             "https://api.x.ai/v1",
-		ImplementsResponses: false,
+		ImplementsResponses: true,
 	},
 	"Groq": {
 		Name:                "Groq",
