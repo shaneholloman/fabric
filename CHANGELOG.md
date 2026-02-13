@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.404 (2026-02-13)
+
+### PR [#1997](https://github.com/danielmiessler/Fabric/pull/1997) by [ksylvan](https://github.com/ksylvan): Enable responses API usage for GrokAI (xAI) provider
+
+- Enable responses API for GrokAI (xAI) provider
+- Set ImplementsResponses to true for GrokAI provider
+
 ## v1.4.403 (2026-02-13)
 
 ### PR [#1995](https://github.com/danielmiessler/Fabric/pull/1995) by [ksylvan](https://github.com/ksylvan): OpenAI gpt-4o, GPT-4 deprecations, plus other model list updates
