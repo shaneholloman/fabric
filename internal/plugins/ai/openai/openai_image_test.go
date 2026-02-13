@@ -521,7 +521,7 @@ func TestCheckImageGenerationCompatibility(t *testing.T) {
 				assert.NotEmpty(t, output, "Expected warning output for unsupported model")
 				assert.Contains(t, output, tt.expectedText, "Warning message should contain model name")
 				assert.Contains(t, output, "Supported models:", "Warning should mention supported models")
-				assert.Contains(t, output, "gpt-4o", "Warning should suggest gpt-4o")
+				assert.Contains(t, output, "gpt-5.2", "Warning should suggest gpt-5.2")
 			} else {
 				assert.Empty(t, output, "No warning expected for supported model")
 			}

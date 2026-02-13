@@ -16,6 +16,6 @@ notification: true
 # notificationCommand: '/path/to/custom-notification-script.sh "$1" "$2"'
 
 # Other common settings
-model: "gpt-4o"
+model: "gpt-5.2"
 temperature: 0.7
 stream: true

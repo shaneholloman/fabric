@@ -81,7 +81,7 @@ Stream AI responses using Server-Sent Events (SSE).
     {
       "userInput": "Explain quantum computing",
       "vendor": "openai",
-      "model": "gpt-4o",
+      "model": "gpt-5.2",
       "patternName": "explain",
       "contextName": "",
       "strategyName": "",
@@ -103,7 +103,7 @@ Stream AI responses using Server-Sent Events (SSE).
 | ------- | ---------- | --------- | ------------- |
 | `userInput` | **Yes** | - | Your message or question |
 | `vendor` | **Yes** | - | AI provider: `openai`, `anthropic`, `gemini`, `ollama`, etc. |
-| `model` | **Yes** | - | Model name: `gpt-4o`, `claude-sonnet-4.5`, `gemini-2.0-flash-exp`, etc. |
+| `model` | **Yes** | - | Model name: `gpt-5.2`, `claude-sonnet-4.5`, `gemini-2.0-flash-exp`, etc. |
 | `patternName` | No | `""` | Pattern to apply (from `~/.config/fabric/patterns/`) |
 | `contextName` | No | `""` | Context to prepend (from `~/.config/fabric/contexts/`) |
 | `strategyName` | No | `""` | Strategy to use (from `~/.config/fabric/strategies/`) |
@@ -151,7 +151,7 @@ curl -X POST http://localhost:8080/chat \
     "prompts": [{
       "userInput": "What is Fabric?",
       "vendor": "openai",
-      "model": "gpt-4o",
+      "model": "gpt-5.2",
       "patternName": "explain"
     }]
   }'
@@ -232,9 +232,9 @@ List available AI models.
 
 ```json
 {
-  "models": ["gpt-4o", "gpt-4o-mini", "claude-sonnet-4.5", "gemini-2.0-flash-exp"],
+  "models": ["gpt-5.2", "gpt-5-mini", "claude-sonnet-4.5", "gemini-2.0-flash-exp"],
   "vendors": {
-    "openai": ["gpt-4o", "gpt-4o-mini"],
+    "openai": ["gpt-5.2", "gpt-5-mini"],
     "anthropic": ["claude-sonnet-4.5", "claude-opus-4.5"],
     "gemini": ["gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp"]
   }
@@ -359,7 +359,7 @@ curl -X POST http://localhost:8080/chat \
     \"prompts\": [{
       \"userInput\": \"$TRANSCRIPT\",
       \"vendor\": \"openai\",
-      \"model\": \"gpt-4o\",
+      \"model\": \"gpt-5.2\",
       \"patternName\": \"youtube_summary\"
     }]
   }"
@@ -374,7 +374,7 @@ curl -s -X POST http://localhost:8080/youtube/transcript \
 jq -r '.transcript' | \
 xargs -I {} curl -X POST http://localhost:8080/chat \
   -H "Content-Type: application/json" \
-  -d "{\"prompts\":[{\"userInput\":\"{}\",\"vendor\":\"openai\",\"model\":\"gpt-4o\",\"patternName\":\"youtube_summary\"}]}"
+  -d "{\"prompts\":[{\"userInput\":\"{}\",\"vendor\":\"openai\",\"model\":\"gpt-5.2\",\"patternName\":\"youtube_summary\"}]}"
 ```
 
 #### Alternative: Using a script
@@ -398,7 +398,7 @@ curl -X POST "$API_BASE/chat" \
     \"prompts\": [{
       \"userInput\": $(echo "$TRANSCRIPT" | jq -Rs .),
       \"vendor\": \"openai\",
-      \"model\": \"gpt-4o\",
+      \"model\": \"gpt-5.2\",
       \"patternName\": \"youtube_summary\"
     }]
   }"

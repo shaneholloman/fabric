@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const DefaultSummarizeModel = "claude-sonnet-4-20250514"
+const DefaultSummarizeModel = "claude-sonnet-4-5"
 const MinContentLength = 256 // Minimum content length to consider for summarization
 
 const prompt = `# ROLE

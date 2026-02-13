@@ -75,7 +75,7 @@ func (o *Client) SetResponsesAPIEnabled(enabled bool) {
 // checkImageGenerationCompatibility warns if the model doesn't support image generation
 func checkImageGenerationCompatibility(model string) {
 	if !supportsImageGeneration(model) {
-		fmt.Fprintf(os.Stderr, "Warning: Model '%s' does not support image generation. Supported models: %s. Consider using -m gpt-4o for image generation.\n",
+		fmt.Fprintf(os.Stderr, "Warning: Model '%s' does not support image generation. Supported models: %s. Consider using -m gpt-5.2 for image generation.\n",
 			model, strings.Join(ImageGenerationSupportedModels, ", "))
 	}
 }
