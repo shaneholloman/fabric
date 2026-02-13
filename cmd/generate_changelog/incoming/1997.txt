@@ -1,0 +1,4 @@
+### PR [#1997](https://github.com/danielmiessler/Fabric/pull/1997) by [ksylvan](https://github.com/ksylvan): Enable responses API usage for GrokAI (xAI) provider
+
+- Enable responses API for GrokAI (xAI) provider
+- Set ImplementsResponses to true for GrokAI provider
