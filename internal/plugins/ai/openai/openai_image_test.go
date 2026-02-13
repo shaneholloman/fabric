@@ -231,24 +231,24 @@ func TestSupportsImageGeneration(t *testing.T) {
 		expected bool
 	}{
 		{
-			name:     "gpt-4o supports image generation",
+			name:     "gpt-4o does not support image generation (deprecated)",
 			model:    "gpt-4o",
-			expected: true,
+			expected: false,
 		},
 		{
-			name:     "gpt-4o-mini supports image generation",
+			name:     "gpt-4o-mini does not support image generation (deprecated)",
 			model:    "gpt-4o-mini",
-			expected: true,
+			expected: false,
 		},
 		{
-			name:     "gpt-4.1 supports image generation",
+			name:     "gpt-4.1 does not support image generation (deprecated)",
 			model:    "gpt-4.1",
-			expected: true,
+			expected: false,
 		},
 		{
-			name:     "gpt-4.1-mini supports image generation",
+			name:     "gpt-4.1-mini does not support image generation (deprecated)",
 			model:    "gpt-4.1-mini",
-			expected: true,
+			expected: false,
 		},
 		{
 			name:     "gpt-4.1-nano supports image generation",
@@ -336,7 +336,7 @@ func TestModelValidationLogic(t *testing.T) {
 
 	t.Run("Supported model with image file should not trigger validation", func(t *testing.T) {
 		opts := &domain.ChatOptions{
-			Model:     "gpt-4o",
+			Model:     "gpt-5.2",
 			ImageFile: "/tmp/output.png",
 		}
 
@@ -475,7 +475,7 @@ func TestCheckImageGenerationCompatibility(t *testing.T) {
 	}{
 		{
 			name:          "Supported model - no warning",
-			model:         "gpt-4o",
+			model:         "gpt-5.2",
 			expectWarning: false,
 		},
 		{
@@ -521,7 +521,7 @@ func TestCheckImageGenerationCompatibility(t *testing.T) {
 				assert.NotEmpty(t, output, "Expected warning output for unsupported model")
 				assert.Contains(t, output, tt.expectedText, "Warning message should contain model name")
 				assert.Contains(t, output, "Supported models:", "Warning should mention supported models")
-				assert.Contains(t, output, "gpt-4o", "Warning should suggest gpt-4o")
+				assert.Contains(t, output, "gpt-5.2", "Warning should suggest gpt-5.2")
 			} else {
 				assert.Empty(t, output, "No warning expected for supported model")
 			}
@@ -557,7 +557,7 @@ func TestSendResponses_WithWarningIntegration(t *testing.T) {
 		},
 		{
 			name:          "Supported model with image - no warning, no error",
-			model:         "gpt-4o",
+			model:         "gpt-5.2",
 			imageFile:     "test.png",
 			expectWarning: false,
 			expectError:   false,

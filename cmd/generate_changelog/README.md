@@ -246,7 +246,7 @@ Set the model via environment variable:
 ```bash
 export FABRIC_CHANGELOG_SUMMARIZE_MODEL=claude-opus-4
 # or
-export FABRIC_CHANGELOG_SUMMARIZE_MODEL=gpt-4
+export FABRIC_CHANGELOG_SUMMARIZE_MODEL=gpt-5.2
 ```
 
 AI summaries are cached and only regenerated when:

@@ -22,10 +22,6 @@ const ImageGenerationToolType = "image_generation"
 
 // ImageGenerationSupportedModels lists all models that support image generation
 var ImageGenerationSupportedModels = []string{
-	"gpt-4o",
-	"gpt-4o-mini",
-	"gpt-4.1",
-	"gpt-4.1-mini",
 	"gpt-4.1-nano",
 	"o3",
 	"gpt-5",
