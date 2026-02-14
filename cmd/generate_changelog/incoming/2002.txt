@@ -1,0 +1,7 @@
+### PR [#2002](https://github.com/danielmiessler/Fabric/pull/2002) by [ksylvan](https://github.com/ksylvan): Internationalization Polish
+
+- Added i18n translations for ollama, extensions, lmstudio, and spotify modules
+- Replaced hardcoded English strings with `i18n.T()` calls across all modules
+- Added translations for all new keys in de, en, es, fa, fr, it, ja, pt-BR, pt-PT, and zh locales
+- Added i18n strings for extension registry, executor, and manager operations
+- Added i18n strings for Spotify API client error messages
