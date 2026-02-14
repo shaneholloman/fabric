@@ -350,5 +350,17 @@
   "extension_invalid_timeout": "无效的超时值 '%s'：必须是 '30s' 或 '1m' 等时间格式：%w",
   "extension_registered_success": "扩展注册成功：\n",
   "extension_name_detail_label": "名称：%s\n",
-  "extension_failed_remove": "删除扩展失败：%w"
+  "extension_failed_remove": "删除扩展失败：%w",
+  "lmstudio_api_url_question": "请输入您的 %v URL（提醒一下，通常是 %v）",
+  "lmstudio_failed_create_request": "创建请求失败：%w",
+  "lmstudio_failed_send_request": "发送请求失败：%w",
+  "lmstudio_unexpected_status_code": "意外的状态码：%d",
+  "lmstudio_failed_decode_response": "解码响应失败：%w",
+  "lmstudio_failed_marshal_payload": "序列化负载失败：%w",
+  "lmstudio_error_reading_response": "读取响应时出错：%w",
+  "lmstudio_invalid_response_missing_choices": "无效的响应格式：选项缺失或为空",
+  "lmstudio_invalid_response_missing_message": "无效的响应格式：第一个选项中缺少消息",
+  "lmstudio_invalid_response_missing_content": "无效的响应格式：消息中的内容缺失或不是字符串",
+  "lmstudio_invalid_response_missing_text": "无效的响应格式：第一个选项中的文本缺失或不是字符串",
+  "lmstudio_no_embeddings_returned": "未返回嵌入向量"
 }

@@ -350,5 +350,17 @@
   "extension_invalid_timeout": "無効なタイムアウト値 '%s': '30s' や '1m' のような期間である必要があります: %w",
   "extension_registered_success": "拡張機能が正常に登録されました:\n",
   "extension_name_detail_label": "名前: %s\n",
-  "extension_failed_remove": "拡張機能の削除に失敗しました: %w"
+  "extension_failed_remove": "拡張機能の削除に失敗しました: %w",
+  "lmstudio_api_url_question": "%v の URL を入力してください（通常は %v です）",
+  "lmstudio_failed_create_request": "リクエストの作成に失敗しました: %w",
+  "lmstudio_failed_send_request": "リクエストの送信に失敗しました: %w",
+  "lmstudio_unexpected_status_code": "予期しないステータスコード: %d",
+  "lmstudio_failed_decode_response": "レスポンスのデコードに失敗しました: %w",
+  "lmstudio_failed_marshal_payload": "ペイロードのシリアル化に失敗しました: %w",
+  "lmstudio_error_reading_response": "レスポンスの読み取りエラー: %w",
+  "lmstudio_invalid_response_missing_choices": "無効なレスポンス形式: 選択肢がないか空です",
+  "lmstudio_invalid_response_missing_message": "無効なレスポンス形式: 最初の選択肢にメッセージがありません",
+  "lmstudio_invalid_response_missing_content": "無効なレスポンス形式: メッセージにコンテンツがないか文字列ではありません",
+  "lmstudio_invalid_response_missing_text": "無効なレスポンス形式: 最初の選択肢にテキストがないか文字列ではありません",
+  "lmstudio_no_embeddings_returned": "埋め込みが返されませんでした"
 }

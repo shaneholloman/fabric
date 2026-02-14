@@ -350,5 +350,17 @@
   "extension_invalid_timeout": "valor de tiempo límite inválido '%s': debe ser una duración como '30s' o '1m': %w",
   "extension_registered_success": "Extensión registrada exitosamente:\n",
   "extension_name_detail_label": "Nombre: %s\n",
-  "extension_failed_remove": "error al eliminar la extensión: %w"
+  "extension_failed_remove": "error al eliminar la extensión: %w",
+  "lmstudio_api_url_question": "Introduzca su URL de %v (como recordatorio, generalmente es %v)",
+  "lmstudio_failed_create_request": "error al crear la solicitud: %w",
+  "lmstudio_failed_send_request": "error al enviar la solicitud: %w",
+  "lmstudio_unexpected_status_code": "código de estado inesperado: %d",
+  "lmstudio_failed_decode_response": "error al decodificar la respuesta: %w",
+  "lmstudio_failed_marshal_payload": "error al serializar la carga útil: %w",
+  "lmstudio_error_reading_response": "error al leer la respuesta: %w",
+  "lmstudio_invalid_response_missing_choices": "formato de respuesta inválido: opciones ausentes o vacías",
+  "lmstudio_invalid_response_missing_message": "formato de respuesta inválido: mensaje ausente en la primera opción",
+  "lmstudio_invalid_response_missing_content": "formato de respuesta inválido: contenido ausente o no es una cadena en el mensaje",
+  "lmstudio_invalid_response_missing_text": "formato de respuesta inválido: texto ausente o no es una cadena en la primera opción",
+  "lmstudio_no_embeddings_returned": "no se devolvieron incrustaciones"
 }

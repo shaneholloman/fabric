@@ -342,5 +342,17 @@
   "extension_invalid_timeout": "مقدار مهلت زمانی نامعتبر '%s': باید مدت‌زمانی مانند '30s' یا '1m' باشد: %w",
   "extension_registered_success": "افزونه با موفقیت ثبت شد:\n",
   "extension_name_detail_label": "نام: %s\n",
-  "extension_failed_remove": "حذف افزونه ناموفق بود: %w"
+  "extension_failed_remove": "حذف افزونه ناموفق بود: %w",
+  "lmstudio_api_url_question": "آدرس URL %v خود را وارد کنید (به عنوان یادآوری، معمولاً %v است)",
+  "lmstudio_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
+  "lmstudio_failed_send_request": "ارسال درخواست ناموفق بود: %w",
+  "lmstudio_unexpected_status_code": "کد وضعیت غیرمنتظره: %d",
+  "lmstudio_failed_decode_response": "رمزگشایی پاسخ ناموفق بود: %w",
+  "lmstudio_failed_marshal_payload": "سریال‌سازی بار داده ناموفق بود: %w",
+  "lmstudio_error_reading_response": "خطا در خواندن پاسخ: %w",
+  "lmstudio_invalid_response_missing_choices": "فرمت پاسخ نامعتبر: گزینه‌ها وجود ندارند یا خالی هستند",
+  "lmstudio_invalid_response_missing_message": "فرمت پاسخ نامعتبر: پیام در اولین گزینه وجود ندارد",
+  "lmstudio_invalid_response_missing_content": "فرمت پاسخ نامعتبر: محتوا در پیام وجود ندارد یا رشته نیست",
+  "lmstudio_invalid_response_missing_text": "فرمت پاسخ نامعتبر: متن در اولین گزینه وجود ندارد یا رشته نیست",
+  "lmstudio_no_embeddings_returned": "هیچ بردار جاسازی بازگردانده نشد"
 }

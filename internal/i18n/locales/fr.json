@@ -350,5 +350,17 @@
   "extension_invalid_timeout": "valeur de délai invalide '%s' : doit être une durée comme '30s' ou '1m' : %w",
   "extension_registered_success": "Extension enregistrée avec succès :\n",
   "extension_name_detail_label": "Nom : %s\n",
-  "extension_failed_remove": "échec de la suppression de l'extension : %w"
+  "extension_failed_remove": "échec de la suppression de l'extension : %w",
+  "lmstudio_api_url_question": "Entrez votre URL %v (pour rappel, elle est généralement %v)",
+  "lmstudio_failed_create_request": "échec de la création de la requête : %w",
+  "lmstudio_failed_send_request": "échec de l'envoi de la requête : %w",
+  "lmstudio_unexpected_status_code": "code de statut inattendu : %d",
+  "lmstudio_failed_decode_response": "échec du décodage de la réponse : %w",
+  "lmstudio_failed_marshal_payload": "échec de la sérialisation des données : %w",
+  "lmstudio_error_reading_response": "erreur lors de la lecture de la réponse : %w",
+  "lmstudio_invalid_response_missing_choices": "format de réponse invalide : choix manquants ou vides",
+  "lmstudio_invalid_response_missing_message": "format de réponse invalide : message manquant dans le premier choix",
+  "lmstudio_invalid_response_missing_content": "format de réponse invalide : contenu manquant ou non-chaîne dans le message",
+  "lmstudio_invalid_response_missing_text": "format de réponse invalide : texte manquant ou non-chaîne dans le premier choix",
+  "lmstudio_no_embeddings_returned": "aucun embedding retourné"
 }

@@ -350,5 +350,17 @@
 	"extension_invalid_timeout": "ungültiger Zeitlimit-Wert '%s': muss eine Dauer wie '30s' oder '1m' sein: %w",
 	"extension_registered_success": "Erweiterung erfolgreich registriert:\n",
 	"extension_name_detail_label": "Name: %s\n",
-	"extension_failed_remove": "Erweiterung konnte nicht entfernt werden: %w"
+	"extension_failed_remove": "Erweiterung konnte nicht entfernt werden: %w",
+	"lmstudio_api_url_question": "Geben Sie Ihre %v URL ein (zur Erinnerung, sie ist normalerweise %v)",
+	"lmstudio_failed_create_request": "Anfrage konnte nicht erstellt werden: %w",
+	"lmstudio_failed_send_request": "Anfrage konnte nicht gesendet werden: %w",
+	"lmstudio_unexpected_status_code": "Unerwarteter Statuscode: %d",
+	"lmstudio_failed_decode_response": "Antwort konnte nicht dekodiert werden: %w",
+	"lmstudio_failed_marshal_payload": "Nutzlast konnte nicht serialisiert werden: %w",
+	"lmstudio_error_reading_response": "Fehler beim Lesen der Antwort: %w",
+	"lmstudio_invalid_response_missing_choices": "Ungültiges Antwortformat: Auswahlmöglichkeiten fehlen oder sind leer",
+	"lmstudio_invalid_response_missing_message": "Ungültiges Antwortformat: Nachricht in der ersten Auswahl fehlt",
+	"lmstudio_invalid_response_missing_content": "Ungültiges Antwortformat: Inhalt in der Nachricht fehlt oder ist kein String",
+	"lmstudio_invalid_response_missing_text": "Ungültiges Antwortformat: Text in der ersten Auswahl fehlt oder ist kein String",
+	"lmstudio_no_embeddings_returned": "Keine Einbettungen zurückgegeben"
 }
