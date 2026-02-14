@@ -384,5 +384,17 @@
 	"extension_executable_hash_mismatch": "Hash-Abweichung der Programmdatei für %s",
 	"extension_failed_marshal_registry": "Erweiterungsregistrierung konnte nicht serialisiert werden: %w",
 	"extension_failed_read_registry": "Erweiterungsregistrierung konnte nicht gelesen werden: %w",
-	"extension_failed_parse_registry": "Erweiterungsregistrierung konnte nicht geparst werden: %w"
+	"extension_failed_parse_registry": "Erweiterungsregistrierung konnte nicht geparst werden: %w",
+	"extension_failed_get_extension": "Erweiterung konnte nicht abgerufen werden: %w",
+	"extension_failed_format_command": "Befehl konnte nicht formatiert werden: %w",
+	"extension_empty_command": "Leerer Befehl nach Formatierung",
+	"extension_operation_not_found": "Operation %s für Erweiterung %s nicht gefunden",
+	"extension_executing_command": "Befehl wird ausgeführt: %s\n",
+	"extension_execution_failed_stderr": "Ausführung fehlgeschlagen: %w\nstderr: %s",
+	"extension_no_file_config": "Keine Dateikonfiguration gefunden",
+	"extension_no_output_file": "Keine Ausgabedatei in der Konfiguration angegeben",
+	"extension_execution_timed_out": "Ausführung nach %v abgelaufen",
+	"extension_execution_failed_err": "Ausführung fehlgeschlagen: %w\nerr: %s",
+	"extension_failed_read_output_file": "Ausgabedatei konnte nicht gelesen werden: %w",
+	"extension_failed_get_output_path": "Ausgabepfad konnte nicht ermittelt werden: %w\nerr: %s"
 }

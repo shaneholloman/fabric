@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/danielmiessler/fabric/internal/i18n"
 )
 
 // ExtensionExecutor handles the secure execution of extensions
@@ -34,19 +36,19 @@ func (e *ExtensionExecutor) Execute(name, operation, value string) (string, erro
 	// Get and verify extension from registry
 	ext, err := e.registry.GetExtension(name)
 	if err != nil {
-		return "", fmt.Errorf("failed to get extension: %w", err)
+		return "", fmt.Errorf(i18n.T("extension_failed_get_extension"), err)
 	}
 
 	// Format the command using our template system
 	cmdStr, err := e.formatCommand(ext, operation, value)
 	if err != nil {
-		return "", fmt.Errorf("failed to format command: %w", err)
+		return "", fmt.Errorf(i18n.T("extension_failed_format_command"), err)
 	}
 
 	// Split the command string into command and arguments
 	cmdParts := strings.Fields(cmdStr)
 	if len(cmdParts) < 1 {
-		return "", fmt.Errorf("empty command after formatting")
+		return "", fmt.Errorf("%s", i18n.T("extension_empty_command"))
 	}
 
 	// Create command with the Executable and formatted arguments
@@ -72,7 +74,7 @@ func (e *ExtensionExecutor) formatCommand(ext *ExtensionDefinition, operation st
 	// Get operation config
 	opConfig, exists := ext.Operations[operation]
 	if !exists {
-		return "", fmt.Errorf("operation %s not found for extension %s", operation, ext.Name)
+		return "", fmt.Errorf("%s", fmt.Sprintf(i18n.T("extension_operation_not_found"), operation, ext.Name))
 	}
 
 	vars := make(map[string]string)
@@ -97,10 +99,10 @@ func (e *ExtensionExecutor) executeStdout(cmd *exec.Cmd, ext *ExtensionDefinitio
 	cmd.Stderr = &stderr
 
 	//debug output
-	fmt.Printf("Executing command: %s\n", cmd.String())
+	fmt.Printf(i18n.T("extension_executing_command"), cmd.String())
 
 	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("execution failed: %w\nstderr: %s", err, stderr.String())
+		return "", fmt.Errorf(i18n.T("extension_execution_failed_stderr"), err, stderr.String())
 	}
 
 	return stdout.String(), nil
@@ -111,7 +113,7 @@ func (e *ExtensionExecutor) executeWithFile(cmd *exec.Cmd, ext *ExtensionDefinit
 	// Parse timeout - this is now a first-class field
 	timeout, err := time.ParseDuration(ext.Timeout)
 	if err != nil {
-		return "", fmt.Errorf("invalid timeout format: %w", err)
+		return "", fmt.Errorf(i18n.T("extension_invalid_timeout_format"), err)
 	}
 
 	// Create context with timeout
@@ -126,7 +128,7 @@ func (e *ExtensionExecutor) executeWithFile(cmd *exec.Cmd, ext *ExtensionDefinit
 
 	fileConfig := ext.GetFileConfig()
 	if fileConfig == nil {
-		return "", fmt.Errorf("no file configuration found")
+		return "", fmt.Errorf("%s", i18n.T("extension_no_file_config"))
 	}
 
 	// Handle path from stdout case
@@ -139,7 +141,7 @@ func (e *ExtensionExecutor) executeWithFile(cmd *exec.Cmd, ext *ExtensionDefinit
 	outputFile, _ := fileConfig["output_file"].(string)
 
 	if outputFile == "" {
-		return "", fmt.Errorf("no output file specified in configuration")
+		return "", fmt.Errorf("%s", i18n.T("extension_no_output_file"))
 	}
 
 	// Set working directory if specified
@@ -152,9 +154,9 @@ func (e *ExtensionExecutor) executeWithFile(cmd *exec.Cmd, ext *ExtensionDefinit
 
 	if err := cmd.Run(); err != nil {
 		if ctx.Err() == context.DeadlineExceeded {
-			return "", fmt.Errorf("execution timed out after %v", timeout)
+			return "", fmt.Errorf("%s", fmt.Sprintf(i18n.T("extension_execution_timed_out"), timeout))
 		}
-		return "", fmt.Errorf("execution failed: %w\nerr: %s", err, stderr.String())
+		return "", fmt.Errorf(i18n.T("extension_execution_failed_err"), err, stderr.String())
 	}
 
 	// Construct full file path
@@ -165,7 +167,7 @@ func (e *ExtensionExecutor) executeWithFile(cmd *exec.Cmd, ext *ExtensionDefinit
 
 	content, err := os.ReadFile(outputPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read output file: %w", err)
+		return "", fmt.Errorf(i18n.T("extension_failed_read_output_file"), err)
 	}
 
 	// Handle cleanup if enabled
@@ -183,13 +185,13 @@ func (e *ExtensionExecutor) handlePathFromStdout(cmd *exec.Cmd, ext *ExtensionDe
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("failed to get output path: %w\nerr: %s", err, stderr.String())
+		return "", fmt.Errorf(i18n.T("extension_failed_get_output_path"), err, stderr.String())
 	}
 
 	outputPath := strings.TrimSpace(stdout.String())
 	content, err := os.ReadFile(outputPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read output file: %w", err)
+		return "", fmt.Errorf(i18n.T("extension_failed_read_output_file"), err)
 	}
 
 	if ext.IsCleanupEnabled() {

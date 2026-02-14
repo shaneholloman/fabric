@@ -384,5 +384,17 @@
   "extension_executable_hash_mismatch": "discrepância de hash do executável para %s",
   "extension_failed_marshal_registry": "falha ao serializar o registo de extensões: %w",
   "extension_failed_read_registry": "falha ao ler o registo de extensões: %w",
-  "extension_failed_parse_registry": "falha ao analisar o registo de extensões: %w"
+  "extension_failed_parse_registry": "falha ao analisar o registo de extensões: %w",
+  "extension_failed_get_extension": "falha ao obter a extensão: %w",
+  "extension_failed_format_command": "falha ao formatar o comando: %w",
+  "extension_empty_command": "comando vazio após a formatação",
+  "extension_operation_not_found": "operação %s não encontrada para a extensão %s",
+  "extension_executing_command": "A executar comando: %s\n",
+  "extension_execution_failed_stderr": "execução falhou: %w\nstderr: %s",
+  "extension_no_file_config": "nenhuma configuração de ficheiro encontrada",
+  "extension_no_output_file": "nenhum ficheiro de saída especificado na configuração",
+  "extension_execution_timed_out": "execução expirou após %v",
+  "extension_execution_failed_err": "execução falhou: %w\nerr: %s",
+  "extension_failed_read_output_file": "falha ao ler o ficheiro de saída: %w",
+  "extension_failed_get_output_path": "falha ao obter o caminho de saída: %w\nerr: %s"
 }

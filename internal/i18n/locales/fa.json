@@ -376,5 +376,17 @@
   "extension_executable_hash_mismatch": "عدم تطابق هش فایل اجرایی برای %s",
   "extension_failed_marshal_registry": "سریال‌سازی رجیستری افزونه‌ها ناموفق بود: %w",
   "extension_failed_read_registry": "خواندن رجیستری افزونه‌ها ناموفق بود: %w",
-  "extension_failed_parse_registry": "تجزیه رجیستری افزونه‌ها ناموفق بود: %w"
+  "extension_failed_parse_registry": "تجزیه رجیستری افزونه‌ها ناموفق بود: %w",
+  "extension_failed_get_extension": "دریافت افزونه ناموفق بود: %w",
+  "extension_failed_format_command": "قالب‌بندی دستور ناموفق بود: %w",
+  "extension_empty_command": "دستور خالی پس از قالب‌بندی",
+  "extension_operation_not_found": "عملیات %s برای افزونه %s یافت نشد",
+  "extension_executing_command": "در حال اجرای دستور: %s\n",
+  "extension_execution_failed_stderr": "اجرا ناموفق بود: %w\nstderr: %s",
+  "extension_no_file_config": "پیکربندی فایل یافت نشد",
+  "extension_no_output_file": "فایل خروجی در پیکربندی مشخص نشده است",
+  "extension_execution_timed_out": "اجرا پس از %v منقضی شد",
+  "extension_execution_failed_err": "اجرا ناموفق بود: %w\nerr: %s",
+  "extension_failed_read_output_file": "خواندن فایل خروجی ناموفق بود: %w",
+  "extension_failed_get_output_path": "دریافت مسیر خروجی ناموفق بود: %w\nerr: %s"
 }

@@ -384,5 +384,17 @@
   "extension_executable_hash_mismatch": "executable hash mismatch for %s",
   "extension_failed_marshal_registry": "failed to marshal extension registry: %w",
   "extension_failed_read_registry": "failed to read extension registry: %w",
-  "extension_failed_parse_registry": "failed to parse extension registry: %w"
+  "extension_failed_parse_registry": "failed to parse extension registry: %w",
+  "extension_failed_get_extension": "failed to get extension: %w",
+  "extension_failed_format_command": "failed to format command: %w",
+  "extension_empty_command": "empty command after formatting",
+  "extension_operation_not_found": "operation %s not found for extension %s",
+  "extension_executing_command": "Executing command: %s\n",
+  "extension_execution_failed_stderr": "execution failed: %w\nstderr: %s",
+  "extension_no_file_config": "no file configuration found",
+  "extension_no_output_file": "no output file specified in configuration",
+  "extension_execution_timed_out": "execution timed out after %v",
+  "extension_execution_failed_err": "execution failed: %w\nerr: %s",
+  "extension_failed_read_output_file": "failed to read output file: %w",
+  "extension_failed_get_output_path": "failed to get output path: %w\nerr: %s"
 }

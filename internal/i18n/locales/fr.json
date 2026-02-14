@@ -384,5 +384,17 @@
   "extension_executable_hash_mismatch": "discordance de hash de l'exécutable pour %s",
   "extension_failed_marshal_registry": "impossible de sérialiser le registre d'extensions : %w",
   "extension_failed_read_registry": "impossible de lire le registre d'extensions : %w",
-  "extension_failed_parse_registry": "impossible d'analyser le registre d'extensions : %w"
+  "extension_failed_parse_registry": "impossible d'analyser le registre d'extensions : %w",
+  "extension_failed_get_extension": "impossible d'obtenir l'extension : %w",
+  "extension_failed_format_command": "impossible de formater la commande : %w",
+  "extension_empty_command": "commande vide après le formatage",
+  "extension_operation_not_found": "opération %s introuvable pour l'extension %s",
+  "extension_executing_command": "Exécution de la commande : %s\n",
+  "extension_execution_failed_stderr": "l'exécution a échoué : %w\nstderr : %s",
+  "extension_no_file_config": "aucune configuration de fichier trouvée",
+  "extension_no_output_file": "aucun fichier de sortie spécifié dans la configuration",
+  "extension_execution_timed_out": "l'exécution a expiré après %v",
+  "extension_execution_failed_err": "l'exécution a échoué : %w\nerr : %s",
+  "extension_failed_read_output_file": "impossible de lire le fichier de sortie : %w",
+  "extension_failed_get_output_path": "impossible d'obtenir le chemin de sortie : %w\nerr : %s"
 }

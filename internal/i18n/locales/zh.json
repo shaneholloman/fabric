@@ -384,5 +384,17 @@
   "extension_executable_hash_mismatch": "%s 的可执行文件哈希不匹配",
   "extension_failed_marshal_registry": "序列化扩展注册表失败：%w",
   "extension_failed_read_registry": "读取扩展注册表失败：%w",
-  "extension_failed_parse_registry": "解析扩展注册表失败：%w"
+  "extension_failed_parse_registry": "解析扩展注册表失败：%w",
+  "extension_failed_get_extension": "获取扩展失败：%w",
+  "extension_failed_format_command": "格式化命令失败：%w",
+  "extension_empty_command": "格式化后命令为空",
+  "extension_operation_not_found": "扩展 %s 中未找到操作 %s",
+  "extension_executing_command": "正在执行命令：%s\n",
+  "extension_execution_failed_stderr": "执行失败：%w\nstderr：%s",
+  "extension_no_file_config": "未找到文件配置",
+  "extension_no_output_file": "配置中未指定输出文件",
+  "extension_execution_timed_out": "执行在 %v 后超时",
+  "extension_execution_failed_err": "执行失败：%w\nerr：%s",
+  "extension_failed_read_output_file": "读取输出文件失败：%w",
+  "extension_failed_get_output_path": "获取输出路径失败：%w\nerr：%s"
 }

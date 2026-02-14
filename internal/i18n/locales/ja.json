@@ -384,5 +384,17 @@
   "extension_executable_hash_mismatch": "%s の実行ファイルのハッシュが一致しません",
   "extension_failed_marshal_registry": "拡張機能レジストリのシリアル化に失敗しました: %w",
   "extension_failed_read_registry": "拡張機能レジストリの読み込みに失敗しました: %w",
-  "extension_failed_parse_registry": "拡張機能レジストリの解析に失敗しました: %w"
+  "extension_failed_parse_registry": "拡張機能レジストリの解析に失敗しました: %w",
+  "extension_failed_get_extension": "拡張機能の取得に失敗しました: %w",
+  "extension_failed_format_command": "コマンドのフォーマットに失敗しました: %w",
+  "extension_empty_command": "フォーマット後のコマンドが空です",
+  "extension_operation_not_found": "拡張機能 %s にオペレーション %s が見つかりません",
+  "extension_executing_command": "コマンドを実行中: %s\n",
+  "extension_execution_failed_stderr": "実行に失敗しました: %w\nstderr: %s",
+  "extension_no_file_config": "ファイル設定が見つかりません",
+  "extension_no_output_file": "設定に出力ファイルが指定されていません",
+  "extension_execution_timed_out": "%v 後に実行がタイムアウトしました",
+  "extension_execution_failed_err": "実行に失敗しました: %w\nerr: %s",
+  "extension_failed_read_output_file": "出力ファイルの読み取りに失敗しました: %w",
+  "extension_failed_get_output_path": "出力パスの取得に失敗しました: %w\nerr: %s"
 }
