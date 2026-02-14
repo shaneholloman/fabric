@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "执行在 %v 后超时",
   "extension_execution_failed_err": "执行失败：%w\nerr：%s",
   "extension_failed_read_output_file": "读取输出文件失败：%w",
-  "extension_failed_get_output_path": "获取输出路径失败：%w\nerr：%s"
+  "extension_failed_get_output_path": "获取输出路径失败：%w\nerr：%s",
+  "spotify_failed_create_token_request": "创建令牌请求失败：%w",
+  "spotify_failed_request_access_token": "请求访问令牌失败：%w",
+  "spotify_failed_get_access_token": "获取访问令牌失败：状态 %d，响应：%s",
+  "spotify_failed_decode_token_response": "解码令牌响应失败：%w",
+  "spotify_failed_create_request": "创建请求失败：%w",
+  "spotify_failed_execute_request": "执行请求失败：%w",
+  "spotify_failed_read_response_body": "读取响应正文失败：%w",
+  "spotify_api_request_failed": "API 请求失败：状态 %d，响应：%s",
+  "spotify_failed_parse_show_metadata": "解析节目元数据失败：%w",
+  "spotify_failed_parse_episode_metadata": "解析剧集元数据失败：%w",
+  "spotify_search_failed": "搜索失败：%w",
+  "spotify_failed_parse_search_results": "解析搜索结果失败：%w",
+  "spotify_failed_get_show_episodes": "获取节目剧集失败：%w",
+  "spotify_failed_parse_episodes": "解析剧集失败：%w"
 }

@@ -98,7 +98,7 @@ func (s *Spotify) refreshAccessToken() error {
 
 	req, err := http.NewRequest("POST", tokenURL, strings.NewReader(data.Encode()))
 	if err != nil {
-		return fmt.Errorf("failed to create token request: %w", err)
+		return fmt.Errorf(i18n.T("spotify_failed_create_token_request"), err)
 	}
 
 	// Set Basic Auth header with Client ID and Secret
@@ -108,13 +108,13 @@ func (s *Spotify) refreshAccessToken() error {
 
 	resp, err := s.httpClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("failed to request access token: %w", err)
+		return fmt.Errorf(i18n.T("spotify_failed_request_access_token"), err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("failed to get access token: status %d, body: %s", resp.StatusCode, string(body))
+		return fmt.Errorf(i18n.T("spotify_failed_get_access_token"), resp.StatusCode, string(body))
 	}
 
 	var tokenResp struct {
@@ -124,7 +124,7 @@ func (s *Spotify) refreshAccessToken() error {
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResp); err != nil {
-		return fmt.Errorf("failed to decode token response: %w", err)
+		return fmt.Errorf(i18n.T("spotify_failed_decode_token_response"), err)
 	}
 
 	s.tokenMutex.Lock()
@@ -145,7 +145,7 @@ func (s *Spotify) doRequest(method, endpoint string) ([]byte, error) {
 	reqURL := apiBaseURL + endpoint
 	req, err := http.NewRequest(method, reqURL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_create_request"), err)
 	}
 
 	s.tokenMutex.RLock()
@@ -154,17 +154,17 @@ func (s *Spotify) doRequest(method, endpoint string) ([]byte, error) {
 
 	resp, err := s.httpClient.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_execute_request"), err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_read_response_body"), err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("API request failed: status %d, body: %s", resp.StatusCode, string(body))
+		return nil, fmt.Errorf(i18n.T("spotify_api_request_failed"), resp.StatusCode, string(body))
 	}
 
 	return body, nil
@@ -249,7 +249,7 @@ func (s *Spotify) GetShowMetadata(showId string) (*ShowMetadata, error) {
 	}
 
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse show metadata: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_parse_show_metadata"), err)
 	}
 
 	if resp.Id == "" {
@@ -303,7 +303,7 @@ func (s *Spotify) GetEpisodeMetadata(episodeId string) (*EpisodeMetadata, error)
 	}
 
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse episode metadata: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_parse_episode_metadata"), err)
 	}
 
 	if resp.Id == "" {
@@ -341,7 +341,7 @@ func (s *Spotify) SearchShows(query string, limit int) (*SearchResult, error) {
 	endpoint := fmt.Sprintf("/search?q=%s&type=show&limit=%d", url.QueryEscape(query), limit)
 	body, err := s.doRequest("GET", endpoint)
 	if err != nil {
-		return nil, fmt.Errorf("search failed: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_search_failed"), err)
 	}
 
 	var resp struct {
@@ -365,7 +365,7 @@ func (s *Spotify) SearchShows(query string, limit int) (*SearchResult, error) {
 	}
 
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse search results: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_parse_search_results"), err)
 	}
 
 	result := &SearchResult{
@@ -401,7 +401,7 @@ func (s *Spotify) GetShowEpisodes(showId string, limit int) ([]EpisodeMetadata, 
 	endpoint := fmt.Sprintf("/shows/%s/episodes?limit=%d", showId, limit)
 	body, err := s.doRequest("GET", endpoint)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get show episodes: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_get_show_episodes"), err)
 	}
 
 	var resp struct {
@@ -424,7 +424,7 @@ func (s *Spotify) GetShowEpisodes(showId string, limit int) ([]EpisodeMetadata, 
 	}
 
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse episodes: %w", err)
+		return nil, fmt.Errorf(i18n.T("spotify_failed_parse_episodes"), err)
 	}
 
 	episodes := make([]EpisodeMetadata, 0, len(resp.Items))

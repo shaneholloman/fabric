@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "la ejecución expiró después de %v",
   "extension_execution_failed_err": "la ejecución falló: %w\nerr: %s",
   "extension_failed_read_output_file": "no se pudo leer el archivo de salida: %w",
-  "extension_failed_get_output_path": "no se pudo obtener la ruta de salida: %w\nerr: %s"
+  "extension_failed_get_output_path": "no se pudo obtener la ruta de salida: %w\nerr: %s",
+  "spotify_failed_create_token_request": "no se pudo crear la solicitud de token: %w",
+  "spotify_failed_request_access_token": "no se pudo solicitar el token de acceso: %w",
+  "spotify_failed_get_access_token": "no se pudo obtener el token de acceso: estado %d, respuesta: %s",
+  "spotify_failed_decode_token_response": "no se pudo decodificar la respuesta del token: %w",
+  "spotify_failed_create_request": "no se pudo crear la solicitud: %w",
+  "spotify_failed_execute_request": "no se pudo ejecutar la solicitud: %w",
+  "spotify_failed_read_response_body": "no se pudo leer el cuerpo de la respuesta: %w",
+  "spotify_api_request_failed": "la solicitud a la API falló: estado %d, respuesta: %s",
+  "spotify_failed_parse_show_metadata": "no se pudieron analizar los metadatos del programa: %w",
+  "spotify_failed_parse_episode_metadata": "no se pudieron analizar los metadatos del episodio: %w",
+  "spotify_search_failed": "la búsqueda falló: %w",
+  "spotify_failed_parse_search_results": "no se pudieron analizar los resultados de búsqueda: %w",
+  "spotify_failed_get_show_episodes": "no se pudieron obtener los episodios del programa: %w",
+  "spotify_failed_parse_episodes": "no se pudieron analizar los episodios: %w"
 }

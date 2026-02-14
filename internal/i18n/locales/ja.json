@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "%v 後に実行がタイムアウトしました",
   "extension_execution_failed_err": "実行に失敗しました: %w\nerr: %s",
   "extension_failed_read_output_file": "出力ファイルの読み取りに失敗しました: %w",
-  "extension_failed_get_output_path": "出力パスの取得に失敗しました: %w\nerr: %s"
+  "extension_failed_get_output_path": "出力パスの取得に失敗しました: %w\nerr: %s",
+  "spotify_failed_create_token_request": "トークンリクエストの作成に失敗しました: %w",
+  "spotify_failed_request_access_token": "アクセストークンのリクエストに失敗しました: %w",
+  "spotify_failed_get_access_token": "アクセストークンの取得に失敗しました: ステータス %d、レスポンス: %s",
+  "spotify_failed_decode_token_response": "トークンレスポンスのデコードに失敗しました: %w",
+  "spotify_failed_create_request": "リクエストの作成に失敗しました: %w",
+  "spotify_failed_execute_request": "リクエストの実行に失敗しました: %w",
+  "spotify_failed_read_response_body": "レスポンスボディの読み取りに失敗しました: %w",
+  "spotify_api_request_failed": "APIリクエストが失敗しました: ステータス %d、レスポンス: %s",
+  "spotify_failed_parse_show_metadata": "番組メタデータの解析に失敗しました: %w",
+  "spotify_failed_parse_episode_metadata": "エピソードメタデータの解析に失敗しました: %w",
+  "spotify_search_failed": "検索に失敗しました: %w",
+  "spotify_failed_parse_search_results": "検索結果の解析に失敗しました: %w",
+  "spotify_failed_get_show_episodes": "番組エピソードの取得に失敗しました: %w",
+  "spotify_failed_parse_episodes": "エピソードの解析に失敗しました: %w"
 }

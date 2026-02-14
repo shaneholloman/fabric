@@ -396,5 +396,19 @@
 	"extension_execution_timed_out": "Ausführung nach %v abgelaufen",
 	"extension_execution_failed_err": "Ausführung fehlgeschlagen: %w\nerr: %s",
 	"extension_failed_read_output_file": "Ausgabedatei konnte nicht gelesen werden: %w",
-	"extension_failed_get_output_path": "Ausgabepfad konnte nicht ermittelt werden: %w\nerr: %s"
+	"extension_failed_get_output_path": "Ausgabepfad konnte nicht ermittelt werden: %w\nerr: %s",
+	"spotify_failed_create_token_request": "Token-Anfrage konnte nicht erstellt werden: %w",
+	"spotify_failed_request_access_token": "Zugriffstoken konnte nicht angefordert werden: %w",
+	"spotify_failed_get_access_token": "Zugriffstoken konnte nicht abgerufen werden: Status %d, Antwort: %s",
+	"spotify_failed_decode_token_response": "Token-Antwort konnte nicht dekodiert werden: %w",
+	"spotify_failed_create_request": "Anfrage konnte nicht erstellt werden: %w",
+	"spotify_failed_execute_request": "Anfrage konnte nicht ausgeführt werden: %w",
+	"spotify_failed_read_response_body": "Antwortinhalt konnte nicht gelesen werden: %w",
+	"spotify_api_request_failed": "API-Anfrage fehlgeschlagen: Status %d, Antwort: %s",
+	"spotify_failed_parse_show_metadata": "Show-Metadaten konnten nicht analysiert werden: %w",
+	"spotify_failed_parse_episode_metadata": "Episoden-Metadaten konnten nicht analysiert werden: %w",
+	"spotify_search_failed": "Suche fehlgeschlagen: %w",
+	"spotify_failed_parse_search_results": "Suchergebnisse konnten nicht analysiert werden: %w",
+	"spotify_failed_get_show_episodes": "Show-Episoden konnten nicht abgerufen werden: %w",
+	"spotify_failed_parse_episodes": "Episoden konnten nicht analysiert werden: %w"
 }

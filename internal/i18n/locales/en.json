@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "execution timed out after %v",
   "extension_execution_failed_err": "execution failed: %w\nerr: %s",
   "extension_failed_read_output_file": "failed to read output file: %w",
-  "extension_failed_get_output_path": "failed to get output path: %w\nerr: %s"
+  "extension_failed_get_output_path": "failed to get output path: %w\nerr: %s",
+  "spotify_failed_create_token_request": "failed to create token request: %w",
+  "spotify_failed_request_access_token": "failed to request access token: %w",
+  "spotify_failed_get_access_token": "failed to get access token: status %d, body: %s",
+  "spotify_failed_decode_token_response": "failed to decode token response: %w",
+  "spotify_failed_create_request": "failed to create request: %w",
+  "spotify_failed_execute_request": "failed to execute request: %w",
+  "spotify_failed_read_response_body": "failed to read response body: %w",
+  "spotify_api_request_failed": "API request failed: status %d, body: %s",
+  "spotify_failed_parse_show_metadata": "failed to parse show metadata: %w",
+  "spotify_failed_parse_episode_metadata": "failed to parse episode metadata: %w",
+  "spotify_search_failed": "search failed: %w",
+  "spotify_failed_parse_search_results": "failed to parse search results: %w",
+  "spotify_failed_get_show_episodes": "failed to get show episodes: %w",
+  "spotify_failed_parse_episodes": "failed to parse episodes: %w"
 }

@@ -388,5 +388,19 @@
   "extension_execution_timed_out": "اجرا پس از %v منقضی شد",
   "extension_execution_failed_err": "اجرا ناموفق بود: %w\nerr: %s",
   "extension_failed_read_output_file": "خواندن فایل خروجی ناموفق بود: %w",
-  "extension_failed_get_output_path": "دریافت مسیر خروجی ناموفق بود: %w\nerr: %s"
+  "extension_failed_get_output_path": "دریافت مسیر خروجی ناموفق بود: %w\nerr: %s",
+  "spotify_failed_create_token_request": "ایجاد درخواست توکن ناموفق بود: %w",
+  "spotify_failed_request_access_token": "درخواست توکن دسترسی ناموفق بود: %w",
+  "spotify_failed_get_access_token": "دریافت توکن دسترسی ناموفق بود: وضعیت %d، پاسخ: %s",
+  "spotify_failed_decode_token_response": "رمزگشایی پاسخ توکن ناموفق بود: %w",
+  "spotify_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
+  "spotify_failed_execute_request": "اجرای درخواست ناموفق بود: %w",
+  "spotify_failed_read_response_body": "خواندن متن پاسخ ناموفق بود: %w",
+  "spotify_api_request_failed": "درخواست API ناموفق بود: وضعیت %d، پاسخ: %s",
+  "spotify_failed_parse_show_metadata": "تجزیه فراداده برنامه ناموفق بود: %w",
+  "spotify_failed_parse_episode_metadata": "تجزیه فراداده قسمت ناموفق بود: %w",
+  "spotify_search_failed": "جستجو ناموفق بود: %w",
+  "spotify_failed_parse_search_results": "تجزیه نتایج جستجو ناموفق بود: %w",
+  "spotify_failed_get_show_episodes": "دریافت قسمت‌های برنامه ناموفق بود: %w",
+  "spotify_failed_parse_episodes": "تجزیه قسمت‌ها ناموفق بود: %w"
 }

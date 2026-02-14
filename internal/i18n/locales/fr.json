@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "l'exécution a expiré après %v",
   "extension_execution_failed_err": "l'exécution a échoué : %w\nerr : %s",
   "extension_failed_read_output_file": "impossible de lire le fichier de sortie : %w",
-  "extension_failed_get_output_path": "impossible d'obtenir le chemin de sortie : %w\nerr : %s"
+  "extension_failed_get_output_path": "impossible d'obtenir le chemin de sortie : %w\nerr : %s",
+  "spotify_failed_create_token_request": "impossible de créer la requête de token : %w",
+  "spotify_failed_request_access_token": "impossible de demander le jeton d'accès : %w",
+  "spotify_failed_get_access_token": "impossible d'obtenir le jeton d'accès : statut %d, réponse : %s",
+  "spotify_failed_decode_token_response": "impossible de décoder la réponse du token : %w",
+  "spotify_failed_create_request": "impossible de créer la requête : %w",
+  "spotify_failed_execute_request": "impossible d'exécuter la requête : %w",
+  "spotify_failed_read_response_body": "impossible de lire le corps de la réponse : %w",
+  "spotify_api_request_failed": "la requête API a échoué : statut %d, réponse : %s",
+  "spotify_failed_parse_show_metadata": "impossible d'analyser les métadonnées de l'émission : %w",
+  "spotify_failed_parse_episode_metadata": "impossible d'analyser les métadonnées de l'épisode : %w",
+  "spotify_search_failed": "la recherche a échoué : %w",
+  "spotify_failed_parse_search_results": "impossible d'analyser les résultats de recherche : %w",
+  "spotify_failed_get_show_episodes": "impossible de récupérer les épisodes de l'émission : %w",
+  "spotify_failed_parse_episodes": "impossible d'analyser les épisodes : %w"
 }

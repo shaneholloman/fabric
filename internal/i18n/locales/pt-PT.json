@@ -396,5 +396,19 @@
   "extension_execution_timed_out": "execução expirou após %v",
   "extension_execution_failed_err": "execução falhou: %w\nerr: %s",
   "extension_failed_read_output_file": "falha ao ler o ficheiro de saída: %w",
-  "extension_failed_get_output_path": "falha ao obter o caminho de saída: %w\nerr: %s"
+  "extension_failed_get_output_path": "falha ao obter o caminho de saída: %w\nerr: %s",
+  "spotify_failed_create_token_request": "falha ao criar o pedido de token: %w",
+  "spotify_failed_request_access_token": "falha ao solicitar o token de acesso: %w",
+  "spotify_failed_get_access_token": "falha ao obter o token de acesso: estado %d, resposta: %s",
+  "spotify_failed_decode_token_response": "falha ao descodificar a resposta do token: %w",
+  "spotify_failed_create_request": "falha ao criar o pedido: %w",
+  "spotify_failed_execute_request": "falha ao executar o pedido: %w",
+  "spotify_failed_read_response_body": "falha ao ler o corpo da resposta: %w",
+  "spotify_api_request_failed": "o pedido à API falhou: estado %d, resposta: %s",
+  "spotify_failed_parse_show_metadata": "falha ao analisar os metadados do programa: %w",
+  "spotify_failed_parse_episode_metadata": "falha ao analisar os metadados do episódio: %w",
+  "spotify_search_failed": "a pesquisa falhou: %w",
+  "spotify_failed_parse_search_results": "falha ao analisar os resultados da pesquisa: %w",
+  "spotify_failed_get_show_episodes": "falha ao obter os episódios do programa: %w",
+  "spotify_failed_parse_episodes": "falha ao analisar os episódios: %w"
 }
