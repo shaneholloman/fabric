@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/danielmiessler/fabric/internal/core"
+	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/gin-gonic/gin"
 )
 
@@ -108,28 +109,28 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 	switch v := val.(type) {
 	case float64:
 		if math.IsNaN(v) || math.IsInf(v, 0) {
-			return 0, fmt.Errorf("num_ctx must be a finite number")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_must_be_finite"))
 		}
 		if math.Trunc(v) != v {
-			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_must_be_integer"))
 		}
 		// Check for overflow on 32-bit systems (negative values handled by validation at line 166)
 		if v > float64(maxInt) {
-			return 0, fmt.Errorf("num_ctx value out of range")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_value_out_of_range"))
 		}
 		contextLength = int(v)
 
 	case float32:
 		f64 := float64(v)
 		if math.IsNaN(f64) || math.IsInf(f64, 0) {
-			return 0, fmt.Errorf("num_ctx must be a finite number")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_must_be_finite"))
 		}
 		if math.Trunc(f64) != f64 {
-			return 0, fmt.Errorf("num_ctx must be an integer, got float with fractional part")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_must_be_integer"))
 		}
 		// Check for overflow on 32-bit systems (negative values handled by validation at line 177)
 		if f64 > float64(maxInt) {
-			return 0, fmt.Errorf("num_ctx value out of range")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_value_out_of_range"))
 		}
 		contextLength = int(v)
 
@@ -138,23 +139,23 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 
 	case int64:
 		if v < 0 {
-			return 0, fmt.Errorf("num_ctx must be positive, got: %d", v)
+			return 0, fmt.Errorf(i18n.T("ollama_num_ctx_must_be_positive"), v)
 		}
 		if v > maxInt {
-			return 0, fmt.Errorf("num_ctx value too large: %d", v)
+			return 0, fmt.Errorf(i18n.T("ollama_num_ctx_value_too_large"), v)
 		}
 		contextLength = int(v)
 
 	case json.Number:
 		i64, err := v.Int64()
 		if err != nil {
-			return 0, fmt.Errorf("num_ctx must be a valid number")
+			return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_must_be_valid_number"))
 		}
 		if i64 < 0 {
-			return 0, fmt.Errorf("num_ctx must be positive, got: %d", i64)
+			return 0, fmt.Errorf(i18n.T("ollama_num_ctx_must_be_positive"), i64)
 		}
 		if i64 > maxInt {
-			return 0, fmt.Errorf("num_ctx value too large: %d", i64)
+			return 0, fmt.Errorf(i18n.T("ollama_num_ctx_value_too_large"), i64)
 		}
 		contextLength = int(i64)
 
@@ -166,21 +167,21 @@ func parseOllamaNumCtx(options map[string]any) (int, error) {
 			if len(v) > 50 {
 				errVal = v[:50] + "..."
 			}
-			return 0, fmt.Errorf("num_ctx must be a valid number, got: %s", errVal)
+			return 0, fmt.Errorf(i18n.T("ollama_num_ctx_must_be_valid_number_got"), errVal)
 		}
 		contextLength = parsed
 
 	default:
-		return 0, fmt.Errorf("num_ctx must be a number, got invalid type")
+		return 0, fmt.Errorf("%s", i18n.T("ollama_num_ctx_invalid_type"))
 	}
 
 	if contextLength <= 0 {
-		return 0, fmt.Errorf("num_ctx must be positive, got: %d", contextLength)
+		return 0, fmt.Errorf(i18n.T("ollama_num_ctx_must_be_positive"), contextLength)
 	}
 
 	const maxContextLength = 1000000
 	if contextLength > maxContextLength {
-		return 0, fmt.Errorf("num_ctx exceeds maximum allowed value of %d", maxContextLength)
+		return 0, fmt.Errorf(i18n.T("ollama_num_ctx_exceeds_maximum"), maxContextLength)
 	}
 
 	return contextLength, nil
@@ -257,22 +258,22 @@ func (f APIConvert) ollamaTags(c *gin.Context) {
 func (f APIConvert) ollamaChat(c *gin.Context) {
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		log.Printf("Error reading body: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "testing endpoint"})
+		log.Printf(i18n.T("ollama_error_reading_body"), err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": i18n.T("ollama_error_endpoint")})
 		return
 	}
 	var prompt OllamaRequestBody
 	err = json.Unmarshal(body, &prompt)
 	if err != nil {
-		log.Printf("Error unmarshalling body: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "testing endpoint"})
+		log.Printf(i18n.T("ollama_error_unmarshalling_body"), err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": i18n.T("ollama_error_endpoint")})
 		return
 	}
 
 	// Extract and validate num_ctx from options
 	numCtx, err := parseOllamaNumCtx(prompt.Options)
 	if err != nil {
-		log.Printf("Invalid num_ctx in request: %v", err)
+		log.Printf(i18n.T("ollama_invalid_num_ctx_in_request"), err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -289,7 +290,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			case string:
 				// Parse JSON string into map
 				if err := json.Unmarshal([]byte(v), &variables); err != nil {
-					log.Printf("Warning: failed to parse options.variables as JSON: %v", err)
+					log.Printf(i18n.T("ollama_warning_parse_variables"), err)
 				}
 			case map[string]any:
 				// Convert map[string]any to map[string]string
@@ -332,21 +333,21 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	fabricChatReq, err := json.Marshal(chat)
 	if err != nil {
-		log.Printf("Error marshalling body: %v", err)
+		log.Printf(i18n.T("ollama_error_marshalling_body"), err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	var req *http.Request
 	baseURL, err := buildFabricChatURL(*f.addr)
 	if err != nil {
-		log.Printf("Error building /chat URL: %v", err)
+		log.Printf(i18n.T("ollama_error_building_chat_url"), err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	req, err = http.NewRequest("POST", fmt.Sprintf("%s/chat", baseURL), bytes.NewBuffer(fabricChatReq))
 	if err != nil {
-		log.Printf("Error creating /chat request: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create request"})
+		log.Printf(i18n.T("ollama_error_creating_chat_request"), err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": i18n.T("ollama_failed_create_request")})
 		return
 	}
 
@@ -354,7 +355,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	fabricRes, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Printf("Error getting /chat body: %v", err)
+		log.Printf(i18n.T("ollama_error_getting_chat_body"), err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -363,14 +364,14 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	if fabricRes.StatusCode < http.StatusOK || fabricRes.StatusCode >= http.StatusMultipleChoices {
 		bodyBytes, readErr := io.ReadAll(fabricRes.Body)
 		if readErr != nil {
-			log.Printf("Upstream Fabric server returned non-2xx status %d and body could not be read: %v", fabricRes.StatusCode, readErr)
+			log.Printf(i18n.T("ollama_upstream_non_2xx_body_unreadable"), fabricRes.StatusCode, readErr)
 		} else {
-			log.Printf("Upstream Fabric server returned non-2xx status %d: %s", fabricRes.StatusCode, string(bodyBytes))
+			log.Printf(i18n.T("ollama_upstream_non_2xx"), fabricRes.StatusCode, string(bodyBytes))
 		}
 
-		errorMessage := fmt.Sprintf("upstream Fabric server returned status %d", fabricRes.StatusCode)
+		errorMessage := fmt.Sprintf(i18n.T("ollama_upstream_returned_status"), fabricRes.StatusCode)
 		if prompt.Stream {
-			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", errorMessage), true)
+			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf(i18n.T("ollama_error_prefix"), errorMessage), true)
 		} else {
 			c.JSON(fabricRes.StatusCode, gin.H{"error": errorMessage})
 		}
@@ -392,19 +393,19 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		payload := strings.TrimPrefix(line, "data: ")
 		var fabricResponse FabricResponseFormat
 		if err := json.Unmarshal([]byte(payload), &fabricResponse); err != nil {
-			log.Printf("Error unmarshalling body: %v", err)
+			log.Printf(i18n.T("ollama_error_unmarshalling_body"), err)
 			if prompt.Stream {
 				// In streaming mode, send the error in the same streaming format
-				_ = writeOllamaResponse(c, prompt.Model, "Error: failed to parse upstream response", true)
+				_ = writeOllamaResponse(c, prompt.Model, i18n.T("ollama_error_parse_upstream_response"), true)
 			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to unmarshal Fabric response"})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": i18n.T("ollama_failed_unmarshal_fabric_response")})
 			}
 			return
 		}
 		if fabricResponse.Type == "error" {
 			if prompt.Stream {
 				// In streaming mode, propagate the upstream error via a final streaming chunk
-				_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", fabricResponse.Content), true)
+				_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf(i18n.T("ollama_error_prefix"), fabricResponse.Content), true)
 			} else {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": fabricResponse.Content})
 			}
@@ -416,21 +417,21 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		contentBuilder.WriteString(fabricResponse.Content)
 		if prompt.Stream {
 			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
-				log.Printf("Error writing response: %v", err)
+				log.Printf(i18n.T("ollama_error_writing_response"), err)
 				return
 			}
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		log.Printf("Error scanning body: %v", err)
-		errorMsg := fmt.Sprintf("failed to scan SSE response stream: %v", err)
+		log.Printf(i18n.T("ollama_error_scanning_body"), err)
+		errorMsg := fmt.Sprintf(i18n.T("ollama_failed_scan_sse_stream"), err)
 		// Check for buffer size exceeded error
 		if strings.Contains(err.Error(), "token too long") {
-			errorMsg = "SSE line exceeds 1MB buffer limit - data line too large"
+			errorMsg = i18n.T("ollama_sse_buffer_limit")
 		}
 		if prompt.Stream {
 			// In streaming mode, send the error in the same streaming format
-			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", errorMsg), true)
+			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf(i18n.T("ollama_error_prefix"), errorMsg), true)
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": errorMsg})
 		}
@@ -442,10 +443,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	// Check if we received any content from upstream
 	if contentBuilder.Len() == 0 {
-		log.Printf("Warning: no content received from upstream Fabric server")
+		log.Printf("%s", i18n.T("ollama_warning_no_content"))
 		// In non-streaming mode, treat absence of content as an error
 		if !prompt.Stream {
-			c.JSON(http.StatusBadGateway, gin.H{"error": "no content received from upstream Fabric server"})
+			c.JSON(http.StatusBadGateway, gin.H{"error": i18n.T("ollama_no_content_from_upstream")})
 			return
 		}
 	}
@@ -458,7 +459,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	finalResponse := buildFinalOllamaResponse(prompt.Model, "", duration)
 	if err := writeOllamaResponseStruct(c, finalResponse); err != nil {
-		log.Printf("Error writing response: %v", err)
+		log.Printf(i18n.T("ollama_error_writing_response"), err)
 	}
 }
 
@@ -492,18 +493,18 @@ func buildFinalOllamaResponse(model string, content string, duration int64) Olla
 // contains a path component.
 func buildFabricChatURL(addr string) (string, error) {
 	if addr == "" {
-		return "", fmt.Errorf("empty address")
+		return "", fmt.Errorf("%s", i18n.T("ollama_empty_address"))
 	}
 	if strings.HasPrefix(addr, "http://") || strings.HasPrefix(addr, "https://") {
 		parsed, err := url.Parse(addr)
 		if err != nil {
-			return "", fmt.Errorf("invalid address: %w", err)
+			return "", fmt.Errorf(i18n.T("ollama_invalid_address"), err)
 		}
 		if parsed.Host == "" {
-			return "", fmt.Errorf("invalid address: missing host")
+			return "", fmt.Errorf("%s", i18n.T("ollama_invalid_address_missing_host"))
 		}
 		if strings.HasPrefix(parsed.Host, ":") {
-			return "", fmt.Errorf("invalid address: missing hostname")
+			return "", fmt.Errorf("%s", i18n.T("ollama_invalid_address_missing_hostname"))
 		}
 		return strings.TrimRight(parsed.String(), "/"), nil
 	}
@@ -513,17 +514,17 @@ func buildFabricChatURL(addr string) (string, error) {
 	// Validate bare addresses (without http/https prefix)
 	parsed, err := url.Parse("http://" + addr)
 	if err != nil {
-		return "", fmt.Errorf("invalid address: %w", err)
+		return "", fmt.Errorf(i18n.T("ollama_invalid_address"), err)
 	}
 	if parsed.Host == "" {
-		return "", fmt.Errorf("invalid address: missing host")
+		return "", fmt.Errorf("%s", i18n.T("ollama_invalid_address_missing_host"))
 	}
 	if strings.HasPrefix(parsed.Host, ":") {
-		return "", fmt.Errorf("invalid address: missing hostname")
+		return "", fmt.Errorf("%s", i18n.T("ollama_invalid_address_missing_hostname"))
 	}
 	// Bare addresses should be host[:port] only - reject path components
 	if parsed.Path != "" && parsed.Path != "/" {
-		return "", fmt.Errorf("invalid address: path component not allowed in bare address")
+		return "", fmt.Errorf("%s", i18n.T("ollama_invalid_address_path_not_allowed"))
 	}
 	return strings.TrimRight(parsed.String(), "/"), nil
 }
