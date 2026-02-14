@@ -42,6 +42,8 @@
   "openai_unexpected_status_code_read_error_partial": "unexpected status code: %d from provider %s (error reading body: %v), partial response: %s",
   "openai_unexpected_status_code_read_error": "unexpected status code: %d from provider %s (failed to read response body: %v)",
   "openai_unable_to_parse_models_response": "unable to parse models response; raw response: %s",
+  "openai_warning_model_no_image_generation": "Warning: Model '%s' does not support image generation. Supported models: %s. Consider using -m gpt-5.2 for image generation.\n",
+  "openai_model_no_image_generation": "model '%s' does not support image generation. Supported models: %s",
   "scraping_not_configured": "scraping functionality is not configured. Please set up Jina to enable scraping",
   "could_not_determine_home_dir": "could not determine user home directory: %w",
   "could_not_stat_env_file": "could not stat .env file: %w",

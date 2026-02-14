@@ -42,6 +42,8 @@
   "openai_unexpected_status_code_read_error_partial": "意外的状态码：来自提供商 %s 的 %d（读取主体错误：%v），部分响应：%s",
   "openai_unexpected_status_code_read_error": "意外的状态码：来自提供商 %s 的 %d（读取响应主体失败：%v)",
   "openai_unable_to_parse_models_response": "无法解析模型响应；原始响应：%s",
+  "openai_warning_model_no_image_generation": "警告：模型 '%s' 不支持图像生成。支持的模型：%s。请考虑使用 -m gpt-5.2 进行图像生成。\n",
+  "openai_model_no_image_generation": "模型 '%s' 不支持图像生成。支持的模型：%s",
   "scraping_not_configured": "抓取功能未配置。请设置 Jina 以启用抓取功能",
   "could_not_determine_home_dir": "无法确定用户主目录: %w",
   "could_not_stat_env_file": "无法获取 .env 文件状态: %w",

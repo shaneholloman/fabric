@@ -42,6 +42,8 @@
   "openai_unexpected_status_code_read_error_partial": "予期しないステータスコード: プロバイダー %s から %d (本文読み取りエラー: %v)、部分的なレスポンス: %s",
   "openai_unexpected_status_code_read_error": "予期しないステータスコード: プロバイダー %s から %d (レスポンス本文の読み取りに失敗: %v)",
   "openai_unable_to_parse_models_response": "モデルレスポンスの解析に失敗しました; 生のレスポンス: %s",
+  "openai_warning_model_no_image_generation": "警告: モデル '%s' は画像生成をサポートしていません。サポートされているモデル: %s。画像生成には -m gpt-5.2 の使用を検討してください。\n",
+  "openai_model_no_image_generation": "モデル '%s' は画像生成をサポートしていません。サポートされているモデル: %s",
   "scraping_not_configured": "スクレイピング機能が設定されていません。スクレイピングを有効にするためにJinaを設定してください",
   "could_not_determine_home_dir": "ユーザーのホームディレクトリを特定できませんでした: %w",
   "could_not_stat_env_file": ".envファイルの状態を確認できませんでした: %w",

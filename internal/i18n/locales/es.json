@@ -42,6 +42,8 @@
   "openai_unexpected_status_code_read_error_partial": "código de estado inesperado: %d del proveedor %s (error al leer cuerpo: %v), respuesta parcial: %s",
   "openai_unexpected_status_code_read_error": "código de estado inesperado: %d del proveedor %s (error al leer cuerpo de respuesta: %v)",
   "openai_unable_to_parse_models_response": "no se pudo analizar la respuesta de modelos; respuesta cruda: %s",
+  "openai_warning_model_no_image_generation": "Advertencia: El modelo '%s' no soporta generación de imágenes. Modelos soportados: %s. Considere usar -m gpt-5.2 para generación de imágenes.\n",
+  "openai_model_no_image_generation": "el modelo '%s' no soporta generación de imágenes. Modelos soportados: %s",
   "scraping_not_configured": "la funcionalidad de extracción no está configurada. Por favor configura Jina para habilitar la extracción",
   "could_not_determine_home_dir": "no se pudo determinar el directorio home del usuario: %w",
   "could_not_stat_env_file": "no se pudo verificar el archivo .env: %w",
