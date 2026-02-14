@@ -11,6 +11,7 @@ import (
 
 	"github.com/danielmiessler/fabric/internal/chat"
 	"github.com/danielmiessler/fabric/internal/domain"
+	"github.com/danielmiessler/fabric/internal/i18n"
 	debuglog "github.com/danielmiessler/fabric/internal/log"
 	"github.com/danielmiessler/fabric/internal/plugins"
 	openai "github.com/openai/openai-go"
@@ -75,8 +76,8 @@ func (o *Client) SetResponsesAPIEnabled(enabled bool) {
 // checkImageGenerationCompatibility warns if the model doesn't support image generation
 func checkImageGenerationCompatibility(model string) {
 	if !supportsImageGeneration(model) {
-		fmt.Fprintf(os.Stderr, "Warning: Model '%s' does not support image generation. Supported models: %s. Consider using -m gpt-5.2 for image generation.\n",
-			model, strings.Join(ImageGenerationSupportedModels, ", "))
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf(i18n.T("openai_warning_model_no_image_generation"),
+			model, strings.Join(ImageGenerationSupportedModels, ", ")))
 	}
 }
 
@@ -170,7 +171,7 @@ func (o *Client) sendResponses(ctx context.Context, msgs []*chat.ChatCompletionM
 
 	// Validate model supports image generation if image file is specified
 	if opts.ImageFile != "" && !supportsImageGeneration(opts.Model) {
-		return "", fmt.Errorf("model '%s' does not support image generation. Supported models: %s", opts.Model, strings.Join(ImageGenerationSupportedModels, ", "))
+		return "", fmt.Errorf("%s", fmt.Sprintf(i18n.T("openai_model_no_image_generation"), opts.Model, strings.Join(ImageGenerationSupportedModels, ", ")))
 	}
 
 	req := o.buildResponseParams(msgs, opts)
