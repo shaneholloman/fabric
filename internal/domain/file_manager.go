@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+
+	"github.com/danielmiessler/fabric/internal/i18n"
 )
 
 // FileChangesMarker identifies the start of a file changes section in output
@@ -37,7 +39,7 @@ func ParseFileChanges(output string) (changeSummary string, changes []FileChange
 	// Find the first [ after the file changes marker
 	jsonArrayStart := strings.Index(output[jsonStart:], "[")
 	if jsonArrayStart == -1 {
-		return output, nil, fmt.Errorf("invalid %s format: no JSON array found", FileChangesMarker)
+		return output, nil, fmt.Errorf(i18n.T("file_manager_invalid_format_no_json_array"), FileChangesMarker)
 	}
 	jsonStart += jsonArrayStart
 
@@ -57,7 +59,7 @@ func ParseFileChanges(output string) (changeSummary string, changes []FileChange
 	}
 
 	if bracketCount != 0 {
-		return output, nil, fmt.Errorf("invalid %s format: unbalanced brackets", FileChangesMarker)
+		return output, nil, fmt.Errorf(i18n.T("file_manager_invalid_format_unbalanced_brackets"), FileChangesMarker)
 	}
 
 	// Extract the JSON string and fix escape sequences
@@ -75,7 +77,7 @@ func ParseFileChanges(output string) (changeSummary string, changes []FileChange
 		jsonStr = fixInvalidEscapes(jsonStr)
 		err = json.Unmarshal([]byte(jsonStr), &fileChanges)
 		if err != nil {
-			return changeSummary, nil, fmt.Errorf("failed to parse %s JSON: %w", FileChangesMarker, err)
+			return changeSummary, nil, fmt.Errorf(i18n.T("file_manager_failed_parse_json"), FileChangesMarker, err)
 		}
 	}
 
@@ -83,22 +85,22 @@ func ParseFileChanges(output string) (changeSummary string, changes []FileChange
 	for i, change := range fileChanges {
 		// Validate operation
 		if change.Operation != "create" && change.Operation != "update" {
-			return changeSummary, nil, fmt.Errorf("invalid operation for file change %d: %s", i, change.Operation)
+			return changeSummary, nil, fmt.Errorf(i18n.T("file_manager_invalid_operation"), i, change.Operation)
 		}
 
 		// Validate path
 		if change.Path == "" {
-			return changeSummary, nil, fmt.Errorf("empty path for file change %d", i)
+			return changeSummary, nil, fmt.Errorf(i18n.T("file_manager_empty_path"), i)
 		}
 
 		// Check for suspicious paths (directory traversal)
 		if strings.Contains(change.Path, "..") {
-			return changeSummary, nil, fmt.Errorf("suspicious path for file change %d: %s", i, change.Path)
+			return changeSummary, nil, fmt.Errorf(i18n.T("file_manager_suspicious_path"), i, change.Path)
 		}
 
 		// Check file size
 		if len(change.Content) > MaxFileSize {
-			return changeSummary, nil, fmt.Errorf("file content too large for file change %d: %d bytes", i, len(change.Content))
+			return changeSummary, nil, fmt.Errorf(i18n.T("file_manager_file_content_too_large"), i, len(change.Content))
 		}
 	}
 
@@ -174,15 +176,15 @@ func ApplyFileChanges(projectRoot string, changes []FileChange) error {
 		// Create directories if necessary
 		dir := filepath.Dir(absPath)
 		if err := os.MkdirAll(dir, 0755); err != nil {
-			return fmt.Errorf("failed to create directory %s for file change %d: %w", dir, i, err)
+			return fmt.Errorf(i18n.T("file_manager_failed_create_directory"), dir, i, err)
 		}
 
 		// Write the file
 		if err := os.WriteFile(absPath, []byte(change.Content), 0644); err != nil {
-			return fmt.Errorf("failed to write file %s for file change %d: %w", absPath, i, err)
+			return fmt.Errorf(i18n.T("file_manager_failed_write_file"), absPath, i, err)
 		}
 
-		fmt.Printf("Applied %s operation to %s\n", change.Operation, change.Path)
+		fmt.Printf(i18n.T("file_manager_applied_operation")+"\n", change.Operation, change.Path)
 	}
 
 	return nil

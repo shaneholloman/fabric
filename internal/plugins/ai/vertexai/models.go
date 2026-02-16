@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/danielmiessler/fabric/internal/i18n"
 	debuglog "github.com/danielmiessler/fabric/internal/log"
 )
 
@@ -40,7 +41,7 @@ type publisherModel struct {
 func fetchModelsPage(ctx context.Context, httpClient *http.Client, url, projectID, publisher string) (*publisherModelsResponse, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
+		return nil, fmt.Errorf(i18n.T("vertexai_error_create_request"), err)
 	}
 
 	req.Header.Set("Accept", "application/json")
@@ -49,28 +50,28 @@ func fetchModelsPage(ctx context.Context, httpClient *http.Client, url, projectI
 
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("request failed: %w", err)
+		return nil, fmt.Errorf(i18n.T("vertexai_error_request_failed"), err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		bodyBytes, _ := io.ReadAll(io.LimitReader(resp.Body, errorResponseLimit))
 		debuglog.Debug(debuglog.Basic, "API error for %s: status %d, url: %s, body: %s\n", publisher, resp.StatusCode, url, string(bodyBytes))
-		return nil, fmt.Errorf("API returned status %d: %s", resp.StatusCode, string(bodyBytes))
+		return nil, fmt.Errorf(i18n.T("vertexai_error_api_status"), resp.StatusCode, string(bodyBytes))
 	}
 
 	bodyBytes, err := io.ReadAll(io.LimitReader(resp.Body, maxResponseSize+1))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
+		return nil, fmt.Errorf(i18n.T("vertexai_error_read_response"), err)
 	}
 
 	if len(bodyBytes) > maxResponseSize {
-		return nil, fmt.Errorf("response too large (>%d bytes)", maxResponseSize)
+		return nil, fmt.Errorf(i18n.T("vertexai_error_response_too_large"), maxResponseSize)
 	}
 
 	var response publisherModelsResponse
 	if err := json.Unmarshal(bodyBytes, &response); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
+		return nil, fmt.Errorf(i18n.T("vertexai_error_parse_response"), err)
 	}
 
 	return &response, nil
