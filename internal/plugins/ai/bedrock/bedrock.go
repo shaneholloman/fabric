@@ -55,7 +55,7 @@ func NewClient() (ret *BedrockClient) {
 		ret.PluginBase = plugins.NewVendorPluginBase(vendorName, func() error {
 			return fmt.Errorf(i18n.T("bedrock_unable_load_aws_config"), err)
 		})
-		ret.bedrockRegion = ret.PluginBase.AddSetupQuestion(i18n.T("bedrock_aws_region_label"), true)
+		ret.bedrockRegion = ret.PluginBase.AddSetupQuestionWithEnvName("AWS Region", true, i18n.T("bedrock_aws_region_label"))
 		return
 	}
 
@@ -69,7 +69,7 @@ func NewClient() (ret *BedrockClient) {
 	ret.runtimeClient = runtimeClient
 	ret.controlPlaneClient = controlPlaneClient
 
-	ret.bedrockRegion = ret.PluginBase.AddSetupQuestion(i18n.T("bedrock_aws_region_label"), true)
+	ret.bedrockRegion = ret.PluginBase.AddSetupQuestionWithEnvName("AWS Region", true, i18n.T("bedrock_aws_region_label"))
 
 	if cfg.Region != "" {
 		ret.bedrockRegion.Value = cfg.Region
