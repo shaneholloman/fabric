@@ -32,9 +32,9 @@ const (
 
 const (
 	errInvalidLocationFormatKey = "gemini_invalid_location_format"
-	locationSeparator        = "/"
-	langCodeSeparator        = "_"
-	langCodeNormalizedSep    = "-"
+	locationSeparator           = "/"
+	langCodeSeparator           = "_"
+	langCodeNormalizedSep       = "-"
 
 	modelPrefix           = "models/"
 	modelTypeTTS          = "tts"
