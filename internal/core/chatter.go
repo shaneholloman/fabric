@@ -17,8 +17,6 @@ import (
 	"github.com/danielmiessler/fabric/internal/plugins/template"
 )
 
-const NoSessionPatternUserMessages = "no session, pattern or user messages provided"
-
 type Chatter struct {
 	db *fsdb.Db
 
