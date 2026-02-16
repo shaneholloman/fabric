@@ -1,0 +1,7 @@
+### PR [#2004](https://github.com/danielmiessler/Fabric/pull/2004) by [ksylvan](https://github.com/ksylvan): Add i18n translations for VertexAI, Gemini, Bedrock, and fetch plugins
+
+- Add i18n translations for VertexAI, Gemini, Bedrock, and fetch plugins across 10 locale files
+- Replace hardcoded English strings with `i18n.T()` calls in Bedrock, Gemini, VertexAI, and fetch plugins
+- Add error handling for fetch operations with new error messages in i18n
+- Use `errors.New` instead of `fmt.Errorf` for non-formatted error strings
+- Add Gemini TTS and audio error translations, AWS Bedrock client error translations, and fetch plugin error translations to all locales
