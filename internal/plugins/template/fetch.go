@@ -72,11 +72,11 @@ func (p *FetchPlugin) validateTextContent(content []byte) error {
 	debugf("Fetch: validating content length=%d bytes", len(content))
 
 	if !utf8.Valid(content) {
-		return fmt.Errorf(i18n.T("fetch_content_not_utf8"))
+		return errors.New(i18n.T("fetch_content_not_utf8"))
 	}
 
 	if bytes.Contains(content, []byte{0}) {
-		return fmt.Errorf(i18n.T("fetch_content_null_bytes"))
+		return errors.New(i18n.T("fetch_content_null_bytes"))
 	}
 
 	debugf("Fetch: content validation successful")

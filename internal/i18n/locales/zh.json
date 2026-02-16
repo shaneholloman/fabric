@@ -481,5 +481,15 @@
   "bedrock_converse_failed": "模型 %s 的 bedrock converse 失败：%w",
   "bedrock_unexpected_response_type": "意外的响应类型：%T",
   "bedrock_empty_response_content": "空响应内容",
-  "bedrock_unexpected_content_block_type": "意外的内容块类型：%T"
+  "bedrock_unexpected_content_block_type": "意外的内容块类型：%T",
+  "fetch_unknown_operation": "fetch：未知操作 %q（支持：get）",
+  "fetch_content_not_utf8": "fetch：内容不是有效的 UTF-8 文本",
+  "fetch_content_null_bytes": "fetch：内容包含空字节",
+  "fetch_error_create_request": "fetch：创建请求时出错：%v",
+  "fetch_error_fetching_url": "fetch：获取 URL 时出错：%v",
+  "fetch_http_error": "fetch：HTTP 错误：%d - %s",
+  "fetch_content_too_large": "fetch：内容过大：%d 字节（最大 %d 字节）",
+  "fetch_unsupported_content_type": "fetch：不支持的内容类型 %q - 仅允许文本内容",
+  "fetch_error_reading_response": "fetch：读取响应时出错：%v",
+  "fetch_content_exceeds_limit": "fetch：内容过大：超过 %d 字节"
 }

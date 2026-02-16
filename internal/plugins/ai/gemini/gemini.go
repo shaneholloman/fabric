@@ -31,7 +31,7 @@ const (
 )
 
 const (
-	errInvalidLocationFormat = "gemini_invalid_location_format"
+	errInvalidLocationFormatKey = "gemini_invalid_location_format"
 	locationSeparator        = "/"
 	langCodeSeparator        = "_"
 	langCodeNormalizedSep    = "-"
@@ -232,7 +232,7 @@ func (o *Client) buildGenerateContentConfig(opts *domain.ChatOptions) (*genai.Ge
 					RetrievalConfig: &genai.RetrievalConfig{LanguageCode: loc},
 				}
 			} else {
-				return nil, fmt.Errorf(i18n.T(errInvalidLocationFormat), loc)
+				return nil, fmt.Errorf(i18n.T(errInvalidLocationFormatKey), loc)
 			}
 		}
 	}
