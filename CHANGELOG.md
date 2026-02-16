@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.407 (2026-02-16)
+
+### PR [#2005](https://github.com/danielmiessler/Fabric/pull/2005) by [ksylvan](https://github.com/ksylvan): I18N: For file manager, Vertex AI, and Copilot errors
+
+- Internationalized file manager, Vertex AI, and Copilot error messages via i18n by replacing hardcoded error strings with translation keys
+- Added file manager, Vertex AI, and Copilot i18n keys to all 10 locale files
+- Fixed JSON trailing comma syntax errors across all locale files
+- Normalized German locale JSON indentation from tabs to spaces
+- Updated Bedrock AWS region setup to use `AddSetupQuestionWithEnvName`
+
 ## v1.4.406 (2026-02-16)
 
 ### PR [#2004](https://github.com/danielmiessler/Fabric/pull/2004) by [ksylvan](https://github.com/ksylvan): Add i18n translations for VertexAI, Gemini, Bedrock, and fetch plugins
