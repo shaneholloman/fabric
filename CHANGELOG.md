@@ -1,5 +1,44 @@
 # Changelog
 
+## v1.4.405 (2026-02-16)
+
+### PR [#2002](https://github.com/danielmiessler/Fabric/pull/2002) by [ksylvan](https://github.com/ksylvan): Internationalization Polish
+
+- Added i18n translations for ollama, extensions, lmstudio, and spotify modules
+- Replaced hardcoded English strings with `i18n.T()` calls across all modules
+- Added translations for all new keys in de, en, es, fa, fr, it, ja, pt-BR, pt-PT, and zh locales
+- Added i18n strings for extension registry, executor, and manager operations
+- Added i18n strings for Spotify API client error messages
+
+### PR [#2003](https://github.com/danielmiessler/Fabric/pull/2003) by [ksylvan](https://github.com/ksylvan): Add internationalization support for chatter and template file operations
+
+- Add internationalization support for chatter and template file operations
+- Replace hardcoded strings with i18n keys in chatter.go and file.go
+- Provide translations in nine languages: German, English, Spanish, Persian, French, Italian, Japanese, Portuguese, and Chinese
+- Enable localized output for stream updates and file plugin operations
+- Maintain backward compatibility with existing functionality
+
+### Direct commits
+
+- MAESTRO: i18n: extract hard-coded strings from internal/tools/spotify/spotify.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_executor.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/openai/openai.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_registry.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/lmstudio/lmstudio.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_manager.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/server/ollama.go
+Replace 37 hard-coded error/log strings with i18n.T() calls and add
+translations for all 10 supported languages (en, de, es, fa, fr, it,
+ja, pt-BR, pt-PT, zh). Keys use ollama_ prefix following project
+conventions.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v1.4.404 (2026-02-13)
 
 ### PR [#1997](https://github.com/danielmiessler/Fabric/pull/1997) by [ksylvan](https://github.com/ksylvan): Enable responses API usage for GrokAI (xAI) provider

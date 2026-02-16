@@ -1,7 +1,0 @@
-### PR [#2003](https://github.com/danielmiessler/Fabric/pull/2003) by [ksylvan](https://github.com/ksylvan): Add internationalization support for chatter and template file operations
-
-- Add internationalization support for chatter and template file operations
-- Replace hardcoded strings with i18n keys in chatter.go and file.go
-- Provide translations in nine languages: German, English, Spanish, Persian, French, Italian, Japanese, Portuguese, and Chinese
-- Enable localized output for stream updates and file plugin operations
-- Maintain backward compatibility with existing functionality
