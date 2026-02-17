@@ -2,6 +2,7 @@ package vertexai
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/anthropics/anthropic-sdk-go/vertex"
 	"github.com/danielmiessler/fabric/internal/chat"
 	"github.com/danielmiessler/fabric/internal/domain"
+	"github.com/danielmiessler/fabric/internal/i18n"
 	debuglog "github.com/danielmiessler/fabric/internal/log"
 	"github.com/danielmiessler/fabric/internal/plugins"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/geminicommon"
@@ -65,7 +67,7 @@ func (c *Client) ListModels() ([]string, error) {
 	// Get ADC credentials for API authentication
 	creds, err := google.FindDefaultCredentials(ctx, cloudPlatformScope)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get Google credentials (ensure ADC is configured): %w", err)
+		return nil, fmt.Errorf(i18n.T("vertexai_failed_google_credentials"), err)
 	}
 	httpClient := oauth2.NewClient(ctx, creds.TokenSource)
 
@@ -104,13 +106,13 @@ func (c *Client) ListModels() ([]string, error) {
 	}
 
 	if len(allModels) == 0 {
-		return nil, fmt.Errorf("no models found from any publisher")
+		return nil, errors.New(i18n.T("vertexai_no_models_found"))
 	}
 
 	// Filter to only conversational models and sort
 	filtered := filterConversationalModels(allModels)
 	if len(filtered) == 0 {
-		return nil, fmt.Errorf("no conversational models found")
+		return nil, errors.New(i18n.T("vertexai_no_conversational_models"))
 	}
 
 	return sortModels(filtered), nil
@@ -133,13 +135,13 @@ func getMaxTokens(opts *domain.ChatOptions) int64 {
 
 func (c *Client) sendClaude(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (string, error) {
 	if c.client == nil {
-		return "", fmt.Errorf("VertexAI client not initialized")
+		return "", errors.New(i18n.T("vertexai_client_not_initialized"))
 	}
 
 	// Convert chat messages to Anthropic format
 	anthropicMessages := c.toMessages(msgs)
 	if len(anthropicMessages) == 0 {
-		return "", fmt.Errorf("no valid messages to send")
+		return "", errors.New(i18n.T("vertexai_no_valid_messages"))
 	}
 
 	// Build request params
@@ -171,7 +173,7 @@ func (c *Client) sendClaude(ctx context.Context, msgs []*chat.ChatCompletionMess
 	}
 
 	if len(textParts) == 0 {
-		return "", fmt.Errorf("no content in response")
+		return "", errors.New(i18n.T("vertexai_no_content_in_response"))
 	}
 
 	return strings.Join(textParts, ""), nil
@@ -187,7 +189,7 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 func (c *Client) sendStreamClaude(msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate) error {
 	if c.client == nil {
 		close(channel)
-		return fmt.Errorf("VertexAI client not initialized")
+		return errors.New(i18n.T("vertexai_client_not_initialized"))
 	}
 
 	defer close(channel)
@@ -196,7 +198,7 @@ func (c *Client) sendStreamClaude(msgs []*chat.ChatCompletionMessage, opts *doma
 	// Convert chat messages to Anthropic format
 	anthropicMessages := c.toMessages(msgs)
 	if len(anthropicMessages) == 0 {
-		return fmt.Errorf("no valid messages to send")
+		return errors.New(i18n.T("vertexai_no_valid_messages"))
 	}
 
 	// Build request params
@@ -271,12 +273,12 @@ func (c *Client) sendGemini(ctx context.Context, msgs []*chat.ChatCompletionMess
 		Backend:  genai.BackendVertexAI,
 	})
 	if err != nil {
-		return "", fmt.Errorf("failed to create Gemini client: %w", err)
+		return "", fmt.Errorf(i18n.T("vertexai_failed_gemini_client"), err)
 	}
 
 	contents := geminicommon.ConvertMessages(msgs)
 	if len(contents) == 0 {
-		return "", fmt.Errorf("no valid messages to send")
+		return "", errors.New(i18n.T("vertexai_no_valid_messages"))
 	}
 
 	config := c.buildGeminiConfig(opts)
@@ -345,12 +347,12 @@ func (c *Client) sendStreamGemini(msgs []*chat.ChatCompletionMessage, opts *doma
 		Backend:  genai.BackendVertexAI,
 	})
 	if err != nil {
-		return fmt.Errorf("failed to create Gemini client: %w", err)
+		return fmt.Errorf(i18n.T("vertexai_failed_gemini_client"), err)
 	}
 
 	contents := geminicommon.ConvertMessages(msgs)
 	if len(contents) == 0 {
-		return fmt.Errorf("no valid messages to send")
+		return errors.New(i18n.T("vertexai_no_valid_messages"))
 	}
 
 	config := c.buildGeminiConfig(opts)
@@ -361,7 +363,7 @@ func (c *Client) sendStreamGemini(msgs []*chat.ChatCompletionMessage, opts *doma
 		if err != nil {
 			channel <- domain.StreamUpdate{
 				Type:    domain.StreamTypeError,
-				Content: fmt.Sprintf("Error: %v", err),
+				Content: fmt.Sprintf(i18n.T("vertexai_stream_error"), err),
 			}
 			return err
 		}

@@ -1,5 +1,80 @@
 # Changelog
 
+## v1.4.409 (2026-02-17)
+
+### PR [#2006](https://github.com/danielmiessler/Fabric/pull/2006) by [konstantint](https://github.com/konstantint): feat: When running from a symlink, use the executable name as the pattern argument
+
+- Feat: When running from a symlink, use the executable name as the pattern argument
+
+## v1.4.408 (2026-02-17)
+
+### PR [#2007](https://github.com/danielmiessler/Fabric/pull/2007) by [ksylvan](https://github.com/ksylvan): Add optional API key authentication to LM Studio client
+
+- Add optional API key authentication to LM Studio client
+- Add optional API key setup question to client configuration
+- Add `ApiKey` field to the LM Studio `Client` struct
+- Create `addAuthorizationHeader` helper to attach Bearer token to requests
+- Apply authorization header to all outgoing HTTP requests
+
+## v1.4.407 (2026-02-16)
+
+### PR [#2005](https://github.com/danielmiessler/Fabric/pull/2005) by [ksylvan](https://github.com/ksylvan): I18N: For file manager, Vertex AI, and Copilot errors
+
+- Internationalized file manager, Vertex AI, and Copilot error messages via i18n by replacing hardcoded error strings with translation keys
+- Added file manager, Vertex AI, and Copilot i18n keys to all 10 locale files
+- Fixed JSON trailing comma syntax errors across all locale files
+- Normalized German locale JSON indentation from tabs to spaces
+- Updated Bedrock AWS region setup to use `AddSetupQuestionWithEnvName`
+
+## v1.4.406 (2026-02-16)
+
+### PR [#2004](https://github.com/danielmiessler/Fabric/pull/2004) by [ksylvan](https://github.com/ksylvan): Add i18n translations for VertexAI, Gemini, Bedrock, and fetch plugins
+
+- Add i18n translations for VertexAI, Gemini, Bedrock, and fetch plugins across 10 locale files
+- Replace hardcoded English strings with `i18n.T()` calls in Bedrock, Gemini, VertexAI, and fetch plugins
+- Add error handling for fetch operations with new error messages in i18n
+- Use `errors.New` instead of `fmt.Errorf` for non-formatted error strings
+- Add Gemini TTS and audio error translations, AWS Bedrock client error translations, and fetch plugin error translations to all locales
+
+## v1.4.405 (2026-02-16)
+
+### PR [#2002](https://github.com/danielmiessler/Fabric/pull/2002) by [ksylvan](https://github.com/ksylvan): Internationalization Polish
+
+- Added i18n translations for ollama, extensions, lmstudio, and spotify modules
+- Replaced hardcoded English strings with `i18n.T()` calls across all modules
+- Added translations for all new keys in de, en, es, fa, fr, it, ja, pt-BR, pt-PT, and zh locales
+- Added i18n strings for extension registry, executor, and manager operations
+- Added i18n strings for Spotify API client error messages
+
+### PR [#2003](https://github.com/danielmiessler/Fabric/pull/2003) by [ksylvan](https://github.com/ksylvan): Add internationalization support for chatter and template file operations
+
+- Add internationalization support for chatter and template file operations
+- Replace hardcoded strings with i18n keys in chatter.go and file.go
+- Provide translations in nine languages: German, English, Spanish, Persian, French, Italian, Japanese, Portuguese, and Chinese
+- Enable localized output for stream updates and file plugin operations
+- Maintain backward compatibility with existing functionality
+
+### Direct commits
+
+- MAESTRO: i18n: extract hard-coded strings from internal/tools/spotify/spotify.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_executor.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/openai/openai.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_registry.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/lmstudio/lmstudio.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_manager.go
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+- MAESTRO: i18n: extract hard-coded strings from internal/server/ollama.go
+Replace 37 hard-coded error/log strings with i18n.T() calls and add
+translations for all 10 supported languages (en, de, es, fa, fr, it,
+ja, pt-BR, pt-PT, zh). Keys use ollama_ prefix following project
+conventions.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v1.4.404 (2026-02-13)
 
 ### PR [#1997](https://github.com/danielmiessler/Fabric/pull/1997) by [ksylvan](https://github.com/ksylvan): Enable responses API usage for GrokAI (xAI) provider

@@ -5,12 +5,15 @@ package template
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"mime"
 	"net/http"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/danielmiessler/fabric/internal/i18n"
 )
 
 const (
@@ -37,7 +40,7 @@ func (p *FetchPlugin) Apply(operation string, value string) (string, error) {
 	case "get":
 		return p.fetch(value)
 	default:
-		return "", fmt.Errorf("fetch: unknown operation %q (supported: get)", operation)
+		return "", fmt.Errorf(i18n.T("fetch_unknown_operation"), operation)
 	}
 }
 
@@ -69,11 +72,11 @@ func (p *FetchPlugin) validateTextContent(content []byte) error {
 	debugf("Fetch: validating content length=%d bytes", len(content))
 
 	if !utf8.Valid(content) {
-		return fmt.Errorf("fetch: content is not valid UTF-8 text")
+		return errors.New(i18n.T("fetch_content_not_utf8"))
 	}
 
 	if bytes.Contains(content, []byte{0}) {
-		return fmt.Errorf("fetch: content contains null bytes")
+		return errors.New(i18n.T("fetch_content_null_bytes"))
 	}
 
 	debugf("Fetch: content validation successful")
@@ -87,42 +90,40 @@ func (p *FetchPlugin) fetch(urlStr string) (string, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", urlStr, nil)
 	if err != nil {
-		return "", fmt.Errorf("fetch: error creating request: %v", err)
+		return "", fmt.Errorf(i18n.T("fetch_error_create_request"), err)
 	}
 	req.Header.Set("User-Agent", UserAgent)
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("fetch: error fetching URL: %v", err)
+		return "", fmt.Errorf(i18n.T("fetch_error_fetching_url"), err)
 	}
 	defer resp.Body.Close()
 
 	debugf("Fetch: got response status=%q", resp.Status)
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("fetch: HTTP error: %d - %s", resp.StatusCode, resp.Status)
+		return "", fmt.Errorf(i18n.T("fetch_http_error"), resp.StatusCode, resp.Status)
 	}
 
 	if contentLength := resp.ContentLength; contentLength > MaxContentSize {
-		return "", fmt.Errorf("fetch: content too large: %d bytes (max %d bytes)",
-			contentLength, MaxContentSize)
+		return "", fmt.Errorf(i18n.T("fetch_content_too_large"), contentLength, MaxContentSize)
 	}
 
 	contentType := resp.Header.Get("Content-Type")
 	debugf("Fetch: content-type=%q", contentType)
 	if !p.isTextContent(contentType) {
-		return "", fmt.Errorf("fetch: unsupported content type %q - only text content allowed",
-			contentType)
+		return "", fmt.Errorf(i18n.T("fetch_unsupported_content_type"), contentType)
 	}
 
 	debugf("Fetch: reading response body")
 	limitReader := io.LimitReader(resp.Body, MaxContentSize+1)
 	content, err := io.ReadAll(limitReader)
 	if err != nil {
-		return "", fmt.Errorf("fetch: error reading response: %v", err)
+		return "", fmt.Errorf(i18n.T("fetch_error_reading_response"), err)
 	}
 
 	if len(content) > MaxContentSize {
-		return "", fmt.Errorf("fetch: content too large: exceeds %d bytes", MaxContentSize)
+		return "", fmt.Errorf(i18n.T("fetch_content_exceeds_limit"), MaxContentSize)
 	}
 
 	if err := p.validateTextContent(content); err != nil {

@@ -7,9 +7,11 @@ package bedrock
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/danielmiessler/fabric/internal/domain"
+	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins"
 	"github.com/danielmiessler/fabric/internal/plugins/ai"
 
@@ -50,11 +52,10 @@ func NewClient() (ret *BedrockClient) {
 	ctx := context.Background()
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
-		// Create a minimal client that will fail gracefully during configuration
 		ret.PluginBase = plugins.NewVendorPluginBase(vendorName, func() error {
-			return fmt.Errorf("unable to load AWS Config: %w", err)
+			return fmt.Errorf(i18n.T("bedrock_unable_load_aws_config"), err)
 		})
-		ret.bedrockRegion = ret.PluginBase.AddSetupQuestion("AWS Region", true)
+		ret.bedrockRegion = ret.PluginBase.AddSetupQuestionWithEnvName("AWS Region", true, i18n.T("bedrock_aws_region_label"))
 		return
 	}
 
@@ -68,7 +69,7 @@ func NewClient() (ret *BedrockClient) {
 	ret.runtimeClient = runtimeClient
 	ret.controlPlaneClient = controlPlaneClient
 
-	ret.bedrockRegion = ret.PluginBase.AddSetupQuestion("AWS Region", true)
+	ret.bedrockRegion = ret.PluginBase.AddSetupQuestionWithEnvName("AWS Region", true, i18n.T("bedrock_aws_region_label"))
 
 	if cfg.Region != "" {
 		ret.bedrockRegion.Value = cfg.Region
@@ -97,13 +98,13 @@ func (c *BedrockClient) configure() error {
 
 	// Validate region format
 	if !isValidAWSRegion(c.bedrockRegion.Value) {
-		return fmt.Errorf("invalid AWS region: %s", c.bedrockRegion.Value)
+		return fmt.Errorf(i18n.T("bedrock_invalid_aws_region"), c.bedrockRegion.Value)
 	}
 
 	ctx := context.Background()
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(c.bedrockRegion.Value))
 	if err != nil {
-		return fmt.Errorf("unable to load AWS Config with region %s: %w", c.bedrockRegion.Value, err)
+		return fmt.Errorf(i18n.T("bedrock_unable_load_aws_config_with_region"), c.bedrockRegion.Value, err)
 	}
 
 	cfg.APIOptions = append(cfg.APIOptions, middleware.AddUserAgentKeyValue(userAgentKey, userAgentValue))
@@ -122,7 +123,7 @@ func (c *BedrockClient) ListModels() ([]string, error) {
 
 	foundationModels, err := c.controlPlaneClient.ListFoundationModels(ctx, &bedrock.ListFoundationModelsInput{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to list foundation models: %w", err)
+		return nil, fmt.Errorf(i18n.T("bedrock_failed_list_foundation_models"), err)
 	}
 
 	for _, model := range foundationModels.ModelSummaries {
@@ -134,7 +135,7 @@ func (c *BedrockClient) ListModels() ([]string, error) {
 	for inferenceProfilesPaginator.HasMorePages() {
 		inferenceProfiles, err := inferenceProfilesPaginator.NextPage(ctx)
 		if err != nil {
-			return nil, fmt.Errorf("failed to list inference profiles: %w", err)
+			return nil, fmt.Errorf(i18n.T("bedrock_failed_list_inference_profiles"), err)
 		}
 
 		for _, profile := range inferenceProfiles.InferenceProfileSummaries {
@@ -150,7 +151,7 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 	// Ensure channel is closed on all exit paths to prevent goroutine leaks
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("panic in SendStream: %v", r)
+			err = fmt.Errorf(i18n.T("bedrock_panic_sendstream"), r)
 		}
 		close(channel)
 	}()
@@ -167,7 +168,7 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 
 	response, err := c.runtimeClient.ConverseStream(context.Background(), &converseInput)
 	if err != nil {
-		return fmt.Errorf("bedrock conversestream failed for model %s: %w", opts.Model, err)
+		return fmt.Errorf(i18n.T("bedrock_conversestream_failed"), opts.Model, err)
 	}
 
 	for event := range response.GetStream().Events() {
@@ -209,7 +210,7 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 			*types.ConverseStreamOutputMemberContentBlockStop:
 
 		default:
-			return fmt.Errorf("unknown stream event type: %T", v)
+			return fmt.Errorf(i18n.T("bedrock_unknown_stream_event_type"), v)
 		}
 	}
 
@@ -227,22 +228,22 @@ func (c *BedrockClient) Send(ctx context.Context, msgs []*chat.ChatCompletionMes
 	}
 	response, err := c.runtimeClient.Converse(ctx, &converseInput)
 	if err != nil {
-		return "", fmt.Errorf("bedrock converse failed for model %s: %w", opts.Model, err)
+		return "", fmt.Errorf(i18n.T("bedrock_converse_failed"), opts.Model, err)
 	}
 
 	responseText, ok := response.Output.(*types.ConverseOutputMemberMessage)
 	if !ok {
-		return "", fmt.Errorf("unexpected response type: %T", response.Output)
+		return "", fmt.Errorf(i18n.T("bedrock_unexpected_response_type"), response.Output)
 	}
 
 	if len(responseText.Value.Content) == 0 {
-		return "", fmt.Errorf("empty response content")
+		return "", errors.New(i18n.T("bedrock_empty_response_content"))
 	}
 
 	responseContentBlock := responseText.Value.Content[0]
 	text, ok := responseContentBlock.(*types.ContentBlockMemberText)
 	if !ok {
-		return "", fmt.Errorf("unexpected content block type: %T", responseContentBlock)
+		return "", fmt.Errorf(i18n.T("bedrock_unexpected_content_block_type"), responseContentBlock)
 	}
 
 	return text.Value, nil

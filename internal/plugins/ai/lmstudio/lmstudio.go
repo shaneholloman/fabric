@@ -8,10 +8,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/danielmiessler/fabric/internal/chat"
 
 	"github.com/danielmiessler/fabric/internal/domain"
+	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins"
 )
 
@@ -29,7 +31,8 @@ func NewClientCompatible(vendorName string, defaultBaseUrl string, configureCust
 	}
 	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, configureCustom)
 	ret.ApiUrl = ret.AddSetupQuestionCustom("API URL", true,
-		fmt.Sprintf("Enter your %v URL (as a reminder, it is usually %v')", vendorName, defaultBaseUrl))
+		fmt.Sprintf(i18n.T("lmstudio_api_url_question"), vendorName, defaultBaseUrl))
+	ret.ApiKey = ret.AddSetupQuestion("API key", false)
 	return
 }
 
@@ -37,6 +40,7 @@ func NewClientCompatible(vendorName string, defaultBaseUrl string, configureCust
 type Client struct {
 	*plugins.PluginBase
 	ApiUrl     *plugins.SetupQuestion
+	ApiKey     *plugins.SetupQuestion
 	HttpClient *http.Client
 }
 
@@ -52,17 +56,18 @@ func (c *Client) ListModels() ([]string, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
+		return nil, fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 	}
+	c.addAuthorizationHeader(req)
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to send request: %w", err)
+		return nil, fmt.Errorf(i18n.T("lmstudio_failed_send_request"), err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf(i18n.T("lmstudio_unexpected_status_code"), resp.StatusCode)
 	}
 
 	var result struct {
@@ -72,7 +77,7 @@ func (c *Client) ListModels() ([]string, error) {
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return nil, fmt.Errorf("failed to decode response: %w", err)
+		return nil, fmt.Errorf(i18n.T("lmstudio_failed_decode_response"), err)
 	}
 
 	models := make([]string, len(result.Data))
@@ -97,27 +102,28 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 
 	var jsonPayload []byte
 	if jsonPayload, err = json.Marshal(payload); err != nil {
-		err = fmt.Errorf("failed to marshal payload: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_marshal_payload"), err)
 		return
 	}
 
 	var req *http.Request
 	if req, err = http.NewRequest("POST", url, bytes.NewBuffer(jsonPayload)); err != nil {
-		err = fmt.Errorf("failed to create request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
-		err = fmt.Errorf("failed to send request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_send_request"), err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		err = fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		err = fmt.Errorf(i18n.T("lmstudio_unexpected_status_code"), resp.StatusCode)
 		return
 	}
 
@@ -131,7 +137,7 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 				err = nil
 				break
 			}
-			err = fmt.Errorf("error reading response: %w", err)
+			err = fmt.Errorf(i18n.T("lmstudio_error_reading_response"), err)
 			return
 		}
 
@@ -204,51 +210,52 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 
 	var jsonPayload []byte
 	if jsonPayload, err = json.Marshal(payload); err != nil {
-		err = fmt.Errorf("failed to marshal payload: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_marshal_payload"), err)
 		return
 	}
 
 	var req *http.Request
 	if req, err = http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(jsonPayload)); err != nil {
-		err = fmt.Errorf("failed to create request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
-		err = fmt.Errorf("failed to send request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_send_request"), err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		err = fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		err = fmt.Errorf(i18n.T("lmstudio_unexpected_status_code"), resp.StatusCode)
 		return
 	}
 
 	var result map[string]any
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		err = fmt.Errorf("failed to decode response: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_decode_response"), err)
 		return
 	}
 
 	var choices []any
 	var ok bool
 	if choices, ok = result["choices"].([]any); !ok || len(choices) == 0 {
-		err = fmt.Errorf("invalid response format: missing or empty choices")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_invalid_response_missing_choices"))
 		return
 	}
 
 	var message map[string]any
 	if message, ok = choices[0].(map[string]any)["message"].(map[string]any); !ok {
-		err = fmt.Errorf("invalid response format: missing message in first choice")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_invalid_response_missing_message"))
 		return
 	}
 
 	if content, ok = message["content"].(string); !ok {
-		err = fmt.Errorf("invalid response format: missing or non-string content in message")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_invalid_response_missing_content"))
 		return
 	}
 
@@ -266,45 +273,46 @@ func (c *Client) Complete(ctx context.Context, prompt string, opts *domain.ChatO
 
 	var jsonPayload []byte
 	if jsonPayload, err = json.Marshal(payload); err != nil {
-		err = fmt.Errorf("failed to marshal payload: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_marshal_payload"), err)
 		return
 	}
 
 	var req *http.Request
 	if req, err = http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(jsonPayload)); err != nil {
-		err = fmt.Errorf("failed to create request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
-		err = fmt.Errorf("failed to send request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_send_request"), err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		err = fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		err = fmt.Errorf(i18n.T("lmstudio_unexpected_status_code"), resp.StatusCode)
 		return
 	}
 
 	var result map[string]any
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		err = fmt.Errorf("failed to decode response: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_decode_response"), err)
 		return
 	}
 
 	var choices []any
 	var ok bool
 	if choices, ok = result["choices"].([]any); !ok || len(choices) == 0 {
-		err = fmt.Errorf("invalid response format: missing or empty choices")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_invalid_response_missing_choices"))
 		return
 	}
 
 	if text, ok = choices[0].(map[string]any)["text"].(string); !ok {
-		err = fmt.Errorf("invalid response format: missing or non-string text in first choice")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_invalid_response_missing_text"))
 		return
 	}
 
@@ -322,27 +330,28 @@ func (c *Client) GetEmbeddings(ctx context.Context, input string, opts *domain.C
 
 	var jsonPayload []byte
 	if jsonPayload, err = json.Marshal(payload); err != nil {
-		err = fmt.Errorf("failed to marshal payload: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_marshal_payload"), err)
 		return
 	}
 
 	var req *http.Request
 	if req, err = http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(jsonPayload)); err != nil {
-		err = fmt.Errorf("failed to create request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
-		err = fmt.Errorf("failed to send request: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_send_request"), err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		err = fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		err = fmt.Errorf(i18n.T("lmstudio_unexpected_status_code"), resp.StatusCode)
 		return
 	}
 
@@ -353,12 +362,12 @@ func (c *Client) GetEmbeddings(ctx context.Context, input string, opts *domain.C
 	}
 
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		err = fmt.Errorf("failed to decode response: %w", err)
+		err = fmt.Errorf(i18n.T("lmstudio_failed_decode_response"), err)
 		return
 	}
 
 	if len(result.Data) == 0 {
-		err = fmt.Errorf("no embeddings returned")
+		err = fmt.Errorf("%s", i18n.T("lmstudio_no_embeddings_returned"))
 		return
 	}
 
@@ -368,4 +377,15 @@ func (c *Client) GetEmbeddings(ctx context.Context, input string, opts *domain.C
 
 func (c *Client) NeedsRawMode(modelName string) bool {
 	return false
+}
+
+func (c *Client) addAuthorizationHeader(req *http.Request) {
+	if c.ApiKey == nil {
+		return
+	}
+	apiKey := strings.TrimSpace(c.ApiKey.Value)
+	if apiKey == "" {
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+apiKey)
 }
