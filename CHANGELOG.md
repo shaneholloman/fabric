@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.408 (2026-02-17)
+
+### PR [#2007](https://github.com/danielmiessler/Fabric/pull/2007) by [ksylvan](https://github.com/ksylvan): Add optional API key authentication to LM Studio client
+
+- Add optional API key authentication to LM Studio client
+- Add optional API key setup question to client configuration
+- Add `ApiKey` field to the LM Studio `Client` struct
+- Create `addAuthorizationHeader` helper to attach Bearer token to requests
+- Apply authorization header to all outgoing HTTP requests
+
 ## v1.4.407 (2026-02-16)
 
 ### PR [#2005](https://github.com/danielmiessler/Fabric/pull/2005) by [ksylvan](https://github.com/ksylvan): I18N: For file manager, Vertex AI, and Copilot errors
