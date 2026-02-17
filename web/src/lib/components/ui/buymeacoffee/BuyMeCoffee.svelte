@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let url: string = 'https://www.buymeacoffee.com/johnconnor.sec';
+  export let url: string = 'https://buymeacoffee.com/kayvansylvan';
   export let text: string = 'Buy me a coffee';
 </script>
 
