@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.4.410 (2026-02-17)
+
+### PR [#1999](https://github.com/danielmiessler/Fabric/pull/1999) by [ghrom](https://github.com/ghrom): feat: add 3 patterns from cross-model AI dialogue research
+
+- Add `audit_consent` pattern for detecting manufactured consent via power asymmetry analysis, surfaced from a devil's advocate "consent theater" critique across multi-model stress testing.
+- Add `detect_silent_victims` pattern to identify harmed parties who cannot speak for themselves, including future generations and unaware victims.
+- Add `audit_transparency` pattern for evaluating whether decisions are explainable to affected parties across five dimensions.
+- Register all three new patterns in pattern descriptions and extracts JSON files, and categorize them under ANALYSIS and CR THINKING in `suggest_pattern`.
+- Update `pattern_explanations.md` with renumbered entries to reflect the newly added patterns.
+
+### Direct commits
+
+- Fix: update Buy Me a Coffee links to correct profile URL
+
 ## v1.4.409 (2026-02-17)
 
 ### PR [#2006](https://github.com/danielmiessler/Fabric/pull/2006) by [konstantint](https://github.com/konstantint): feat: When running from a symlink, use the executable name as the pattern argument
