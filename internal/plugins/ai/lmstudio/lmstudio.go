@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/danielmiessler/fabric/internal/chat"
 
@@ -31,6 +32,7 @@ func NewClientCompatible(vendorName string, defaultBaseUrl string, configureCust
 	ret.PluginBase = plugins.NewVendorPluginBase(vendorName, configureCustom)
 	ret.ApiUrl = ret.AddSetupQuestionCustom("API URL", true,
 		fmt.Sprintf(i18n.T("lmstudio_api_url_question"), vendorName, defaultBaseUrl))
+	ret.ApiKey = ret.AddSetupQuestion("API key", false)
 	return
 }
 
@@ -38,6 +40,7 @@ func NewClientCompatible(vendorName string, defaultBaseUrl string, configureCust
 type Client struct {
 	*plugins.PluginBase
 	ApiUrl     *plugins.SetupQuestion
+	ApiKey     *plugins.SetupQuestion
 	HttpClient *http.Client
 }
 
@@ -55,6 +58,7 @@ func (c *Client) ListModels() ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf(i18n.T("lmstudio_failed_create_request"), err)
 	}
+	c.addAuthorizationHeader(req)
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {
@@ -109,6 +113,7 @@ func (c *Client) SendStream(msgs []*chat.ChatCompletionMessage, opts *domain.Cha
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
@@ -216,6 +221,7 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
@@ -278,6 +284,7 @@ func (c *Client) Complete(ctx context.Context, prompt string, opts *domain.ChatO
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
@@ -334,6 +341,7 @@ func (c *Client) GetEmbeddings(ctx context.Context, input string, opts *domain.C
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	c.addAuthorizationHeader(req)
 
 	var resp *http.Response
 	if resp, err = c.HttpClient.Do(req); err != nil {
@@ -369,4 +377,15 @@ func (c *Client) GetEmbeddings(ctx context.Context, input string, opts *domain.C
 
 func (c *Client) NeedsRawMode(modelName string) bool {
 	return false
+}
+
+func (c *Client) addAuthorizationHeader(req *http.Request) {
+	if c.ApiKey == nil {
+		return
+	}
+	apiKey := strings.TrimSpace(c.ApiKey.Value)
+	if apiKey == "" {
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+apiKey)
 }
