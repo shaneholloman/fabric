@@ -161,6 +161,16 @@ func Init() (ret *Flags, err error) {
 		}
 		return
 	}
+
+	if ret.Pattern == "" {
+		execName := filepath.Base(os.Args[0])
+		execName = strings.TrimSuffix(execName, filepath.Ext(execName))
+		if execName != "fabric" && execName != "main" && execName != "cmd" && execName != "" {
+			ret.Pattern = execName
+			usedFlags["pattern"] = true
+		}
+	}
+
 	debuglog.SetLevel(debuglog.LevelFromInt(ret.Debug))
 
 	// Check to see if a ~/.config/fabric/config.yaml config file exists (only when user didn't specify a config)
