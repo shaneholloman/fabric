@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.409 (2026-02-17)
+
+### PR [#2006](https://github.com/danielmiessler/Fabric/pull/2006) by [konstantint](https://github.com/konstantint): feat: When running from a symlink, use the executable name as the pattern argument
+
+- Feat: When running from a symlink, use the executable name as the pattern argument
+
 ## v1.4.408 (2026-02-17)
 
 ### PR [#2007](https://github.com/danielmiessler/Fabric/pull/2007) by [ksylvan](https://github.com/ksylvan): Add optional API key authentication to LM Studio client

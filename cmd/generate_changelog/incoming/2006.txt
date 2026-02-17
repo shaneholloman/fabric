@@ -1,3 +1,0 @@
-### PR [#2006](https://github.com/danielmiessler/Fabric/pull/2006) by [konstantint](https://github.com/konstantint): feat: When running from a symlink, use the executable name as the pattern argument
-
-- Feat: When running from a symlink, use the executable name as the pattern argument
