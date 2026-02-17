@@ -1,0 +1,6 @@
+### PR [#1999](https://github.com/danielmiessler/Fabric/pull/1999) by [ghrom](https://github.com/ghrom): feat: add 3 patterns from cross-model AI dialogue research
+
+- Added three new patterns derived from stress-testing the Ultimate Law ethical framework across 19 AI systems from 10+ organizations:
+  - **audit_consent**: Performs power asymmetry analysis for consent verification, addressing "consent theater" critique
+  - **detect_silent_victims**: Identifies harmed parties who are unable to speak up, inspired by insights around future generations and silent victims
+  - **audit_transparency**: Audits whether decisions are explainable to affected parties, based on consensus from 5+ models proposing transparency as an 8th principle
