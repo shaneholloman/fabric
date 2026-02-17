@@ -2050,6 +2050,30 @@
         "ANALYSIS",
         "CR THINKING"
       ]
+    },
+    {
+      "patternName": "audit_consent",
+      "description": "Evaluate whether consent is genuine or manufactured by analyzing power asymmetries, information gaps, and coercion.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
+    },
+    {
+      "patternName": "audit_transparency",
+      "description": "Audit decisions and systems for explainability, assessing whether opacity is justified or conceals harm.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
+    },
+    {
+      "patternName": "detect_silent_victims",
+      "description": "Identify parties harmed by actions or systems who cannot speak up due to power, awareness, or temporal gaps.",
+      "tags": [
+        "ANALYSIS",
+        "CR THINKING"
+      ]
     }
   ]
 }
