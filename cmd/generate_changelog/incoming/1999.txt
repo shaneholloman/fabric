@@ -1,4 +1,4 @@
-### PR [#1999](https://github.com/danielmiessler/Fabric/pull/1999) by [ghrom](https://github.com/ghrom): feat: add 3 patterns from cross-model AI dialogue research
+### PR [#1999](https://github.com/danielmiessler/Fabric/pull/1999) by [ghrom](https://github.com/ghrom) and [ksylvan](https://github.com/ksylvan): feat: add 3 patterns from cross-model AI dialogue research
 
 - Added three new patterns derived from stress-testing the Ultimate Law ethical framework across 19 AI systems from 10+ organizations:
   - **audit_consent**: Performs power asymmetry analysis for consent verification, addressing "consent theater" critique

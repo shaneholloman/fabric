@@ -196,6 +196,14 @@ Analyze Terraform plans for infrastructure changes, security risks, and cost imp
 
 Apply standardized content tags to categorize topics like AI, cybersecurity, politics, and culture.
 
+### audit_consent
+
+Evaluate whether consent is genuine or manufactured by analyzing power asymmetries, information gaps, and coercion.
+
+### audit_transparency
+
+Audit decisions and systems for explainability, assessing whether opacity is justified or conceals harm.
+
 ### check_agreement
 
 Review contract to identify stipulations, issues, and changes for negotiation.
@@ -243,6 +251,10 @@ Generate single-word tags for content categorization and mind mapping.
 ### detect_mind_virus
 
 Detect manipulative belief systems that spread by exploiting cognitive shortcuts while resisting correction.
+
+### detect_silent_victims
+
+Identify parties harmed by actions or systems who cannot speak up due to power, awareness, or temporal gaps.
 
 ### explain_terms_and_conditions
 
