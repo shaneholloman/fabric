@@ -40,6 +40,7 @@ func NewClient() (ret *Client) {
 		string(anthropic.ModelClaude3_7SonnetLatest), string(anthropic.ModelClaude3_7Sonnet20250219),
 		string(anthropic.ModelClaude3_5HaikuLatest), string(anthropic.ModelClaude3_5Haiku20241022),
 		// The following are the current supported models
+		string(anthropic.ModelClaudeSonnet4_6),
 		string(anthropic.ModelClaudeOpus4_6),
 		string(anthropic.ModelClaudeOpus4_5_20251101),
 		string(anthropic.ModelClaudeOpus4_5),
