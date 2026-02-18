@@ -36,9 +36,6 @@ func NewClient() (ret *Client) {
 	ret.maxTokens = 4096
 	ret.defaultRequiredUserMessage = "Hi"
 	ret.models = []string{
-		// The following models will be deprecated on February 19, 2026
-		string(anthropic.ModelClaude3_7SonnetLatest), string(anthropic.ModelClaude3_7Sonnet20250219),
-		string(anthropic.ModelClaude3_5HaikuLatest), string(anthropic.ModelClaude3_5Haiku20241022),
 		// The following are the current supported models
 		string(anthropic.ModelClaudeSonnet4_6),
 		string(anthropic.ModelClaudeOpus4_6),
@@ -55,7 +52,6 @@ func NewClient() (ret *Client) {
 		string(anthropic.ModelClaudeOpus4_20250514),
 		string(anthropic.ModelClaude4Opus20250514),
 		string(anthropic.ModelClaudeOpus4_1_20250805),
-		string(anthropic.ModelClaude_3_Haiku_20240307),
 	}
 
 	ret.modelBetas = map[string][]string{
