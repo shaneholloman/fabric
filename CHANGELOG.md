@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.413 (2026-02-18)
+
+### PR [#2012](https://github.com/danielmiessler/Fabric/pull/2012) by [ksylvan](https://github.com/ksylvan): Remove unused `gemini_openai` plugin and `oauth_storage` utility
+
+- Removed the unused `gemini_openai` plugin package, including its OpenAI-compatible client wrapper.
+- Removed the `OAuthToken` struct and its expiry-check logic from the `util` package.
+- Removed the `OAuthStorage` utility, including persistent token save, load, and delete handlers.
+- Dropped the `HasValidToken` helper function and atomic file-write token saving mechanism.
+- Deleted all `oauth_storage` unit tests covering the token lifecycle.
+
 ## v1.4.412 (2026-02-18)
 
 ### PR [#1996](https://github.com/danielmiessler/Fabric/pull/1996) by [ksylvan](https://github.com/ksylvan): chore: bump Go dependencies and remove deprecated Anthropic models
