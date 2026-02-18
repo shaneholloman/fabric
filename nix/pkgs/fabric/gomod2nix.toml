@@ -275,8 +275,8 @@ schema = 3
     version = "v0.0.20"
     hash = "sha256-qhw9hWtU5wnyFyuMbKx+7RB8ckQaFQ8D+8GKPkN3HHQ="
   [mod."github.com/mattn/go-sqlite3"]
-    version = "v1.14.33"
-    hash = "sha256-MDedRg8E0liw2t5zkvKWFMcR/aO7G0uAwdlfI3n2Iyg="
+    version = "v1.14.34"
+    hash = "sha256-PGOevTQb3gNdGu4H2bhvXJlntkMkDt+UhuiK1IpuorQ="
   [mod."github.com/modern-go/concurrent"]
     version = "v0.0.0-20180306012644-bacd9c7ef1dd"
     hash = "sha256-OTySieAgPWR4oJnlohaFTeK1tRaVp/b0d1rYY8xKMzo="
@@ -287,8 +287,8 @@ schema = 3
     version = "v2.6.1"
     hash = "sha256-ag/8GBAwqkOyIVrdlaFYLxy9dgPOq7VbactrLmzxK7E="
   [mod."github.com/ollama/ollama"]
-    version = "v0.15.6"
-    hash = "sha256-T1ShIX6znCkjR3EARswXd7z6TL2rZFUuN/bZVKhaw18="
+    version = "v0.16.2"
+    hash = "sha256-5yZdLw7FS6uGOba7D4FfHjAFr9Nez05apXuD23TxZ50="
   [mod."github.com/openai/openai-go"]
     version = "v1.12.0"
     hash = "sha256-JHLlKvDwERPf728GUXBsKU58ODgCxcxEe9TKJTGAG1w="
@@ -428,8 +428,8 @@ schema = 3
     version = "v0.42.0"
     hash = "sha256-JTwzoJeqCW5aphjQR0SItRGov7dKVbFk3a4V2U2+vd4="
   [mod."google.golang.org/api"]
-    version = "v0.265.0"
-    hash = "sha256-GOEPWWePKOVLGukOHVy76Zuc646d3d2qKoQko3MJztI="
+    version = "v0.266.0"
+    hash = "sha256-Hogjfgm2y7hqE5hdcg38C/nspk7xXGQxbgCY92SxNlA="
   [mod."google.golang.org/genai"]
     version = "v1.46.0"
     hash = "sha256-yf0roQdGDEC4vZeES/LgFqxTvIOAY5waIpKqQC33sFo="
@@ -437,8 +437,8 @@ schema = 3
     version = "v0.0.0-20260209200024-4cfbd4190f57"
     hash = "sha256-gdgUw1LzgVOrarF1cGBUI9uoaR/d6lur2RwxUDKnOZA="
   [mod."google.golang.org/grpc"]
-    version = "v1.78.0"
-    hash = "sha256-oKsu3+Eae5tpFOZ9K2ZzYh1FgdYdEnEIB1C+UIxSD+E="
+    version = "v1.79.0"
+    hash = "sha256-JPEuLV/QOgLnd3EmCjHMemQPSezF4mv2ZW6rGAWt9Lk="
   [mod."google.golang.org/protobuf"]
     version = "v1.36.11"
     hash = "sha256-7W+6jntfI/awWL3JP6yQedxqP5S9o3XvPgJ2XxxsIeE="

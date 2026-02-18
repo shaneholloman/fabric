@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.412 (2026-02-18)
+
+### PR [#1996](https://github.com/danielmiessler/Fabric/pull/1996) by [ksylvan](https://github.com/ksylvan): chore: bump Go dependencies and remove deprecated Anthropic models
+
+- Bump go-sqlite3 from v1.14.33 to v1.14.34, ollama from v0.15.6 to v0.16.1, google.golang.org/api from v0.265.0 to v0.266.0, and google.golang.org/grpc from v1.78.0 to v1.79.0 to keep dependencies up to date.
+- Removed deprecated Claude 3.x model references from the Anthropic client and the claude-3-7-sonnet model from the OpenAI-compatible provider config.
+
 ## v1.4.411 (2026-02-18)
 
 ### PR [#2011](https://github.com/danielmiessler/Fabric/pull/2011) by [ksylvan](https://github.com/ksylvan): Add support for Claude Sonnet 4.6
