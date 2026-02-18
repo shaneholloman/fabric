@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.411 (2026-02-18)
+
+### PR [#2011](https://github.com/danielmiessler/Fabric/pull/2011) by [ksylvan](https://github.com/ksylvan): Add support for Claude Sonnet 4.6
+
+- Upgraded the `anthropic-sdk-go` dependency from v1.22.0 to v1.23.0 to support the latest Anthropic SDK features.
+- Added Claude Sonnet 4.6 to the list of supported models.
+- Updated `go.sum` checksums to reflect the new SDK version.
+
 ## v1.4.410 (2026-02-17)
 
 ### PR [#1999](https://github.com/danielmiessler/Fabric/pull/1999) by [ghrom](https://github.com/ghrom): feat: add 3 patterns from cross-model AI dialogue research
