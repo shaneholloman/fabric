@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.414 (2026-02-19)
+
+### PR [#2015](https://github.com/danielmiessler/Fabric/pull/2015) by [ksylvan](https://github.com/ksylvan): Implement comprehensive i18n support across all plugins and tools
+
+- Implement comprehensive internationalization (i18n) support across all AI vendor plugins, tools, and template plugins.
+- Update localization files for multiple languages with new translation keys.
+- Replace hardcoded strings in Spotify and YouTube tools with localized equivalents.
+- Add unit tests for localized error handling in Ollama.
+- Standardize setup questions using the new i18n translation framework.
+
 ## v1.4.413 (2026-02-18)
 
 ### PR [#2012](https://github.com/danielmiessler/Fabric/pull/2012) by [ksylvan](https://github.com/ksylvan): Remove unused `gemini_openai` plugin and `oauth_storage` utility
