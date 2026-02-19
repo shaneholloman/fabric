@@ -1,512 +1,592 @@
 {
-  "html_readability_error": "از ورودی اصلی استفاده کن، چون نمی‌توان خوانایی HTML را اعمال کرد",
-  "vendor_not_configured": "تامین‌کننده %s پیکربندی نشده است",
-  "vendor_no_transcription_support": "تامین‌کننده %s از رونویسی صوتی پشتیبانی نمی‌کند",
-  "transcription_model_required": "مدل رونویسی الزامی است (از --transcribe-model استفاده کنید)",
-  "youtube_not_configured": "یوتیوب پیکربندی نشده است، لطفاً روند تنظیمات را اجرا کنید",
-  "youtube_api_key_required": "کلید API یوتیوب برای دریافت نظرات و متادیتا الزامی است. برای پیکربندی 'fabric --setup' را اجرا کنید",
-  "youtube_ytdlp_not_found": "yt-dlp در PATH یافت نشد. لطفاً yt-dlp را نصب کنید تا از قابلیت رونویسی یوتیوب استفاده کنید",
-  "youtube_invalid_url": "URL یوتیوب نامعتبر است، نمی‌توان ID ویدیو یا فهرست پخش را دریافت کرد: '%s'",
-  "youtube_url_is_playlist_not_video": "URL یک فهرست پخش است، نه یک ویدیو",
-  "youtube_no_video_id_found": "هیچ ID ویدیویی در URL یافت نشد",
-  "youtube_rate_limit_exceeded": "محدودیت نرخ یوتیوب فراتر رفته است. بعداً دوباره امتحان کنید یا از آرگومان‌های مختلف yt-dlp مانند '--sleep-requests 1' برای کاهش سرعت درخواست‌ها استفاده کنید.",
-  "youtube_auth_required_bot_detection": "یوتیوب احراز هویت می‌خواهد (تشخیص ربات). از --yt-dlp-args='--cookies-from-browser BROWSER' استفاده کنید که BROWSER می‌تواند chrome، firefox، brave و غیره باشد.",
-  "youtube_ytdlp_stderr_error": "خطا در خواندن stderr yt-dlp",
-  "youtube_invalid_ytdlp_arguments": "آرگومان‌های yt-dlp نامعتبر: %v",
-  "youtube_failed_create_temp_dir": "ایجاد دایرکتوری موقت ناموفق بود: %v",
-  "youtube_no_transcript_content": "محتوای رونوشتی در فایل VTT یافت نشد",
-  "youtube_no_vtt_files_found": "فایل‌های VTT در دایرکتوری یافت نشدند",
-  "youtube_failed_walk_directory": "پیمایش دایرکتوری ناموفق بود: %v",
-  "youtube_error_getting_video_details": "خطا در دریافت جزئیات ویدیو: %v",
-  "youtube_invalid_duration_string": "رشته مدت زمان نامعتبر: %s",
-  "youtube_error_getting_metadata": "خطا در دریافت متادیتای ویدیو: %v",
-  "youtube_error_parsing_duration": "خطا در تجزیه مدت زمان ویدیو: %v",
-  "youtube_error_getting_comments": "خطا در دریافت نظرات: %v",
-  "youtube_error_saving_csv": "خطا در ذخیره ویدیوها در CSV: %v",
-  "youtube_no_video_found_with_id": "هیچ ویدیویی با ID یافت نشد: %s",
-  "youtube_invalid_timestamp_format": "فرمت مهر زمانی نامعتبر: %s",
-  "youtube_empty_seconds_string": "رشته ثانیه خالی",
-  "youtube_invalid_seconds_format": "فرمت ثانیه نامعتبر %q: %w",
-  "error_fetching_playlist_videos": "خطا در دریافت ویدیوهای فهرست پخش: %w",
-  "openai_api_base_url_not_configured": "URL پایه API برای ارائه‌دهنده %s پیکربندی نشده است",
-  "openai_failed_to_create_models_url": "ایجاد URL مدل‌ها ناموفق بود: %w",
-  "openai_unexpected_status_code_with_body": "کد وضعیت غیرمنتظره: %d از ارائه‌دهنده %s، پاسخ: %s",
-  "openai_unexpected_status_code_read_error_partial": "کد وضعیت غیرمنتظره: %d از ارائه‌دهنده %s (خطا در خواندن: %v)، پاسخ جزئی: %s",
-  "openai_unexpected_status_code_read_error": "کد وضعیت غیرمنتظره: %d از ارائه‌دهنده %s (خطا در خواندن پاسخ: %v)",
-  "openai_unable_to_parse_models_response": "تجزیه پاسخ مدل‌ها ناموفق بود; پاسخ خام: %s",
-  "openai_warning_model_no_image_generation": "هشدار: مدل '%s' از تولید تصویر پشتیبانی نمی‌کند. مدل‌های پشتیبانی شده: %s. استفاده از -m gpt-5.2 برای تولید تصویر را در نظر بگیرید.\n",
-  "openai_model_no_image_generation": "مدل '%s' از تولید تصویر پشتیبانی نمی‌کند. مدل‌های پشتیبانی شده: %s",
-  "scraping_not_configured": "قابلیت استخراج داده پیکربندی نشده است. لطفاً Jina را برای فعال‌سازی استخراج تنظیم کنید",
-  "could_not_determine_home_dir": "نتوانست دایرکتوری خانه کاربر را تعیین کند: %w",
-  "could_not_stat_env_file": "نتوانست وضعیت فایل .env را بررسی کند: %w",
+  "additional_yt_dlp_args": "آرگومان‌های اضافی برای ارسال به yt-dlp (مثال: '--cookies-from-browser brave')",
+  "address_to_bind_rest_api": "آدرس برای متصل کردن API REST",
+  "anthropic_stream_error": "خطای جریان: %v",
+  "api_key_secure_server_routes": "کلید API برای امن‌سازی مسیرهای سرور",
+  "application_options_header": "گزینه‌های برنامه:",
+  "apply_variables_to_input": "اعمال متغیرها به ورودی کاربر",
+  "attachment_path_or_url_help": "مسیر ضمیمه یا URL (مثال برای پیام‌های تشخیص تصویر OpenAI)",
+  "audio_output_file_specified_but_not_tts_model": "فایل خروجی صوتی '%s' مشخص شده اما مدل '%s' یک مدل TTS نیست. لطفاً از مدل TTS مثل gemini-2.5-flash-preview-tts استفاده کنید",
+  "audio_video_file_transcribe": "فایل صوتی یا ویدیویی برای رونویسی",
+  "available_models_header": "مدل‌های موجود",
+  "available_transcription_models": "مدل‌های رونویسی موجود:",
+  "available_vendors_header": "تامین‌کنندگان موجود:",
+  "azure_api_key_required": "کلید API Azure الزامی است",
+  "azure_api_version_question": "نسخه API Azure را وارد کنید (برای پیش‌فرض خالی بگذارید)",
+  "azure_base_url_required": "URL پایه Azure الزامی است",
+  "azure_deployments_question": "نام‌های استقرار Azure خود را وارد کنید (با کاما جدا شده)",
+  "azure_failed_extract_deployment": "استخراج نام استقرار از درخواست ناموفق بود",
+  "azure_model_field_empty": "فیلد مدل در بدنه درخواست خالی است",
+  "azure_request_body_nil": "بدنه درخواست خالی است",
+  "background_type_help": "نوع پس‌زمینه: opaque، transparent (پیش‌فرض: opaque، فقط برای PNG/WebP)",
+  "bedrock_aws_region_label": "منطقه AWS",
+  "bedrock_converse_failed": "bedrock converse برای مدل %s ناموفق بود: %w",
+  "bedrock_conversestream_failed": "bedrock conversestream برای مدل %s ناموفق بود: %w",
+  "bedrock_empty_response_content": "محتوای پاسخ خالی",
+  "bedrock_failed_list_foundation_models": "فهرست کردن مدل‌های پایه ناموفق بود: %w",
+  "bedrock_failed_list_inference_profiles": "فهرست کردن پروفایل‌های استنتاج ناموفق بود: %w",
+  "bedrock_invalid_aws_region": "منطقه AWS نامعتبر: %s",
+  "bedrock_panic_sendstream": "پنیک در SendStream: %v",
+  "bedrock_unable_load_aws_config": "بارگذاری پیکربندی AWS ناموفق بود: %w",
+  "bedrock_unable_load_aws_config_with_region": "بارگذاری پیکربندی AWS با منطقه %s ناموفق بود: %w",
+  "bedrock_unexpected_content_block_type": "نوع بلوک محتوای غیرمنتظره: %T",
+  "bedrock_unexpected_response_type": "نوع پاسخ غیرمنتظره: %T",
+  "bedrock_unknown_stream_event_type": "نوع رویداد جریان ناشناخته: %T",
+  "cannot_convert_string": "نمی‌توان رشته %q را به %v تبدیل کرد",
+  "change_default_model": "تغییر مدل پیش‌فرض",
+  "chatter_error_empty_response": "پاسخ خالی",
+  "chatter_error_find_context": "زمينه %s پيدا نشد: %v",
+  "chatter_error_find_session": "نشست %s پيدا نشد: %v",
+  "chatter_error_get_pattern": "دريافت الگو %s ممکن نشد: %v",
+  "chatter_error_load_strategy": "بارگذاري راهبرد %s ممکن نشد: %v",
+  "chatter_error_no_messages_provided": "هیچ پیامی ارائه نشده است",
+  "chatter_error_no_session_pattern_user_messages": "هیچ نشست، الگو یا پیام کاربری ارائه نشده است",
+  "chatter_error_stream_update": "خطا: %s",
+  "chatter_help_review_changes_with_git_diff": "اگر از git استفاده مي‌کنيد، مي‌توانيد تغييرات را با 'git diff' بررسي کنيد.",
+  "chatter_info_file_changes_applied_successfully": "تغییرات فایل با موفقیت اعمال شد.",
+  "chatter_log_stream_usage_metadata": "[فراداده] ورودی: %d | خروجی: %d | مجموع: %d",
+  "chatter_prompt_enforce_response_language": "%s\n\nمهم: ابتدا دستورالعمل‌هاي ارائه‌شده در اين پرامپت را با استفاده از ورودي کاربر اجرا کنيد. سپس اطمينان حاصل کنيد که کل پاسخ نهايي شما، از جمله هر عنوان يا سربخشي که در جريان اجراي دستورالعمل‌ها توليد مي‌شود، فقط به زبان %s نوشته شده باشد.",
+  "chatter_warning_apply_file_changes_failed": "هشدار: اعمال تغییرات فایل ناموفق بود: %v",
+  "chatter_warning_get_current_directory_failed": "هشدار: دریافت پوشه جاری ناموفق بود: %v",
+  "chatter_warning_parse_file_changes_failed": "هشدار: تجزیه تغییرات فایل ناموفق بود: %v",
+  "choose_context_from_available": "زمینه‌ای از زمینه‌های موجود انتخاب کنید",
+  "choose_model": "انتخاب مدل",
+  "choose_pattern_from_available": "الگویی از الگوهای موجود انتخاب کنید",
+  "choose_session_from_available": "جلسه‌ای از جلسات موجود انتخاب کنید",
+  "choose_strategy_from_available": "انتخاب استراتژی از استراتژی‌های موجود",
+  "command_completed_successfully": "دستور با موفقیت تکمیل شد",
+  "compression_level_jpeg_webp": "سطح فشرده‌سازی 0-100 برای فرمت‌های JPEG/WebP (پیش‌فرض: تنظیم نشده)",
+  "config_file_not_found": "فایل پیکربندی یافت نشد: %s",
+  "convert_html_readability": "تبدیل ورودی HTML به نمای تمیز و خوانا",
+  "copilot_debug_created_conversation": "مکالمه Copilot ایجاد شد: %s",
+  "copilot_debug_failed_parse_sse_event": "تجزیه رویداد SSE ناموفق بود: %v",
+  "copilot_error_chat_request": "درخواست چت ناموفق بود: %s - %s",
+  "copilot_error_create_conversation": "ایجاد مکالمه ناموفق بود: %s - %s",
+  "copilot_error_reading_stream": "خطا در خواندن جریان: %w",
+  "copilot_error_stream_request": "درخواست جریان ناموفق بود: %s - %s",
+  "copilot_failed_create_conversation": "ایجاد مکالمه ناموفق بود: %w",
+  "copilot_failed_send_message": "ارسال پیام ناموفق بود: %w",
+  "copilot_failed_stream_message": "پخش جریانی پیام ناموفق بود: %w",
+  "copilot_tenant_client_id_required": "شناسه مشتری و شناسه مستاجر الزامی است",
+  "copy_to_clipboard": "کپی به کلیپ‌بورد",
+  "could_not_copy_to_clipboard": "نتوانست به کلیپ‌بورد کپی کند: %v",
   "could_not_create_config_dir": "نتوانست دایرکتوری پیکربندی را ایجاد کند: %w",
   "could_not_create_env_file": "نتوانست فایل .env را ایجاد کند: %w",
-  "could_not_copy_to_clipboard": "نتوانست به کلیپ‌بورد کپی کند: %v",
-  "file_already_exists_not_overwriting": "فایل %s از قبل وجود دارد، بازنویسی نمی‌شود. فایل موجود را تغییر نام دهید یا نام متفاوتی انتخاب کنید",
-  "error_creating_file": "خطا در ایجاد فایل: %v",
-  "error_writing_to_file": "خطا در نوشتن به فایل: %v",
-  "error_creating_audio_file": "خطا در ایجاد فایل صوتی: %v",
-  "error_writing_audio_data": "خطا در نوشتن داده‌های صوتی به فایل: %v",
-  "tts_model_requires_audio_output": "مدل TTS '%s' نیاز به خروجی صوتی دارد. لطفاً فایل خروجی صوتی را با پرچم -o مشخص کنید (مثال: -o output.wav)",
-  "audio_output_file_specified_but_not_tts_model": "فایل خروجی صوتی '%s' مشخص شده اما مدل '%s' یک مدل TTS نیست. لطفاً از مدل TTS مثل gemini-2.5-flash-preview-tts استفاده کنید",
-  "file_already_exists_choose_different": "فایل %s از قبل وجود دارد. لطفاً نام فایل متفاوتی انتخاب کنید یا فایل موجود را حذف کنید",
-  "no_notification_system_available": "هیچ سیستم اعلان‌رسانی در دسترس نیست",
-  "cannot_convert_string": "نمی‌توان رشته %q را به %v تبدیل کرد",
-  "unsupported_conversion": "تبدیل پشتیبانی نشده از %v به %v",
-  "invalid_config_path": "مسیر پیکربندی نامعتبر: %w",
-  "config_file_not_found": "فایل پیکربندی یافت نشد: %s",
-  "error_reading_config_file": "خطا در خواندن فایل پیکربندی: %w",
-  "error_parsing_config_file": "خطا در تجزیه فایل پیکربندی: %w",
-  "error_reading_piped_message": "خطا در خواندن پیام هدایت شده از stdin: %w",
-  "image_file_already_exists": "فایل تصویر از قبل وجود دارد: %s",
-  "invalid_image_file_extension": "پسوند فایل تصویر نامعتبر '%s'. فرمت‌های پشتیبانی شده: .png، .jpeg، .jpg، .webp",
-  "image_parameters_require_image_file": "پارامترهای تصویر (--image-size، --image-quality، --image-background، --image-compression) فقط با --image-file قابل استفاده هستند",
-  "invalid_image_size": "اندازه تصویر نامعتبر '%s'. اندازه‌های پشتیبانی شده: 1024x1024، 1536x1024، 1024x1536، auto",
-  "invalid_image_quality": "کیفیت تصویر نامعتبر '%s'. کیفیت‌های پشتیبانی شده: low، medium، high، auto",
-  "invalid_image_background": "پس‌زمینه تصویر نامعتبر '%s'. پس‌زمینه‌های پشتیبانی شده: opaque، transparent",
-  "image_compression_jpeg_webp_only": "فشرده‌سازی تصویر فقط با فرمت‌های JPEG و WebP قابل استفاده است، نه %s",
-  "image_compression_range_error": "فشرده‌سازی تصویر باید بین 0 تا 100 باشد، دریافت شده: %d",
-  "transparent_background_png_webp_only": "پس‌زمینه شفاف فقط با فرمت‌های PNG و WebP قابل استفاده است، نه %s",
-  "available_transcription_models": "مدل‌های رونویسی موجود:",
-  "tts_audio_generated_successfully": "صوت TTS با موفقیت ایجاد و ذخیره شد در: %s\n",
-  "fabric_command_complete": "دستور Fabric تکمیل شد",
-  "fabric_command_complete_with_pattern": "Fabric: %s تکمیل شد",
-  "command_completed_successfully": "دستور با موفقیت تکمیل شد",
-  "output_truncated": "خروجی: %s...",
-  "output_full": "خروجی: %s",
-  "choose_pattern_from_available": "الگویی از الگوهای موجود انتخاب کنید",
-  "pattern_variables_help": "مقادیر برای متغیرهای الگو، مثال: -v=#role:expert -v=#points:30",
-  "choose_context_from_available": "زمینه‌ای از زمینه‌های موجود انتخاب کنید",
-  "choose_session_from_available": "جلسه‌ای از جلسات موجود انتخاب کنید",
-  "attachment_path_or_url_help": "مسیر ضمیمه یا URL (مثال برای پیام‌های تشخیص تصویر OpenAI)",
-  "run_setup_for_reconfigurable_parts": "اجرای تنظیمات برای تمام بخش‌های قابل پیکربندی مجدد fabric",
-  "set_temperature": "تنظیم دما",
-  "set_top_p": "تنظیم top P",
-  "stream_help": "پخش زنده",
-  "set_presence_penalty": "تنظیم جریمه حضور",
-  "use_model_defaults_raw_help": "از مقادیر پیش‌فرض مدل بدون ارسال گزینه‌های چت (temperature، top_p و غیره) استفاده می‌کند. فقط بر ارائه‌دهندگان سازگار با OpenAI تأثیر می‌گذارد. مدل‌های Anthropic همواره برای رعایت نیازهای خاص هر مدل از انتخاب هوشمند پارامتر استفاده می‌کنند.",
-  "set_frequency_penalty": "تنظیم جریمه فرکانس",
-  "list_all_patterns": "فهرست تمام الگوها",
-  "list_all_available_models": "فهرست تمام مدل‌های موجود",
-  "list_all_contexts": "فهرست تمام زمینه‌ها",
-  "list_all_sessions": "فهرست تمام جلسات",
-  "update_patterns": "به‌روزرسانی الگوها",
-  "messages_to_send_to_chat": "پیام‌هایی برای ارسال به گفتگو",
-  "copy_to_clipboard": "کپی به کلیپ‌بورد",
-  "choose_model": "انتخاب مدل",
-  "specify_vendor_for_model": "تعیین تامین‌کننده برای مدل انتخابی (مثال: -V \"LM Studio\" -m openai/gpt-oss-20b)",
-  "model_context_length_ollama": "طول زمینه مدل (فقط ollama را تحت تأثیر قرار می‌دهد)",
-  "output_to_file": "خروجی به فایل",
-  "output_entire_session": "خروجی کل جلسه (حتی موقت) به فایل خروجی",
-  "number_of_latest_patterns": "تعداد جدیدترین الگوها برای فهرست",
-  "change_default_model": "تغییر مدل پیش‌فرض",
-  "youtube_url_help": "ویدیو یوتیوب یا \"URL\" فهرست پخش برای دریافت رونوشت، نظرات و ارسال به گفتگو یا چاپ در کنسول و ذخیره در فایل خروجی",
-  "prefer_playlist_over_video": "اولویت فهرست پخش نسبت به ویدیو اگر هر دو ID در URL موجود باشند",
-  "grab_transcript_from_youtube": "دریافت رونوشت از ویدیو یوتیوب و ارسال به گفتگو (به طور پیش‌فرض استفاده می‌شود).",
-  "grab_transcript_with_timestamps": "دریافت رونوشت از ویدیو یوتیوب با مهر زمان و ارسال به گفتگو",
-  "grab_comments_from_youtube": "دریافت نظرات از ویدیو یوتیوب و ارسال به گفتگو",
-  "output_video_metadata": "نمایش فراداده ویدیو",
-  "additional_yt_dlp_args": "آرگومان‌های اضافی برای ارسال به yt-dlp (مثال: '--cookies-from-browser brave')",
-  "specify_language_code": "کد زبان برای گفتگو را مشخص کنید، مثلاً -g=en -g=zh -g=pt-BR -g=pt-PT",
-  "scrape_website_url": "استخراج URL وب‌سایت به markdown با استفاده از Jina AI",
-  "search_question_jina": "سؤال جستجو با استفاده از Jina AI",
-  "seed_for_lmm_generation": "Seed برای استفاده در تولید LMM",
-  "wipe_context": "پاک کردن زمینه",
-  "wipe_session": "پاک کردن جلسه",
-  "print_context": "چاپ زمینه",
-  "print_session": "چاپ جلسه",
-  "convert_html_readability": "تبدیل ورودی HTML به نمای تمیز و خوانا",
-  "apply_variables_to_input": "اعمال متغیرها به ورودی کاربر",
-  "disable_pattern_variable_replacement": "غیرفعال کردن جایگزینی متغیرهای الگو",
-  "show_dry_run": "نمایش آنچه به مدل ارسال خواهد شد بدون ارسال واقعی",
-  "serve_fabric_rest_api": "سرویس API REST Fabric",
-  "serve_fabric_api_ollama_endpoints": "سرویس API REST Fabric با نقاط پایانی ollama",
-  "address_to_bind_rest_api": "آدرس برای متصل کردن API REST",
-  "api_key_secure_server_routes": "کلید API برای امن‌سازی مسیرهای سرور",
-  "path_to_yaml_config": "مسیر فایل پیکربندی YAML",
-  "print_current_version": "چاپ نسخه فعلی",
-  "list_all_registered_extensions": "فهرست تمام افزونه‌های ثبت شده",
-  "register_new_extension": "ثبت افزونه جدید از مسیر فایل پیکربندی",
-  "remove_registered_extension": "حذف افزونه ثبت شده با نام",
-  "choose_strategy_from_available": "انتخاب استراتژی از استراتژی‌های موجود",
-  "list_all_strategies": "فهرست تمام استراتژی‌ها",
-  "list_all_vendors": "فهرست تمام تامین‌کنندگان",
-  "output_raw_list_shell_completion": "خروجی فهرست خام بدون سرتیتر/قالب‌بندی (برای تکمیل shell)",
-  "enable_web_search_tool": "فعال‌سازی ابزار جستجوی وب برای مدل‌های پشتیبانی شده (Anthropic، OpenAI، Gemini)",
-  "set_location_web_search": "تنظیم مکان برای نتایج جستجوی وب (مثال: 'America/Los_Angeles')",
-  "save_generated_image_to_file": "ذخیره تصویر تولید شده در مسیر فایل مشخص (مثال: 'output.png')",
-  "image_dimensions_help": "ابعاد تصویر: 1024x1024، 1536x1024، 1024x1536، auto (پیش‌فرض: auto)",
-  "image_quality_help": "کیفیت تصویر: low، medium، high، auto (پیش‌فرض: auto)",
-  "compression_level_jpeg_webp": "سطح فشرده‌سازی 0-100 برای فرمت‌های JPEG/WebP (پیش‌فرض: تنظیم نشده)",
-  "background_type_help": "نوع پس‌زمینه: opaque، transparent (پیش‌فرض: opaque، فقط برای PNG/WebP)",
-  "suppress_thinking_tags": "سرکوب متن محصور در تگ‌های تفکر",
-  "start_tag_thinking_sections": "تگ شروع برای بخش‌های تفکر",
-  "end_tag_thinking_sections": "تگ پایان برای بخش‌های تفکر",
-  "disable_openai_responses_api": "غیرفعال کردن API OpenAI Responses (پیش‌فرض: false)",
-  "audio_video_file_transcribe": "فایل صوتی یا ویدیویی برای رونویسی",
-  "model_for_transcription": "مدل برای استفاده در رونویسی (جدا از مدل گفتگو)",
-  "split_media_files_ffmpeg": "تقسیم فایل‌های صوتی/ویدیویی بزرگتر از 25MB با استفاده از ffmpeg",
-  "tts_voice_name": "نام صدای TTS برای مدل‌های پشتیبانی شده (مثال: Kore، Charon، Puck)",
-  "list_gemini_tts_voices": "فهرست تمام صداهای TTS Gemini موجود",
-  "list_transcription_models": "فهرست تمام مدل‌های رونویسی موجود",
-  "send_desktop_notification": "ارسال اعلان دسک‌تاپ هنگام تکمیل دستور",
+  "could_not_determine_home_dir": "نتوانست دایرکتوری خانه کاربر را تعیین کند: %w",
+  "could_not_stat_env_file": "نتوانست وضعیت فایل .env را بررسی کند: %w",
   "custom_notification_command": "دستور سفارشی برای اجرای اعلان‌ها (جایگزین اعلان‌های داخلی)",
-  "set_reasoning_thinking_level": "تنظیم سطح استدلال/تفکر (مثال: off، low، medium، high، یا توکن‌های عددی برای Anthropic یا Google Gemini)",
-  "set_debug_level": "تنظیم سطح اشکال‌زدایی (0=خاموش، 1=پایه، 2=تفصیلی، 3=ردیابی)",
-  "usage_header": "استفاده:",
-  "application_options_header": "گزینه‌های برنامه:",
-  "help_options_header": "گزینه‌های راهنما:",
-  "help_message": "نمایش این پیام راهنما",
-  "options_placeholder": "[گزینه‌ها]",
-  "available_vendors_header": "تامین‌کنندگان موجود:",
-  "available_models_header": "مدل‌های موجود",
-  "no_items_found": "هیچ %s",
-  "no_description_available": "توضیحی در دسترس نیست",
-  "i18n_download_failed": "دانلود ترجمه برای زبان '%s' ناموفق بود: %v",
-  "i18n_load_failed": "بارگذاری فایل ترجمه ناموفق بود: %v",
-  "setup_welcome_header": "🎉 به Fabric خوش آمدید! بیایید تنظیمات را انجام دهیم.",
-  "setup_step_downloading_patterns": "📥 مرحله ۱: دانلود الگوها (برای کار Fabric ضروری است)...",
-  "setup_step_downloading_strategies": "📥 مرحله ۲: دانلود استراتژی‌ها (برای کار Fabric ضروری است)...",
-  "setup_step_configure_ai_provider": "🤖 مرحله ۳: پیکربندی یک ارائه‌دهنده هوش مصنوعی",
-  "setup_ai_provider_required": "Fabric برای کار کردن به حداقل یک ارائه‌دهنده هوش مصنوعی نیاز دارد.",
-  "setup_add_more_providers_later": "می‌توانید بعداً با 'fabric --setup' ارائه‌دهندگان بیشتری اضافه کنید",
-  "setup_step_setting_defaults": "⚙️  مرحله ۴: تنظیم ارائه‌دهنده و مدل پیش‌فرض...",
-  "setup_complete_header": "✅ تنظیمات کامل شد! اکنون می‌توانید از Fabric استفاده کنید.",
-  "setup_next_steps": "مراحل بعدی:",
-  "setup_list_patterns": "• نمایش الگوهای موجود: fabric -l",
-  "setup_try_pattern": "• امتحان یک الگو: echo 'متن شما' | fabric --pattern summarize",
-  "setup_configure_more": "• پیکربندی تنظیمات بیشتر: fabric --setup",
-  "setup_failed_download_patterns": "دانلود الگوها ناموفق بود: %w",
-  "setup_failed_download_strategies": "دانلود استراتژی‌ها ناموفق بود: %w",
-  "setup_failed_set_defaults": "تنظیم ارائه‌دهنده و مدل پیش‌فرض ناموفق بود: %w",
-  "setup_no_ai_provider_selected": "هیچ ارائه‌دهنده هوش مصنوعی انتخاب نشده - حداقل یکی ضروری است",
-  "setup_invalid_selection": "انتخاب نامعتبر: %s",
-  "setup_available_ai_providers": "ارائه‌دهندگان هوش مصنوعی موجود:",
-  "setup_enter_ai_provider_number": "شماره ارائه‌دهنده هوش مصنوعی",
-  "setup_available_plugins": "افزونه‌های موجود:",
-  "setup_plugin_number": "شماره افزونه",
-  "setup_plugin_prompt": "شماره افزونه‌ای را که می‌خواهید راه‌اندازی کنید وارد کنید",
-  "setup_required_configuration_header": "━━━ پیکربندی ضروری ━━━\n\nارائه‌دهندگان هوش مصنوعی [حداقل یکی ضروری است]",
-  "setup_required_tools": "ابزارهای ضروری",
-  "setup_optional_configuration_header": "━━━ پیکربندی اختیاری ━━━\n\nابزارهای اختیاری",
-  "setup_validation_header": "وضعیت پیکربندی:",
-  "setup_validation_ai_provider_configured": "✓ ارائه‌دهنده هوش مصنوعی پیکربندی شده",
-  "setup_validation_ai_provider_missing": "✗ ارائه‌دهنده هوش مصنوعی پیکربندی نشده - برای کار Fabric ضروری است",
-  "setup_validation_defaults_configured": "✓ ارائه‌دهنده/مدل پیش‌فرض تنظیم شده: %s/%s",
-  "setup_validation_defaults_missing": "✗ ارائه‌دهنده/مدل پیش‌فرض تنظیم نشده - برای کار Fabric ضروری است",
-  "setup_validation_patterns_configured": "✓ الگوها دانلود شده",
-  "setup_validation_patterns_missing": "✗ الگوها یافت نشد - برای کار Fabric ضروری است",
-  "setup_validation_strategies_configured": "✓ استراتژی‌ها دانلود شده",
-  "setup_validation_strategies_missing": "✗ استراتژی‌ها یافت نشد - برای کار Fabric ضروری است",
-  "setup_validation_incomplete_warning": "⚠️  تنظیمات ناقص! اجزای ضروری وجود ندارند.",
-  "setup_validation_incomplete_help": "دوباره 'fabric --setup' را اجرا کنید تا موارد ناقص را پیکربندی کنید،\nیا 'fabric -U' را برای دانلود الگوها و استراتژی‌ها اجرا کنید.",
-  "setup_validation_complete": "✓ تمام اجزای ضروری پیکربندی شده‌اند!",
-  "patterns_not_found_header": "⚠️  هیچ الگویی یافت نشد!",
-  "patterns_required_to_work": "الگوها برای کار Fabric ضروری هستند. برای رفع این مشکل:",
-  "patterns_option_run_setup": "گزینه ۱ (توصیه شده): اجرای تنظیمات برای دانلود الگوها",
-  "patterns_option_run_setup_command": "fabric --setup",
-  "patterns_option_run_update": "گزینه ۲: دانلود/به‌روزرسانی مستقیم الگوها",
-  "patterns_option_run_update_command": "fabric -U",
-  "pattern_not_found_no_patterns": "الگوی '%s' یافت نشد.\n\nهیچ الگویی نصب نشده است! برای رفع این مشکل:\n  • 'fabric --setup' را برای پیکربندی و دانلود الگوها اجرا کنید\n  • یا 'fabric -U' را برای دانلود/به‌روزرسانی الگوها اجرا کنید",
-  "pattern_not_found_list_available": "الگوی '%s' یافت نشد. برای مشاهده الگوهای موجود 'fabric -l' را اجرا کنید",
-  "plugin_configured": " ✓",
-  "plugin_not_configured": " ⚠️  پیکربندی نشده",
-  "defaults_setup_description": "ارائه‌دهنده و مدل هوش مصنوعی پیش‌فرض",
-  "defaults_model_question": "شاخص یا نام مدل پیش‌فرض خود را وارد کنید",
-  "defaults_model_context_length_question": "طول زمینه مدل را وارد کنید",
+  "custom_patterns_directory_question": "مسیر دایرکتوری الگوهای سفارشی خود را وارد کنید",
   "custom_patterns_label": "الگوهای سفارشی",
   "custom_patterns_setup_description": "الگوهای سفارشی - تنظیم دایرکتوری برای الگوهای سفارشی شما",
-  "custom_patterns_directory_question": "مسیر دایرکتوری الگوهای سفارشی خود را وارد کنید",
+  "defaults_model_context_length_question": "طول زمینه مدل را وارد کنید",
+  "defaults_model_question": "شاخص یا نام مدل پیش‌فرض خود را وارد کنید",
+  "defaults_setup_description": "ارائه‌دهنده و مدل هوش مصنوعی پیش‌فرض",
+  "disable_openai_responses_api": "غیرفعال کردن API OpenAI Responses (پیش‌فرض: false)",
+  "disable_pattern_variable_replacement": "غیرفعال کردن جایگزینی متغیرهای الگو",
+  "enable_web_search_tool": "فعال‌سازی ابزار جستجوی وب برای مدل‌های پشتیبانی شده (Anthropic، OpenAI، Gemini)",
+  "end_tag_thinking_sections": "تگ پایان برای بخش‌های تفکر",
+  "error_creating_audio_file": "خطا در ایجاد فایل صوتی: %v",
+  "error_creating_file": "خطا در ایجاد فایل: %v",
+  "error_fetching_playlist_videos": "خطا در دریافت ویدیوهای فهرست پخش: %w",
+  "error_parsing_config_file": "خطا در تجزیه فایل پیکربندی: %w",
+  "error_reading_config_file": "خطا در خواندن فایل پیکربندی: %w",
+  "error_reading_piped_message": "خطا در خواندن پیام هدایت شده از stdin: %w",
+  "error_writing_audio_data": "خطا در نوشتن داده‌های صوتی به فایل: %v",
+  "error_writing_to_file": "خطا در نوشتن به فایل: %v",
+  "extension_cmd_template_required": "الگوی دستور برای عملیات %s الزامی است",
+  "extension_command_template_label": "      الگوی دستور: %s\n",
+  "extension_config_hash_mismatch": "عدم تطابق هش فایل پیکربندی برای %s",
+  "extension_config_path_label": "  مسیر پیکربندی: %s\n\n",
+  "extension_description_label": "  توضیحات: %s\n",
+  "extension_empty_command": "دستور خالی پس از قالب‌بندی",
+  "extension_executable_hash_mismatch": "عدم تطابق هش فایل اجرایی برای %s",
+  "extension_executable_label": "  فایل اجرایی: %s\n",
+  "extension_executable_not_found": "فایل اجرایی یافت نشد: %w",
+  "extension_executable_required": "مسیر فایل اجرایی الزامی است",
+  "extension_executing_command": "در حال اجرای دستور: %s\n",
+  "extension_execution_failed_err": "اجرا ناموفق بود: %w\nerr: %s",
+  "extension_execution_failed_stderr": "اجرا ناموفق بود: %w\nstderr: %s",
+  "extension_execution_timed_out": "اجرا پس از %v منقضی شد",
+  "extension_failed_format_command": "قالب‌بندی دستور ناموفق بود: %w",
+  "extension_failed_get_absolute_path": "دریافت مسیر مطلق ناموفق بود: %w",
+  "extension_failed_get_extension": "دریافت افزونه ناموفق بود: %w",
+  "extension_failed_get_output_path": "دریافت مسیر خروجی ناموفق بود: %w\nerr: %s",
+  "extension_failed_hash_executable": "محاسبه هش فایل اجرایی ناموفق بود: %w",
+  "extension_failed_marshal_registry": "سریال‌سازی رجیستری افزونه‌ها ناموفق بود: %w",
+  "extension_failed_parse_config": "تجزیه فایل پیکربندی ناموفق بود: %w",
+  "extension_failed_parse_registry": "تجزیه رجیستری افزونه‌ها ناموفق بود: %w",
+  "extension_failed_read_config": "خواندن فایل پیکربندی ناموفق بود: %w",
+  "extension_failed_read_output_file": "خواندن فایل خروجی ناموفق بود: %w",
+  "extension_failed_read_registry": "خواندن رجیستری افزونه‌ها ناموفق بود: %w",
+  "extension_failed_register": "ثبت افزونه ناموفق بود: %w",
+  "extension_failed_remove": "حذف افزونه ناموفق بود: %w",
+  "extension_failed_verify_executable": "تأیید فایل اجرایی ناموفق بود: %w",
+  "extension_file_config_label": "  پیکربندی فایل:\n",
+  "extension_invalid_config_path": "مسیر پیکربندی نامعتبر: %w",
+  "extension_invalid_definition": "تعریف افزونه نامعتبر: %w",
+  "extension_invalid_timeout": "مقدار مهلت زمانی نامعتبر '%s': باید مدت‌زمانی مانند '30s' یا '1m' باشد: %w",
+  "extension_invalid_timeout_format": "فرمت مهلت زمانی نامعتبر: %w",
+  "extension_name_contains_spaces": "نام افزونه '%s' حاوی فاصله است - نام‌ها نباید فاصله داشته باشند",
+  "extension_name_detail_label": "نام: %s\n",
+  "extension_name_empty": "نام افزونه نمی‌تواند خالی باشد",
+  "extension_name_label": "افزونه: %s\n",
+  "extension_name_required": "نام افزونه الزامی است",
+  "extension_no_file_config": "پیکربندی فایل یافت نشد",
+  "extension_no_output_file": "فایل خروجی در پیکربندی مشخص نشده است",
+  "extension_not_found": "افزونه %s یافت نشد",
+  "extension_operation_not_found": "عملیات %s برای افزونه %s یافت نشد",
+  "extension_operation_required": "حداقل یک عملیات باید تعریف شود",
+  "extension_operations_label": "  عملیات‌ها:\n",
+  "extension_registered_success": "افزونه با موفقیت ثبت شد:\n",
+  "extension_registry_not_initialized": "رجیستری افزونه‌ها مقداردهی نشده است",
+  "extension_status_disabled": "  وضعیت: غیرفعال - تأیید هش ناموفق: %v\n",
+  "extension_status_enabled": "  وضعیت: فعال\n",
+  "extension_timeout_label": "  مهلت زمانی: %s\n",
+  "extension_type_label": "  نوع: %s\n",
+  "extension_type_required": "نوع افزونه الزامی است",
+  "extension_version_label": "  نسخه: %s\n",
+  "extension_warning_load_registry": "هشدار: بارگذاری رجیستری افزونه‌ها ممکن نبود: %v\n",
+  "fabric_command_complete": "دستور Fabric تکمیل شد",
+  "fabric_command_complete_with_pattern": "Fabric: %s تکمیل شد",
+  "fetch_content_exceeds_limit": "fetch: محتوا بسیار بزرگ است: از %d بایت بیشتر است",
+  "fetch_content_not_utf8": "fetch: محتوا متن UTF-8 معتبر نیست",
+  "fetch_content_null_bytes": "fetch: محتوا شامل بایت‌های null است",
+  "fetch_content_too_large": "fetch: محتوا بسیار بزرگ است: %d بایت (حداکثر %d بایت)",
+  "fetch_error_create_request": "fetch: خطا در ایجاد درخواست: %v",
+  "fetch_error_fetching_url": "fetch: خطا در دریافت URL: %v",
+  "fetch_error_reading_response": "fetch: خطا در خواندن پاسخ: %v",
+  "fetch_http_error": "fetch: خطای HTTP: %d - %s",
+  "fetch_unknown_operation": "fetch: عملیات ناشناخته %q (پشتیبانی‌شده: get)",
+  "fetch_unsupported_content_type": "fetch: نوع محتوای پشتیبانی‌نشده %q - فقط محتوای متنی مجاز است",
+  "file_already_exists_choose_different": "فایل %s از قبل وجود دارد. لطفاً نام فایل متفاوتی انتخاب کنید یا فایل موجود را حذف کنید",
+  "file_already_exists_not_overwriting": "فایل %s از قبل وجود دارد، بازنویسی نمی‌شود. فایل موجود را تغییر نام دهید یا نام متفاوتی انتخاب کنید",
+  "file_manager_applied_operation": "عملیات %s روی %s اعمال شد",
+  "file_manager_empty_path": "مسیر خالی برای تغییر فایل %d",
+  "file_manager_failed_create_directory": "ایجاد دایرکتوری %s برای تغییر فایل %d ناموفق بود: %w",
+  "file_manager_failed_parse_json": "پارس %s JSON ناموفق بود: %w",
+  "file_manager_failed_write_file": "نوشتن فایل %s برای تغییر فایل %d ناموفق بود: %w",
+  "file_manager_file_content_too_large": "محتوای فایل بیش از حد بزرگ برای تغییر فایل %d: %d بایت",
+  "file_manager_invalid_format_no_json_array": "فرمت %s نامعتبر: هیچ آرایه JSON یافت نشد",
+  "file_manager_invalid_format_unbalanced_brackets": "فرمت %s نامعتبر: پرانتزهای نامتعادل",
+  "file_manager_invalid_operation": "عملیات نامعتبر برای تغییر فایل %d: %s",
+  "file_manager_suspicious_path": "مسیر مشکوک برای تغییر فایل %d: %s",
+  "gemini_audio_data_too_small": "داده صوتی بسیار کوچک: %d بایت، حداقل مورد نیاز: %d",
+  "gemini_empty_pcm_data": "داده PCM خالی ارائه شد",
+  "gemini_invalid_location_format": "فرمت مکان جستجوی نامعتبر %q: باید منطقه زمانی (مثال 'America/Los_Angeles') یا کد زبان (مثال 'en-US') باشد",
+  "gemini_invalid_voice": "صدای نامعتبر '%s'. صداهای معتبر عبارتند از: %v",
+  "gemini_no_audio_data": "داده صوتی از مدل TTS دریافت نشد",
+  "gemini_no_text_for_tts": "محتوای متنی برای تولید TTS یافت نشد",
+  "gemini_pcm_data_too_large": "داده PCM بسیار بزرگ: %d بایت، حداکثر مجاز: %d",
+  "gemini_stream_error": "خطا: %v",
+  "gemini_tts_failed": "تولید TTS ناموفق بود: %w",
+  "gemini_unexpected_data_type": "نوع داده غیرمنتظره: %s، داده صوتی مورد انتظار بود",
+  "gemini_wav_data_invalid": "داده WAV تولید شده نامعتبر است: %d بایت، حداقل مورد نیاز: %d",
+  "gemini_wav_generation_failed": "تولید فایل WAV ناموفق بود: %w",
+  "grab_comments_from_youtube": "دریافت نظرات از ویدیو یوتیوب و ارسال به گفتگو",
+  "grab_transcript_from_youtube": "دریافت رونوشت از ویدیو یوتیوب و ارسال به گفتگو (به طور پیش‌فرض استفاده می‌شود).",
+  "grab_transcript_with_timestamps": "دریافت رونوشت از ویدیو یوتیوب با مهر زمان و ارسال به گفتگو",
+  "groups_items_number_out_of_range": "شماره %d خارج از محدوده است",
+  "help_message": "نمایش این پیام راهنما",
+  "help_options_header": "گزینه‌های راهنما:",
+  "html_readability_error": "از ورودی اصلی استفاده کن، چون نمی‌توان خوانایی HTML را اعمال کرد",
+  "i18n_download_failed": "دانلود ترجمه برای زبان '%s' ناموفق بود: %v",
+  "i18n_load_failed": "بارگذاری فایل ترجمه ناموفق بود: %v",
+  "image_compression_jpeg_webp_only": "فشرده‌سازی تصویر فقط با فرمت‌های JPEG و WebP قابل استفاده است، نه %s",
+  "image_compression_range_error": "فشرده‌سازی تصویر باید بین 0 تا 100 باشد، دریافت شده: %d",
+  "image_dimensions_help": "ابعاد تصویر: 1024x1024، 1536x1024، 1024x1536، auto (پیش‌فرض: auto)",
+  "image_file_already_exists": "فایل تصویر از قبل وجود دارد: %s",
+  "image_parameters_require_image_file": "پارامترهای تصویر (--image-size، --image-quality، --image-background، --image-compression) فقط با --image-file قابل استفاده هستند",
+  "image_quality_help": "کیفیت تصویر: low، medium، high، auto (پیش‌فرض: auto)",
+  "invalid_config_path": "مسیر پیکربندی نامعتبر: %w",
+  "invalid_image_background": "پس‌زمینه تصویر نامعتبر '%s'. پس‌زمینه‌های پشتیبانی شده: opaque، transparent",
+  "invalid_image_file_extension": "پسوند فایل تصویر نامعتبر '%s'. فرمت‌های پشتیبانی شده: .png، .jpeg، .jpg، .webp",
+  "invalid_image_quality": "کیفیت تصویر نامعتبر '%s'. کیفیت‌های پشتیبانی شده: low، medium، high، auto",
+  "invalid_image_size": "اندازه تصویر نامعتبر '%s'. اندازه‌های پشتیبانی شده: 1024x1024، 1536x1024، 1024x1536، auto",
+  "jina_error_creating_request": "خطا در ایجاد درخواست: %v",
+  "jina_error_reading_response_body": "خطا در خواندن بدنه پاسخ: %v",
+  "jina_error_sending_request": "خطا در ارسال درخواست: %v",
   "jina_label": "Jina AI",
   "jina_setup_description": "سرویس Jina AI - برای دریافت صفحه وب به‌صورت متن تمیز و سازگار با LLM",
-  "youtube_label": "YouTube",
-  "youtube_setup_description": "YouTube - برای دریافت رونوشت ویدیو (از طریق yt-dlp) و نظرات/متادیتا (از طریق API یوتیوب)",
   "language_label": "زبان",
-  "language_setup_description": "زبان - زبان خروجی پیش‌فرض ارائه‌دهنده هوش مصنوعی",
   "language_output_question": "زبان خروجی پیش‌فرض خود را وارد کنید (به عنوان مثال: zh_CN)",
-  "optional_marker": "(اختیاری)",
-  "required_marker": "[الزامی]",
-  "patterns_loader_label": "بارگذار الگوها",
-  "patterns_setup_description": "الگوها - دانلود الگوها",
-  "patterns_git_repo_url_label": "آدرس مخزن گیت",
-  "patterns_git_repo_url_question": "آدرس مخزن گیت پیش‌فرض برای الگوها را وارد کنید",
-  "patterns_git_repo_folder_label": "پوشه الگوها در مخزن گیت",
-  "patterns_git_repo_folder_question": "پوشه پیش‌فرض در مخزن گیت که الگوها در آن ذخیره می‌شوند را وارد کنید",
-  "patterns_failed_create_temp_folder": "ایجاد پوشه موقت الگوها ناموفق بود: %w",
-  "patterns_downloading": "در حال دانلود الگوها و پر کردن %s...\\n",
-  "patterns_failed_download_from_git": "دانلود الگوها از مخزن گیت ناموفق بود: %w",
-  "patterns_saving_updated_configuration": "💾 ذخیره پیکربندی به‌روزشده (مسیر از '%s' به '%s' تغییر کرد)...\\n",
-  "patterns_failed_move_patterns": "انتقال الگوها به شاخه پیکربندی ناموفق بود: %w",
-  "patterns_download_success": "✅ الگوها با موفقیت در %s دانلود و نصب شدند\\n",
-  "patterns_failed_unique_file": "ایجاد فایل الگوهای یکتا ناموفق بود: %w",
-  "patterns_failed_access_directory": "دسترسی به پوشه الگو '%s' ناموفق بود: %w",
-  "patterns_preserve_warning": "هشدار: الگوی سفارشی '%s' حفظ نشد: %v\\n",
-  "patterns_preserved_custom_pattern": "الگوی سفارشی حفظ شد: %s\\n",
-  "patterns_failed_create_temp_dir": "ایجاد پوشه موقت ناموفق بود: %w",
-  "patterns_cloning_repository": "در حال کلون کردن مخزن %s (مسیر: %s)...\\n",
-  "patterns_failed_download_from_repo": "دانلود الگوها از %s ناموفق بود: %w",
-  "patterns_failed_read_temp_directory": "خواندن پوشه موقت الگوها ناموفق بود: %w",
-  "patterns_no_patterns_migration_failed": "هیچ الگویی در مخزن با مسیر %s یافت نشد و مهاجرت هم ناموفق بود: %w",
-  "patterns_downloaded_temp": "%d الگو در پوشه موقت دانلود شد\\n",
-  "patterns_detected_old_path": "🔄 مسیر قدیمی الگو 'patterns' شناسایی شد، تلاش برای مهاجرت به 'data/patterns'...",
-  "patterns_warning_remove_test_folder": "هشدار: پوشه موقت آزمایشی '%s' حذف نشد: %v\\n",
-  "patterns_found_new_path": "✅ %d الگو در مسیر جدید '%s' پیدا شد، پیکربندی به‌روزرسانی می‌شود...\\n",
-  "patterns_failed_move_test_patterns": "انتقال الگوهای آزمایشی به پوشه موقت ناموفق بود: %w",
-  "patterns_unable_to_find_or_migrate": "الگویی در مسیر فعلی '%s' یافت نشد یا مهاجرت به ساختار جدید ممکن نبود",
-  "patterns_failed_read_directory": "خواندن پوشه الگوها ناموفق بود: %w",
-  "patterns_debug_included_custom_directory": "📂 الگوهای پوشه سفارشی نیز اضافه شد: %s\\n",
-  "patterns_warning_custom_directory": "هشدار: پوشه الگوی سفارشی %s قابل خواندن نیست: %v\\n",
-  "patterns_no_patterns_found_in_directories": "هیچ الگویی در پوشه‌های %s و %s پیدا نشد",
-  "patterns_no_patterns_found_in_directory": "هیچ الگویی در پوشه %s پیدا نشد",
-  "patterns_failed_write_unique_file": "نوشتن فایل الگوهای یکتا ناموفق بود: %w",
-  "patterns_unique_file_created": "📝 فایل الگوهای یکتا با %d الگو ایجاد شد\\n",
-  "patterns_no_patterns_copied": "هیچ الگویی با موفقیت به %s کپی نشد",
-  "patterns_failed_loaded_marker": "ایجاد فایل نشانه '%s' ناموفق بود: %w",
-  "strategies_label": "راهبردهای پرامپت",
-  "strategies_setup_description": "راهبردها - دانلود راهبردهای پرامپت (مثل chain of thought)",
-  "strategies_git_repo_url_label": "آدرس مخزن گیت",
-  "strategies_git_repo_url_question": "آدرس مخزن گیت پیش‌فرض برای راهبردها را وارد کنید",
-  "strategies_git_repo_folder_label": "پوشه راهبردها در مخزن گیت",
-  "strategies_git_repo_folder_question": "پوشه پیش‌فرض در مخزن گیت که راهبردها در آن ذخیره می‌شوند را وارد کنید",
-  "strategies_downloading": "در حال دانلود راهبردها و پر کردن %s...\\n",
-  "strategies_download_success": "✅ راهبردها با موفقیت در %s دانلود و نصب شدند\\n",
-  "strategies_home_dir_error": "دریافت پوشه خانگی ممکن نبود: %v",
-  "strategies_failed_create_directory": "ایجاد پوشه راهبردها ناموفق بود: %w",
-  "strategies_cloning_repository": "در حال کلون کردن مخزن %s (مسیر: %s)...\\n",
-  "strategies_failed_download": "دانلود راهبردها ناموفق بود: %w",
-  "strategies_downloaded_count": "%d راهبرد دانلود شد\\n",
-  "strategies_home_dir_fallback": "دریافت پوشه خانگی ممکن نبود: %v، از پوشه فعلی استفاده می‌شود",
-  "strategy_not_found": "راهبرد %s یافت نشد. برای مشاهده فهرست 'fabric --liststrategies' را اجرا کنید",
-  "strategies_none_found": "هیچ راهبردی پیدا نشد. برای دانلود راهبردها 'fabric --setup' را اجرا کنید",
-  "strategies_available_header": "راهبردهای موجود:",
-  "plugin_enter_value": "مقدار %v %v خود را وارد کنید",
-  "plugin_enable_bool_question": "%v %v را فعال کنید (true/false)",
-  "plugin_setup_skipped": "[%v] رد شد\\n",
-  "plugin_question_bool": "%v%v (true/false، برای '%s' خالی بگذارید یا '%v' را برای حذف مقدار بنویسید):",
-  "plugin_question_with_default": "%v%v (برای '%s' خالی بگذارید یا '%v' را برای حذف مقدار بنویسید):",
-  "plugin_question_optional": "%v%v (برای رد کردن خالی بگذارید):",
-  "plugin_invalid_boolean_value": "مقدار بولی نامعتبر: %v",
-  "plugin_setting_not_valid": "%v=%v معتبر نیست",
-  "plugin_invalid_bool": "مقدار bool نامعتبر: %q",
-  "ollama_num_ctx_must_be_finite": "num_ctx باید یک عدد محدود باشد",
-  "ollama_num_ctx_must_be_integer": "num_ctx باید یک عدد صحیح باشد، عدد اعشاری با قسمت کسری دریافت شد",
-  "ollama_num_ctx_value_out_of_range": "مقدار num_ctx خارج از محدوده است",
-  "ollama_num_ctx_must_be_positive": "num_ctx باید مثبت باشد، دریافت شده: %d",
-  "ollama_num_ctx_value_too_large": "مقدار num_ctx بیش از حد بزرگ است: %d",
-  "ollama_num_ctx_must_be_valid_number": "num_ctx باید یک عدد معتبر باشد",
-  "ollama_num_ctx_must_be_valid_number_got": "num_ctx باید یک عدد معتبر باشد، دریافت شده: %s",
-  "ollama_num_ctx_invalid_type": "num_ctx باید یک عدد باشد، نوع نامعتبر دریافت شد",
-  "ollama_num_ctx_exceeds_maximum": "num_ctx از حداکثر مقدار مجاز %d فراتر رفته است",
-  "ollama_error_reading_body": "خطا در خواندن بدنه: %v",
-  "ollama_error_endpoint": "در حال آزمایش نقطه پایانی",
-  "ollama_error_unmarshalling_body": "خطا در تجزیه بدنه: %v",
-  "ollama_invalid_num_ctx_in_request": "num_ctx نامعتبر در درخواست: %v",
-  "ollama_warning_parse_variables": "هشدار: شکست در تجزیه options.variables به عنوان JSON: %v",
-  "ollama_error_marshalling_body": "خطا در سریال‌سازی بدنه: %v",
+  "language_setup_description": "زبان - زبان خروجی پیش‌فرض ارائه‌دهنده هوش مصنوعی",
+  "list_all_available_models": "فهرست تمام مدل‌های موجود",
+  "list_all_contexts": "فهرست تمام زمینه‌ها",
+  "list_all_patterns": "فهرست تمام الگوها",
+  "list_all_registered_extensions": "فهرست تمام افزونه‌های ثبت شده",
+  "list_all_sessions": "فهرست تمام جلسات",
+  "list_all_strategies": "فهرست تمام استراتژی‌ها",
+  "list_all_vendors": "فهرست تمام تامین‌کنندگان",
+  "list_gemini_tts_voices": "فهرست تمام صداهای TTS Gemini موجود",
+  "list_transcription_models": "فهرست تمام مدل‌های رونویسی موجود",
+  "lmstudio_api_url_question": "آدرس URL %v خود را وارد کنید (به عنوان یادآوری، معمولاً %v است)",
+  "lmstudio_error_reading_response": "خطا در خواندن پاسخ: %w",
+  "lmstudio_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
+  "lmstudio_failed_decode_response": "رمزگشایی پاسخ ناموفق بود: %w",
+  "lmstudio_failed_marshal_payload": "سریال‌سازی بار داده ناموفق بود: %w",
+  "lmstudio_failed_send_request": "ارسال درخواست ناموفق بود: %w",
+  "lmstudio_invalid_response_missing_choices": "فرمت پاسخ نامعتبر: گزینه‌ها وجود ندارند یا خالی هستند",
+  "lmstudio_invalid_response_missing_content": "فرمت پاسخ نامعتبر: محتوا در پیام وجود ندارد یا رشته نیست",
+  "lmstudio_invalid_response_missing_message": "فرمت پاسخ نامعتبر: پیام در اولین گزینه وجود ندارد",
+  "lmstudio_invalid_response_missing_text": "فرمت پاسخ نامعتبر: متن در اولین گزینه وجود ندارد یا رشته نیست",
+  "lmstudio_no_embeddings_returned": "هیچ بردار جاسازی بازگردانده نشد",
+  "lmstudio_unexpected_status_code": "کد وضعیت غیرمنتظره: %d",
+  "model_context_length_ollama": "طول زمینه مدل (فقط ollama را تحت تأثیر قرار می‌دهد)",
+  "model_for_transcription": "مدل برای استفاده در رونویسی (جدا از مدل گفتگو)",
+  "no_description_available": "توضیحی در دسترس نیست",
+  "no_items_found": "هیچ %s",
+  "no_notification_system_available": "هیچ سیستم اعلان‌رسانی در دسترس نیست",
+  "number_of_latest_patterns": "تعداد جدیدترین الگوها برای فهرست",
+  "ollama_cannot_parse_url": "نمی‌توان URL '%s' را تجزیه کرد: %v",
+  "ollama_chat_request_failed": "درخواست چت ناموفق بود: %v",
+  "ollama_empty_address": "آدرس خالی",
   "ollama_error_building_chat_url": "خطا در ساخت URL چت /: %v",
   "ollama_error_creating_chat_request": "خطا در ایجاد درخواست /chat: %v",
-  "ollama_failed_create_request": "ایجاد درخواست ناموفق بود",
+  "ollama_error_endpoint": "در حال آزمایش نقطه پایانی",
   "ollama_error_getting_chat_body": "خطا در دریافت بدنه /chat: %v",
-  "ollama_upstream_non_2xx_body_unreadable": "سرور Fabric بالادستی وضعیت غیر-2xx %d را برگرداند و بدنه قابل خواندن نبود: %v",
-  "ollama_upstream_non_2xx": "سرور Fabric بالادستی وضعیت غیر-2xx %d را برگرداند: %s",
-  "ollama_upstream_returned_status": "سرور Fabric بالادستی وضعیت %d را برگرداند",
-  "ollama_error_prefix": "خطا: %s",
+  "ollama_error_marshalling_body": "خطا در سریال‌سازی بدنه: %v",
   "ollama_error_parse_upstream_response": "خطا: شکست در تجزیه پاسخ بالادستی",
-  "ollama_failed_unmarshal_fabric_response": "شکست در تجزیه پاسخ Fabric",
-  "ollama_error_writing_response": "خطا در نوشتن پاسخ: %v",
+  "ollama_error_prefix": "خطا: %s",
+  "ollama_error_reading_body": "خطا در خواندن بدنه: %v",
   "ollama_error_scanning_body": "خطا در اسکن بدنه: %v",
+  "ollama_error_unmarshalling_body": "خطا در تجزیه بدنه: %v",
+  "ollama_error_writing_response": "خطا در نوشتن پاسخ: %v",
+  "ollama_failed_create_request": "ایجاد درخواست ناموفق بود",
+  "ollama_failed_decode_data_url": "رمزگشایی URL داده ناموفق بود: %v",
+  "ollama_failed_fetch_image": "دریافت تصویر از %s ناموفق بود: %s",
   "ollama_failed_scan_sse_stream": "شکست در اسکن جریان پاسخ SSE: %v",
-  "ollama_sse_buffer_limit": "خط SSE از حد بافر 1MB فراتر رفت - خط داده بیش از حد بزرگ است",
-  "ollama_warning_no_content": "هشدار: هیچ محتوایی از سرور Fabric بالادستی دریافت نشد",
-  "ollama_no_content_from_upstream": "هیچ محتوایی از سرور Fabric بالادستی دریافت نشد",
-  "ollama_empty_address": "آدرس خالی",
+  "ollama_failed_unmarshal_fabric_response": "شکست در تجزیه پاسخ Fabric",
+  "ollama_http_timeout_question": "زمان انتظار HTTP را وارد کنید (مثلاً 20m، 60s)",
   "ollama_invalid_address": "آدرس نامعتبر: %w",
   "ollama_invalid_address_missing_host": "آدرس نامعتبر: میزبان وجود ندارد",
   "ollama_invalid_address_missing_hostname": "آدرس نامعتبر: نام میزبان وجود ندارد",
   "ollama_invalid_address_path_not_allowed": "آدرس نامعتبر: مؤلفه مسیر در آدرس ساده مجاز نیست",
-  "extension_registry_not_initialized": "رجیستری افزونه‌ها مقداردهی نشده است",
-  "extension_name_label": "افزونه: %s\n",
-  "extension_status_disabled": "  وضعیت: غیرفعال - تأیید هش ناموفق: %v\n",
-  "extension_config_path_label": "  مسیر پیکربندی: %s\n\n",
-  "extension_status_enabled": "  وضعیت: فعال\n",
-  "extension_executable_label": "  فایل اجرایی: %s\n",
-  "extension_type_label": "  نوع: %s\n",
-  "extension_timeout_label": "  مهلت زمانی: %s\n",
-  "extension_description_label": "  توضیحات: %s\n",
-  "extension_version_label": "  نسخه: %s\n",
-  "extension_operations_label": "  عملیات‌ها:\n",
-  "extension_command_template_label": "      الگوی دستور: %s\n",
-  "extension_file_config_label": "  پیکربندی فایل:\n",
-  "extension_invalid_config_path": "مسیر پیکربندی نامعتبر: %w",
-  "extension_failed_read_config": "خواندن فایل پیکربندی ناموفق بود: %w",
-  "extension_failed_parse_config": "تجزیه فایل پیکربندی ناموفق بود: %w",
-  "extension_failed_register": "ثبت افزونه ناموفق بود: %w",
-  "extension_invalid_timeout": "مقدار مهلت زمانی نامعتبر '%s': باید مدت‌زمانی مانند '30s' یا '1m' باشد: %w",
-  "extension_registered_success": "افزونه با موفقیت ثبت شد:\n",
-  "extension_name_detail_label": "نام: %s\n",
-  "extension_failed_remove": "حذف افزونه ناموفق بود: %w",
-  "lmstudio_api_url_question": "آدرس URL %v خود را وارد کنید (به عنوان یادآوری، معمولاً %v است)",
-  "lmstudio_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
-  "lmstudio_failed_send_request": "ارسال درخواست ناموفق بود: %w",
-  "lmstudio_unexpected_status_code": "کد وضعیت غیرمنتظره: %d",
-  "lmstudio_failed_decode_response": "رمزگشایی پاسخ ناموفق بود: %w",
-  "lmstudio_failed_marshal_payload": "سریال‌سازی بار داده ناموفق بود: %w",
-  "lmstudio_error_reading_response": "خطا در خواندن پاسخ: %w",
-  "lmstudio_invalid_response_missing_choices": "فرمت پاسخ نامعتبر: گزینه‌ها وجود ندارند یا خالی هستند",
-  "lmstudio_invalid_response_missing_message": "فرمت پاسخ نامعتبر: پیام در اولین گزینه وجود ندارد",
-  "lmstudio_invalid_response_missing_content": "فرمت پاسخ نامعتبر: محتوا در پیام وجود ندارد یا رشته نیست",
-  "lmstudio_invalid_response_missing_text": "فرمت پاسخ نامعتبر: متن در اولین گزینه وجود ندارد یا رشته نیست",
-  "lmstudio_no_embeddings_returned": "هیچ بردار جاسازی بازگردانده نشد",
-  "extension_warning_load_registry": "هشدار: بارگذاری رجیستری افزونه‌ها ممکن نبود: %v\n",
-  "extension_name_empty": "نام افزونه نمی‌تواند خالی باشد",
-  "extension_name_contains_spaces": "نام افزونه '%s' حاوی فاصله است - نام‌ها نباید فاصله داشته باشند",
-  "extension_executable_not_found": "فایل اجرایی یافت نشد: %w",
-  "extension_failed_get_absolute_path": "دریافت مسیر مطلق ناموفق بود: %w",
-  "extension_failed_hash_executable": "محاسبه هش فایل اجرایی ناموفق بود: %w",
-  "extension_invalid_definition": "تعریف افزونه نامعتبر: %w",
-  "extension_name_required": "نام افزونه الزامی است",
-  "extension_executable_required": "مسیر فایل اجرایی الزامی است",
-  "extension_type_required": "نوع افزونه الزامی است",
-  "extension_invalid_timeout_format": "فرمت مهلت زمانی نامعتبر: %w",
-  "extension_operation_required": "حداقل یک عملیات باید تعریف شود",
-  "extension_cmd_template_required": "الگوی دستور برای عملیات %s الزامی است",
-  "extension_not_found": "افزونه %s یافت نشد",
-  "extension_config_hash_mismatch": "عدم تطابق هش فایل پیکربندی برای %s",
-  "extension_failed_verify_executable": "تأیید فایل اجرایی ناموفق بود: %w",
-  "extension_executable_hash_mismatch": "عدم تطابق هش فایل اجرایی برای %s",
-  "extension_failed_marshal_registry": "سریال‌سازی رجیستری افزونه‌ها ناموفق بود: %w",
-  "extension_failed_read_registry": "خواندن رجیستری افزونه‌ها ناموفق بود: %w",
-  "extension_failed_parse_registry": "تجزیه رجیستری افزونه‌ها ناموفق بود: %w",
-  "extension_failed_get_extension": "دریافت افزونه ناموفق بود: %w",
-  "extension_failed_format_command": "قالب‌بندی دستور ناموفق بود: %w",
-  "extension_empty_command": "دستور خالی پس از قالب‌بندی",
-  "extension_operation_not_found": "عملیات %s برای افزونه %s یافت نشد",
-  "extension_executing_command": "در حال اجرای دستور: %s\n",
-  "extension_execution_failed_stderr": "اجرا ناموفق بود: %w\nstderr: %s",
-  "extension_no_file_config": "پیکربندی فایل یافت نشد",
-  "extension_no_output_file": "فایل خروجی در پیکربندی مشخص نشده است",
-  "extension_execution_timed_out": "اجرا پس از %v منقضی شد",
-  "extension_execution_failed_err": "اجرا ناموفق بود: %w\nerr: %s",
-  "extension_failed_read_output_file": "خواندن فایل خروجی ناموفق بود: %w",
-  "extension_failed_get_output_path": "دریافت مسیر خروجی ناموفق بود: %w\nerr: %s",
-  "spotify_failed_create_token_request": "ایجاد درخواست توکن ناموفق بود: %w",
-  "spotify_failed_request_access_token": "درخواست توکن دسترسی ناموفق بود: %w",
-  "spotify_failed_get_access_token": "دریافت توکن دسترسی ناموفق بود: وضعیت %d، پاسخ: %s",
-  "spotify_failed_decode_token_response": "رمزگشایی پاسخ توکن ناموفق بود: %w",
-  "spotify_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
-  "spotify_failed_execute_request": "اجرای درخواست ناموفق بود: %w",
-  "spotify_failed_read_response_body": "خواندن متن پاسخ ناموفق بود: %w",
+  "ollama_invalid_data_url_format": "فرمت URL داده نامعتبر",
+  "ollama_invalid_http_timeout_using_default": "زمان انتظار HTTP نامعتبر '%s': %v، استفاده از مقدار پیش‌فرض",
+  "ollama_invalid_num_ctx_in_request": "num_ctx نامعتبر در درخواست: %v",
+  "ollama_no_content_from_upstream": "هیچ محتوایی از سرور Fabric بالادستی دریافت نشد",
+  "ollama_num_ctx_exceeds_maximum": "num_ctx از حداکثر مقدار مجاز %d فراتر رفته است",
+  "ollama_num_ctx_invalid_type": "num_ctx باید یک عدد باشد، نوع نامعتبر دریافت شد",
+  "ollama_num_ctx_must_be_finite": "num_ctx باید یک عدد محدود باشد",
+  "ollama_num_ctx_must_be_integer": "num_ctx باید یک عدد صحیح باشد، عدد اعشاری با قسمت کسری دریافت شد",
+  "ollama_num_ctx_must_be_positive": "num_ctx باید مثبت باشد، دریافت شده: %d",
+  "ollama_num_ctx_must_be_valid_number": "num_ctx باید یک عدد معتبر باشد",
+  "ollama_num_ctx_must_be_valid_number_got": "num_ctx باید یک عدد معتبر باشد، دریافت شده: %s",
+  "ollama_num_ctx_value_out_of_range": "مقدار num_ctx خارج از محدوده است",
+  "ollama_num_ctx_value_too_large": "مقدار num_ctx بیش از حد بزرگ است: %d",
+  "ollama_sse_buffer_limit": "خط SSE از حد بافر 1MB فراتر رفت - خط داده بیش از حد بزرگ است",
+  "ollama_upstream_non_2xx": "سرور Fabric بالادستی وضعیت غیر-2xx %d را برگرداند: %s",
+  "ollama_upstream_non_2xx_body_unreadable": "سرور Fabric بالادستی وضعیت غیر-2xx %d را برگرداند و بدنه قابل خواندن نبود: %v",
+  "ollama_upstream_returned_status": "سرور Fabric بالادستی وضعیت %d را برگرداند",
+  "ollama_warning_no_content": "هشدار: هیچ محتوایی از سرور Fabric بالادستی دریافت نشد",
+  "ollama_warning_parse_variables": "هشدار: شکست در تجزیه options.variables به عنوان JSON: %v",
+  "openai_api_base_url_not_configured": "URL پایه API برای ارائه‌دهنده %s پیکربندی نشده است",
+  "openai_audio_ffmpeg_failed": "ffmpeg ناموفق بود: %v: %s",
+  "openai_audio_ffmpeg_not_found_install": "ffmpeg یافت نشد: لطفاً نصب کنید",
+  "openai_audio_file_exceeds_limit_enable_split": "فایل %s از حد ۲۵ مگابایت بیشتر است؛ از --split-media-file برای فعال‌سازی تقسیم خودکار استفاده کنید",
+  "openai_audio_file_exceeds_limit_splitting": "فایل %s بزرگ‌تر از حد مجاز است... در حال تقسیم...",
+  "openai_audio_model_not_supported_for_transcription": "مدل '%s' برای رونویسی پشتیبانی نمی‌شود",
+  "openai_audio_running_ffmpeg_split_chunks": "در حال اجرای ffmpeg برای تقسیم صدا به بخش‌های %d ثانیه‌ای...",
+  "openai_audio_unable_to_split_acceptable_size_chunks": "امکان تقسیم فایل به بخش‌های قابل قبول وجود ندارد",
+  "openai_audio_unsupported_audio_format": "فرمت صوتی پشتیبانی نشده '%s'",
+  "openai_audio_using_model_to_transcribe_part": "استفاده از مدل %s برای رونویسی بخش %d (نام فایل: %s)...",
+  "openai_failed_to_create_models_url": "ایجاد URL مدل‌ها ناموفق بود: %w",
+  "openai_image_failed_to_create_directory": "ایجاد پوشه %s ناموفق بود: %w",
+  "openai_image_failed_to_decode_image_data": "رمزگشایی داده‌های تصویر ناموفق بود: %w",
+  "openai_image_failed_to_save_image": "ذخیره تصویر در %s ناموفق بود: %w",
+  "openai_image_saved_to": "تصویر ذخیره شد در: %s",
+  "openai_model_no_image_generation": "مدل '%s' از تولید تصویر پشتیبانی نمی‌کند. مدل‌های پشتیبانی شده: %s",
+  "openai_models_response_too_large": "پاسخ مدل‌ها از ارائه‌دهنده %s بیش از حد بزرگ است (>%d بایت)",
+  "openai_unable_to_parse_models_response": "تجزیه پاسخ مدل‌ها ناموفق بود; پاسخ خام: %s",
+  "openai_unexpected_status_code_read_error": "کد وضعیت غیرمنتظره: %d از ارائه‌دهنده %s (خطا در خواندن پاسخ: %v)",
+  "openai_unexpected_status_code_with_body": "کد وضعیت غیرمنتظره: %d از ارائه‌دهنده %s، پاسخ: %s",
+  "openai_warning_model_no_image_generation": "هشدار: مدل '%s' از تولید تصویر پشتیبانی نمی‌کند. مدل‌های پشتیبانی شده: %s. استفاده از -m gpt-5.2 برای تولید تصویر را در نظر بگیرید.\n",
+  "optional_marker": "(اختیاری)",
+  "options_placeholder": "[گزینه‌ها]",
+  "output_entire_session": "خروجی کل جلسه (حتی موقت) به فایل خروجی",
+  "output_full": "خروجی: %s",
+  "output_raw_list_shell_completion": "خروجی فهرست خام بدون سرتیتر/قالب‌بندی (برای تکمیل shell)",
+  "output_to_file": "خروجی به فایل",
+  "output_truncated": "خروجی: %s...",
+  "output_video_metadata": "نمایش فراداده ویدیو",
+  "path_to_yaml_config": "مسیر فایل پیکربندی YAML",
+  "pattern_not_found_list_available": "الگوی '%s' یافت نشد. برای مشاهده الگوهای موجود 'fabric -l' را اجرا کنید",
+  "pattern_not_found_no_patterns": "الگوی '%s' یافت نشد.\n\nهیچ الگویی نصب نشده است! برای رفع این مشکل:\n  • 'fabric --setup' را برای پیکربندی و دانلود الگوها اجرا کنید\n  • یا 'fabric -U' را برای دانلود/به‌روزرسانی الگوها اجرا کنید",
+  "pattern_variables_help": "مقادیر برای متغیرهای الگو، مثال: -v=#role:expert -v=#points:30",
+  "patterns_cloning_repository": "در حال کلون کردن مخزن %s (مسیر: %s)...\\n",
+  "patterns_debug_included_custom_directory": "📂 الگوهای پوشه سفارشی نیز اضافه شد: %s\\n",
+  "patterns_detected_old_path": "🔄 مسیر قدیمی الگو 'patterns' شناسایی شد، تلاش برای مهاجرت به 'data/patterns'...",
+  "patterns_download_success": "✅ الگوها با موفقیت در %s دانلود و نصب شدند\\n",
+  "patterns_downloaded_temp": "%d الگو در پوشه موقت دانلود شد\\n",
+  "patterns_downloading": "در حال دانلود الگوها و پر کردن %s...\\n",
+  "patterns_failed_access_directory": "دسترسی به پوشه الگو '%s' ناموفق بود: %w",
+  "patterns_failed_create_temp_dir": "ایجاد پوشه موقت ناموفق بود: %w",
+  "patterns_failed_create_temp_folder": "ایجاد پوشه موقت الگوها ناموفق بود: %w",
+  "patterns_failed_download_from_git": "دانلود الگوها از مخزن گیت ناموفق بود: %w",
+  "patterns_failed_download_from_repo": "دانلود الگوها از %s ناموفق بود: %w",
+  "patterns_failed_loaded_marker": "ایجاد فایل نشانه '%s' ناموفق بود: %w",
+  "patterns_failed_move_patterns": "انتقال الگوها به شاخه پیکربندی ناموفق بود: %w",
+  "patterns_failed_move_test_patterns": "انتقال الگوهای آزمایشی به پوشه موقت ناموفق بود: %w",
+  "patterns_failed_read_directory": "خواندن پوشه الگوها ناموفق بود: %w",
+  "patterns_failed_read_temp_directory": "خواندن پوشه موقت الگوها ناموفق بود: %w",
+  "patterns_failed_unique_file": "ایجاد فایل الگوهای یکتا ناموفق بود: %w",
+  "patterns_failed_write_unique_file": "نوشتن فایل الگوهای یکتا ناموفق بود: %w",
+  "patterns_found_new_path": "✅ %d الگو در مسیر جدید '%s' پیدا شد، پیکربندی به‌روزرسانی می‌شود...\\n",
+  "patterns_git_repo_folder_question": "پوشه پیش‌فرض در مخزن گیت که الگوها در آن ذخیره می‌شوند را وارد کنید",
+  "patterns_git_repo_url_question": "آدرس مخزن گیت پیش‌فرض برای الگوها را وارد کنید",
+  "patterns_loader_label": "بارگذار الگوها",
+  "patterns_no_patterns_copied": "هیچ الگویی با موفقیت به %s کپی نشد",
+  "patterns_no_patterns_found_in_directories": "هیچ الگویی در پوشه‌های %s و %s پیدا نشد",
+  "patterns_no_patterns_found_in_directory": "هیچ الگویی در پوشه %s پیدا نشد",
+  "patterns_no_patterns_migration_failed": "هیچ الگویی در مخزن با مسیر %s یافت نشد و مهاجرت هم ناموفق بود: %w",
+  "patterns_not_found_header": "⚠️  هیچ الگویی یافت نشد!",
+  "patterns_option_run_setup": "گزینه ۱ (توصیه شده): اجرای تنظیمات برای دانلود الگوها",
+  "patterns_option_run_setup_command": "fabric --setup",
+  "patterns_option_run_update": "گزینه ۲: دانلود/به‌روزرسانی مستقیم الگوها",
+  "patterns_option_run_update_command": "fabric -U",
+  "patterns_preserve_warning": "هشدار: الگوی سفارشی '%s' حفظ نشد: %v\\n",
+  "patterns_preserved_custom_pattern": "الگوی سفارشی حفظ شد: %s\\n",
+  "patterns_required_to_work": "الگوها برای کار Fabric ضروری هستند. برای رفع این مشکل:",
+  "patterns_saving_updated_configuration": "💾 ذخیره پیکربندی به‌روزشده (مسیر از '%s' به '%s' تغییر کرد)...\\n",
+  "patterns_setup_description": "الگوها - دانلود الگوها",
+  "patterns_unable_to_find_or_migrate": "الگویی در مسیر فعلی '%s' یافت نشد یا مهاجرت به ساختار جدید ممکن نبود",
+  "patterns_unique_file_created": "📝 فایل الگوهای یکتا با %d الگو ایجاد شد\\n",
+  "patterns_warning_custom_directory": "هشدار: پوشه الگوی سفارشی %s قابل خواندن نیست: %v\\n",
+  "patterns_warning_remove_test_folder": "هشدار: پوشه موقت آزمایشی '%s' حذف نشد: %v\\n",
+  "perplexity_api_key_not_configured": "کلید API برای %s پیکربندی نشده است. متغیر محیطی %s را تنظیم کنید یا 'fabric --setup' را برای پیکربندی %s اجرا کنید",
+  "perplexity_api_request_failed": "درخواست API Perplexity ناموفق بود: %w",
+  "perplexity_citations_header": "\n\n**منابع:**\n",
+  "perplexity_failed_configure": "پیکربندی Perplexity ناموفق بود: %w",
+  "perplexity_streaming_error": "خطای جریان Perplexity: %v",
+  "plugin_configured": " ✓",
+  "plugin_enable_bool_question": "%v %v را فعال کنید (true/false)",
+  "plugin_enter_value": "مقدار %v %v خود را وارد کنید",
+  "plugin_invalid_bool": "مقدار bool نامعتبر: %q",
+  "plugin_invalid_boolean_value": "مقدار بولی نامعتبر: %v",
+  "plugin_not_configured": " ⚠️  پیکربندی نشده",
+  "plugin_question_bool": "%v%v (true/false، برای '%s' خالی بگذارید یا '%v' را برای حذف مقدار بنویسید):",
+  "plugin_question_optional": "%v%v (برای رد کردن خالی بگذارید):",
+  "plugin_question_with_default": "%v%v (برای '%s' خالی بگذارید یا '%v' را برای حذف مقدار بنویسید):",
+  "plugin_setting_not_valid": "%v=%v معتبر نیست",
+  "plugin_setup_configured": "[%v] پیکربندی شد",
+  "plugin_setup_skipped": "[%v] رد شد\\n",
+  "prefer_playlist_over_video": "اولویت فهرست پخش نسبت به ویدیو اگر هر دو ID در URL موجود باشند",
+  "print_context": "چاپ زمینه",
+  "print_current_version": "چاپ نسخه فعلی",
+  "print_session": "چاپ جلسه",
+  "register_new_extension": "ثبت افزونه جدید از مسیر فایل پیکربندی",
+  "remove_registered_extension": "حذف افزونه ثبت شده با نام",
+  "required_marker": "[الزامی]",
+  "run_setup_for_reconfigurable_parts": "اجرای تنظیمات برای تمام بخش‌های قابل پیکربندی مجدد fabric",
+  "save_generated_image_to_file": "ذخیره تصویر تولید شده در مسیر فایل مشخص (مثال: 'output.png')",
+  "scrape_website_url": "استخراج URL وب‌سایت به markdown با استفاده از Jina AI",
+  "scraping_not_configured": "قابلیت استخراج داده پیکربندی نشده است. لطفاً Jina را برای فعال‌سازی استخراج تنظیم کنید",
+  "search_question_jina": "سؤال جستجو با استفاده از Jina AI",
+  "seed_for_lmm_generation": "Seed برای استفاده در تولید LMM",
+  "send_desktop_notification": "ارسال اعلان دسک‌تاپ هنگام تکمیل دستور",
+  "serve_fabric_api_ollama_endpoints": "سرویس API REST Fabric با نقاط پایانی ollama",
+  "serve_fabric_rest_api": "سرویس API REST Fabric",
+  "set_debug_level": "تنظیم سطح اشکال‌زدایی (0=خاموش، 1=پایه، 2=تفصیلی، 3=ردیابی)",
+  "set_frequency_penalty": "تنظیم جریمه فرکانس",
+  "set_location_web_search": "تنظیم مکان برای نتایج جستجوی وب (مثال: 'America/Los_Angeles')",
+  "set_presence_penalty": "تنظیم جریمه حضور",
+  "set_reasoning_thinking_level": "تنظیم سطح استدلال/تفکر (مثال: off، low، medium، high، یا توکن‌های عددی برای Anthropic یا Google Gemini)",
+  "set_temperature": "تنظیم دما",
+  "set_top_p": "تنظیم top P",
+  "setup_add_more_providers_later": "می‌توانید بعداً با 'fabric --setup' ارائه‌دهندگان بیشتری اضافه کنید",
+  "setup_ai_provider_required": "Fabric برای کار کردن به حداقل یک ارائه‌دهنده هوش مصنوعی نیاز دارد.",
+  "setup_available_ai_providers": "ارائه‌دهندگان هوش مصنوعی موجود:",
+  "setup_available_plugins": "افزونه‌های موجود:",
+  "setup_complete_header": "✅ تنظیمات کامل شد! اکنون می‌توانید از Fabric استفاده کنید.",
+  "setup_configure_more": "• پیکربندی تنظیمات بیشتر: fabric --setup",
+  "setup_enter_ai_provider_number": "شماره ارائه‌دهنده هوش مصنوعی",
+  "setup_failed_download_patterns": "دانلود الگوها ناموفق بود: %w",
+  "setup_failed_download_strategies": "دانلود استراتژی‌ها ناموفق بود: %w",
+  "setup_failed_set_defaults": "تنظیم ارائه‌دهنده و مدل پیش‌فرض ناموفق بود: %w",
+  "setup_invalid_selection": "انتخاب نامعتبر: %s",
+  "setup_list_patterns": "• نمایش الگوهای موجود: fabric -l",
+  "setup_next_steps": "مراحل بعدی:",
+  "setup_no_ai_provider_selected": "هیچ ارائه‌دهنده هوش مصنوعی انتخاب نشده - حداقل یکی ضروری است",
+  "setup_optional_configuration_header": "━━━ پیکربندی اختیاری ━━━\n\nابزارهای اختیاری",
+  "setup_plugin_number": "شماره افزونه",
+  "setup_plugin_prompt": "شماره افزونه‌ای را که می‌خواهید راه‌اندازی کنید وارد کنید",
+  "setup_required_configuration_header": "━━━ پیکربندی ضروری ━━━\n\nارائه‌دهندگان هوش مصنوعی [حداقل یکی ضروری است]",
+  "setup_required_tools": "ابزارهای ضروری",
+  "setup_step_configure_ai_provider": "🤖 مرحله ۳: پیکربندی یک ارائه‌دهنده هوش مصنوعی",
+  "setup_step_downloading_patterns": "📥 مرحله ۱: دانلود الگوها (برای کار Fabric ضروری است)...",
+  "setup_step_downloading_strategies": "📥 مرحله ۲: دانلود استراتژی‌ها (برای کار Fabric ضروری است)...",
+  "setup_step_setting_defaults": "⚙️  مرحله ۴: تنظیم ارائه‌دهنده و مدل پیش‌فرض...",
+  "setup_try_pattern": "• امتحان یک الگو: echo 'متن شما' | fabric --pattern summarize",
+  "setup_validation_ai_provider_configured": "✓ ارائه‌دهنده هوش مصنوعی پیکربندی شده",
+  "setup_validation_ai_provider_missing": "✗ ارائه‌دهنده هوش مصنوعی پیکربندی نشده - برای کار Fabric ضروری است",
+  "setup_validation_complete": "✓ تمام اجزای ضروری پیکربندی شده‌اند!",
+  "setup_validation_defaults_configured": "✓ ارائه‌دهنده/مدل پیش‌فرض تنظیم شده: %s/%s",
+  "setup_validation_defaults_missing": "✗ ارائه‌دهنده/مدل پیش‌فرض تنظیم نشده - برای کار Fabric ضروری است",
+  "setup_validation_header": "وضعیت پیکربندی:",
+  "setup_validation_incomplete_help": "دوباره 'fabric --setup' را اجرا کنید تا موارد ناقص را پیکربندی کنید،\nیا 'fabric -U' را برای دانلود الگوها و استراتژی‌ها اجرا کنید.",
+  "setup_validation_incomplete_warning": "⚠️  تنظیمات ناقص! اجزای ضروری وجود ندارند.",
+  "setup_validation_patterns_configured": "✓ الگوها دانلود شده",
+  "setup_validation_patterns_missing": "✗ الگوها یافت نشد - برای کار Fabric ضروری است",
+  "setup_validation_strategies_configured": "✓ استراتژی‌ها دانلود شده",
+  "setup_validation_strategies_missing": "✗ استراتژی‌ها یافت نشد - برای کار Fabric ضروری است",
+  "setup_welcome_header": "🎉 به Fabric خوش آمدید! بیایید تنظیمات را انجام دهیم.",
+  "show_dry_run": "نمایش آنچه به مدل ارسال خواهد شد بدون ارسال واقعی",
+  "specify_language_code": "کد زبان برای گفتگو را مشخص کنید، مثلاً -g=en -g=zh -g=pt-BR -g=pt-PT",
+  "specify_vendor_for_model": "تعیین تامین‌کننده برای مدل انتخابی (مثال: -V \"LM Studio\" -m openai/gpt-oss-20b)",
+  "split_media_files_ffmpeg": "تقسیم فایل‌های صوتی/ویدیویی بزرگتر از 25MB با استفاده از ffmpeg",
   "spotify_api_request_failed": "درخواست API ناموفق بود: وضعیت %d، پاسخ: %s",
-  "spotify_failed_parse_show_metadata": "تجزیه فراداده برنامه ناموفق بود: %w",
-  "spotify_failed_parse_episode_metadata": "تجزیه فراداده قسمت ناموفق بود: %w",
-  "spotify_search_failed": "جستجو ناموفق بود: %w",
-  "spotify_failed_parse_search_results": "تجزیه نتایج جستجو ناموفق بود: %w",
+  "spotify_audio_preview_label": "**پیش‌نمایش صوتی**: %s",
+  "spotify_client_id_question": "CLIENT ID اسپاتیفای خود را وارد کنید",
+  "spotify_client_secret_question": "CLIENT SECRET اسپاتیفای خود را وارد کنید",
+  "spotify_description_header": "## توضیحات",
+  "spotify_duration_label": "**مدت زمان**: %d دقیقه",
+  "spotify_episode_header": "# اپیزود اسپاتیفای",
+  "spotify_error_getting_metadata": "error getting Spotify metadata: %v",
+  "spotify_explicit_label": "**محتوای صریح**: %v",
+  "spotify_failed_create_request": "ایجاد درخواست ناموفق بود: %w",
+  "spotify_failed_create_token_request": "ایجاد درخواست توکن ناموفق بود: %w",
+  "spotify_failed_decode_token_response": "رمزگشایی پاسخ توکن ناموفق بود: %w",
+  "spotify_failed_execute_request": "اجرای درخواست ناموفق بود: %w",
+  "spotify_failed_get_access_token": "دریافت توکن دسترسی ناموفق بود: وضعیت %d، پاسخ: %s",
   "spotify_failed_get_show_episodes": "دریافت قسمت‌های برنامه ناموفق بود: %w",
+  "spotify_failed_parse_episode_metadata": "تجزیه فراداده قسمت ناموفق بود: %w",
   "spotify_failed_parse_episodes": "تجزیه قسمت‌ها ناموفق بود: %w",
-  "template_file_log_validating_path": "فایل: در حال اعتبارسنجی مسیر %q",
-  "template_file_error_path_contains_parent_ref": "فایل: مسیر نمی‌تواند '..' داشته باشد",
+  "spotify_failed_parse_search_results": "تجزیه نتایج جستجو ناموفق بود: %w",
+  "spotify_failed_parse_show_metadata": "تجزیه فراداده برنامه ناموفق بود: %w",
+  "spotify_failed_read_response_body": "خواندن متن پاسخ ناموفق بود: %w",
+  "spotify_failed_request_access_token": "درخواست توکن دسترسی ناموفق بود: %w",
+  "spotify_invalid_url": "invalid Spotify URL, can't get show or episode ID: '%s'",
+  "spotify_label": "Spotify",
+  "spotify_language_field_label": "**زبان**: %s",
+  "spotify_languages_label": "**زبان‌ها**: %s",
+  "spotify_media_type_label": "**نوع رسانه**: %s",
+  "spotify_no_episode_found": "no episode found with ID: %s",
+  "spotify_no_show_found": "no show found with ID: %s",
+  "spotify_not_configured": "Spotify is not configured, please run the setup procedure",
+  "spotify_publisher_label": "**ناشر**: %s",
+  "spotify_release_date_label": "**تاریخ انتشار**: %s",
+  "spotify_search_description_label": "- **توضیحات**: %s",
+  "spotify_search_episodes_label": "- **اپیزودها**: %d",
+  "spotify_search_failed": "جستجو ناموفق بود: %w",
+  "spotify_search_publisher_label": "- **ناشر**: %s",
+  "spotify_search_results_header": "# نتایج جستجوی اسپاتیفای",
+  "spotify_search_url_label": "- **URL**: %s",
+  "spotify_setup_description": "Spotify - to grab podcast/show metadata from Spotify",
+  "spotify_show_header": "# پادکست/برنامه اسپاتیفای",
+  "spotify_show_name_label": "**برنامه**: %s",
+  "spotify_title_label": "**عنوان**: %s",
+  "spotify_total_episodes_label": "**مجموع اپیزودها**: %d",
+  "spotify_url_label": "**URL**: %s",
+  "start_tag_thinking_sections": "تگ شروع برای بخش‌های تفکر",
+  "strategies_available_header": "راهبردهای موجود:",
+  "strategies_cloning_repository": "در حال کلون کردن مخزن %s (مسیر: %s)...\\n",
+  "strategies_download_success": "✅ راهبردها با موفقیت در %s دانلود و نصب شدند\\n",
+  "strategies_downloaded_count": "%d راهبرد دانلود شد\\n",
+  "strategies_downloading": "در حال دانلود راهبردها و پر کردن %s...\\n",
+  "strategies_failed_create_directory": "ایجاد پوشه راهبردها ناموفق بود: %w",
+  "strategies_failed_download": "دانلود راهبردها ناموفق بود: %w",
+  "strategies_git_repo_folder_question": "پوشه پیش‌فرض در مخزن گیت که راهبردها در آن ذخیره می‌شوند را وارد کنید",
+  "strategies_git_repo_url_question": "آدرس مخزن گیت پیش‌فرض برای راهبردها را وارد کنید",
+  "strategies_home_dir_error": "دریافت پوشه خانگی ممکن نبود: %v",
+  "strategies_home_dir_fallback": "دریافت پوشه خانگی ممکن نبود: %v، از پوشه فعلی استفاده می‌شود",
+  "strategies_label": "راهبردهای پرامپت",
+  "strategies_none_found": "هیچ راهبردی پیدا نشد. برای دانلود راهبردها 'fabric --setup' را اجرا کنید",
+  "strategies_setup_description": "راهبردها - دانلود راهبردهای پرامپت (مثل chain of thought)",
+  "strategy_not_found": "راهبرد %s یافت نشد. برای مشاهده فهرست 'fabric --liststrategies' را اجرا کنید",
+  "stream_help": "پخش زنده",
+  "suppress_thinking_tags": "سرکوب متن محصور در تگ‌های تفکر",
+  "template_datetime_error_invalid_number": "invalid number in relative time: %q",
+  "template_datetime_error_invalid_relative_format": "invalid relative time format",
+  "template_datetime_error_invalid_unit": "invalid time unit: %q",
+  "template_datetime_error_relative_requires_value": "relative time requires a value",
+  "template_datetime_error_unknown_operation": "datetime: unknown operation %q",
   "template_file_error_expand_home_dir": "فایل: گسترش پوشه خانگی ممکن نشد: %v",
-  "template_file_log_cleaned_path": "فایل: مسیر پاک‌سازی‌شده %q",
-  "template_file_log_operation_value": "فایل: operation=%q value=%q",
-  "template_file_error_tail_requires_path_lines": "فایل: tail به قالب path|lines نیاز دارد",
   "template_file_error_invalid_line_count": "فایل: تعداد خط نامعتبر %q",
   "template_file_error_line_count_positive": "فایل: تعداد خط باید مثبت باشد",
-  "template_file_log_tail_returning_lines": "فایل: tail در حال بازگرداندن %d خط است",
-  "template_file_error_stat_file": "فایل: دریافت وضعیت فایل ممکن نشد: %v",
-  "template_file_error_size_exceeds_limit": "فایل: اندازه %d از محدودیت %d بایت بیشتر است",
-  "template_file_error_read_file": "فایل: خواندن ممکن نشد: %v",
-  "template_file_log_read_bytes": "فایل: %d بایت خوانده شد",
-  "template_file_log_exists_for_path": "فایل: exists=%v برای مسیر %q",
-  "template_file_log_size_for_path": "فایل: size=%d برای مسیر %q",
-  "template_file_log_modified_for_path": "فایل: modified=%q برای مسیر %q",
-  "template_file_error_unknown_operation": "فایل: عملیات ناشناخته %q (پشتیبانی‌شده: read, tail, exists, size, modified)",
-  "template_file_log_reading_last_lines": "فایل: در حال خواندن %d خط آخر از %q",
   "template_file_error_open_file": "فایل: باز کردن ممکن نشد: %v",
-  "template_file_error_stat_open_file": "فایل: دریافت وضعیت ممکن نشد: %v",
+  "template_file_error_path_contains_parent_ref": "فایل: مسیر نمی‌تواند '..' داشته باشد",
+  "template_file_error_read_file": "فایل: خواندن ممکن نشد: %v",
   "template_file_error_scanner_read": "فایل: خطا در خواندن: %v",
+  "template_file_error_size_exceeds_limit": "فایل: اندازه %d از محدودیت %d بایت بیشتر است",
+  "template_file_error_stat_file": "فایل: دریافت وضعیت فایل ممکن نشد: %v",
+  "template_file_error_stat_open_file": "فایل: دریافت وضعیت ممکن نشد: %v",
+  "template_file_error_tail_requires_path_lines": "فایل: tail به قالب path|lines نیاز دارد",
+  "template_file_error_unknown_operation": "فایل: عملیات ناشناخته %q (پشتیبانی‌شده: read, tail, exists, size, modified)",
+  "template_file_log_cleaned_path": "فایل: مسیر پاک‌سازی‌شده %q",
+  "template_file_log_exists_for_path": "فایل: exists=%v برای مسیر %q",
+  "template_file_log_modified_for_path": "فایل: modified=%q برای مسیر %q",
+  "template_file_log_operation_value": "فایل: operation=%q value=%q",
+  "template_file_log_read_bytes": "فایل: %d بایت خوانده شد",
   "template_file_log_read_total_return_last": "فایل: در مجموع %d خط خوانده شد، %d خط آخر بازگردانده می‌شود",
-  "chatter_error_no_session_pattern_user_messages": "هیچ نشست، الگو یا پیام کاربری ارائه نشده است",
-  "chatter_error_no_messages_provided": "هیچ پیامی ارائه نشده است",
-  "chatter_log_stream_usage_metadata": "[فراداده] ورودی: %d | خروجی: %d | مجموع: %d",
-  "chatter_error_stream_update": "خطا: %s",
-  "chatter_error_empty_response": "پاسخ خالی",
-  "chatter_warning_parse_file_changes_failed": "هشدار: تجزیه تغییرات فایل ناموفق بود: %v",
-  "chatter_warning_get_current_directory_failed": "هشدار: دریافت پوشه جاری ناموفق بود: %v",
-  "chatter_warning_apply_file_changes_failed": "هشدار: اعمال تغییرات فایل ناموفق بود: %v",
-  "chatter_info_file_changes_applied_successfully": "تغییرات فایل با موفقیت اعمال شد.",
-  "chatter_help_review_changes_with_git_diff": "اگر از git استفاده مي‌کنيد، مي‌توانيد تغييرات را با 'git diff' بررسي کنيد.",
-  "chatter_error_find_session": "نشست %s پيدا نشد: %v",
-  "chatter_error_find_context": "زمينه %s پيدا نشد: %v",
-  "chatter_error_get_pattern": "دريافت الگو %s ممکن نشد: %v",
-  "chatter_error_load_strategy": "بارگذاري راهبرد %s ممکن نشد: %v",
-  "chatter_prompt_enforce_response_language": "%s\n\nمهم: ابتدا دستورالعمل‌هاي ارائه‌شده در اين پرامپت را با استفاده از ورودي کاربر اجرا کنيد. سپس اطمينان حاصل کنيد که کل پاسخ نهايي شما، از جمله هر عنوان يا سربخشي که در جريان اجراي دستورالعمل‌ها توليد مي‌شود، فقط به زبان %s نوشته شده باشد.",
-  "vertexai_failed_google_credentials": "دریافت اعتبارنامه‌های Google ناموفق بود (مطمئن شوید ADC پیکربندی شده است): %w",
-  "vertexai_no_models_found": "مدلی از هیچ ناشری یافت نشد",
-  "vertexai_no_conversational_models": "مدل مکالمه‌ای یافت نشد",
+  "template_file_log_reading_last_lines": "فایل: در حال خواندن %d خط آخر از %q",
+  "template_file_log_size_for_path": "فایل: size=%d برای مسیر %q",
+  "template_file_log_tail_returning_lines": "فایل: tail در حال بازگرداندن %d خط است",
+  "template_file_log_validating_path": "فایل: در حال اعتبارسنجی مسیر %q",
+  "template_sys_error_env_requires_var": "env: variable name required",
+  "template_sys_error_home": "failed to get home directory: %v",
+  "template_sys_error_hostname": "failed to get hostname: %v",
+  "template_sys_error_pwd": "failed to get working directory: %v",
+  "template_sys_error_unknown_operation": "sys: unknown operation %q",
+  "template_sys_error_user": "failed to get current user: %v",
+  "transcription_model_required": "مدل رونویسی الزامی است (از --transcribe-model استفاده کنید)",
+  "transparent_background_png_webp_only": "پس‌زمینه شفاف فقط با فرمت‌های PNG و WebP قابل استفاده است، نه %s",
+  "tts_audio_generated_successfully": "صوت TTS با موفقیت ایجاد و ذخیره شد در: %s\n",
+  "tts_model_requires_audio_output": "مدل TTS '%s' نیاز به خروجی صوتی دارد. لطفاً فایل خروجی صوتی را با پرچم -o مشخص کنید (مثال: -o output.wav)",
+  "tts_voice_name": "نام صدای TTS برای مدل‌های پشتیبانی شده (مثال: Kore، Charon، Puck)",
+  "unsupported_conversion": "تبدیل پشتیبانی نشده از %v به %v",
+  "update_patterns": "به‌روزرسانی الگوها",
+  "usage_header": "استفاده:",
+  "use_model_defaults_raw_help": "از مقادیر پیش‌فرض مدل بدون ارسال گزینه‌های چت (temperature، top_p و غیره) استفاده می‌کند. فقط بر ارائه‌دهندگان سازگار با OpenAI تأثیر می‌گذارد. مدل‌های Anthropic همواره برای رعایت نیازهای خاص هر مدل از انتخاب هوشمند پارامتر استفاده می‌کنند.",
+  "vendor_no_transcription_support": "تامین‌کننده %s از رونویسی صوتی پشتیبانی نمی‌کند",
+  "vendor_not_configured": "تامین‌کننده %s پیکربندی نشده است",
+  "vendor_not_found": "ارائه‌دهنده %s یافت نشد",
+  "vendors_no_ai_vendors_configured_read_models": "هیچ ارائه‌دهنده هوش مصنوعی برای خواندن مدل‌ها پیکربندی نشده است",
   "vertexai_client_not_initialized": "کلاینت VertexAI مقداردهی نشده است",
-  "vertexai_no_valid_messages": "پیام معتبری برای ارسال وجود ندارد",
-  "vertexai_no_content_in_response": "محتوایی در پاسخ وجود ندارد",
-  "vertexai_failed_gemini_client": "ایجاد کلاینت Gemini ناموفق بود: %w",
-  "vertexai_stream_error": "خطا: %v",
-  "gemini_invalid_location_format": "فرمت مکان جستجوی نامعتبر %q: باید منطقه زمانی (مثال 'America/Los_Angeles') یا کد زبان (مثال 'en-US') باشد",
-  "gemini_stream_error": "خطا: %v",
-  "gemini_no_text_for_tts": "محتوای متنی برای تولید TTS یافت نشد",
-  "gemini_invalid_voice": "صدای نامعتبر '%s'. صداهای معتبر عبارتند از: %v",
-  "gemini_tts_failed": "تولید TTS ناموفق بود: %w",
-  "gemini_unexpected_data_type": "نوع داده غیرمنتظره: %s، داده صوتی مورد انتظار بود",
-  "gemini_audio_data_too_small": "داده صوتی بسیار کوچک: %d بایت، حداقل مورد نیاز: %d",
-  "gemini_wav_generation_failed": "تولید فایل WAV ناموفق بود: %w",
-  "gemini_wav_data_invalid": "داده WAV تولید شده نامعتبر است: %d بایت، حداقل مورد نیاز: %d",
-  "gemini_no_audio_data": "داده صوتی از مدل TTS دریافت نشد",
-  "gemini_empty_pcm_data": "داده PCM خالی ارائه شد",
-  "gemini_pcm_data_too_large": "داده PCM بسیار بزرگ: %d بایت، حداکثر مجاز: %d",
-  "bedrock_unable_load_aws_config": "بارگذاری پیکربندی AWS ناموفق بود: %w",
-  "bedrock_aws_region_label": "منطقه AWS",
-  "bedrock_invalid_aws_region": "منطقه AWS نامعتبر: %s",
-  "bedrock_unable_load_aws_config_with_region": "بارگذاری پیکربندی AWS با منطقه %s ناموفق بود: %w",
-  "bedrock_failed_list_foundation_models": "فهرست کردن مدل‌های پایه ناموفق بود: %w",
-  "bedrock_failed_list_inference_profiles": "فهرست کردن پروفایل‌های استنتاج ناموفق بود: %w",
-  "bedrock_panic_sendstream": "پنیک در SendStream: %v",
-  "bedrock_conversestream_failed": "bedrock conversestream برای مدل %s ناموفق بود: %w",
-  "bedrock_unknown_stream_event_type": "نوع رویداد جریان ناشناخته: %T",
-  "bedrock_converse_failed": "bedrock converse برای مدل %s ناموفق بود: %w",
-  "bedrock_unexpected_response_type": "نوع پاسخ غیرمنتظره: %T",
-  "bedrock_empty_response_content": "محتوای پاسخ خالی",
-  "bedrock_unexpected_content_block_type": "نوع بلوک محتوای غیرمنتظره: %T",
-  "fetch_unknown_operation": "fetch: عملیات ناشناخته %q (پشتیبانی‌شده: get)",
-  "fetch_content_not_utf8": "fetch: محتوا متن UTF-8 معتبر نیست",
-  "fetch_content_null_bytes": "fetch: محتوا شامل بایت‌های null است",
-  "fetch_error_create_request": "fetch: خطا در ایجاد درخواست: %v",
-  "fetch_error_fetching_url": "fetch: خطا در دریافت URL: %v",
-  "fetch_http_error": "fetch: خطای HTTP: %d - %s",
-  "fetch_content_too_large": "fetch: محتوا بسیار بزرگ است: %d بایت (حداکثر %d بایت)",
-  "fetch_unsupported_content_type": "fetch: نوع محتوای پشتیبانی‌نشده %q - فقط محتوای متنی مجاز است",
-  "fetch_error_reading_response": "fetch: خطا در خواندن پاسخ: %v",
-  "fetch_content_exceeds_limit": "fetch: محتوا بسیار بزرگ است: از %d بایت بیشتر است",
-  "file_manager_invalid_format_no_json_array": "فرمت %s نامعتبر: هیچ آرایه JSON یافت نشد",
-  "file_manager_invalid_format_unbalanced_brackets": "فرمت %s نامعتبر: پرانتزهای نامتعادل",
-  "file_manager_failed_parse_json": "پارس %s JSON ناموفق بود: %w",
-  "file_manager_invalid_operation": "عملیات نامعتبر برای تغییر فایل %d: %s",
-  "file_manager_empty_path": "مسیر خالی برای تغییر فایل %d",
-  "file_manager_suspicious_path": "مسیر مشکوک برای تغییر فایل %d: %s",
-  "file_manager_file_content_too_large": "محتوای فایل بیش از حد بزرگ برای تغییر فایل %d: %d بایت",
-  "file_manager_failed_create_directory": "ایجاد دایرکتوری %s برای تغییر فایل %d ناموفق بود: %w",
-  "file_manager_failed_write_file": "نوشتن فایل %s برای تغییر فایل %d ناموفق بود: %w",
-  "file_manager_applied_operation": "عملیات %s روی %s اعمال شد",
-  "vertexai_error_create_request": "ایجاد درخواست ناموفق بود: %w",
-  "vertexai_error_request_failed": "درخواست ناموفق بود: %w",
   "vertexai_error_api_status": "API وضعیت %d را برگرداند: %s",
-  "vertexai_error_read_response": "خواندن پاسخ ناموفق بود: %w",
-  "vertexai_error_response_too_large": "پاسخ خیلی بزرگ است (>%d بایت)",
+  "vertexai_error_create_request": "ایجاد درخواست ناموفق بود: %w",
   "vertexai_error_parse_response": "تجزیه پاسخ ناموفق بود: %w",
-  "copilot_tenant_client_id_required": "شناسه مشتری و شناسه مستاجر الزامی است",
-  "copilot_failed_create_conversation": "ایجاد مکالمه ناموفق بود: %w",
-  "copilot_failed_send_message": "ارسال پیام ناموفق بود: %w",
-  "copilot_failed_stream_message": "پخش جریانی پیام ناموفق بود: %w",
-  "copilot_error_create_conversation": "ایجاد مکالمه ناموفق بود: %s - %s",
-  "copilot_error_chat_request": "درخواست چت ناموفق بود: %s - %s",
-  "copilot_error_stream_request": "درخواست جریان ناموفق بود: %s - %s",
-  "copilot_debug_created_conversation": "مکالمه Copilot ایجاد شد: %s",
-  "copilot_debug_failed_parse_sse_event": "تجزیه رویداد SSE ناموفق بود: %v",
-  "copilot_error_reading_stream": "خطا در خواندن جریان: %w"
+  "vertexai_error_read_response": "خواندن پاسخ ناموفق بود: %w",
+  "vertexai_error_request_failed": "درخواست ناموفق بود: %w",
+  "vertexai_error_response_too_large": "پاسخ خیلی بزرگ است (>%d بایت)",
+  "vertexai_failed_gemini_client": "ایجاد کلاینت Gemini ناموفق بود: %w",
+  "vertexai_failed_google_credentials": "دریافت اعتبارنامه‌های Google ناموفق بود (مطمئن شوید ADC پیکربندی شده است): %w",
+  "vertexai_no_content_in_response": "محتوایی در پاسخ وجود ندارد",
+  "vertexai_no_conversational_models": "مدل مکالمه‌ای یافت نشد",
+  "vertexai_no_models_found": "مدلی از هیچ ناشری یافت نشد",
+  "vertexai_no_valid_messages": "پیام معتبری برای ارسال وجود ندارد",
+  "vertexai_stream_error": "خطا: %v",
+  "wipe_context": "پاک کردن زمینه",
+  "wipe_session": "پاک کردن جلسه",
+  "youtube_api_key_required": "کلید API یوتیوب برای دریافت نظرات و متادیتا الزامی است. برای پیکربندی 'fabric --setup' را اجرا کنید",
+  "youtube_auth_required_bot_detection": "یوتیوب احراز هویت می‌خواهد (تشخیص ربات). از --yt-dlp-args='--cookies-from-browser BROWSER' استفاده کنید که BROWSER می‌تواند chrome، firefox، brave و غیره باشد.",
+  "youtube_empty_seconds_string": "رشته ثانیه خالی",
+  "youtube_error_getting_comments": "خطا در دریافت نظرات: %v",
+  "youtube_error_getting_metadata": "خطا در دریافت متادیتای ویدیو: %v",
+  "youtube_error_getting_video_details": "خطا در دریافت جزئیات ویدیو: %v",
+  "youtube_error_parsing_duration": "خطا در تجزیه مدت زمان ویدیو: %v",
+  "youtube_error_saving_csv": "خطا در ذخیره ویدیوها در CSV: %v",
+  "youtube_failed_create_temp_dir": "ایجاد دایرکتوری موقت ناموفق بود: %v",
+  "youtube_failed_fetch_comments": "دریافت نظرات ناموفق بود: %v",
+  "youtube_failed_walk_directory": "پیمایش دایرکتوری ناموفق بود: %v",
+  "youtube_invalid_duration_string": "رشته مدت زمان نامعتبر: %s",
+  "youtube_invalid_seconds_format": "فرمت ثانیه نامعتبر %q: %w",
+  "youtube_invalid_timestamp_format": "فرمت مهر زمانی نامعتبر: %s",
+  "youtube_invalid_url": "URL یوتیوب نامعتبر است، نمی‌توان ID ویدیو یا فهرست پخش را دریافت کرد: '%s'",
+  "youtube_invalid_ytdlp_arguments": "آرگومان‌های yt-dlp نامعتبر: %v",
+  "youtube_label": "YouTube",
+  "youtube_no_transcript_content": "محتوای رونوشتی در فایل VTT یافت نشد",
+  "youtube_no_url_provided": "هیچ URL یوتیوبی ارائه نشده است",
+  "youtube_no_video_found_with_id": "هیچ ویدیویی با ID یافت نشد: %s",
+  "youtube_no_video_id_found": "هیچ ID ویدیویی در URL یافت نشد",
+  "youtube_no_vtt_files_found": "فایل‌های VTT در دایرکتوری یافت نشدند",
+  "youtube_not_configured": "یوتیوب پیکربندی نشده است، لطفاً روند تنظیمات را اجرا کنید",
+  "youtube_playlist_header": "لیست پخش: %s",
+  "youtube_playlist_saved_to": "لیست پخش ذخیره شد در %s",
+  "youtube_rate_limit_exceeded": "محدودیت نرخ یوتیوب فراتر رفته است. بعداً دوباره امتحان کنید یا از آرگومان‌های مختلف yt-dlp مانند '--sleep-requests 1' برای کاهش سرعت درخواست‌ها استفاده کنید.",
+  "youtube_setup_description": "YouTube - برای دریافت رونوشت ویدیو (از طریق yt-dlp) و نظرات/متادیتا (از طریق API یوتیوب)",
+  "youtube_url_help": "ویدیو یوتیوب یا \"URL\" فهرست پخش برای دریافت رونوشت، نظرات و ارسال به گفتگو یا چاپ در کنسول و ذخیره در فایل خروجی",
+  "youtube_url_is_playlist_not_video": "URL یک فهرست پخش است، نه یک ویدیو",
+  "youtube_video_id_title_header": "شناسه ویدیو: عنوان",
+  "youtube_ytdlp_not_found": "yt-dlp در PATH یافت نشد. لطفاً yt-dlp را نصب کنید تا از قابلیت رونویسی یوتیوب استفاده کنید",
+  "youtube_ytdlp_stderr_error": "خطا در خواندن stderr yt-dlp"
 }
