@@ -56,13 +56,28 @@ func NewClient() (ret *Client) {
 	}
 
 	ret.modelBetas = map[string][]string{
+		// See https://platform.claude.com/docs/en/build-with-claude/context-windows#1-m-token-context-window
+		// Claude Opus 4.6, Sonnet 4.6, Sonnet 4.5, and Sonnet 4 support a 1-million token context window.
+
+		// This list can change over time as Anthropic updates their models and beta features, so we maintain it separately from the main model list
+		// for easier updates.
+
 		// Claude Sonnet 4 variants (1M context support)
 		string(anthropic.ModelClaudeSonnet4_20250514): {"context-1m-2025-08-07"},
 		string(anthropic.ModelClaudeSonnet4_0):        {"context-1m-2025-08-07"},
 		string(anthropic.ModelClaude4Sonnet20250514):  {"context-1m-2025-08-07"},
+
 		// Claude Sonnet 4.5 variants (1M context support)
 		string(anthropic.ModelClaudeSonnet4_5):          {"context-1m-2025-08-07"},
 		string(anthropic.ModelClaudeSonnet4_5_20250929): {"context-1m-2025-08-07"},
+
+		// Claude Sonnet 4.6 (1M context support)
+		string(anthropic.ModelClaudeSonnet4_6): {"context-1m-2025-08-07"},
+
+		// Claude Opus 4.5 and 4.6 variants (1M context support)
+		string(anthropic.ModelClaudeOpus4_5):          {"context-1m-2025-08-07"},
+		string(anthropic.ModelClaudeOpus4_6):          {"context-1m-2025-08-07"},
+		string(anthropic.ModelClaudeOpus4_5_20251101): {"context-1m-2025-08-07"},
 	}
 
 	return
