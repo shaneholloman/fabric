@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.415 (2026-02-19)
+
+### PR [#2016](https://github.com/danielmiessler/Fabric/pull/2016) by [ksylvan](https://github.com/ksylvan): Extend Anthropic model beta map with 1M context models
+
+- Extends the Anthropic model beta map to include 1M context window models, adding Claude Sonnet 4.6, Claude Opus 4.5, and Claude Opus 4.6 to the beta entries.
+- Documents 1M token context window model support and clarifies the model beta list maintenance and update strategy.
+- Groups model variants under clearer, annotated sections for improved readability and organization.
+
 ## v1.4.414 (2026-02-19)
 
 ### PR [#2015](https://github.com/danielmiessler/Fabric/pull/2015) by [ksylvan](https://github.com/ksylvan): Implement comprehensive i18n support across all plugins and tools
