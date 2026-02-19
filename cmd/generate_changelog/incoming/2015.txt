@@ -1,0 +1,7 @@
+### PR [#2015](https://github.com/danielmiessler/Fabric/pull/2015) by [ksylvan](https://github.com/ksylvan): Implement comprehensive i18n support across all plugins and tools
+
+- Implement comprehensive internationalization (i18n) support across all AI vendor plugins, tools, and template plugins.
+- Update localization files for multiple languages with new translation keys.
+- Replace hardcoded strings in Spotify and YouTube tools with localized equivalents.
+- Add unit tests for localized error handling in Ollama.
+- Standardize setup questions using the new i18n translation framework.
