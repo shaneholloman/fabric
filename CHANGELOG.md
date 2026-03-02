@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.428 (2026-03-02)
+
+### PR [#2040](https://github.com/danielmiessler/Fabric/pull/2040) by [Twozee-Tech](https://github.com/Twozee-Tech): Add Polish (pl) locale
+
+- Add Polish (pl) locale with a complete translation file containing all 683 keys, matching the structure of existing locale files in `internal/i18n/locales/`.
+
 ## v1.4.427 (2026-03-01)
 
 ### PR [#2038](https://github.com/danielmiessler/Fabric/pull/2038) by [ksylvan](https://github.com/ksylvan): Add Git CLI Fallback to `FetchFilesFromRepo`

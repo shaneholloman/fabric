@@ -1,3 +1,0 @@
-### PR [#2040](https://github.com/danielmiessler/Fabric/pull/2040) by [Twozee-Tech](https://github.com/Twozee-Tech): Add Polish (pl) locale
-
-- Add Polish (pl) locale with a complete translation file containing all 683 keys, matching the structure of existing locale files in `internal/i18n/locales/`.
