@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.429 (2026-03-05)
+
+### PR [#2046](https://github.com/danielmiessler/Fabric/pull/2046) by [ksylvan](https://github.com/ksylvan): refactor: add `GetRaw` method to encapsulate raw pattern loading logic
+
+- Add `GetRaw` method to `PatternsEntity` for unprocessed pattern retrieval
+- Replace inline raw pattern loading logic in server handler with `GetRaw`
+- Remove manual `Pattern` struct construction from `PatternsHandler.Get`
+- Simplify server handler by delegating storage access to database layer
+- Add test coverage for `GetRaw` with custom patterns directory
+
 ## v1.4.428 (2026-03-02)
 
 ### PR [#2040](https://github.com/danielmiessler/Fabric/pull/2040) by [Twozee-Tech](https://github.com/Twozee-Tech): Add Polish (pl) locale

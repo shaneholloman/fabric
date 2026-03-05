@@ -256,6 +256,11 @@ func TestPatternsEntity_CustomPatterns(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "Main pattern content", pattern.Pattern)
 
+	// Test GetRaw also respects custom patterns directory
+	rawPattern, err := entity.GetRaw("shared-pattern")
+	require.NoError(t, err)
+	assert.Equal(t, "Custom shared pattern", rawPattern.Pattern)
+
 	// Test that custom pattern is accessible
 	pattern, err = entity.getFromDB("custom-pattern")
 	require.NoError(t, err)
