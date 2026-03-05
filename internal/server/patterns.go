@@ -46,18 +46,10 @@ func NewPatternsHandler(r *gin.Engine, patterns *fsdb.PatternsEntity) (ret *Patt
 func (h *PatternsHandler) Get(c *gin.Context) {
 	name := c.Param("name")
 
-	// Get the raw pattern content without any variable processing
-	content, err := h.patterns.Load(name + "/" + h.patterns.SystemPatternFile)
+	pattern, err := h.patterns.GetRaw(name)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
-	}
-
-	// Return raw pattern in the same format as the processed patterns
-	pattern := &fsdb.Pattern{
-		Name:        name,
-		Description: "",
-		Pattern:     string(content),
 	}
 	c.JSON(http.StatusOK, pattern)
 }
