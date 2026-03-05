@@ -1,0 +1,7 @@
+### PR [#2044](https://github.com/danielmiessler/Fabric/pull/2044) by [PrakharMNNIT](https://github.com/PrakharMNNIT): feat: Add Bedrock bearer token (ABSK) authentication and guided setup
+
+- Adds 3-tier authentication for AWS Bedrock: bearer token (ABSK), static AWS credentials (access key + secret key), and the default AWS credential chain.
+- Introduces a custom guided setup flow covering auth method selection, region, and model configuration.
+- Removes the `hasAWSCredentials()` gate so that Bedrock always appears in the setup wizard.
+- Applies a temperature-only fix (no `top_p`) for Claude models running on Bedrock, along with API key masking during re-setup.
+- Adds a fallback model list for when the `ListFoundationModels` API is inaccessible, i18n support for 11 locales (3 new keys each), and 25 unit tests.
