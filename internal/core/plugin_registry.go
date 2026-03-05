@@ -46,37 +46,6 @@ import (
 	"github.com/danielmiessler/fabric/internal/util"
 )
 
-// hasAWSCredentials checks if Bedrock is properly configured by ensuring both
-// AWS credentials and BEDROCK_AWS_REGION are present. This prevents the Bedrock
-// client from being initialized when AWS credentials exist for other purposes.
-func hasAWSCredentials() bool {
-	// First check if BEDROCK_AWS_REGION is set - this is required for Bedrock
-	if os.Getenv("BEDROCK_AWS_REGION") == "" {
-		return false
-	}
-
-	// Then check if AWS credentials are available
-	if os.Getenv("AWS_PROFILE") != "" ||
-		os.Getenv("AWS_ROLE_SESSION_NAME") != "" ||
-		(os.Getenv("AWS_ACCESS_KEY_ID") != "" && os.Getenv("AWS_SECRET_ACCESS_KEY") != "") {
-
-		return true
-	}
-
-	credFile := os.Getenv("AWS_SHARED_CREDENTIALS_FILE")
-	if credFile == "" {
-		if home, err := os.UserHomeDir(); err == nil {
-			credFile = filepath.Join(home, ".aws", "credentials")
-		}
-	}
-	if credFile != "" {
-		if _, err := os.Stat(credFile); err == nil {
-			return true
-		}
-	}
-	return false
-}
-
 func NewPluginRegistry(db *fsdb.Db) (ret *PluginRegistry, err error) {
 	ret = &PluginRegistry{
 		Db:             db,
@@ -117,11 +86,8 @@ func NewPluginRegistry(db *fsdb.Db) (ret *PluginRegistry, err error) {
 		exolab.NewClient(),
 		perplexity.NewClient(),
 		copilot.NewClient(), // Microsoft 365 Copilot
+		bedrock.NewClient(), // AWS Bedrock - credentials configured via setup or AWS credential chain
 	)
-
-	if hasAWSCredentials() {
-		vendors = append(vendors, bedrock.NewClient())
-	}
 
 	// Add all OpenAI-compatible providers
 	for providerName := range openai_compatible.ProviderMap {
