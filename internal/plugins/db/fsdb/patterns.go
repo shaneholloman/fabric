@@ -50,6 +50,11 @@ func (o *PatternsEntity) GetWithoutVariables(source, input string) (pattern *Pat
 	return
 }
 
+// GetRaw returns a pattern from storage without applying variable processing.
+func (o *PatternsEntity) GetRaw(name string) (*Pattern, error) {
+	return o.getFromDB(name)
+}
+
 func (o *PatternsEntity) loadPattern(source string) (pattern *Pattern, err error) {
 	// Determine if this is a file path
 	isFilePath := strings.HasPrefix(source, "\\") ||
