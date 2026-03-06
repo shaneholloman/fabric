@@ -158,14 +158,14 @@ func NewClient() (ret *BedrockClient) {
 // 4. Choose model from list or type custom
 func (c *BedrockClient) Setup() (err error) {
 	fmt.Println()
-	fmt.Println("[Bedrock]")
+	fmt.Println(i18n.T("bedrock_setup_header"))
 	fmt.Println()
-	fmt.Println("  Choose authentication method:")
-	fmt.Println("    [1] Bedrock API Key / ABSK token (recommended — same as Claude Code)")
-	fmt.Println("    [2] AWS Access Key + Secret Key")
+	fmt.Println(i18n.T("bedrock_setup_choose_auth_method"))
+	fmt.Println(i18n.T("bedrock_setup_auth_option_apikey"))
+	fmt.Println(i18n.T("bedrock_setup_auth_option_accesskey"))
 	fmt.Println()
 
-	authChoice := plugins.NewSetupQuestion("Enter 1 or 2")
+	authChoice := plugins.NewSetupQuestion(i18n.T("bedrock_setup_auth_prompt"))
 	if err = authChoice.Ask("Bedrock"); err != nil {
 		return
 	}
@@ -208,19 +208,19 @@ func (c *BedrockClient) Setup() (err error) {
 			c.bedrockSecretKey.Value = savedSecret
 		}
 	default:
-		return fmt.Errorf("invalid selection: %s (enter 1 or 2)", authChoice.Value)
+		return fmt.Errorf(i18n.T("bedrock_setup_invalid_auth_selection"), authChoice.Value)
 	}
 
 	// Region selection
 	fmt.Println()
-	fmt.Println("  Choose AWS Region:")
+	fmt.Println(i18n.T("bedrock_setup_choose_region"))
 	for i, r := range awsRegions {
 		fmt.Printf("    [%d] %s\n", i+1, r)
 	}
-	fmt.Println("    [0] Enter a different region")
+	fmt.Println(i18n.T("bedrock_setup_region_option_custom"))
 	fmt.Println()
 
-	regionChoice := plugins.NewSetupQuestion("Enter region number or 0 for custom")
+	regionChoice := plugins.NewSetupQuestion(i18n.T("bedrock_setup_region_prompt"))
 	if err = regionChoice.Ask("Bedrock"); err != nil {
 		return
 	}
@@ -229,7 +229,7 @@ func (c *BedrockClient) Setup() (err error) {
 	if _, scanErr := fmt.Sscanf(regionChoice.Value, "%d", &regionNum); scanErr == nil && regionNum >= 1 && regionNum <= len(awsRegions) {
 		c.bedrockRegion.Value = awsRegions[regionNum-1]
 	} else if regionNum == 0 || regionChoice.Value == "0" {
-		customRegion := plugins.NewSetupQuestion("Enter custom AWS region (e.g. us-east-1)")
+		customRegion := plugins.NewSetupQuestion(i18n.T("bedrock_setup_region_custom_prompt"))
 		if err = customRegion.Ask("Bedrock"); err != nil {
 			return
 		}
@@ -246,14 +246,14 @@ func (c *BedrockClient) Setup() (err error) {
 
 	// Model selection (shown after auth + region)
 	fmt.Println()
-	fmt.Println("  Choose default model (unprefixed IDs work in any region; us./eu./ap. are region-specific):")
+	fmt.Println(i18n.T("bedrock_setup_choose_model"))
 	for i, m := range setupModelChoices {
 		fmt.Printf("    [%d] %s\n", i+1, m)
 	}
-	fmt.Println("    [0] Enter a different model ID")
+	fmt.Println(i18n.T("bedrock_setup_model_option_custom"))
 	fmt.Println()
 
-	modelChoice := plugins.NewSetupQuestion("Enter model number or 0 to type your own")
+	modelChoice := plugins.NewSetupQuestion(i18n.T("bedrock_setup_model_prompt"))
 	if err = modelChoice.Ask("Bedrock"); err != nil {
 		return
 	}
@@ -263,7 +263,7 @@ func (c *BedrockClient) Setup() (err error) {
 	if _, scanErr := fmt.Sscanf(modelChoice.Value, "%d", &modelNum); scanErr == nil && modelNum >= 1 && modelNum <= len(setupModelChoices) {
 		selectedModel = setupModelChoices[modelNum-1]
 	} else if modelNum == 0 || modelChoice.Value == "0" {
-		customModel := plugins.NewSetupQuestion("Enter model ID (e.g. anthropic.claude-opus-4-6-v1)")
+		customModel := plugins.NewSetupQuestion(i18n.T("bedrock_setup_model_custom_prompt"))
 		if err = customModel.Ask("Bedrock"); err != nil {
 			return
 		}
@@ -273,8 +273,8 @@ func (c *BedrockClient) Setup() (err error) {
 	}
 
 	if selectedModel != "" {
-		fmt.Printf("\n  ✓ Selected model: %s\n", selectedModel)
-		fmt.Printf("  ℹ Use with: fabric -m %s -V Bedrock\n", selectedModel)
+		fmt.Printf("\n"+i18n.T("bedrock_setup_selected_model")+"\n", selectedModel)
+		fmt.Printf(i18n.T("bedrock_setup_use_with")+"\n", selectedModel)
 	}
 
 	// Run configure to validate and initialize clients
@@ -382,7 +382,7 @@ func (c *BedrockClient) ListModels() ([]string, error) {
 // listModelsFromAPI queries the Bedrock control plane for available models.
 func (c *BedrockClient) listModelsFromAPI() ([]string, error) {
 	if c.controlPlaneClient == nil {
-		return nil, errors.New("Bedrock client not initialized — run 'fabric --setup' to configure")
+		return nil, errors.New(i18n.T("bedrock_client_not_initialized"))
 	}
 	models := []string{}
 	ctx := context.Background()
@@ -423,7 +423,7 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 	}()
 
 	if c.runtimeClient == nil {
-		return errors.New("Bedrock client not initialized — run 'fabric --setup' to configure")
+		return errors.New(i18n.T("bedrock_client_not_initialized"))
 	}
 
 	messages := c.toMessages(msgs)
@@ -492,7 +492,7 @@ func (c *BedrockClient) SendStream(msgs []*chat.ChatCompletionMessage, opts *dom
 // Send sends the messages the Bedrock Converse API
 func (c *BedrockClient) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (ret string, err error) {
 	if c.runtimeClient == nil {
-		return "", errors.New("Bedrock client not initialized — run 'fabric --setup' to configure")
+		return "", errors.New(i18n.T("bedrock_client_not_initialized"))
 	}
 
 	messages := c.toMessages(msgs)

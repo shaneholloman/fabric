@@ -1,4 +1,4 @@
-### PR [#2044](https://github.com/danielmiessler/Fabric/pull/2044) by [PrakharMNNIT](https://github.com/PrakharMNNIT): feat: Add Bedrock bearer token (ABSK) authentication and guided setup
+### PR [#2044](https://github.com/danielmiessler/Fabric/pull/2044) by [PrakharMNNIT](https://github.com/PrakharMNNIT) and [ksylvan](https://github.com/ksylvan): feat: Add Bedrock bearer token (ABSK) authentication and guided setup
 
 - Adds 3-tier authentication for AWS Bedrock: bearer token (ABSK), static AWS credentials (access key + secret key), and the default AWS credential chain.
 - Introduces a custom guided setup flow covering auth method selection, region, and model configuration.
