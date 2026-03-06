@@ -28,6 +28,23 @@ func NewConfigHandler(r *gin.Engine, db *fsdb.Db) *ConfigHandler {
 	return handler
 }
 
+// maskAPIKey redacts all but the last 4 characters of a secret key (CWE-200).
+// An empty value (key not configured) is returned unchanged so the UI can
+// distinguish "not set" from "set but redacted".
+func maskAPIKey(key string) string {
+	const visible = 4
+	if len(key) <= visible {
+		return key
+	}
+	return strings.Repeat("*", len(key)-visible) + key[len(key)-visible:]
+}
+
+// isRedacted returns true when a submitted value looks like a masked key
+// returned by maskAPIKey, signalling that the user did not change the field.
+func isRedacted(value string) bool {
+	return strings.Contains(value, "*")
+}
+
 func (h *ConfigHandler) GetConfig(c *gin.Context) {
 	if h.db == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": ".env file not found"})
@@ -56,17 +73,19 @@ func (h *ConfigHandler) GetConfig(c *gin.Context) {
 		return
 	}
 
+	// API keys are masked to their last 4 characters (CWE-200).
+	// URLs are not secrets and are returned as-is so the UI can display them.
 	config := map[string]string{
-		"openai":     os.Getenv("OPENAI_API_KEY"),
-		"anthropic":  os.Getenv("ANTHROPIC_API_KEY"),
-		"groq":       os.Getenv("GROQ_API_KEY"),
-		"mistral":    os.Getenv("MISTRAL_API_KEY"),
-		"gemini":     os.Getenv("GEMINI_API_KEY"),
+		"openai":     maskAPIKey(os.Getenv("OPENAI_API_KEY")),
+		"anthropic":  maskAPIKey(os.Getenv("ANTHROPIC_API_KEY")),
+		"groq":       maskAPIKey(os.Getenv("GROQ_API_KEY")),
+		"mistral":    maskAPIKey(os.Getenv("MISTRAL_API_KEY")),
+		"gemini":     maskAPIKey(os.Getenv("GEMINI_API_KEY")),
 		"ollama":     os.Getenv("OLLAMA_URL"),
-		"openrouter": os.Getenv("OPENROUTER_API_KEY"),
-		"silicon":    os.Getenv("SILICON_API_KEY"),
-		"deepseek":   os.Getenv("DEEPSEEK_API_KEY"),
-		"grokai":     os.Getenv("GROKAI_API_KEY"),
+		"openrouter": maskAPIKey(os.Getenv("OPENROUTER_API_KEY")),
+		"silicon":    maskAPIKey(os.Getenv("SILICON_API_KEY")),
+		"deepseek":   maskAPIKey(os.Getenv("DEEPSEEK_API_KEY")),
+		"grokai":     maskAPIKey(os.Getenv("GROKAI_API_KEY")),
 		"lmstudio":   os.Getenv("LM_STUDIO_API_BASE_URL"),
 	}
 
@@ -114,7 +133,9 @@ func (h *ConfigHandler) UpdateConfig(c *gin.Context) {
 
 	var envContent strings.Builder
 	for key, value := range envVars {
-		if value != "" {
+		// Skip empty values and redacted placeholders returned by GET /config.
+		// Writing a masked value back would corrupt the stored key.
+		if value != "" && !isRedacted(value) {
 			envContent.WriteString(fmt.Sprintf("%s=%s\n", key, value))
 			os.Setenv(key, value)
 		}
