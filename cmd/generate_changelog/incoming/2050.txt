@@ -1,3 +1,0 @@
-### PR [#2050](https://github.com/danielmiessler/Fabric/pull/2050) by [ksylvan](https://github.com/ksylvan): Update web dependencies - fix npm override issue
-
-- Chore: update web dependencies - fix npm override issue
