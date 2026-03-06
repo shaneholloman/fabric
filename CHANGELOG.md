@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.431 (2026-03-06)
+
+### PR [#2049](https://github.com/danielmiessler/Fabric/pull/2049) by [ksylvan](https://github.com/ksylvan): Security Hardening: API Key Redaction, Path Traversal Prevention, and Shell Injection Elimination
+
+- Fix: Redact API keys in config responses and eliminate shell injection surfaces.
+- Added `maskAPIKey` to redact all but the last 4 characters of API keys, mitigating sensitive data exposure (CWE-200).
+- Masked all provider API keys in the `GET /config` response payload to prevent accidental credential leakage.
+- Replaced `exec`/shell commands in the Obsidian route with native `fs` APIs, fully eliminating shell injection vectors (CWE-78).
+- Added path-confinement validation ensuring resolved file paths remain within their intended target directories, blocking path traversal attacks (CWE-22).
+
 ## v1.4.430 (2026-03-06)
 
 ### PR [#2044](https://github.com/danielmiessler/Fabric/pull/2044) by [PrakharMNNIT](https://github.com/PrakharMNNIT) and [ksylvan](https://github.com/ksylvan): feat: Add Bedrock bearer token (ABSK) authentication and guided setup
