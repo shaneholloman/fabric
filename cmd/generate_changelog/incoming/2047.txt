@@ -1,0 +1,3 @@
+### PR [#2047](https://github.com/danielmiessler/Fabric/pull/2047) by [bvandevliet](https://github.com/bvandevliet): Explicitly instruct YT summary task to be aware of possible transcription errors
+
+- Added one line to make YT summary task explicitly aware of possible transcript typos.
