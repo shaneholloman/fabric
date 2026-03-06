@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.4.430 (2026-03-06)
+
+### PR [#2044](https://github.com/danielmiessler/Fabric/pull/2044) by [PrakharMNNIT](https://github.com/PrakharMNNIT) and [ksylvan](https://github.com/ksylvan): feat: Add Bedrock bearer token (ABSK) authentication and guided setup
+
+- Adds 3-tier authentication for AWS Bedrock: bearer token (ABSK), static AWS credentials (access key + secret key), and the default AWS credential chain.
+- Introduces a custom guided setup flow covering auth method selection, region, and model configuration.
+- Removes the `hasAWSCredentials()` gate so that Bedrock always appears in the setup wizard.
+- Applies a temperature-only fix (no `top_p`) for Claude models running on Bedrock, along with API key masking during re-setup.
+- Adds a fallback model list for when the `ListFoundationModels` API is inaccessible, i18n support for 11 locales (3 new keys each), and 25 unit tests.
+
+### PR [#2047](https://github.com/danielmiessler/Fabric/pull/2047) by [bvandevliet](https://github.com/bvandevliet): Explicitly instruct YT summary task to be aware of possible transcription errors
+
+- Added one line to make YT summary task explicitly aware of possible transcript typos.
+
 ## v1.4.429 (2026-03-05)
 
 ### PR [#2046](https://github.com/danielmiessler/Fabric/pull/2046) by [ksylvan](https://github.com/ksylvan): refactor: add `GetRaw` method to encapsulate raw pattern loading logic
