@@ -86,7 +86,7 @@
 
 ## v1.4.424 (2026-02-27)
 
-### PR [#2025](https://github.com/danielmiessler/Fabric/pull/2025) by [dependabot]](https://github.com/apps/dependabot): chore(deps): bump the npm_and_yarn group across 1 directory with 5 updates
+### PR [#2025](https://github.com/danielmiessler/Fabric/pull/2025) by [dependabot](https://github.com/apps/dependabot): chore(deps): bump the npm_and_yarn group across 1 directory with 5 updates
 
 - Updated `@sveltejs/kit` from version 2.49.5 to 2.53.1 in the `/web` directory.
 - Updated `svelte` from version 4.2.20 to 5.51.5 in the `/web` directory.
@@ -284,16 +284,22 @@
 
 - MAESTRO: i18n: extract hard-coded strings from internal/tools/spotify/spotify.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_executor.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/openai/openai.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_registry.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/plugins/ai/lmstudio/lmstudio.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/plugins/template/extension_manager.go
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 - MAESTRO: i18n: extract hard-coded strings from internal/server/ollama.go
 Replace 37 hard-coded error/log strings with i18n.T() calls and add
 translations for all 10 supported languages (en, de, es, fa, fr, it,
@@ -456,9 +462,9 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 - Add extract_all_quotes pattern for quote extraction
 - The extract_all_quotes is originally from [PR #176](https://github.com/danielmiessler/Fabric/pull/176) by [@CPAtoCybersecurity](https://github.com/CPAtoCybersecurity)
 - The `suggest_pattern` pattern is updated with the following additions.
-  - extract_bd_ideas for actionable idea extraction
-  - suggest_gt_command for GT command suggestions
-  - create_bd_issue for issue tracking commands
+- extract_bd_ideas for actionable idea extraction
+- suggest_gt_command for GT command suggestions
+- create_bd_issue for issue tracking commands
 
 ## v1.4.391 (2026-01-24)
 
