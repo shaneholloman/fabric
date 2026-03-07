@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.433 (2026-03-07)
+
+### PR [#2054](https://github.com/danielmiessler/Fabric/pull/2054) by [pretyflaco](https://github.com/pretyflaco): fix(ollama): Map thinking levels to Ollama API and convert single system-role messages
+
+- Fix(ollama): map thinking levels and convert single system-role messages
+
+### Direct commits
+
+- Fix: Manual edit of changelog.db and fixes for ChangeLog
+
 ## v1.4.432 (2026-03-06)
 
 ### PR [#2050](https://github.com/danielmiessler/Fabric/pull/2050) by [ksylvan](https://github.com/ksylvan): Update web dependencies - fix npm override issue
