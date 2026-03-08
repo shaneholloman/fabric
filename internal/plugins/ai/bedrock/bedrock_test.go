@@ -332,6 +332,8 @@ func TestToMessages_Empty(t *testing.T) {
 
 // --- fetchBedrockRegions mock HTTP tests ---
 
+// withMockEndpointsURL temporarily overrides the botocore endpoints URL for testing.
+// NOTE: Not safe with t.Parallel() — tests using this helper must run sequentially.
 func withMockEndpointsURL(url string, fn func()) {
 	orig := botocoreEndpointsURL
 	botocoreEndpointsURL = url
