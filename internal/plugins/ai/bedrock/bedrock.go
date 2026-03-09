@@ -10,9 +10,13 @@ package bedrock
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"sort"
+	"strings"
+	"time"
 
 	"github.com/danielmiessler/fabric/internal/domain"
 	"github.com/danielmiessler/fabric/internal/i18n"
@@ -111,14 +115,69 @@ var setupModelChoices = []string{
 	"ap.anthropic.claude-opus-4-6-v1",
 }
 
-// Common AWS regions for Bedrock
-var awsRegions = []string{
+// fallbackRegions is used only when the dynamic fetch from botocore fails (e.g., no network).
+var fallbackRegions = []string{
 	"us-east-1",
 	"us-west-2",
 	"eu-west-1",
 	"eu-west-3",
 	"ap-southeast-1",
 	"ap-northeast-1",
+}
+
+// botocoreEndpointsURL is the public (no-auth) source of truth for which AWS
+// regions support Bedrock, maintained by the AWS SDK team.
+// This is a var (not const) to allow test injection of a mock HTTP server URL.
+var botocoreEndpointsURL = "https://raw.githubusercontent.com/boto/botocore/develop/botocore/data/endpoints.json"
+
+// fetchBedrockRegions fetches the list of AWS regions where Bedrock is available
+// from the botocore endpoints.json file (public, no authentication required).
+// Falls back to the static fallbackRegions list on any error.
+func fetchBedrockRegions() []string {
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Get(botocoreEndpointsURL)
+	if err != nil {
+		debuglog.Log(i18n.T("bedrock_fetch_regions_failed")+": %v\n", err)
+		return fallbackRegions
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		debuglog.Log(i18n.T("bedrock_fetch_regions_bad_status")+": %d\n", resp.StatusCode)
+		return fallbackRegions
+	}
+
+	var data struct {
+		Partitions []struct {
+			Services map[string]struct {
+				Endpoints map[string]any `json:"endpoints"`
+			} `json:"services"`
+		} `json:"partitions"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		debuglog.Log(i18n.T("bedrock_fetch_regions_parse_failed")+": %v\n", err)
+		return fallbackRegions
+	}
+
+	var regions []string
+	for _, partition := range data.Partitions {
+		if svc, ok := partition.Services["bedrock"]; ok {
+			for region := range svc.Endpoints {
+				// Skip FIPS and special endpoints (e.g., "bedrock-us-east-1")
+				if !strings.HasPrefix(region, "bedrock-") && !strings.Contains(region, "fips") {
+					regions = append(regions, region)
+				}
+			}
+		}
+	}
+
+	if len(regions) == 0 {
+		return fallbackRegions
+	}
+
+	sort.Strings(regions)
+	return regions
 }
 
 // maskSecret redacts a secret value for display, showing only the first 4 and last 4 chars.
@@ -170,6 +229,11 @@ func (c *BedrockClient) Setup() (err error) {
 		return
 	}
 
+	// Empty input means skip (user pressed enter without typing)
+	if authChoice.Value == "" {
+		return nil
+	}
+
 	switch authChoice.Value {
 	case "1":
 		// Mask existing API key value before displaying the prompt
@@ -211,10 +275,11 @@ func (c *BedrockClient) Setup() (err error) {
 		return fmt.Errorf(i18n.T("bedrock_setup_invalid_auth_selection"), authChoice.Value)
 	}
 
-	// Region selection
+	// Region selection — fetched dynamically from botocore (public, no auth required)
+	regions := fetchBedrockRegions()
 	fmt.Println()
 	fmt.Println(i18n.T("bedrock_setup_choose_region"))
-	for i, r := range awsRegions {
+	for i, r := range regions {
 		fmt.Printf("    [%d] %s\n", i+1, r)
 	}
 	fmt.Println(i18n.T("bedrock_setup_region_option_custom"))
@@ -226,8 +291,8 @@ func (c *BedrockClient) Setup() (err error) {
 	}
 
 	regionNum := 0
-	if _, scanErr := fmt.Sscanf(regionChoice.Value, "%d", &regionNum); scanErr == nil && regionNum >= 1 && regionNum <= len(awsRegions) {
-		c.bedrockRegion.Value = awsRegions[regionNum-1]
+	if _, scanErr := fmt.Sscanf(regionChoice.Value, "%d", &regionNum); scanErr == nil && regionNum >= 1 && regionNum <= len(regions) {
+		c.bedrockRegion.Value = regions[regionNum-1]
 	} else if regionNum == 0 || regionChoice.Value == "0" {
 		customRegion := plugins.NewSetupQuestion(i18n.T("bedrock_setup_region_custom_prompt"))
 		if err = customRegion.Ask("Bedrock"); err != nil {
@@ -326,6 +391,10 @@ func (c *BedrockClient) configure() error {
 	// AWS SDK's SigV4 auth middleware. AnonymousCredentials causes the SDK to fall
 	// through to its bearer token auth path, which panics without a token provider.
 	// Our bearerTokenTransport overrides the Authorization header with the real token.
+	// When using explicit credentials (bearer token or static keys), bypass the
+	// AWS shared config/credentials files to prevent AWS_PROFILE env var from
+	// causing "failed to get shared config profile" errors. This is thread-safe
+	// (no process-global env mutation) and only affects this config load.
 	if c.bedrockAPIKey.Value != "" {
 		configOpts = append(configOpts,
 			config.WithCredentialsProvider(
@@ -337,16 +406,22 @@ func (c *BedrockClient) configure() error {
 					wrapped: http.DefaultTransport,
 				},
 			}),
+			config.WithSharedConfigFiles([]string{}),
+			config.WithSharedCredentialsFiles([]string{}),
 		)
 	} else if c.bedrockAccessKey.Value != "" && c.bedrockSecretKey.Value != "" {
 		// Priority 2: Explicit access key + secret key (static credentials)
-		configOpts = append(configOpts, config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(
-				c.bedrockAccessKey.Value,
-				c.bedrockSecretKey.Value,
-				"", // session token (empty for long-term credentials)
+		configOpts = append(configOpts,
+			config.WithCredentialsProvider(
+				credentials.NewStaticCredentialsProvider(
+					c.bedrockAccessKey.Value,
+					c.bedrockSecretKey.Value,
+					"", // session token (empty for long-term credentials)
+				),
 			),
-		))
+			config.WithSharedConfigFiles([]string{}),
+			config.WithSharedCredentialsFiles([]string{}),
+		)
 	}
 	// Priority 3: No explicit credentials → AWS SDK uses the default credential chain
 	// (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY env vars, ~/.aws/credentials, IAM roles, etc.)
@@ -373,7 +448,7 @@ func (c *BedrockClient) ListModels() ([]string, error) {
 	if err != nil && c.bedrockAPIKey.Value != "" {
 		// Bearer token auth may lack ListFoundationModels permissions;
 		// return common models as fallback
-		debuglog.Log("Bedrock ListModels API failed (using static fallback): %v\n", err)
+		debuglog.Log(i18n.T("bedrock_listmodels_fallback")+": %v\n", err)
 		return defaultBedrockModels, nil
 	}
 	return models, err
