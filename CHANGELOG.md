@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.435 (2026-03-12)
+
+### PR [#2058](https://github.com/danielmiessler/Fabric/pull/2058) by [dependabot](https://github.com/apps/dependabot): chore(deps-dev): bump devalue from 5.6.3 to 5.6.4 in /web in the npm_and_yarn group across 1 directory
+
+- Bumps the indirect dependency `devalue` from version 5.6.3 to 5.6.4 in the `/web` directory as part of the `npm_and_yarn` dependency group.
+
 ## v1.4.434 (2026-03-09)
 
 ### PR [#2052](https://github.com/danielmiessler/Fabric/pull/2052) by [praxstack](https://github.com/praxstack) and [ksylvan](https://github.com/ksylvan): feat(bedrock): dynamic region fetching and AWS_PROFILE conflict fix
