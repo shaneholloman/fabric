@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.436 (2026-03-15)
+
+### PR [#2060](https://github.com/danielmiessler/Fabric/pull/2060) by [octo-patch](https://github.com/octo-patch): feat: add MiniMax-M2.5-highspeed to static model list
+
+- Added the `MiniMax-M2.5-highspeed` model variant to the static MiniMax model list. This variant delivers the same performance as `MiniMax-M2.5` but with faster inference speed.
+
 ## v1.4.435 (2026-03-12)
 
 ### PR [#2058](https://github.com/danielmiessler/Fabric/pull/2058) by [dependabot](https://github.com/apps/dependabot): chore(deps-dev): bump devalue from 5.6.3 to 5.6.4 in /web in the npm_and_yarn group across 1 directory
