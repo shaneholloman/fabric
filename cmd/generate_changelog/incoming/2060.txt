@@ -1,7 +1,3 @@
 ### PR [#2060](https://github.com/danielmiessler/Fabric/pull/2060) by [octo-patch](https://github.com/octo-patch): feat: add MiniMax-M2.5-highspeed to static model list
 
-- Feat: add MiniMax-M2.5-highspeed to static model list
-Add the MiniMax-M2.5-highspeed model variant to the static MiniMax
-model list. This model offers the same performance as MiniMax-M2.5
-but with faster inference speed.
-API docs: <https://platform.minimax.io/docs/api-reference/text-openai-api>
+- Added the `MiniMax-M2.5-highspeed` model variant to the static MiniMax model list. This variant delivers the same performance as `MiniMax-M2.5` but with faster inference speed.
