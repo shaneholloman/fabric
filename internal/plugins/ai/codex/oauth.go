@@ -56,7 +56,7 @@ func (c *Client) runOAuthFlow(
 ) (oauthTokens, error) {
 	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", defaultCallbackPort))
 	if err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to start local oauth callback server: %w", err)
+		return oauthTokens{}, fmt.Errorf(i18n.T("codex_oauth_server_start_failed"), err)
 	}
 	defer listener.Close()
 	debuglog.Debug(debuglog.Detailed, "Codex OAuth callback listener started on 127.0.0.1:%d\n", defaultCallbackPort)
@@ -99,7 +99,7 @@ func (c *Client) runOAuthFlow(
 	}()
 
 	if err := openBrowserFn(authURL); err != nil {
-		fmt.Printf("If your browser did not open, navigate to this URL to authenticate:\n%s\n", authURL)
+		fmt.Printf("%s\n%s\n", i18n.T("codex_browser_open_fallback"), authURL)
 	}
 
 	select {
@@ -137,7 +137,7 @@ func (c *Client) handleOAuthCallback(
 	}
 
 	if !oauthStatesMatch(expectedState, r.URL.Query().Get("state")) {
-		http.Error(w, "State mismatch", http.StatusBadRequest)
+		http.Error(w, i18n.T("codex_oauth_state_mismatch"), http.StatusBadRequest)
 		c.publishOAuthResult(results, oauthResult{
 			err: errors.New(i18n.T("codex_login_state_mismatch")),
 		})
@@ -162,7 +162,7 @@ func (c *Client) handleOAuthCallback(
 
 	code := strings.TrimSpace(r.URL.Query().Get("code"))
 	if code == "" {
-		http.Error(w, "Missing authorization code", http.StatusBadRequest)
+		http.Error(w, i18n.T("codex_oauth_missing_auth_code"), http.StatusBadRequest)
 		c.publishOAuthResult(results, oauthResult{
 			err: errors.New(i18n.T("codex_login_missing_auth_code")),
 		})
@@ -183,7 +183,7 @@ func (c *Client) handleOAuthCallback(
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte("<html><body><h1>Codex login completed</h1><p>Return to Fabric.</p></body></html>"))
+	_, _ = w.Write([]byte("<html><body><h1>" + i18n.T("codex_login_completed") + "</h1><p>" + i18n.T("codex_login_return_to_fabric") + "</p></body></html>"))
 	c.publishOAuthResult(results, oauthResult{tokens: tokens})
 }
 
@@ -216,7 +216,7 @@ func (c *Client) exchangeCodeForTokens(
 
 	resp, err := c.authHTTPClient.Do(req)
 	if err != nil {
-		return oauthTokens{}, fmt.Errorf("codex token exchange failed: %w", err)
+		return oauthTokens{}, fmt.Errorf(i18n.T("codex_token_exchange_failed"), err)
 	}
 	defer resp.Body.Close()
 
@@ -230,7 +230,7 @@ func (c *Client) exchangeCodeForTokens(
 
 	var tokens oauthTokens
 	if err := json.Unmarshal(body, &tokens); err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to decode codex token exchange response: %w", err)
+		return oauthTokens{}, fmt.Errorf(i18n.T("codex_decode_token_response_failed"), err)
 	}
 	if strings.TrimSpace(tokens.AccessToken) == "" || strings.TrimSpace(tokens.RefreshToken) == "" {
 		return oauthTokens{}, errors.New(i18n.T("codex_login_missing_tokens"))
@@ -242,7 +242,7 @@ func (c *Client) exchangeCodeForTokens(
 func buildAuthorizeURL(authBaseURL string, callbackURL string, pkce pkceCodes, state string) (string, error) {
 	issuer, err := url.Parse(strings.TrimRight(authBaseURL, "/"))
 	if err != nil {
-		return "", fmt.Errorf("invalid codex auth base url: %w", err)
+		return "", fmt.Errorf(i18n.T("codex_auth_base_url_invalid"), err)
 	}
 
 	issuer.Path = strings.TrimRight(issuer.Path, "/") + "/oauth/authorize"
@@ -278,7 +278,7 @@ func generatePKCECodes() (pkceCodes, error) {
 func randomBase64URL(size int) (string, error) {
 	buf := make([]byte, size)
 	if _, err := rand.Read(buf); err != nil {
-		return "", fmt.Errorf("failed to generate secure random oauth state: %w", err)
+		return "", fmt.Errorf(i18n.T("codex_oauth_random_state_failed"), err)
 	}
 	return base64.RawURLEncoding.EncodeToString(buf), nil
 }

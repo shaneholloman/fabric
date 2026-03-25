@@ -195,7 +195,7 @@ func (c *Client) ListModels(ctx context.Context) ([]string, error) {
 
 	var decoded modelsResponse
 	if err := json.Unmarshal(body, &decoded); err != nil {
-		return nil, fmt.Errorf("failed to decode codex models response: %w", err)
+		return nil, fmt.Errorf(i18n.T("codex_decode_models_response_failed"), err)
 	}
 
 	models := make([]string, 0, len(decoded.Models))

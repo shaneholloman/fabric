@@ -31,9 +31,9 @@ func (c *Client) errorFromHTTPResponse(statusCode int, body []byte) error {
 		return errors.New(i18n.T("codex_login_invalid"))
 	}
 	if isUsageLimitMessage(message) {
-		return wrapPublicError("codex usage limit reached", statusCode, message)
+		return wrapPublicError(i18n.T("codex_usage_limit_reached"), statusCode, message)
 	}
-	return wrapPublicError(fmt.Sprintf("codex request failed with status %d", statusCode), statusCode, message)
+	return wrapPublicError(fmt.Sprintf(i18n.T("codex_request_failed_status"), statusCode), statusCode, message)
 }
 
 func (c *Client) refreshErrorFromResponse(statusCode int, body []byte) error {
@@ -49,7 +49,7 @@ func (c *Client) refreshErrorFromResponse(statusCode int, body []byte) error {
 		}
 	}
 
-	return wrapPublicError(fmt.Sprintf("failed to refresh codex login (status %d)", statusCode), statusCode, message)
+	return wrapPublicError(fmt.Sprintf(i18n.T("codex_refresh_failed_status"), statusCode), statusCode, message)
 }
 
 func (c *Client) mapRequestError(err error) error {
@@ -77,7 +77,7 @@ func (c *Client) mapRequestError(err error) error {
 		return errors.New(i18n.T("codex_login_invalid"))
 	case isUsageLimitMessage(message):
 		return &publicError{
-			message: "codex usage limit reached",
+			message: i18n.T("codex_usage_limit_reached"),
 			cause:   fmt.Errorf("codex request failed: %w", err),
 		}
 	default:

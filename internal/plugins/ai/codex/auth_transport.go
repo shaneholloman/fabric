@@ -16,7 +16,7 @@ import (
 	plugins "github.com/danielmiessler/fabric/internal/plugins"
 )
 
-var errReplayBodyUnavailable = errors.New("request body cannot be replayed for Codex re-authentication retry")
+var errReplayBodyUnavailable = errors.New(i18n.T("codex_replay_body_unavailable"))
 
 type authTransport struct {
 	client  *Client
@@ -87,7 +87,7 @@ func (c *Client) refreshAccessToken(ctx context.Context) (oauthTokens, error) {
 
 	resp, err := c.authHTTPClient.Do(req)
 	if err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to refresh Codex login: %w", err)
+		return oauthTokens{}, fmt.Errorf(i18n.T("codex_refresh_login_failed"), err)
 	}
 	defer resp.Body.Close()
 
@@ -101,7 +101,7 @@ func (c *Client) refreshAccessToken(ctx context.Context) (oauthTokens, error) {
 
 	var refreshed refreshResponse
 	if err := json.Unmarshal(responseBody, &refreshed); err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to decode refreshed Codex token response: %w", err)
+		return oauthTokens{}, fmt.Errorf(i18n.T("codex_decode_refresh_response_failed"), err)
 	}
 	if strings.TrimSpace(refreshed.AccessToken) == "" {
 		return oauthTokens{}, errors.New(i18n.T("codex_token_refresh_missing_access_token"))
