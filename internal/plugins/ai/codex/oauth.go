@@ -56,7 +56,7 @@ func (c *Client) runOAuthFlow(
 ) (oauthTokens, error) {
 	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", defaultCallbackPort))
 	if err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to start local OAuth callback server: %w", err)
+		return oauthTokens{}, fmt.Errorf("failed to start local oauth callback server: %w", err)
 	}
 	defer listener.Close()
 	debuglog.Debug(debuglog.Detailed, "Codex OAuth callback listener started on 127.0.0.1:%d\n", defaultCallbackPort)
@@ -216,7 +216,7 @@ func (c *Client) exchangeCodeForTokens(
 
 	resp, err := c.authHTTPClient.Do(req)
 	if err != nil {
-		return oauthTokens{}, fmt.Errorf("Codex token exchange failed: %w", err)
+		return oauthTokens{}, fmt.Errorf("codex token exchange failed: %w", err)
 	}
 	defer resp.Body.Close()
 
@@ -230,7 +230,7 @@ func (c *Client) exchangeCodeForTokens(
 
 	var tokens oauthTokens
 	if err := json.Unmarshal(body, &tokens); err != nil {
-		return oauthTokens{}, fmt.Errorf("failed to decode Codex token exchange response: %w", err)
+		return oauthTokens{}, fmt.Errorf("failed to decode codex token exchange response: %w", err)
 	}
 	if strings.TrimSpace(tokens.AccessToken) == "" || strings.TrimSpace(tokens.RefreshToken) == "" {
 		return oauthTokens{}, errors.New(i18n.T("codex_login_missing_tokens"))
@@ -242,7 +242,7 @@ func (c *Client) exchangeCodeForTokens(
 func buildAuthorizeURL(authBaseURL string, callbackURL string, pkce pkceCodes, state string) (string, error) {
 	issuer, err := url.Parse(strings.TrimRight(authBaseURL, "/"))
 	if err != nil {
-		return "", fmt.Errorf("invalid Codex auth base URL: %w", err)
+		return "", fmt.Errorf("invalid codex auth base url: %w", err)
 	}
 
 	issuer.Path = strings.TrimRight(issuer.Path, "/") + "/oauth/authorize"
@@ -278,7 +278,7 @@ func generatePKCECodes() (pkceCodes, error) {
 func randomBase64URL(size int) (string, error) {
 	buf := make([]byte, size)
 	if _, err := rand.Read(buf); err != nil {
-		return "", fmt.Errorf("failed to generate secure random OAuth state: %w", err)
+		return "", fmt.Errorf("failed to generate secure random oauth state: %w", err)
 	}
 	return base64.RawURLEncoding.EncodeToString(buf), nil
 }

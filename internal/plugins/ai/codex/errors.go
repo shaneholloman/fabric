@@ -12,18 +12,28 @@ import (
 	openaiapi "github.com/openai/openai-go"
 )
 
+type publicError struct {
+	message string
+	cause   error
+}
+
+func (e *publicError) Error() string {
+	return e.message
+}
+
+func (e *publicError) Unwrap() error {
+	return e.cause
+}
+
 func (c *Client) errorFromHTTPResponse(statusCode int, body []byte) error {
 	message := extractErrorMessage(body)
 	if statusCode == http.StatusUnauthorized {
 		return errors.New(i18n.T("codex_login_invalid"))
 	}
 	if isUsageLimitMessage(message) {
-		return errors.New(message)
+		return wrapPublicError("codex usage limit reached", statusCode, message)
 	}
-	if message == "" {
-		message = fmt.Sprintf("Codex request failed with status %d", statusCode)
-	}
-	return errors.New(message)
+	return wrapPublicError(fmt.Sprintf("codex request failed with status %d", statusCode), statusCode, message)
 }
 
 func (c *Client) refreshErrorFromResponse(statusCode int, body []byte) error {
@@ -39,10 +49,7 @@ func (c *Client) refreshErrorFromResponse(statusCode int, body []byte) error {
 		}
 	}
 
-	if message == "" {
-		message = fmt.Sprintf("failed to refresh Codex login (status %d)", statusCode)
-	}
-	return errors.New(message)
+	return wrapPublicError(fmt.Sprintf("failed to refresh codex login (status %d)", statusCode), statusCode, message)
 }
 
 func (c *Client) mapRequestError(err error) error {
@@ -69,9 +76,23 @@ func (c *Client) mapRequestError(err error) error {
 		strings.Contains(lower, "chatgpt login"):
 		return errors.New(i18n.T("codex_login_invalid"))
 	case isUsageLimitMessage(message):
-		return errors.New(message)
+		return &publicError{
+			message: "codex usage limit reached",
+			cause:   fmt.Errorf("codex request failed: %w", err),
+		}
 	default:
 		return err
+	}
+}
+
+func wrapPublicError(message string, statusCode int, providerMessage string) error {
+	if providerMessage == "" {
+		return errors.New(message)
+	}
+
+	return &publicError{
+		message: message,
+		cause:   fmt.Errorf("codex provider error (status %d): %s", statusCode, providerMessage),
 	}
 }
 

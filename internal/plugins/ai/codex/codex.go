@@ -45,6 +45,7 @@ const (
 
 const oauthScope = "openid profile email offline_access api.connectors.read api.connectors.invoke"
 
+// Client implements the Codex-backed AI vendor.
 type Client struct {
 	*openaivendor.Client
 
@@ -158,14 +159,14 @@ func (c *Client) configure() error {
 }
 
 // ListModels returns the Codex models available to the configured account.
-func (c *Client) ListModels() ([]string, error) {
+func (c *Client) ListModels(ctx context.Context) ([]string, error) {
 	if c.apiHTTPClient == nil {
 		if err := c.configure(); err != nil {
 			return nil, err
 		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), modelsRequestTimeout)
+	ctx, cancel := context.WithTimeout(ctx, modelsRequestTimeout)
 	defer cancel()
 
 	modelsURL := strings.TrimRight(c.ApiBaseURL.Value, "/") + "/models"
@@ -194,7 +195,7 @@ func (c *Client) ListModels() ([]string, error) {
 
 	var decoded modelsResponse
 	if err := json.Unmarshal(body, &decoded); err != nil {
-		return nil, fmt.Errorf("failed to decode Codex models response: %w", err)
+		return nil, fmt.Errorf("failed to decode codex models response: %w", err)
 	}
 
 	models := make([]string, 0, len(decoded.Models))
@@ -250,7 +251,7 @@ func (c *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 
 // SendStream sends a request to Codex and streams the response text updates.
 func (c *Client) SendStream(
-	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
+	ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) error {
 	defer close(channel)
 
@@ -264,15 +265,17 @@ func (c *Client) SendStream(
 	}
 
 	req := c.buildCodexResponseParams(msgs, opts)
-	stream := c.ApiClient.Responses.NewStreaming(context.Background(), req)
+	stream := c.ApiClient.Responses.NewStreaming(ctx, req)
 	defer stream.Close()
 	for stream.Next() {
 		event := stream.Current()
 		switch event.Type {
 		case string(constant.ResponseOutputTextDelta("").Default()):
-			channel <- domain.StreamUpdate{
+			if err := sendStreamUpdate(ctx, channel, domain.StreamUpdate{
 				Type:    domain.StreamTypeContent,
 				Content: event.AsResponseOutputTextDelta().Delta,
+			}); err != nil {
+				return err
 			}
 		case string(constant.ResponseOutputTextDone("").Default()):
 			continue
@@ -280,13 +283,24 @@ func (c *Client) SendStream(
 	}
 
 	if stream.Err() == nil {
-		channel <- domain.StreamUpdate{
+		if err := sendStreamUpdate(ctx, channel, domain.StreamUpdate{
 			Type:    domain.StreamTypeContent,
 			Content: "\n",
+		}); err != nil {
+			return err
 		}
 	}
 
 	return c.mapRequestError(stream.Err())
+}
+
+func sendStreamUpdate(ctx context.Context, channel chan domain.StreamUpdate, update domain.StreamUpdate) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case channel <- update:
+		return nil
+	}
 }
 
 func (c *Client) buildCodexResponseParams(

@@ -42,7 +42,7 @@ func extractExpiryFromJWT(jwt string) (time.Time, error) {
 		return time.Time{}, err
 	}
 	if claims.Exp == 0 {
-		return time.Time{}, errors.New("JWT did not include an exp claim")
+		return time.Time{}, errors.New("jwt did not include an exp claim")
 	}
 	return time.Unix(claims.Exp, 0), nil
 }
@@ -58,7 +58,7 @@ func extractAccountIDFromJWT(jwt string) (string, error) {
 func parseTokenClaims(jwt string) (tokenClaims, error) {
 	parts := strings.Split(jwt, ".")
 	if len(parts) < 2 {
-		return tokenClaims{}, errors.New("invalid JWT format")
+		return tokenClaims{}, errors.New("invalid jwt format")
 	}
 
 	payload, err := base64.RawURLEncoding.DecodeString(parts[1])
