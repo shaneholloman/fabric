@@ -1,4 +1,4 @@
-### PR [#2073](https://github.com/danielmiessler/Fabric/pull/2073) by [sathvikc](https://github.com/sathvikc): feat(youtube): Implement visual text extraction via FFmpeg and OCR
+### PR [#2073](https://github.com/danielmiessler/Fabric/pull/2073) by [sathvikc](https://github.com/sathvikc) and [ksylvan](https://github.com/ksylvan): feat(youtube): Implement visual text extraction via FFmpeg and OCR
 
 - Implemented FFmpeg and Tesseract-based visual text extraction from YouTube videos, enabling OCR on video frames.
 - Added configurable CLI flags for visual extraction parameters, giving users fine-grained control over the feature.
