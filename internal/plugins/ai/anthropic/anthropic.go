@@ -125,7 +125,7 @@ func (an *Client) configure() (err error) {
 	return
 }
 
-func (an *Client) ListModels() (ret []string, err error) {
+func (an *Client) ListModels(context.Context) (ret []string, err error) {
 	return an.models, nil
 }
 
@@ -150,7 +150,7 @@ func parseThinking(level domain.ThinkingLevel) (anthropic.ThinkingConfigParamUni
 }
 
 func (an *Client) SendStream(
-	msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
+	ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) (err error) {
 	messages := an.toMessages(msgs)
 	if len(messages) == 0 {
@@ -158,8 +158,6 @@ func (an *Client) SendStream(
 		// No messages to send after normalization, consider this a non-error condition for streaming.
 		return
 	}
-
-	ctx := context.Background()
 
 	params := an.buildMessageParams(messages, opts)
 	betas := an.modelBetas[opts.Model]
