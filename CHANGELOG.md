@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.4.443 (2026-04-06)
+
+### PR [#2073](https://github.com/danielmiessler/Fabric/pull/2073) by [sathvikc](https://github.com/sathvikc) and [ksylvan](https://github.com/ksylvan): feat(youtube): Implement visual text extraction via FFmpeg and OCR
+
+- Implemented FFmpeg and Tesseract-based visual text extraction from YouTube videos, enabling OCR on video frames.
+- Added configurable CLI flags for visual extraction parameters, giving users fine-grained control over the feature.
+- Fixed support for multi-line `yt-dlp` outputs and updated syntax compatibility with modern FFmpeg versions.
+- Refactored OCR processing to use bounded concurrency, context timeouts, and hardened CLI argument handling for improved stability and security.
+- Resolved multiple reliability issues including Tesseract CLI argument handling, racy error handling, and timestamp overflow bugs.
+
+### Direct commits
+
+- Docs: make README badges clickable
+
 ## v1.4.442 (2026-03-25)
 
 ### PR [#2075](https://github.com/danielmiessler/Fabric/pull/2075) by [ksylvan](https://github.com/ksylvan) and [mikaelpr](https://github.com/mikaelpr): refactor: extract OAuth and auth logic from Codex client module
