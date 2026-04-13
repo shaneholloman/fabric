@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.445 (2026-04-13)
+
+### PR [#2091](https://github.com/danielmiessler/Fabric/pull/2091) by [jimscard](https://github.com/jimscard) and [ksylvan](https://github.com/ksylvan): Update Dockerfile for best practices and critical CVE fixes
+
+- Pins Alpine 3.21 and Go 1.25.9 explicitly for reproducible, auditable builds.
+- Installs the Go toolchain directly in the builder stage, removing the dependency on an unavailable upstream `golang` tag.
+- Upgrades `setuptools` to remediate the critical vulnerability CVE-2025-47273.
+- Refreshes the `yt-dlp` installation path to align with current packaging conventions.
+- Configures the final image to run as a non-root user, reducing the container's attack surface.
+
 ## v1.4.444 (2026-04-09)
 
 ### PR [#2088](https://github.com/danielmiessler/Fabric/pull/2088) by [ksylvan](https://github.com/ksylvan): Combined dependabot fixes plus other Go module upgrades
