@@ -1,0 +1,4 @@
+### PR [#2093](https://github.com/danielmiessler/Fabric/pull/2093) by [alecjmckanna](https://github.com/alecjmckanna): feat: add --readpattern flag to print pattern contents to terminal
+
+- Added `--readpattern <name>` CLI flag to print the raw contents of a pattern's system.md file to stdout for easy inspection of pattern instructions
+- Implementation respects custom patterns directories by checking the user's custom patterns directory first before falling back to the main patterns directory
