@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.4.446 (2026-04-15)
+
+### PR [#2093](https://github.com/danielmiessler/Fabric/pull/2093) by [alecjmckanna](https://github.com/alecjmckanna): feat: add --readpattern flag to print pattern contents to terminal
+
+- Adds a new `--readpattern <name>` CLI flag that prints the raw contents of a named pattern's `system.md` file to stdout, making it easy to inspect a pattern's instructions without navigating the filesystem manually.
+- Custom pattern directories are respected: the user's custom patterns directory is checked first before falling back to the main patterns directory, consistent with all other pattern lookups.
+
+### Direct commits
+
+- Docs: update Docker config mount path for appuser
+
+- Replace container config mount path from root to appuser
+- Align setup example with non-root container home directory
+
+- Align pattern usage example with appuser config location
+- Align REST API example with updated config mount target
+
+- Update English and Chinese README Docker instructions consistently
+
 ## v1.4.445 (2026-04-13)
 
 ### PR [#2091](https://github.com/danielmiessler/Fabric/pull/2091) by [jimscard](https://github.com/jimscard) and [ksylvan](https://github.com/ksylvan): Update Dockerfile for best practices and critical CVE fixes
