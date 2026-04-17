@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.4.448 (2026-04-17)
+
+### Direct commits
+
+- Fix: fall back to streamed delta text when completed Codex response is empty
+
+- Prefer extracted completed text only when content stays non-empty
+- Fall back to accumulated streamed delta text otherwise
+
+- Preserve streamed response text before completed response evaluation
+- Add regression test for empty completed output text
+
+- Simulate SSE delta stream followed by blank completion
+- Verify Send returns delta text when completion lacks content
+
 ## v1.4.447 (2026-04-17)
 
 ### PR [#2097](https://github.com/danielmiessler/Fabric/pull/2097) by [ksylvan](https://github.com/ksylvan): Add Claude Opus 4.7 model support and bump Anthropic SDK to v1.37.0
