@@ -1,0 +1,7 @@
+### PR [#2097](https://github.com/danielmiessler/Fabric/pull/2097) by [ksylvan](https://github.com/ksylvan): Add Claude Opus 4.7 model support and bump Anthropic SDK to v1.37.0
+
+- Added Claude Opus 4.7 model support and bumped the Anthropic SDK to v1.37.0.
+- Upgraded the `anthropic-sdk-go` dependency from v1.34.0 to v1.37.0.
+- Added `claude-opus-4-7` to the supported models list.
+- Enabled the 1M context window beta feature for Opus 4.7.
+- Updated model beta comments to reflect Opus 4.7 support.
