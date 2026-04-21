@@ -263,6 +263,10 @@ Use the official Microsoft supported `Winget` tool:
 
 `winget install danielmiessler.Fabric`
 
+#### Windows (Scoop)
+
+`scoop install fabric-ai`
+
 ### From Source
 
 To install Fabric, [make sure Go is installed](https://go.dev/doc/install), and then run the following command.
