@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.4.451 (2026-04-23)
+
+### PR [#2079](https://github.com/danielmiessler/Fabric/pull/2079) by [teamsincetoday](https://github.com/teamsincetoday): Add 3 commerce intelligence patterns: affiliate extraction, video entities, monetization
+
+- Added `extract_affiliate_products` pattern to surface both sponsored and organic affiliate opportunities from any video transcript, going beyond the existing `extract_sponsors` pattern.
+- Added `extract_video_commerce_entities` pattern to identify all commercial entities in video content, categorized by type, timestamp position, and purchase likelihood.
+- Added `analyze_monetization_opportunities` pattern to map audience intent to revenue strategies, covering affiliate links, sponsorships, and digital products.
+- Registered all three new patterns in `pattern_descriptions.json` and `pattern_extracts.json` with appropriate metadata and tags.
+- Integrated all three patterns into `suggest_pattern` under the ANALYSIS, BUSINESS, and EXTRACT categories, and documented them in `pattern_explanations.md`.
+
+### PR [#2086](https://github.com/danielmiessler/Fabric/pull/2086) by [majiayu000](https://github.com/majiayu000): fix: parse vendor prefix from model name for vendor/model convention
+
+- **Fix:** Added fallback logic to parse the vendor prefix from a model name when no vendor is explicitly specified. When a model string such as `ollama/llama3` is passed, the lookup no longer fails with a "could not find vendor" error; instead, the first path segment is split and checked against known vendors, correctly resolving the model to `llama3` under the `Ollama` vendor group.
+
 ## v1.4.450 (2026-04-23)
 
 ### PR [#2092](https://github.com/danielmiessler/Fabric/pull/2092) by [Resistor52](https://github.com/Resistor52): feat(openai): add GrokAI search grounding via xAI Responses API
