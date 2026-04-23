@@ -1,4 +1,4 @@
-### PR [#2103](https://github.com/danielmiessler/Fabric/pull/2103) by [dependabot[bot][bot]](https://github.com/apps/dependabot): chore(deps): bump github.com/go-git/go-git/v5 from 5.17.2 to 5.18.0 in the go_modules group across 1 directory
+### PR [#2103](https://github.com/danielmiessler/Fabric/pull/2103) by [dependabot](https://github.com/apps/dependabot) and [ksylvan](https://github.com/ksylvan): chore(deps): bump github.com/go-git/go-git/v5 from 5.17.2 to 5.18.0 in the go_modules group across 1 directory
 
 - Upgraded Vite from 5.4.21 to 8.0.8 in the web layer, representing a significant major-version jump with potential performance and build tooling improvements.
 - Bumped `@sveltejs/vite-plugin-svelte` from 4.0.4 to 7.0.0, a major version update aligning the Svelte plugin with the upgraded Vite 8 runtime.

@@ -1,4 +1,4 @@
-### PR [#2089](https://github.com/danielmiessler/Fabric/pull/2089) by [dependabot[bot][bot]](https://github.com/apps/dependabot): chore(deps-dev): bump vite from 5.4.21 to 8.0.8 in /web in the npm_and_yarn group across 1 directory
+### PR [#2089](https://github.com/danielmiessler/Fabric/pull/2089) by [dependabot](https://github.com/apps/dependabot) and [ksylvan](https://github.com/ksylvan): chore(deps-dev): bump vite from 5.4.21 to 8.0.8 in /web in the npm_and_yarn group across 1 directory
 
 - Chore(deps-dev): bump vite
 Bumps the npm_and_yarn group with 1 update in the /web directory: [vite](<https://github.com/vitejs/vite/tree/HEAD/packages/vite).>
