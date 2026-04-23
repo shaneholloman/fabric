@@ -1,10 +1,3 @@
 ### PR [#2086](https://github.com/danielmiessler/Fabric/pull/2086) by [majiayu000](https://github.com/majiayu000): fix: parse vendor prefix from model name for vendor/model convention
 
-- Fix: parse vendor prefix from model name when vendor is not specified
-When users pass a model string like "ollama/llama3", the lookup fails
-because no model literally named "ollama/llama3" exists — the model is
-stored as "llama3" under the "Ollama" vendor group. This adds fallback
-logic to split the first path segment and check if it matches a known
-vendor, resolving the "could not find vendor" error for prefixed models.
-Fixes #2084
-Signed-off-by: majiayu000 <1835304752@qq.com>
+- **Fix:** Added fallback logic to parse the vendor prefix from a model name when no vendor is explicitly specified. When a model string such as `ollama/llama3` is passed, the lookup no longer fails with a "could not find vendor" error; instead, the first path segment is split and checked against known vendors, correctly resolving the model to `llama3` under the `Ollama` vendor group.
