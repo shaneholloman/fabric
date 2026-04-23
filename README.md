@@ -137,6 +137,7 @@ Keep in mind that many of these were recorded when Fabric was Python-based, so r
       - [macOS (Homebrew)](#macos-homebrew)
       - [Arch Linux (AUR)](#arch-linux-aur)
       - [Windows](#windows)
+      - [Windows (Scoop)](#windows-scoop)
     - [From Source](#from-source)
     - [Docker](#docker)
     - [Environment Variables](#environment-variables)
