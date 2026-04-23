@@ -84,6 +84,7 @@ _fabric() {
     '(-r --raw)'{-r,--raw}'[Use the defaults of the model without sending chat options. Only affects OpenAI-compatible providers. Anthropic models always use smart parameter selection to comply with model-specific requirements.]' \
     '(-F --frequencypenalty)'{-F,--frequencypenalty}'[Set frequency penalty (default: 0.0)]:frequency penalty:' \
     '(-l --listpatterns)'{-l,--listpatterns}'[List all patterns]' \
+    '(--readpattern)--readpattern[Print the contents of the named pattern to the terminal]:pattern:_fabric_patterns' \
     '(-L --listmodels)'{-L,--listmodels}'[List all available models]' \
     '(-x --listcontexts)'{-x,--listcontexts}'[List all contexts]' \
     '(-X --listsessions)'{-X,--listsessions}'[List all sessions]' \
@@ -100,6 +101,9 @@ _fabric() {
     '(--playlist)--playlist[Prefer playlist over video if both ids are present in the URL]' \
     '(--transcript)--transcript[Grab transcript from YouTube video and send to chat]' \
     '(--transcript-with-timestamps)--transcript-with-timestamps[Grab transcript from YouTube video with timestamps]' \
+    '(--visual)--visual[Extract visual data from video using OCR and FFmpeg]' \
+    '(--visual-sensitivity)--visual-sensitivity[Tolerance for FFmpeg scene detection (0.0 - 1.0)]:visual sensitivity:' \
+    '(--visual-fps)--visual-fps[Extract a specific number of frames per second instead of using scene detection]:frames per second:' \
     '(--comments)--comments[Grab comments from YouTube video and send to chat]' \
     '(--metadata)--metadata[Output video metadata]' \
     '(--yt-dlp-args)--yt-dlp-args[Additional arguments to pass to yt-dlp]:yt-dlp args:' \
