@@ -2,8 +2,6 @@
 
 ## v1.4.471 (2026-08-28)
 
-GitHub unexpected status code: 410 from provider GitHub, response body: {"error":{"code":"github_models_retirement_brownout","message":"GitHub Models is temporarily unavailable as part of a scheduled retirement brownout."}}
-
 ### PR [#2200](https://github.com/danielmiessler/Fabric/pull/2200) by [ksylvan](https://github.com/ksylvan): fix: persist Codex OAuth tokens after refresh
 
 - Persist refreshed Codex OAuth tokens securely across processes, writing rotated credentials atomically with cross-process locks.
