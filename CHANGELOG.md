@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.471 (2026-08-28)
+
+GitHub unexpected status code: 410 from provider GitHub, response body: {"error":{"code":"github_models_retirement_brownout","message":"GitHub Models is temporarily unavailable as part of a scheduled retirement brownout."}}
+
+### PR [#2200](https://github.com/danielmiessler/Fabric/pull/2200) by [ksylvan](https://github.com/ksylvan): fix: persist Codex OAuth tokens after refresh
+
+- Persist refreshed Codex OAuth tokens securely across processes, writing rotated credentials atomically with cross-process locks.
+- Reload stored tokens before refresh and return valid in-memory tokens first, preventing stale disk values from overwriting fresh credentials.
+- Reuse valid refresh tokens before launching interactive authentication, requiring account identifiers and unexpired tokens for fast-path reuse.
+- Preserve existing environment values, save environment files atomically while holding locks, and enforce secret-only permissions.
+- Reactivate configured vendors and surface configuration and provider failures immediately, with localized Codex prompts and persistence errors.
+
 ## v1.4.470 (2026-08-04)
 
 ### PR [#2186](https://github.com/danielmiessler/Fabric/pull/2186) by [giodamelio](https://github.com/giodamelio): Update Nixpkgs version for newer Go version
