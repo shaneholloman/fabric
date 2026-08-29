@@ -1,0 +1,13 @@
+### PR [#2203](https://github.com/danielmiessler/Fabric/pull/2203) by [pacocartones](https://github.com/pacocartones): fix(web): preserve multi-byte UTF-8 split across SSE chunks in chat stream
+
+- Fix(web): preserve multi-byte UTF-8 split across SSE chunks in chat stream
+createMessageStream decoded each network chunk with a fresh TextDecoder and no
+{ stream: true }, so a multi-byte UTF-8 rune (CJK, emoji) split across a chunk
+boundary was corrupted into U+FFFD before the frame buffer ever saw it. Hoist a
+single persistent decoder and decode with { stream: true } so pending bytes
+carry across chunks.
+- Merge branch 'main' into fix/sse-utf8-stream-boundary
+- Fix: preserve split UTF-8 characters in streaming responses
+
+- Decode API response chunks with persistent streaming state
+- Reuse streaming decoder when inspecting chat backend events
