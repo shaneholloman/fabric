@@ -1,6 +1,3 @@
 ### PR [#2198](https://github.com/danielmiessler/Fabric/pull/2198) by [cuihuan](https://github.com/cuihuan): feat(providers): add Synthorai as an OpenAI-compatible provider
 
 - Feat(providers): add Synthorai as an OpenAI-compatible provider
-Synthorai (<https://synthorai.io)> reaches Anthropic, OpenAI, Google, Z.ai,
-Moonshot, DeepSeek and Qwen models through one OpenAI-compatible base URL,
-billed at each upstream's own list price.
