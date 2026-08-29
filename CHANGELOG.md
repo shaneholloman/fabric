@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.472 (2026-08-29)
+
+### PR [#2198](https://github.com/danielmiessler/Fabric/pull/2198) by [cuihuan](https://github.com/cuihuan): feat(providers): add Synthorai as an OpenAI-compatible provider
+
+- Feat(providers): add Synthorai as an OpenAI-compatible provider
+
+### Direct commits
+
+- Chore: delete generate_changelog noise in README.
+
 ## v1.4.471 (2026-08-28)
 
 ### PR [#2200](https://github.com/danielmiessler/Fabric/pull/2200) by [ksylvan](https://github.com/ksylvan): fix: persist Codex OAuth tokens after refresh
