@@ -375,6 +375,7 @@ Fabric supports a wide range of AI providers:
 - Novita AI
 - OpenRouter
 - SiliconCloud
+- Synthorai
 - Together
 - Venice AI
 - Z AI
