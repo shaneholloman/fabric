@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.474 (2026-09-02)
+
+### PR [#2206](https://github.com/danielmiessler/Fabric/pull/2206) by [ksylvan](https://github.com/ksylvan): fix: confine storage names and authenticate Ollama serve
+
+- Reject unsafe cross-platform storage names and directory traversal attempts.
+- Confine symlink targets to configured filesystem storage directories.
+- Require API keys for non-loopback server bindings and authenticate Ollama routes.
+- Validate chat pattern, context, and session names early while preventing internal filesystem details from leaking through client errors.
+- Default the REST server to loopback port 8080 and add regression coverage for traversal, symlink, and authentication security.
+
 ## v1.4.473 (2026-08-29)
 
 ### PR [#2203](https://github.com/danielmiessler/Fabric/pull/2203) by [pacocartones](https://github.com/pacocartones) and [ksylvan](https://github.com/ksylvan): fix(web): preserve multi-byte UTF-8 split across SSE chunks in chat stream
