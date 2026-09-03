@@ -1,3 +1,0 @@
-### PR [#2209](https://github.com/danielmiessler/Fabric/pull/2209) by [kadiryildiz283](https://github.com/kadiryildiz283): feat(i18n): add Turkish (tr) translation
-
-- Feat(i18n): add Turkish (tr) translation

@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.475 (2026-09-03)
+
+### PR [#2209](https://github.com/danielmiessler/Fabric/pull/2209) by [kadiryildiz283](https://github.com/kadiryildiz283): feat(i18n): add Turkish (tr) translation
+
+- Feat(i18n): add Turkish (tr) translation
+
 ## v1.4.474 (2026-09-02)
 
 ### PR [#2206](https://github.com/danielmiessler/Fabric/pull/2206) by [ksylvan](https://github.com/ksylvan): fix: confine storage names and authenticate Ollama serve
