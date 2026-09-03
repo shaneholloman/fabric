@@ -1,5 +1,0 @@
-### PR [#2210](https://github.com/danielmiessler/Fabric/pull/2210) by [ksylvan](https://github.com/ksylvan): feat: add Pzero as an OpenAI-compatible AI provider
-
-- Added Pzero as an OpenAI-compatible AI provider.
-- Registered Pzero with its OpenAI-compatible API base URL.
-- Added Pzero to the README’s list of supported AI providers.

@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.476 (2026-09-03)
+
+### PR [#2210](https://github.com/danielmiessler/Fabric/pull/2210) by [ksylvan](https://github.com/ksylvan): feat: add Pzero as an OpenAI-compatible AI provider
+
+- Added Pzero as an OpenAI-compatible AI provider.
+- Registered Pzero with its OpenAI-compatible API base URL.
+- Added Pzero to the README’s list of supported AI providers.
+
 ## v1.4.475 (2026-09-03)
 
 ### PR [#2209](https://github.com/danielmiessler/Fabric/pull/2209) by [kadiryildiz283](https://github.com/kadiryildiz283): feat(i18n): add Turkish (tr) translation
