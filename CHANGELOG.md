@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.477 (2026-09-03)
+
+### PR [#2211](https://github.com/danielmiessler/Fabric/pull/2211) by [ksylvan](https://github.com/ksylvan): fix: prevent pattern loader temporary directory leaks
+
+- Prevent pattern loader leaks by lazily creating temporary directories during database population and cleaning them up after successful or failed downloads.
+- Add regression tests for lazy directory creation and cleanup.
+
 ## v1.4.476 (2026-09-03)
 
 ### PR [#2210](https://github.com/danielmiessler/Fabric/pull/2210) by [ksylvan](https://github.com/ksylvan): feat: add Pzero as an OpenAI-compatible AI provider
