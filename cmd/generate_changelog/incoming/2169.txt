@@ -1,0 +1,5 @@
+### PR [#2169](https://github.com/danielmiessler/Fabric/pull/2169) by [ksylvan](https://github.com/ksylvan): fix(core): route user input to the user message in BuildSession
+
+- Fixed requests with system messages only, which Groq, Ollama Cloud, vLLM, llama.cpp, and some Bedrock endpoints reject or answer with an empty response. Each request now ends with a user message, and the input goes to the model one time.
+- Removed `ensureInput`. A pattern without an `{{input}}` placeholder goes in the system message, and the input goes in the user message. A pattern with `{{input}}`, a call with no input, and `--raw` mode send one user message.
+- Fixed `--raw` mode with a pattern, which dropped the input, and attachments in `--raw` mode, which dropped the message text.

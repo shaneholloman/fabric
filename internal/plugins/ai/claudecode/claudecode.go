@@ -88,8 +88,8 @@ func (c *Client) SendStream(ctx context.Context, msgs []*chat.ChatCompletionMess
 }
 
 // command builds the claude invocation. System messages go to --system-prompt,
-// all other messages go to stdin. A pattern that inlines {{input}} produces only
-// a system message, so that text becomes the prompt instead. When opts.ImageFile
+// all other messages go to stdin. If all messages are system messages, that text
+// becomes the prompt instead. When opts.ImageFile
 // is set, the directory is exposed via --add-dir so the Read tool can access it.
 func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, extra ...string) (*exec.Cmd, error) {
 	var system, prompt []string
