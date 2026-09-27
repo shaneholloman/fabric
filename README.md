@@ -350,6 +350,7 @@ Fabric supports a wide range of AI providers:
 - OpenAI
 - OpenAI Codex (ChatGPT/Codex subscription OAuth via private backend)
 - Anthropic (Claude)
+- Claude Code (Claude subscription via the local `claude` CLI)
 - Google Gemini
 - Ollama (local models)
 - Azure OpenAI
@@ -365,7 +366,6 @@ Fabric supports a wide range of AI providers:
 - Cerebras
 - DeepSeek
 - DigitalOcean
-- GitHub Models
 - GrokAI
 - Groq
 - Langdock
@@ -379,6 +379,7 @@ Fabric supports a wide range of AI providers:
 - Synthorai
 - Together
 - Venice AI
+- Y-API
 - Z AI
 
 Run `fabric --setup` to configure your preferred provider(s), or use `fabric --listvendors` to see all available vendors.

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -244,8 +245,8 @@ func TestChatter_BuildSession_SeparatesSystemSections(t *testing.T) {
 	}
 
 	messages := session.GetVendorMessages()
-	if len(messages) != 1 {
-		t.Fatalf("expected 1 vendor message, got %d", len(messages))
+	if len(messages) != 2 {
+		t.Fatalf("expected 2 vendor messages, got %d", len(messages))
 	}
 
 	systemMessage := messages[0]
@@ -253,13 +254,67 @@ func TestChatter_BuildSession_SeparatesSystemSections(t *testing.T) {
 		t.Fatalf("expected first message to be system, got %s", systemMessage.Role)
 	}
 
-	expectedSystemMessage := "STRATEGY\nCONTEXT\nPATTERN\nuser input"
+	// The system message has the strategy, the context, and the pattern.
+	// It must not contain the user input.
+	expectedSystemMessage := "STRATEGY\nCONTEXT\nPATTERN"
 	if systemMessage.Content != expectedSystemMessage {
 		t.Fatalf("expected system message %q, got %q", expectedSystemMessage, systemMessage.Content)
 	}
 
+	// The user input goes in the user message, one time only.
+	userMessage := messages[1]
+	if userMessage.Role != chat.ChatMessageRoleUser {
+		t.Fatalf("expected second message to be user, got %s", userMessage.Role)
+	}
+	if userMessage.Content != "user input" {
+		t.Fatalf("expected user message %q, got %q", "user input", userMessage.Content)
+	}
+
 	if request.Message.Content != "user input" {
 		t.Fatalf("expected request user input to remain unchanged, got %q", request.Message.Content)
+	}
+}
+
+func TestChatter_BuildSession_EndsWithUserMessage(t *testing.T) {
+	db := fsdb.NewDb(t.TempDir())
+	for name, content := range map[string]string{"plain": "PATTERN", "inline": "PATTERN\n{{input}}"} {
+		dir := filepath.Join(db.Patterns.Dir, name)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, "system.md"), []byte(content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	tests := []struct {
+		name, pattern, input string
+		raw                  bool
+		want                 []string // "role:content" for each message
+	}{
+		{"plain pattern", "plain", "IN", false, []string{"system:PATTERN", "user:IN"}},
+		{"inline pattern", "inline", "IN", false, []string{"user:PATTERN\nIN"}},
+		{"no input", "plain", "", false, []string{"user:PATTERN"}},
+		{"raw plain pattern", "plain", "IN", true, []string{"user:PATTERN\nIN"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			request := &domain.ChatRequest{
+				PatternName: tt.pattern,
+				Message:     &chat.ChatCompletionMessage{Role: chat.ChatMessageRoleUser, Content: tt.input},
+			}
+			session, err := (&Chatter{db: db}).BuildSession(request, tt.raw)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var got []string
+			for _, m := range session.GetVendorMessages() {
+				got = append(got, m.Role+":"+m.Content)
+			}
+			if strings.Join(got, "|") != strings.Join(tt.want, "|") {
+				t.Fatalf("got %q, want %q", got, tt.want)
+			}
+		})
 	}
 }
 

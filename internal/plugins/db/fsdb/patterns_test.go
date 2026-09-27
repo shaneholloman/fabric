@@ -66,7 +66,7 @@ func TestApplyVariables(t *testing.T) {
 			want:  "You are a security expert.\nCheck this code\nPlease analyze.",
 		},
 		{
-			name: "pattern without input variable gets input appended",
+			name: "pattern without input placeholder stays unchanged",
 			pattern: &Pattern{
 				Pattern: "You are a {{role}}.\nPlease analyze.",
 			},
@@ -74,7 +74,7 @@ func TestApplyVariables(t *testing.T) {
 				"role": "code reviewer",
 			},
 			input: "Review this PR",
-			want:  "You are a code reviewer.\nPlease analyze.\nReview this PR",
+			want:  "You are a code reviewer.\nPlease analyze.",
 		},
 		// ... previous test cases ...
 	}
@@ -160,7 +160,7 @@ func TestGetWithoutVariables(t *testing.T) {
 	createTestPattern(t, entity, "no-input", "Static content")
 	result, err = entity.GetWithoutVariables("no-input", "hi")
 	require.NoError(t, err)
-	assert.Equal(t, "Static content\nhi", result.Pattern)
+	assert.Equal(t, "Static content", result.Pattern)
 }
 
 func TestPatternsEntity_Save(t *testing.T) {
