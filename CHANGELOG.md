@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.485 (2026-09-27)
+
+### PR [#2169](https://github.com/danielmiessler/Fabric/pull/2169) by [ksylvan](https://github.com/ksylvan): fix(core): route user input to the user message in BuildSession
+
+- Routed user input through user messages in `BuildSession`, ensuring every request ends with a user message for broader model compatibility.
+- Tracked explicit input placeholders instead of automatically appending input to the prompt.
+- Separated system instructions from user input so input is no longer duplicated.
+- Preserved raw mode input, attachment text, and multipart content during message construction.
+- Maintained pattern endpoint responses by appending input when necessary, with new regression tests for message routing and pattern substitution.
+
 ## v1.4.484 (2026-09-26)
 
 ### PR [#2069](https://github.com/danielmiessler/Fabric/pull/2069) by [1rashiid](https://github.com/1rashiid) and [ksylvan](https://github.com/ksylvan): feat(cli): add --workflow for sequential pattern composition
