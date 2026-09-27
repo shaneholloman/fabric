@@ -1,7 +1,6 @@
-### PR [#2147](https://github.com/danielmiessler/Fabric/pull/2147) by [medhwu](https://github.com/medhwu): feat: add Chinese AI vendors, i18n translation fixes, and 5 Chinese p…
+### PR [#2147](https://github.com/danielmiessler/Fabric/pull/2147) by [medhwu](https://github.com/medhwu): feat: add Chinese AI vendors, i18n translation fixes, and 5 Chinese patterns
 
-- Added three OpenAI-compatible Chinese AI vendor adapters: Aliyun DashScope (Tongyi Qianwen), Zhipu AI (bigmodel.cn/GLM), and ByteDance Ark (Doubao).
-- Added test coverage for all three new providers.
-- Improved Chinese i18n quality by unifying "provider" terminology to "供应商" across 24 entries.
-- Fixed remaining English "and" text and the "通知提供者" string in the Chinese translations.
-- Introduced five new Chinese patterns: article summary, contract review, poetry analysis, news translation, and code review.
+- Added OpenAI-compatible provider support for three Chinese AI vendors: Aliyun DashScope (Tongyi Qianwen), Zhipu AI (bigmodel.cn/GLM), and ByteDance Ark (Doubao).
+- Added test coverage for all three new Chinese AI vendor providers.
+- Improved Chinese (i18n) translation quality by unifying "provider" terminology across 24 entries and correcting residual English text.
+- Introduced five new Chinese-language patterns: article summarization, contract risk review, classical poetry analysis, English-to-Chinese news translation, and code review.
