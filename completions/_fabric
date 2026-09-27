@@ -72,6 +72,7 @@ _fabric() {
 
   _arguments -C \
     '(-p --pattern)'{-p,--pattern}'[Choose a pattern from the available patterns]:pattern:_fabric_patterns' \
+    '(--workflow)--workflow[Run a sequence of patterns defined in a YAML or JSON workflow file]:workflow file:_files -g "*.yaml *.yml *.json"' \
     '(-v --variable)'{-v,--variable}'[Values for pattern variables, e.g. -v=#role:expert -v=#points:30]:variable:' \
     '(-C --context)'{-C,--context}'[Choose a context from the available contexts]:context:_fabric_contexts' \
     '(--session)--session[Choose a session from the available sessions]:session:_fabric_sessions' \

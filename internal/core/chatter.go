@@ -274,7 +274,7 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 			return nil, fmt.Errorf(i18n.T("chatter_error_get_pattern"), request.PatternName, err)
 		}
 		patternContent = pattern.Pattern
-		inputUsed = true
+		inputUsed = pattern.InputUsed
 	}
 
 	systemMessage := joinPromptSections(contextContent, patternContent)
@@ -295,54 +295,33 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 		systemMessage = fmt.Sprintf(i18n.T("chatter_prompt_enforce_response_language"), systemMessage, request.Language)
 	}
 
-	if raw {
-		var finalContent string
-		if systemMessage != "" {
-			if request.PatternName != "" {
-				finalContent = systemMessage
-			} else {
-				finalContent = fmt.Sprintf("%s\n\n%s", systemMessage, request.Message.Content)
-			}
-
-			// Handle MultiContent properly in raw mode
-			if len(request.Message.MultiContent) > 0 {
-				// When we have attachments, add the text as a text part in MultiContent
-				newMultiContent := []chat.ChatMessagePart{
-					{
-						Type: chat.ChatMessagePartTypeText,
-						Text: finalContent,
-					},
-				}
-				// Add existing non-text parts (like images)
-				for _, part := range request.Message.MultiContent {
-					if part.Type != chat.ChatMessagePartTypeText {
-						newMultiContent = append(newMultiContent, part)
-					}
-				}
-				request.Message = &chat.ChatCompletionMessage{
-					Role:         chat.ChatMessageRoleUser,
-					MultiContent: newMultiContent,
-				}
-			} else {
-				// No attachments, use regular Content field
-				request.Message = &chat.ChatCompletionMessage{
-					Role:    chat.ChatMessageRoleUser,
-					Content: finalContent,
-				}
-			}
-		}
-		if request.Message != nil {
-			session.Append(request.Message)
-		}
-	} else {
+	// The request must end with a user message: some backends reject a
+	// request with system messages only. The input goes to the model one time.
+	msg := request.Message
+	hasInput := msg.Content != "" || len(msg.MultiContent) > 0
+	if !raw && !inputUsed && hasInput {
+		// The usual shape: instructions in the system message, input in the user message.
 		if systemMessage != "" {
 			session.Append(&chat.ChatCompletionMessage{Role: chat.ChatMessageRoleSystem, Content: systemMessage})
 		}
-		// If multi-part content, it is in the user message, and should be added.
-		// Otherwise, we should only add it if we have not already used it in the systemMessage.
-		if len(request.Message.MultiContent) > 0 || (request.Message != nil && !inputUsed) {
-			session.Append(request.Message)
+		session.Append(msg)
+	} else {
+		// Raw mode, a pattern that contains the input, or no input:
+		// send all of the text in one user message.
+		text := systemMessage
+		if !inputUsed {
+			text = joinPromptSections(systemMessage, msg.Content)
 		}
+		merged := &chat.ChatCompletionMessage{Role: chat.ChatMessageRoleUser, Content: text}
+		if len(msg.MultiContent) > 0 {
+			// Attachments: the text goes first, then the parts from the request.
+			merged.Content = ""
+			if text != "" {
+				merged.MultiContent = []chat.ChatMessagePart{{Type: chat.ChatMessagePartTypeText, Text: text}}
+			}
+			merged.MultiContent = append(merged.MultiContent, msg.MultiContent...)
+		}
+		session.Append(merged)
 	}
 
 	if session.IsEmpty() {

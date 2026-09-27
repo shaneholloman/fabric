@@ -27,6 +27,7 @@ import (
 
 type Flags struct {
 	Pattern                         string               `short:"p" long:"pattern" yaml:"pattern" description:"Choose a pattern from the available patterns" default:""`
+	Workflow                        string               `long:"workflow" description:"Run a sequence of patterns defined in a YAML or JSON workflow file" default:""`
 	PatternVariables                map[string]string    `short:"v" long:"variable" description:"Values for pattern variables, e.g. -v=#role:expert -v=#points:30"`
 	Context                         string               `short:"C" long:"context" description:"Choose a context from the available contexts" default:""`
 	Session                         string               `long:"session" description:"Choose a session from the available sessions"`
@@ -78,8 +79,8 @@ type Flags struct {
 	DryRun                          bool                 `long:"dry-run" description:"Show what would be sent to the model without actually sending it"`
 	Serve                           bool                 `long:"serve" description:"Serve the Fabric Rest API"`
 	ServeOllama                     bool                 `long:"serveOllama" description:"Serve the Fabric Rest API with ollama endpoints"`
-	ServeAddress                    string               `long:"address" description:"The address to bind the REST API" default:":8080"`
-	ServeAPIKey                     string               `long:"api-key" description:"API key used to secure server routes" default:""`
+	ServeAddress                    string               `long:"address" description:"The address to bind the REST API" default:"127.0.0.1:8080"`
+	ServeAPIKey                     string               `long:"api-key" env:"FABRIC_API_KEY" description:"API key used to secure server routes" default:""`
 	Config                          string               `long:"config" description:"Path to YAML config file"`
 	Version                         bool                 `long:"version" description:"Print current version"`
 	ListExtensions                  bool                 `long:"listextensions" description:"List all registered extensions"`
@@ -551,7 +552,7 @@ func (o *Flags) AppendMessage(message string) {
 }
 
 func (o *Flags) IsChatRequest() (ret bool) {
-	ret = o.Message != "" || len(o.Attachments) > 0 || o.Context != "" || o.Session != "" || o.Pattern != ""
+	ret = o.Message != "" || len(o.Attachments) > 0 || o.Context != "" || o.Session != "" || o.Pattern != "" || o.Workflow != ""
 	return
 }
 
