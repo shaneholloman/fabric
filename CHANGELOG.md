@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.493 (2026-09-29)
+
+### PR [#2236](https://github.com/danielmiessler/Fabric/pull/2236) by [ksylvan](https://github.com/ksylvan): chore: clarify comments and remove obsolete code examples across backend and web
+
+- Removed redundant comments across Go sources and Svelte components.
+- Clarified documentation for provider authentication, streaming, and model discovery.
+- Documented cache behavior, configuration precedence, and locale fallback rules.
+- Added notes on security safeguards, implementation limitations, and existing test boundaries.
+- Deleted obsolete commented-out code without altering runtime behavior.
+
 ## v1.4.492 (2026-09-29)
 
 ### PR [#2235](https://github.com/danielmiessler/Fabric/pull/2235) by [ksylvan](https://github.com/ksylvan): fix: honor configured yt-dlp arguments for REST API transcripts
