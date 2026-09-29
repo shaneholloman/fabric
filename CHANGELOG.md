@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.492 (2026-09-29)
+
+### PR [#2235](https://github.com/danielmiessler/Fabric/pull/2235) by [ksylvan](https://github.com/ksylvan): fix: honor configured yt-dlp arguments for REST API transcripts
+
+- Fixed the REST API so that configured yt-dlp arguments are honored for transcript requests.
+- Passed flag and configuration arguments through to the YouTube plugin.
+- Applied plugin arguments to both plain and timestamped transcripts.
+- Added server wiring tests to verify yt-dlp argument propagation.
+- Documented configuration support for the REST transcript endpoint.
+
 ## v1.4.491 (2026-09-29)
 
 ### PR [#2234](https://github.com/danielmiessler/Fabric/pull/2234) by [ksylvan](https://github.com/ksylvan): chore: update web dependencies and refresh npm and pnpm lockfiles
