@@ -75,19 +75,6 @@ func effortForBudget(tokens int64) anthropic.OutputConfigEffort {
 	}
 }
 
-// effortForLevel maps a named thinking level onto an effort level.
-func effortForLevel(level domain.ThinkingLevel) (anthropic.OutputConfigEffort, bool) {
-	switch level {
-	case domain.ThinkingLow:
-		return anthropic.OutputConfigEffortLow, true
-	case domain.ThinkingMedium:
-		return anthropic.OutputConfigEffortMedium, true
-	case domain.ThinkingHigh:
-		return anthropic.OutputConfigEffortHigh, true
-	}
-	return "", false
-}
-
 func NewClient() (ret *Client) {
 	vendorName := "Anthropic"
 	ret = &Client{}
@@ -206,6 +193,7 @@ func parseThinking(level domain.ThinkingLevel, model string) (
 
 	lower := strings.ToLower(string(level))
 	adaptive := modelUsesAdaptiveThinking(model)
+	adaptiveThinking := anthropic.ThinkingConfigParamUnion{OfAdaptive: &anthropic.ThinkingConfigAdaptiveParam{}}
 
 	switch domain.ThinkingLevel(lower) {
 	case domain.ThinkingOff:
@@ -214,25 +202,16 @@ func parseThinking(level domain.ThinkingLevel, model string) (
 		return anthropic.ThinkingConfigParamUnion{OfDisabled: &disabled}, "", true
 	case domain.ThinkingLow, domain.ThinkingMedium, domain.ThinkingHigh:
 		if adaptive {
-			if e, found := effortForLevel(domain.ThinkingLevel(lower)); found {
-				adaptiveParam := anthropic.ThinkingConfigAdaptiveParam{}
-				return anthropic.ThinkingConfigParamUnion{OfAdaptive: &adaptiveParam}, e, true
-			}
-			return anthropic.ThinkingConfigParamUnion{}, "", false
+			// Level names are the effort names.
+			return adaptiveThinking, anthropic.OutputConfigEffort(lower), true
 		}
-		if budget, found := domain.ThinkingBudgets[domain.ThinkingLevel(lower)]; found {
-			return anthropic.ThinkingConfigParamOfEnabled(budget), "", true
-		}
+		return anthropic.ThinkingConfigParamOfEnabled(domain.ThinkingBudgets[domain.ThinkingLevel(lower)]), "", true
 	default:
-		if tokens, err := strconv.ParseInt(lower, 10, 64); err == nil {
-			if tokens >= 1 && tokens <= 10000 {
-				if adaptive {
-					adaptiveParam := anthropic.ThinkingConfigAdaptiveParam{}
-					return anthropic.ThinkingConfigParamUnion{OfAdaptive: &adaptiveParam},
-						effortForBudget(tokens), true
-				}
-				return anthropic.ThinkingConfigParamOfEnabled(tokens), "", true
+		if tokens, err := strconv.ParseInt(lower, 10, 64); err == nil && tokens >= 1 && tokens <= 10000 {
+			if adaptive {
+				return adaptiveThinking, effortForBudget(tokens), true
 			}
+			return anthropic.ThinkingConfigParamOfEnabled(tokens), "", true
 		}
 	}
 	return anthropic.ThinkingConfigParamUnion{}, "", false
@@ -346,9 +325,7 @@ func (an *Client) buildMessageParams(msgs []anthropic.MessageParam, opts *domain
 
 	if t, effort, ok := parseThinking(opts.Thinking, opts.Model); ok {
 		params.Thinking = t
-		if effort != "" {
-			params.OutputConfig.Effort = effort
-		}
+		params.OutputConfig.Effort = effort
 	}
 
 	return

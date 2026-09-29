@@ -507,42 +507,27 @@ func TestParseThinking_NumericBudgetBucketsToEffortOnAdaptiveModel(t *testing.T)
 	}
 }
 
-func TestBuildMessageParams_AdaptiveModelSetsOutputConfigEffort(t *testing.T) {
-	client := NewClient()
-	opts := &domain.ChatOptions{
-		Model:    string(anthropic.ModelClaudeSonnet5),
-		Thinking: domain.ThinkingMedium,
-	}
-	messages := []anthropic.MessageParam{
-		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello")),
-	}
-
-	params := client.buildMessageParams(messages, opts)
-
-	if params.Thinking.OfAdaptive == nil {
-		t.Error("expected adaptive thinking config on the request")
-	}
-	if params.OutputConfig.Effort != anthropic.OutputConfigEffortMedium {
-		t.Errorf("expected output_config.effort=medium, got %q", params.OutputConfig.Effort)
-	}
-}
-
-func TestBuildMessageParams_LegacyModelLeavesOutputConfigEmpty(t *testing.T) {
-	client := NewClient()
-	opts := &domain.ChatOptions{
-		Model:    string(anthropic.ModelClaudeOpus4_7),
-		Thinking: domain.ThinkingMedium,
-	}
-	messages := []anthropic.MessageParam{
-		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello")),
-	}
-
-	params := client.buildMessageParams(messages, opts)
-
-	if params.Thinking.OfEnabled == nil {
-		t.Error("expected legacy budget_tokens thinking config on the request")
-	}
-	if params.OutputConfig.Effort != "" {
-		t.Errorf("output_config.effort must stay empty for a legacy model, got %q", params.OutputConfig.Effort)
+func TestBuildMessageParams_ThinkingShapeFollowsModel(t *testing.T) {
+	for _, tc := range []struct {
+		model        anthropic.Model
+		wantAdaptive bool
+		wantEffort   anthropic.OutputConfigEffort
+	}{
+		{anthropic.ModelClaudeSonnet5, true, anthropic.OutputConfigEffortMedium},
+		{anthropic.ModelClaudeOpus4_7, false, ""},
+	} {
+		params := NewClient().buildMessageParams(
+			[]anthropic.MessageParam{anthropic.NewUserMessage(anthropic.NewTextBlock("Hello"))},
+			&domain.ChatOptions{Model: string(tc.model), Thinking: domain.ThinkingMedium},
+		)
+		if got := params.Thinking.OfAdaptive != nil; got != tc.wantAdaptive {
+			t.Errorf("model %s: adaptive=%v, want %v", tc.model, got, tc.wantAdaptive)
+		}
+		if got := params.Thinking.OfEnabled != nil; got == tc.wantAdaptive {
+			t.Errorf("model %s: budget_tokens set=%v, want %v", tc.model, got, !tc.wantAdaptive)
+		}
+		if params.OutputConfig.Effort != tc.wantEffort {
+			t.Errorf("model %s: effort=%q, want %q", tc.model, params.OutputConfig.Effort, tc.wantEffort)
+		}
 	}
 }
