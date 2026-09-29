@@ -1,0 +1,5 @@
+### PR [#2106](https://github.com/danielmiessler/Fabric/pull/2106) by [FuturMix](https://github.com/FuturMix): feat: add FuturMix as OpenAI-compatible provider
+
+- Added FuturMix as a new OpenAI-compatible provider.
+- Added a test case covering the FuturMix provider.
+- Removed the GitHub provider again after the merge with `main`.
