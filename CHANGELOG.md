@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.490 (2026-09-29)
+
+### PR [#2106](https://github.com/danielmiessler/Fabric/pull/2106) by [FuturMix](https://github.com/FuturMix): feat: add FuturMix as OpenAI-compatible provider
+
+- Added FuturMix as a new OpenAI-compatible provider.
+- Added a test case covering the FuturMix provider.
+
 ## v1.4.489 (2026-09-29)
 
 ### PR [#2189](https://github.com/danielmiessler/Fabric/pull/2189) by [dependabot](https://github.com/apps/dependabot): build(deps): bump nanoid from 5.0.9 to 5.1.16 in /web in the npm_and_yarn group across 1 directory
