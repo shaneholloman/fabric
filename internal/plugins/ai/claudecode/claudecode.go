@@ -87,10 +87,10 @@ func (c *Client) SendStream(ctx context.Context, msgs []*chat.ChatCompletionMess
 	return nil
 }
 
-// command builds the claude invocation. System messages go to --system-prompt,
-// all other messages go to stdin. If all messages are system messages, that text
-// becomes the prompt instead. When opts.ImageFile
-// is set, the directory is exposed via --add-dir so the Read tool can access it.
+// command builds the claude invocation. System messages go to --system-prompt.
+// All other messages go to stdin. If every message is a system message, that
+// text becomes the prompt. Image attachments and opts.ImageFile add their
+// directories with --add-dir so the Read tool can open them.
 func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, extra ...string) (*exec.Cmd, error) {
 	var system, prompt []string
 	for _, m := range msgs {
@@ -119,14 +119,13 @@ func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *doma
 	case domain.ThinkingLow, domain.ThinkingMedium, domain.ThinkingHigh:
 		args = append(args, "--effort", string(opts.Thinking))
 	}
-	// Collect directories from image attachments and explicit ImageFile
 	dirs := make(map[string]bool)
 	tmpDir := filepath.Join(os.TempDir(), "claudecode")
 	for _, m := range msgs {
 		for _, p := range m.MultiContent {
 			if p.Type == chat.ChatMessagePartTypeImageURL && p.ImageURL != nil && p.ImageURL.URL != "" {
 				url := p.ImageURL.URL
-				// Base64 images from -a are written to temp files
+				// The -a flag sends a local image as a data: URL. Write it to a temp file.
 				if strings.HasPrefix(url, "data:") {
 					tmpFile, err := decodeDataURL(url, tmpDir)
 					if err == nil {
@@ -134,7 +133,6 @@ func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *doma
 						prompt = append(prompt, "Please analyze the file at: "+filepath.Base(tmpFile))
 					}
 				} else if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
-					// Local file paths become references
 					dir := filepath.Dir(url)
 					if dir != "" && dir != "." {
 						dirs[dir] = true
@@ -146,7 +144,6 @@ func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *doma
 	}
 	if opts.ImageFile != "" {
 		imagePath := opts.ImageFile
-		// Expand ~ to home directory
 		if strings.HasPrefix(imagePath, "~/") {
 			if u, err := user.Current(); err == nil {
 				imagePath = filepath.Join(u.HomeDir, imagePath[2:])
@@ -165,7 +162,7 @@ func command(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *doma
 	return cmd, nil
 }
 
-// text returns the message text. Image attachments are handled separately via decodeDataURL.
+// text joins the message content and its text parts. command handles image parts.
 func text(m *chat.ChatCompletionMessage) (string, error) {
 	parts := []string{m.Content}
 	for _, p := range m.MultiContent {
@@ -190,7 +187,6 @@ func decodeDataURL(dataURL string, tmpDir string) (string, error) {
 		return "", fmt.Errorf("invalid data URL format")
 	}
 
-	// Extract MIME type to guess file extension
 	header := parts[0]
 	ext := ".jpg"
 	if strings.Contains(header, "image/png") {
@@ -201,18 +197,15 @@ func decodeDataURL(dataURL string, tmpDir string) (string, error) {
 		ext = ".webp"
 	}
 
-	// Decode base64
 	data, err := base64.StdEncoding.DecodeString(parts[1])
 	if err != nil {
 		return "", err
 	}
 
-	// Create temp dir if needed
 	if err := os.MkdirAll(tmpDir, 0700); err != nil {
 		return "", err
 	}
 
-	// Write to temp file
 	tmpFile := filepath.Join(tmpDir, fmt.Sprintf("image_%d%s", os.Getpid(), ext))
 	if err := os.WriteFile(tmpFile, data, 0600); err != nil {
 		return "", err
