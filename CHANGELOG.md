@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.491 (2026-09-29)
+
+### PR [#2234](https://github.com/danielmiessler/Fabric/pull/2234) by [ksylvan](https://github.com/ksylvan): chore: update web dependencies and refresh npm and pnpm lockfiles
+
+- Upgraded Svelte to 5.57.1 and SvelteKit to 2.70.3.
+- Bumped Vite to 8.3.1 and Vitest to 4.1.11.
+- Updated Skeleton to 5.0.1 and Zag to 1.43.0.
+- Upgraded TypeScript ESLint, Svelte linting, and formatting tools.
+- Refreshed both lockfiles, updated Rolldown bindings, and removed WebAssembly runtime dependencies.
+
 ## v1.4.490 (2026-09-29)
 
 ### PR [#2106](https://github.com/danielmiessler/Fabric/pull/2106) by [FuturMix](https://github.com/FuturMix): feat: add FuturMix as OpenAI-compatible provider
