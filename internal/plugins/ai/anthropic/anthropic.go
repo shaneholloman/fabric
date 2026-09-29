@@ -6,6 +6,7 @@ import (
 	neturl "net/url"
 	"os"
 	"path"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -24,6 +25,56 @@ const webSearchToolName = "web_search"
 const webSearchToolType = "web_search_20250305"
 const sourcesHeader = "## Sources"
 
+// These models reject non-default sampling parameters.
+// Omit these params entirely for safest compatibility.
+var samplingParamsDisallowedPrefixes = []string{
+	"claude-opus-4-7",
+	"claude-opus-4-8",
+	"claude-opus-5",
+	"claude-sonnet-5",
+	"claude-fable-5",
+}
+
+func modelDisallowsSamplingParams(model string) bool {
+	return slices.ContainsFunc(samplingParamsDisallowedPrefixes, func(prefix string) bool {
+		return strings.HasPrefix(model, prefix)
+	})
+}
+
+// These models reject the legacy `thinking.type=enabled` + `budget_tokens`
+// shape and require `thinking.type=adaptive` with `output_config.effort`.
+// Sending the legacy shape to one of them fails the request outright:
+//
+//	"thinking.type.enabled" is not supported for this model.
+//	Use "thinking.type.adaptive" and "output_config.effort" to control
+//	thinking behavior.
+var adaptiveThinkingPrefixes = []string{
+	"claude-opus-5",
+	"claude-sonnet-5",
+	"claude-fable-5",
+}
+
+func modelUsesAdaptiveThinking(model string) bool {
+	return slices.ContainsFunc(adaptiveThinkingPrefixes, func(prefix string) bool {
+		return strings.HasPrefix(model, prefix)
+	})
+}
+
+// effortForBudget buckets an explicit token budget onto the nearest effort
+// level, so a numeric --thinking value keeps working on adaptive-only models
+// (which have no budget_tokens concept). Thresholds are the same constants the
+// named levels use, so `--thinking=2048` and `--thinking=medium` agree.
+func effortForBudget(tokens int64) anthropic.OutputConfigEffort {
+	switch {
+	case tokens <= domain.TokenBudgetLow:
+		return anthropic.OutputConfigEffortLow
+	case tokens <= domain.TokenBudgetMedium:
+		return anthropic.OutputConfigEffortMedium
+	default:
+		return anthropic.OutputConfigEffortHigh
+	}
+}
+
 func NewClient() (ret *Client) {
 	vendorName := "Anthropic"
 	ret = &Client{}
@@ -38,6 +89,11 @@ func NewClient() (ret *Client) {
 	ret.defaultRequiredUserMessage = "Hi"
 	ret.models = []string{
 		// The following are the current supported models
+		string(anthropic.ModelClaudeOpus5_5),
+		string(anthropic.ModelClaudeFable5),
+		string(anthropic.ModelClaudeSonnet5),
+		string(anthropic.ModelClaudeOpus5),
+		string(anthropic.ModelClaudeOpus4_8),
 		string(anthropic.ModelClaudeOpus4_7),
 		string(anthropic.ModelClaudeSonnet4_6),
 		string(anthropic.ModelClaudeOpus4_6),
@@ -45,38 +101,37 @@ func NewClient() (ret *Client) {
 		string(anthropic.ModelClaudeOpus4_5),
 		string(anthropic.ModelClaudeHaiku4_5),
 		string(anthropic.ModelClaudeHaiku4_5_20251001),
-		string(anthropic.ModelClaudeSonnet4_20250514),
-		string(anthropic.ModelClaudeSonnet4_0),
 		string(anthropic.ModelClaudeSonnet4_5),
 		string(anthropic.ModelClaudeSonnet4_5_20250929),
-		string(anthropic.ModelClaudeOpus4_0),
-		string(anthropic.ModelClaudeOpus4_20250514),
-		string(anthropic.ModelClaudeOpus4_1_20250805),
 	}
 
+	// context1M is the beta header historically required to opt into the
+	// 1-million token context window. On current models 1M is the DEFAULT and
+	// no header is needed; we still send it defensively (Send/SendStream retry
+	// without it if a model rejects it), so only models with a genuine 1M
+	// window belong here.
+	//
+	// Verified against
+	// https://platform.claude.com/docs/en/build-with-claude/context-windows#context-window-sizes-by-model
+	// Excluded because they are 200K-context models: Sonnet 4.5, Opus 4.5,
+	// Opus 4.1, and Haiku 4.5.
+	//
+	// Kept separate from the main model list for easier updates.
+	const context1M = "context-1m-2025-08-07"
 	ret.modelBetas = map[string][]string{
-		// See https://platform.claude.com/docs/en/build-with-claude/context-windows#1-m-token-context-window
-		// Claude Opus 4.7, Opus 4.6, Sonnet 4.6, Sonnet 4.5, and Sonnet 4 support a 1-million token context window.
+		// Claude 5 family
+		string(anthropic.ModelClaudeOpus5_5): {context1M},
+		string(anthropic.ModelClaudeFable5):  {context1M},
+		string(anthropic.ModelClaudeOpus5):   {context1M},
+		string(anthropic.ModelClaudeSonnet5): {context1M},
 
-		// This list can change over time as Anthropic updates their models and beta features, so we maintain it separately from the main model list
-		// for easier updates.
+		// Claude Opus 4.x (1M-capable)
+		string(anthropic.ModelClaudeOpus4_8): {context1M},
+		string(anthropic.ModelClaudeOpus4_7): {context1M},
+		string(anthropic.ModelClaudeOpus4_6): {context1M},
 
-		// Claude Sonnet 4 variants (1M context support)
-		string(anthropic.ModelClaudeSonnet4_20250514): {"context-1m-2025-08-07"},
-		string(anthropic.ModelClaudeSonnet4_0):        {"context-1m-2025-08-07"},
-
-		// Claude Sonnet 4.5 variants (1M context support)
-		string(anthropic.ModelClaudeSonnet4_5):          {"context-1m-2025-08-07"},
-		string(anthropic.ModelClaudeSonnet4_5_20250929): {"context-1m-2025-08-07"},
-
-		// Claude Sonnet 4.6 (1M context support)
-		string(anthropic.ModelClaudeSonnet4_6): {"context-1m-2025-08-07"},
-
-		// Claude Opus 4.5, 4.6, and 4.7 variants (1M context support)
-		string(anthropic.ModelClaudeOpus4_5):          {"context-1m-2025-08-07"},
-		string(anthropic.ModelClaudeOpus4_6):          {"context-1m-2025-08-07"},
-		string(anthropic.ModelClaudeOpus4_7):          {"context-1m-2025-08-07"},
-		string(anthropic.ModelClaudeOpus4_5_20251101): {"context-1m-2025-08-07"},
+		// Claude Sonnet 4.x (1M-capable)
+		string(anthropic.ModelClaudeSonnet4_6): {context1M},
 	}
 
 	return
@@ -131,24 +186,37 @@ func (an *Client) ListModels(context.Context) (ret []string, err error) {
 	return an.models, nil
 }
 
-func parseThinking(level domain.ThinkingLevel) (anthropic.ThinkingConfigParamUnion, bool) {
+// parseThinking translates a thinking level into the request shape the given
+// model accepts. `effort` is non-empty only for adaptive-thinking models, in
+// which case the caller must also set params.OutputConfig.Effort -- adaptive
+// carries no budget, so effort is where the level actually lands.
+func parseThinking(level domain.ThinkingLevel, model string) (
+	thinking anthropic.ThinkingConfigParamUnion, effort anthropic.OutputConfigEffort, ok bool) {
+
 	lower := strings.ToLower(string(level))
+	adaptive := modelUsesAdaptiveThinking(model)
+	adaptiveThinking := anthropic.ThinkingConfigParamUnion{OfAdaptive: &anthropic.ThinkingConfigAdaptiveParam{}}
+
 	switch domain.ThinkingLevel(lower) {
 	case domain.ThinkingOff:
+		// `disabled` is accepted by both generations, so it needs no branch.
 		disabled := anthropic.NewThinkingConfigDisabledParam()
-		return anthropic.ThinkingConfigParamUnion{OfDisabled: &disabled}, true
+		return anthropic.ThinkingConfigParamUnion{OfDisabled: &disabled}, "", true
 	case domain.ThinkingLow, domain.ThinkingMedium, domain.ThinkingHigh:
-		if budget, ok := domain.ThinkingBudgets[domain.ThinkingLevel(lower)]; ok {
-			return anthropic.ThinkingConfigParamOfEnabled(budget), true
+		if adaptive {
+			// Level names are the effort names.
+			return adaptiveThinking, anthropic.OutputConfigEffort(lower), true
 		}
+		return anthropic.ThinkingConfigParamOfEnabled(domain.ThinkingBudgets[domain.ThinkingLevel(lower)]), "", true
 	default:
-		if tokens, err := strconv.ParseInt(lower, 10, 64); err == nil {
-			if tokens >= 1 && tokens <= 10000 {
-				return anthropic.ThinkingConfigParamOfEnabled(tokens), true
+		if tokens, err := strconv.ParseInt(lower, 10, 64); err == nil && tokens >= 1 && tokens <= 10000 {
+			if adaptive {
+				return adaptiveThinking, effortForBudget(tokens), true
 			}
+			return anthropic.ThinkingConfigParamOfEnabled(tokens), "", true
 		}
 	}
-	return anthropic.ThinkingConfigParamUnion{}, false
+	return anthropic.ThinkingConfigParamUnion{}, "", false
 }
 
 func (an *Client) SendStream(
@@ -216,15 +284,21 @@ func (an *Client) SendStream(
 func (an *Client) buildMessageParams(msgs []anthropic.MessageParam, opts *domain.ChatOptions) (
 	params anthropic.MessageNewParams) {
 
+	maxTokens := an.maxTokens
+	if opts.MaxTokens > 0 {
+		maxTokens = opts.MaxTokens
+	}
+
 	params = anthropic.MessageNewParams{
 		Model:     anthropic.Model(opts.Model),
-		MaxTokens: int64(an.maxTokens),
+		MaxTokens: int64(maxTokens),
 		Messages:  msgs,
 	}
 
-	// Only set one of Temperature or TopP as some models don't allow both
-	// Always set temperature to ensure consistent behavior (Anthropic default is 1.0, Fabric default is 0.7)
-	if opts.TopP != domain.DefaultTopP {
+	// Claude Opus 4.7 disallows sampling params; omit both temperature and top_p.
+	if modelDisallowsSamplingParams(opts.Model) {
+		// Intentionally omit both fields.
+	} else if opts.TopP != domain.DefaultTopP {
 		// User explicitly set TopP, so use that instead of temperature
 		params.TopP = anthropic.Opt(opts.TopP)
 	} else {
@@ -251,8 +325,9 @@ func (an *Client) buildMessageParams(msgs []anthropic.MessageParam, opts *domain
 		}
 	}
 
-	if t, ok := parseThinking(opts.Thinking); ok {
+	if t, effort, ok := parseThinking(opts.Thinking, opts.Model); ok {
 		params.Thinking = t
+		params.OutputConfig.Effort = effort
 	}
 
 	return

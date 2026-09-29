@@ -27,6 +27,7 @@ var flagDescriptionMap = map[string]string{
 	"raw":                        "use_model_defaults_raw_help",
 	"frequencypenalty":           "set_frequency_penalty",
 	"listpatterns":               "list_all_patterns",
+	"readpattern":                "print_pattern_contents",
 	"listmodels":                 "list_all_available_models",
 	"listcontexts":               "list_all_contexts",
 	"listsessions":               "list_all_sessions",
@@ -37,6 +38,8 @@ var flagDescriptionMap = map[string]string{
 	"modelContextLength":         "model_context_length_ollama",
 	"output":                     "output_to_file",
 	"output-session":             "output_entire_session",
+	"extract":                    "extract_first_code_block",
+	"extract-last":               "extract_last_code_block",
 	"latest":                     "number_of_latest_patterns",
 	"changeDefaultModel":         "change_default_model",
 	"youtube":                    "youtube_url_help",
@@ -49,6 +52,7 @@ var flagDescriptionMap = map[string]string{
 	"comments":                   "grab_comments_from_youtube",
 	"metadata":                   "output_video_metadata",
 	"yt-dlp-args":                "additional_yt_dlp_args",
+	"spotify":                    "spotify_url_help",
 	"language":                   "specify_language_code",
 	"scrape_url":                 "scrape_website_url",
 	"scrape_question":            "search_question_jina",
@@ -94,6 +98,7 @@ var flagDescriptionMap = map[string]string{
 	"notification":               "send_desktop_notification",
 	"notification-command":       "custom_notification_command",
 	"thinking":                   "set_reasoning_thinking_level",
+	"show-metadata":              "print_metadata_to_stderr",
 	"debug":                      "set_debug_level",
 }
 
@@ -142,8 +147,7 @@ func (h *TranslatedHelpWriter) getTranslatedDescription(flagName string) string 
 func (h *TranslatedHelpWriter) getOriginalDescription(flagName string) string {
 	flagsType := reflect.TypeFor[Flags]()
 
-	for i := 0; i < flagsType.NumField(); i++ {
-		field := flagsType.Field(i)
+	for field := range flagsType.Fields() {
 		longTag := field.Tag.Get("long")
 
 		if longTag == flagName {
@@ -222,9 +226,7 @@ func (h *TranslatedHelpWriter) writeAllFlags() {
 	// Use direct reflection on the Flags struct to get all flag definitions
 	flagsType := reflect.TypeFor[Flags]()
 
-	for i := 0; i < flagsType.NumField(); i++ {
-		field := flagsType.Field(i)
-
+	for field := range flagsType.Fields() {
 		shortTag := field.Tag.Get("short")
 		longTag := field.Tag.Get("long")
 		defaultTag := field.Tag.Get("default")
@@ -258,7 +260,8 @@ func (h *TranslatedHelpWriter) writeAllFlags() {
 			strings.HasSuffix(longTag, "voices") ||
 			longTag == "setup" || longTag == "stream" || longTag == "raw" ||
 			longTag == "copy" || longTag == "updatepatterns" ||
-			longTag == "output-session" || longTag == "changeDefaultModel" ||
+			longTag == "output-session" || longTag == "extract" ||
+			longTag == "extract-last" || longTag == "changeDefaultModel" ||
 			longTag == "playlist" || longTag == "transcript" ||
 			longTag == "transcript-with-timestamps" || longTag == "comments" ||
 			longTag == "metadata" || longTag == "readability" ||

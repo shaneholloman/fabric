@@ -24,6 +24,9 @@ type Pattern struct {
 	Name        string
 	Description string
 	Pattern     string
+	// InputUsed is true when the pattern had an {{input}} placeholder,
+	// so Pattern contains the input.
+	InputUsed bool `json:"-"`
 }
 
 // GetApplyVariables main entry point for getting patterns from any source
@@ -55,14 +58,18 @@ func (o *PatternsEntity) GetRaw(name string) (*Pattern, error) {
 	return o.getFromDB(name)
 }
 
-func (o *PatternsEntity) loadPattern(source string) (pattern *Pattern, err error) {
-	// Determine if this is a file path
-	isFilePath := strings.HasPrefix(source, "\\") ||
+// LooksLikePatternFilePath reports whether loadPattern uses source as a
+// filesystem path. HTTP handlers must reject these names to keep the
+// CLI file-path feature out of the REST API.
+func LooksLikePatternFilePath(source string) bool {
+	return strings.HasPrefix(source, "\\") ||
 		strings.HasPrefix(source, "/") ||
 		strings.HasPrefix(source, "~") ||
 		strings.HasPrefix(source, ".")
+}
 
-	if isFilePath {
+func (o *PatternsEntity) loadPattern(source string) (pattern *Pattern, err error) {
+	if LooksLikePatternFilePath(source) {
 		// Resolve the file path using GetAbsolutePath
 		var absPath string
 		if absPath, err = util.GetAbsolutePath(source); err != nil {
@@ -81,24 +88,15 @@ func (o *PatternsEntity) loadPattern(source string) (pattern *Pattern, err error
 	return
 }
 
-func (o *PatternsEntity) ensureInput(pattern *Pattern) {
-	if !strings.Contains(pattern.Pattern, "{{input}}") {
-		if !strings.HasSuffix(pattern.Pattern, "\n") {
-			pattern.Pattern += "\n"
-		}
-		pattern.Pattern += "{{input}}"
-	}
-}
-
 func (o *PatternsEntity) applyInput(pattern *Pattern, input string) {
-	o.ensureInput(pattern)
+	pattern.InputUsed = strings.Contains(pattern.Pattern, "{{input}}")
 	pattern.Pattern = strings.ReplaceAll(pattern.Pattern, "{{input}}", input)
 }
 
 func (o *PatternsEntity) applyVariables(
 	pattern *Pattern, variables map[string]string, input string) (err error) {
 
-	o.ensureInput(pattern)
+	pattern.InputUsed = strings.Contains(pattern.Pattern, "{{input}}")
 
 	// Temporarily replace {{input}} with a sentinel token to protect it
 	// from recursive variable resolution
@@ -119,6 +117,15 @@ func (o *PatternsEntity) applyVariables(
 
 // retrieves a pattern from the database by name
 func (o *PatternsEntity) getFromDB(name string) (ret *Pattern, err error) {
+	if ValidateStorageName(name) != nil {
+		// The typed error lets an HTTP route without a pre-validation
+		// guard map this rejection to 400, not 500.
+		return nil, &InvalidStorageNameError{
+			Name:    name,
+			Message: fmt.Sprintf(i18n.T("pattern_invalid_name"), name),
+		}
+	}
+
 	// First check custom patterns directory if it exists
 	if o.CustomPatternsDir != "" {
 		customPatternPath := filepath.Join(o.CustomPatternsDir, name, o.SystemPatternFile)
@@ -279,13 +286,45 @@ func (o *PatternsEntity) Get(name string) (*Pattern, error) {
 	return o.GetApplyVariables(name, nil, "")
 }
 func (o *PatternsEntity) Save(name string, content []byte) (err error) {
-	patternDir := filepath.Join(o.Dir, name)
+	// Do not store a name that loadPattern uses as a file path, for
+	// example ".foo" or "~bar". For such a name, GetApplyVariables reads
+	// from the filesystem, not from the database.
+	if LooksLikePatternFilePath(name) {
+		return &InvalidStorageNameError{
+			Name:    name,
+			Message: fmt.Sprintf(i18n.T("pattern_invalid_name"), name),
+		}
+	}
+	var patternDir string
+	if patternDir, err = o.resolvedPath(name); err != nil {
+		return
+	}
 	if err = os.MkdirAll(patternDir, os.ModePerm); err != nil {
 		return fmt.Errorf(i18n.T("patterns_error_create_directory"), err)
 	}
 	patternPath := filepath.Join(patternDir, o.SystemPatternFile)
+	// The pattern file can be a symlink that already exists. Do not
+	// write through a symlink that goes out of the pattern directory.
+	if err = symlinkContained(patternDir, patternPath, name); err != nil {
+		return err
+	}
 	if err = os.WriteFile(patternPath, content, 0644); err != nil {
 		return fmt.Errorf(i18n.T("patterns_error_save_pattern"), err)
 	}
 	return nil
+}
+
+// Rename applies the file-path guard from Save to the destination name.
+// Without the guard, the inherited StorageEntity.Rename accepts ".foo"
+// or "~foo", and loadPattern then reads these names from the
+// filesystem. A path-like source stays permitted, which lets you rename
+// a legacy entry to a valid name.
+func (o *PatternsEntity) Rename(oldName, newName string) error {
+	if LooksLikePatternFilePath(newName) {
+		return &InvalidStorageNameError{
+			Name:    newName,
+			Message: fmt.Sprintf(i18n.T("pattern_invalid_name"), newName),
+		}
+	}
+	return o.StorageEntity.Rename(oldName, newName)
 }

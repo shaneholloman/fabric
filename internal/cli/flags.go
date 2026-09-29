@@ -27,6 +27,7 @@ import (
 
 type Flags struct {
 	Pattern                         string               `short:"p" long:"pattern" yaml:"pattern" description:"Choose a pattern from the available patterns" default:""`
+	Workflow                        string               `long:"workflow" description:"Run a sequence of patterns defined in a YAML or JSON workflow file" default:""`
 	PatternVariables                map[string]string    `short:"v" long:"variable" description:"Values for pattern variables, e.g. -v=#role:expert -v=#points:30"`
 	Context                         string               `short:"C" long:"context" description:"Choose a context from the available contexts" default:""`
 	Session                         string               `long:"session" description:"Choose a session from the available sessions"`
@@ -49,17 +50,20 @@ type Flags struct {
 	Model                           string               `short:"m" long:"model" yaml:"model" description:"Choose model"`
 	Vendor                          string               `short:"V" long:"vendor" yaml:"vendor" description:"Specify vendor for the selected model (e.g., -V \"LM Studio\" -m openai/gpt-oss-20b)"`
 	ModelContextLength              int                  `long:"modelContextLength" yaml:"modelContextLength" description:"Model context length (only affects ollama)"`
+	MaxTokens                       int                  `long:"maxTokens" yaml:"maxTokens" description:"Maximum tokens the model may generate, including reasoning/thinking tokens (0 = vendor default)"`
 	Output                          string               `short:"o" long:"output" description:"Output to file" default:""`
 	OutputSession                   bool                 `long:"output-session" description:"Output the entire session (also a temporary one) to the output file"`
+	Extract                         bool                 `long:"extract" description:"Output only the first fenced code block from the response (full response if none is found)"`
+	ExtractLast                     bool                 `long:"extract-last" description:"Output only the last fenced code block from the response (full response if none is found)"`
 	LatestPatterns                  string               `short:"n" long:"latest" description:"Number of latest patterns to list" default:"0"`
 	ChangeDefaultModel              bool                 `short:"d" long:"changeDefaultModel" description:"Change default model"`
 	YouTube                         string               `short:"y" long:"youtube" description:"YouTube video or play list \"URL\" to grab transcript, comments from it and send to chat or print it put to the console and store it in the output file"`
 	YouTubePlaylist                 bool                 `long:"playlist" description:"Prefer playlist over video if both ids are present in the URL"`
 	YouTubeTranscript               bool                 `long:"transcript" description:"Grab transcript from YouTube video and send to chat (it is used per default)."`
 	YouTubeTranscriptWithTimestamps bool                 `long:"transcript-with-timestamps" description:"Grab transcript from YouTube video with timestamps and send to chat"`
-	YouTubeVisual                   bool                 `long:"visual"`
-	YouTubeVisualSensitivity        float64              `long:"visual-sensitivity" default:"0.4"`
-	YouTubeVisualFps                int                  `long:"visual-fps" default:"0"`
+	YouTubeVisual                   bool                 `long:"visual" description:"Extract visual data from video using OCR and FFmpeg"`
+	YouTubeVisualSensitivity        float64              `long:"visual-sensitivity" description:"Tolerance for FFmpeg scene detection (0.0 - 1.0)" default:"0.4"`
+	YouTubeVisualFps                int                  `long:"visual-fps" description:"Extract a specific number of frames per second instead of using scene detection" default:"0"`
 	YouTubeComments                 bool                 `long:"comments" description:"Grab comments from YouTube video and send to chat"`
 	YouTubeMetadata                 bool                 `long:"metadata" description:"Output video metadata"`
 	YtDlpArgs                       string               `long:"yt-dlp-args" yaml:"ytDlpArgs" description:"Additional arguments to pass to yt-dlp (e.g. '--cookies-from-browser brave')"`
@@ -78,8 +82,8 @@ type Flags struct {
 	DryRun                          bool                 `long:"dry-run" description:"Show what would be sent to the model without actually sending it"`
 	Serve                           bool                 `long:"serve" description:"Serve the Fabric Rest API"`
 	ServeOllama                     bool                 `long:"serveOllama" description:"Serve the Fabric Rest API with ollama endpoints"`
-	ServeAddress                    string               `long:"address" description:"The address to bind the REST API" default:":8080"`
-	ServeAPIKey                     string               `long:"api-key" description:"API key used to secure server routes" default:""`
+	ServeAddress                    string               `long:"address" description:"The address to bind the REST API" default:"127.0.0.1:8080"`
+	ServeAPIKey                     string               `long:"api-key" env:"FABRIC_API_KEY" description:"API key used to secure server routes" default:""`
 	Config                          string               `long:"config" description:"Path to YAML config file"`
 	Version                         bool                 `long:"version" description:"Print current version"`
 	ListExtensions                  bool                 `long:"listextensions" description:"List all registered extensions"`
@@ -109,7 +113,7 @@ type Flags struct {
 	Notification                    bool                 `long:"notification" yaml:"notification" description:"Send desktop notification when command completes"`
 	NotificationCommand             string               `long:"notification-command" yaml:"notificationCommand" description:"Custom command to run for notifications (overrides built-in notifications)"`
 	Thinking                        domain.ThinkingLevel `long:"thinking" yaml:"thinking" description:"Set reasoning/thinking level (e.g., off, low, medium, high, or numeric tokens for Anthropic or Google Gemini)"`
-	ShowMetadata                    bool                 `long:"show-metadata" description:"Print metadata to stderr"`
+	ShowMetadata                    bool                 `long:"show-metadata" description:"Print metadata (input/output tokens) to stderr"`
 	Debug                           int                  `long:"debug" description:"Set debug level (0=off, 1=basic, 2=detailed, 3=trace, 4=wire)" default:"0"`
 }
 
@@ -123,8 +127,7 @@ func Init() (ret *Flags, err error) {
 	// Create mapping from flag names (both short and long) to yaml tag names
 	flagToYamlTag := make(map[string]string)
 	t := reflect.TypeFor[Flags]()
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
+	for field := range t.Fields() {
 		yamlTag := field.Tag.Get("yaml")
 		if yamlTag != "" {
 			longTag := field.Tag.Get("long")
@@ -462,6 +465,7 @@ func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
 		Seed:                o.Seed,
 		Thinking:            o.Thinking,
 		ModelContextLength:  o.ModelContextLength,
+		MaxTokens:           o.MaxTokens,
 		Search:              o.Search,
 		SearchLocation:      o.SearchLocation,
 		ImageFile:           o.ImageFile,
@@ -470,6 +474,7 @@ func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
 		ImageCompression:    o.ImageCompression,
 		ImageBackground:     o.ImageBackground,
 		SuppressThink:       o.SuppressThink,
+		BufferStream:        o.Extract || o.ExtractLast,
 		ThinkStartTag:       startTag,
 		ThinkEndTag:         endTag,
 		Voice:               o.Voice,
@@ -552,7 +557,7 @@ func (o *Flags) AppendMessage(message string) {
 }
 
 func (o *Flags) IsChatRequest() (ret bool) {
-	ret = o.Message != "" || len(o.Attachments) > 0 || o.Context != "" || o.Session != "" || o.Pattern != ""
+	ret = o.Message != "" || len(o.Attachments) > 0 || o.Context != "" || o.Session != "" || o.Pattern != "" || o.Workflow != ""
 	return
 }
 

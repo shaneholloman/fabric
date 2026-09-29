@@ -206,14 +206,9 @@ func (c *Client) getStaticModels(modelsKey string) ([]string, error) {
 		}, nil
 	case "static:minimax":
 		return []string{
+			"MiniMax-M3",
 			"MiniMax-M2.7",
 			"MiniMax-M2.7-highspeed",
-			"MiniMax-M2.5",
-			"MiniMax-M2.5-highspeed",
-			"MiniMax-M2.5-lightning",
-			"MiniMax-M2",
-			"MiniMax-M2.1",
-			"MiniMax-M2.1-lightning",
 		}, nil
 	default:
 		return nil, fmt.Errorf(i18n.T("openai_compatible_unknown_static_model_list"), modelsKey)
@@ -299,9 +294,19 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://openrouter.ai/api/v1",
 		ImplementsResponses: false,
 	},
+	"Pzero": {
+		Name:                "Pzero",
+		BaseURL:             "https://api.pzero.studio/v1",
+		ImplementsResponses: false,
+	},
 	"SiliconCloud": {
 		Name:                "SiliconCloud",
 		BaseURL:             "https://api.siliconflow.cn/v1",
+		ImplementsResponses: false,
+	},
+	"Synthorai": {
+		Name:                "Synthorai",
+		BaseURL:             "https://synthorai.io/v1",
 		ImplementsResponses: false,
 	},
 	"Together": {
@@ -312,6 +317,11 @@ var ProviderMap = map[string]ProviderConfig{
 	"Venice AI": {
 		Name:                "Venice AI",
 		BaseURL:             "https://api.venice.ai/api/v1",
+		ImplementsResponses: false,
+	},
+	"Y-API": {
+		Name:                "Y-API",
+		BaseURL:             "https://api.y-api.bestvirtualgoods.com/v1",
 		ImplementsResponses: false,
 	},
 	"Z AI": {
@@ -328,6 +338,24 @@ var ProviderMap = map[string]ProviderConfig{
 	"Mammouth": {
 		Name:                "Mammouth",
 		BaseURL:             "https://api.mammouth.ai/v1",
+		ImplementsResponses: false,
+	},
+
+	// Chinese AI providers (OpenAI-compatible Chat Completions API)
+
+	"Aliyun DashScope": {
+		Name:                "Aliyun DashScope",
+		BaseURL:             "https://dashscope.aliyuncs.com/compatible-mode/v1",
+		ImplementsResponses: false,
+	},
+	"Zhipu AI": {
+		Name:                "Zhipu AI",
+		BaseURL:             "https://open.bigmodel.cn/api/paas/v4",
+		ImplementsResponses: false,
+	},
+	"ByteDance Ark": {
+		Name:                "ByteDance Ark",
+		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
 		ImplementsResponses: false,
 	},
 }
