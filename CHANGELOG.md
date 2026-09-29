@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.489 (2026-09-29)
+
+### PR [#2189](https://github.com/danielmiessler/Fabric/pull/2189) by [dependabot](https://github.com/apps/dependabot): build(deps): bump nanoid from 5.0.9 to 5.1.16 in /web in the npm_and_yarn group across 1 directory
+
+- Bumped `nanoid` from 5.0.9 to 5.1.16 in the `/web` directory as part of the `npm_and_yarn` dependency group, addressing a security-related dependency update.
+- Merged the latest changes from `main` into the Dependabot branch to keep the update in sync with the current codebase.
+
 ## v1.4.488 (2026-09-29)
 
 ### PR [#2207](https://github.com/danielmiessler/Fabric/pull/2207) by [scottidler](https://github.com/scottidler) and [ksylvan](https://github.com/ksylvan): fix(anthropic): adaptive thinking on Claude 5 + add --maxTokens flag
