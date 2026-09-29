@@ -237,12 +237,6 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://futurmix.ai/v1",
 		ImplementsResponses: false,
 	},
-	"GitHub": {
-		Name:                "GitHub",
-		BaseURL:             "https://models.github.ai/inference",
-		ModelsURL:           "https://models.github.ai/catalog", // FetchModelsDirectly will append /models
-		ImplementsResponses: false,
-	},
 	"Infermatic": {
 		Name:                "Infermatic",
 		BaseURL:             "https://api.totalgpt.ai/v1",
