@@ -18,6 +18,11 @@ func handleSetupAndServerCommands(currentFlags *Flags, registry *core.PluginRegi
 		return true, err
 	}
 
+	// The server handlers do not see the parsed flags. Put the yt-dlp
+	// arguments from the flag or the config file on the plugin, so that
+	// the /youtube/transcript endpoint uses them.
+	registry.YouTube.YtDlpArgs = currentFlags.YtDlpArgs
+
 	if currentFlags.Serve {
 		registry.ConfigureVendors()
 		err = restapi.Serve(registry, currentFlags.ServeAddress, currentFlags.ServeAPIKey)
