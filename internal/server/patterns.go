@@ -35,7 +35,6 @@ func rejectUnsafePatternName(c *gin.Context, name string) bool {
 
 // NewPatternsHandler creates a new PatternsHandler
 func NewPatternsHandler(r *gin.Engine, patterns *fsdb.PatternsEntity) (ret *PatternsHandler) {
-	// Create a storage handler but don't register any routes yet
 	storageHandler := &StorageHandler[fsdb.Pattern]{storage: patterns}
 	ret = &PatternsHandler{StorageHandler: storageHandler, patterns: patterns}
 

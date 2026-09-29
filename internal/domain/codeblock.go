@@ -44,15 +44,15 @@ func ExtractFencedCodeBlock(text string, last bool) (string, bool) {
 	return result, found
 }
 
-// openingFence reports whether line opens a fenced code block and returns the
-// fence marker (the run of backticks or tildes).
+// openingFence reports whether line opens a fenced code block. On success it
+// also returns the fence marker, the run of backticks or tildes.
 func openingFence(line string) (string, bool) {
 	marker, rest, ok := fenceMarker(line)
 	if !ok {
 		return "", false
 	}
-	// A backtick fence's info string may not contain backticks, so that
-	// inline code such as ```foo``` is not mistaken for a fence.
+	// The info string of a backtick fence must not contain a backtick. This
+	// keeps inline code such as ```foo``` from opening a block.
 	if marker[0] == '`' && strings.Contains(rest, "`") {
 		return "", false
 	}
@@ -65,8 +65,9 @@ func isClosingFence(line, fence string) bool {
 	return ok && marker[0] == fence[0] && len(marker) >= len(fence) && strings.TrimSpace(rest) == ""
 }
 
-// fenceMarker splits a line indented by at most three spaces into its leading
-// run of three or more backticks or tildes and the remainder of the line.
+// fenceMarker splits line into its leading run of three or more backticks or
+// tildes and the rest of the line. It rejects a line indented by more than
+// three spaces.
 func fenceMarker(line string) (marker, rest string, ok bool) {
 	content := strings.TrimLeft(line, " ")
 	if len(line)-len(content) > 3 || content == "" || (content[0] != '`' && content[0] != '~') {

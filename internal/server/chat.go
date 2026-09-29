@@ -90,7 +90,6 @@ func (h *ChatHandler) HandleChat(c *gin.Context) {
 		}
 	}
 
-	// Add log to check received language field
 	log.Printf("Received chat request - Language: '%s', Prompts: %d", request.Language, len(request.Prompts))
 
 	// Set headers for SSE

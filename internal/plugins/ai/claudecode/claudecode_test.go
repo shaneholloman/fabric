@@ -21,7 +21,6 @@ func TestCommand(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := []string{"--system-prompt", "be terse", "--model", "sonnet", "--effort", "high", "--verbose"}
-	// (--tools "" removed to allow Read tool for file access)
 	if !slices.Equal(cmd.Args[len(cmd.Args)-len(want):], want) {
 		t.Errorf("args = %q", cmd.Args)
 	}
@@ -35,13 +34,12 @@ func TestCommand(t *testing.T) {
 		t.Errorf("system prompt = %q, want the default", cmd.Args[i+1])
 	}
 
-	// Image files are exposed via --add-dir.
 	cmd, _ = command(context.Background(), msgs, &domain.ChatOptions{ImageFile: "/tmp/image.png"})
 	if !slices.Contains(cmd.Args, "--add-dir") || !slices.Contains(cmd.Args, "/tmp") {
 		t.Errorf("expected --add-dir /tmp in args: %v", cmd.Args)
 	}
 
-	// Text parts in MultiContent are included; image parts are skipped in text().
+	// Text parts in MultiContent go to stdin.
 	multi := []*chat.ChatCompletionMessage{{Role: chat.ChatMessageRoleUser, MultiContent: []chat.ChatMessagePart{
 		{Type: chat.ChatMessagePartTypeText, Text: "from parts"},
 	}}}
@@ -50,7 +48,6 @@ func TestCommand(t *testing.T) {
 		t.Errorf("stdin length = %d", s.Len())
 	}
 
-	// Local file paths in image_url attachments get --add-dir.
 	multi[0].MultiContent = append(multi[0].MultiContent, chat.ChatMessagePart{
 		Type:     chat.ChatMessagePartTypeImageURL,
 		ImageURL: &chat.ChatMessageImageURL{URL: "/path/to/image.jpg"},
