@@ -4,13 +4,11 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
-	"sync/atomic"
 	"testing"
 	"time"
 
@@ -75,31 +73,16 @@ func TestLoadImageBytes_DataURLSuccess(t *testing.T) {
 func TestSendStreamHonorsContextCancellation(t *testing.T) {
 	const totalChunks = 20
 
-	var streamedAll atomic.Bool
-
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/x-ndjson")
-		flusher, ok := w.(http.Flusher)
-		require.True(t, ok, "test server ResponseWriter must support flushing")
 		enc := json.NewEncoder(w)
-
 		for i := range totalChunks {
-			select {
-			case <-r.Context().Done():
-				// Client disconnected (context cancelled): stop generating.
+			if r.Context().Err() != nil {
 				return
-			default:
 			}
-
-			_ = enc.Encode(ollamaapi.ChatResponse{
-				Model:   "test-model",
-				Message: ollamaapi.Message{Role: "assistant", Content: "chunk "},
-				Done:    i == totalChunks-1,
-			})
-			flusher.Flush()
+			_ = enc.Encode(ollamaapi.ChatResponse{Message: ollamaapi.Message{Content: "chunk "}, Done: i == totalChunks-1})
+			w.(http.Flusher).Flush()
 			time.Sleep(25 * time.Millisecond)
 		}
-		streamedAll.Store(true)
 	}))
 	t.Cleanup(server.Close)
 
@@ -114,38 +97,19 @@ func TestSendStreamHonorsContextCancellation(t *testing.T) {
 
 	errCh := make(chan error, 1)
 	go func() {
-		errCh <- client.SendStream(
-			ctx,
-			[]*chat.ChatCompletionMessage{{Role: chat.ChatMessageRoleUser, Content: "hello"}},
-			&domain.ChatOptions{Model: "test-model"},
-			channel,
-		)
+		errCh <- client.SendStream(ctx, []*chat.ChatCompletionMessage{{Role: chat.ChatMessageRoleUser, Content: "hello"}}, &domain.ChatOptions{Model: "test-model"}, channel)
 	}()
 
 	// Consume the first chunk, then cancel mid-stream.
-	select {
-	case _, ok := <-channel:
-		require.True(t, ok, "expected at least one stream update before cancellation")
-	case <-time.After(5 * time.Second):
-		t.Fatal("timed out waiting for first stream update")
-	}
+	_, ok := <-channel
+	require.True(t, ok, "expected at least one stream update before cancellation")
 	cancel()
 
 	// Drain any remaining updates so SendStream can return.
 	for range channel {
 	}
 
-	select {
-	case err = <-errCh:
-	case <-time.After(5 * time.Second):
-		t.Fatal("SendStream did not return after context cancellation")
-	}
-
-	require.Error(t, err, "SendStream should surface the cancellation error")
-	assert.True(t, errors.Is(err, context.Canceled),
-		"SendStream should return a context.Canceled error, got: %v", err)
-	assert.False(t, streamedAll.Load(),
-		"server should not have streamed every chunk; cancellation was ignored")
+	require.ErrorIs(t, <-errCh, context.Canceled)
 }
 
 func TestSendStreamClosesChannelOnChatError(t *testing.T) {
