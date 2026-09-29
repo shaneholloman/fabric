@@ -232,6 +232,11 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.deepseek.com",
 		ImplementsResponses: false,
 	},
+	"FuturMix": {
+		Name:                "FuturMix",
+		BaseURL:             "https://futurmix.ai/v1",
+		ImplementsResponses: false,
+	},
 	"Infermatic": {
 		Name:                "Infermatic",
 		BaseURL:             "https://api.totalgpt.ai/v1",
