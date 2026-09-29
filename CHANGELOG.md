@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.4.487 (2026-09-14)
+
+### PR [#2219](https://github.com/danielmiessler/Fabric/pull/2219) by [anandghegde](https://github.com/anandghegde): feat: add --extract and --extract-last to output only a fenced code block
+
+- Feat: add `--extract` and `--extract-last` flags that output only the first or last fenced code block of the response, like `llm -x`
+- Falls back to the full response when no fenced code block is found
+
+### Direct commits
+
+- Merge branch 'main' into docs/sync-chinese-translation
+
 ## v1.4.486 (2026-09-27)
 
 ### PR [#2147](https://github.com/danielmiessler/Fabric/pull/2147) by [medhwu](https://github.com/medhwu): feat: add Chinese AI vendors, i18n translation fixes, and 5 Chinese patterns
