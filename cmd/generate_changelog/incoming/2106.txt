@@ -2,4 +2,3 @@
 
 - Added FuturMix as a new OpenAI-compatible provider.
 - Added a test case covering the FuturMix provider.
-- Removed the GitHub provider again after the merge with `main`.
