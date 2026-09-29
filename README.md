@@ -350,6 +350,7 @@ Fabric supports a wide range of AI providers:
 - OpenAI
 - OpenAI Codex (ChatGPT/Codex subscription OAuth via private backend)
 - Anthropic (Claude)
+- Claude Code (Claude subscription via the local `claude` CLI)
 - Google Gemini
 - Ollama (local models)
 - Azure OpenAI
@@ -365,7 +366,6 @@ Fabric supports a wide range of AI providers:
 - Cerebras
 - DeepSeek
 - DigitalOcean
-- GitHub Models
 - GrokAI
 - Groq
 - Langdock
@@ -374,10 +374,12 @@ Fabric supports a wide range of AI providers:
 - Mistral
 - Novita AI
 - OpenRouter
+- Pzero
 - SiliconCloud
 - Synthorai
 - Together
 - Venice AI
+- Y-API
 - Z AI
 
 Run `fabric --setup` to configure your preferred provider(s), or use `fabric --listvendors` to see all available vendors.
@@ -683,6 +685,10 @@ Application Options:
       --modelContextLength=         Model context length (only affects ollama)
   -o, --output=                     Output to file
       --output-session              Output the entire session (also a temporary one) to the output file
+      --extract                     Output only the first fenced code block from the response (full response if
+                                    none is found)
+      --extract-last                Output only the last fenced code block from the response (full response if
+                                    none is found)
   -n, --latest=                     Number of latest patterns to list
   -d, --changeDefaultModel          Change default model
   -y, --youtube=                    YouTube video or play list "URL" to grab transcript, comments from it and

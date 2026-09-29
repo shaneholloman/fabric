@@ -63,6 +63,7 @@ function __fabric_register_completions
 
         # Options that take a value from a dynamic list
         complete -c $cmd -s p -l pattern -x -d "Choose a pattern from the available patterns" -a "(__fabric_get_patterns)"
+        complete -c $cmd -l workflow -r -d "Run a sequence of patterns defined in a YAML or JSON workflow file" -a "(__fish_complete_suffix .yaml .yml .json)"
         complete -c $cmd -l readpattern -x -d "Print the contents of the named pattern to the terminal" -a "(__fabric_get_patterns)"
         complete -c $cmd -s C -l context -x -d "Choose a context from the available contexts" -a "(__fabric_get_contexts)"
         complete -c $cmd -l session -x -d "Choose a session from the available sessions" -a "(__fabric_get_sessions)"
@@ -128,6 +129,8 @@ function __fabric_register_completions
         complete -c $cmd -s U -l updatepatterns -d "Update patterns"
         complete -c $cmd -s c -l copy -d "Copy to clipboard"
         complete -c $cmd -l output-session -d "Output the entire session to the output file"
+        complete -c $cmd -l extract -d "Output only the first fenced code block from the response"
+        complete -c $cmd -l extract-last -d "Output only the last fenced code block from the response"
         complete -c $cmd -s d -l changeDefaultModel -d "Change default model"
         complete -c $cmd -l playlist -d "Prefer playlist over video if both ids are present in the URL"
         complete -c $cmd -l transcript -d "Grab transcript from YouTube video and send to chat"
