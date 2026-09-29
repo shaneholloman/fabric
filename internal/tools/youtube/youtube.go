@@ -81,6 +81,9 @@ func NewYouTube() (ret *YouTube) {
 type YouTube struct {
 	*plugins.PluginBase
 	ApiKey *plugins.SetupQuestion
+	// YtDlpArgs holds the yt-dlp arguments from the --yt-dlp-args flag or the
+	// config file. GrabTranscript and GrabTranscriptWithTimestamps use them.
+	YtDlpArgs string
 
 	normalizeRegex *regexp.Regexp
 	service        *youtube.Service
@@ -143,11 +146,12 @@ func (o *YouTube) GrabTranscriptForUrl(url string, language string) (ret string,
 	return o.GrabTranscript(videoId, language)
 }
 
-// GrabTranscript retrieves the transcript for the specified video ID using yt-dlp.
+// GrabTranscript retrieves the transcript for the specified video ID using yt-dlp
+// and the arguments in the YtDlpArgs field.
 // The language parameter specifies the preferred subtitle language code (e.g., "en", "es").
 // It returns the transcript text or an error if the transcript cannot be retrieved.
 func (o *YouTube) GrabTranscript(videoId string, language string) (ret string, err error) {
-	return o.GrabTranscriptWithArgs(videoId, language, "")
+	return o.GrabTranscriptWithArgs(videoId, language, o.YtDlpArgs)
 }
 
 // GrabTranscriptWithArgs retrieves the transcript for the specified video ID using yt-dlp
@@ -160,11 +164,12 @@ func (o *YouTube) GrabTranscriptWithArgs(videoId string, language string, additi
 }
 
 // GrabTranscriptWithTimestamps retrieves the transcript with timestamps for the specified
-// video ID using yt-dlp. The language parameter specifies the preferred subtitle language code.
+// video ID using yt-dlp and the arguments in the YtDlpArgs field. The language parameter
+// specifies the preferred subtitle language code.
 // Each line in the returned transcript is prefixed with a timestamp in [HH:MM:SS] format.
 // It returns the timestamped transcript text or an error if the transcript cannot be retrieved.
 func (o *YouTube) GrabTranscriptWithTimestamps(videoId string, language string) (ret string, err error) {
-	return o.GrabTranscriptWithTimestampsWithArgs(videoId, language, "")
+	return o.GrabTranscriptWithTimestampsWithArgs(videoId, language, o.YtDlpArgs)
 }
 
 // GrabTranscriptWithTimestampsWithArgs retrieves the transcript with timestamps for the specified
