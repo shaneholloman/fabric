@@ -1,5 +1,164 @@
 # Changelog
 
+## v1.4.488 (2026-09-29)
+
+### PR [#2207](https://github.com/danielmiessler/Fabric/pull/2207) by [scottidler](https://github.com/scottidler) and [ksylvan](https://github.com/ksylvan): fix(anthropic): adaptive thinking on Claude 5 + add --maxTokens flag
+
+- Added a `--maxTokens` CLI flag that caps model output tokens, wiring the existing `ChatOptions.MaxTokens` field through to the provider; a value of `0` preserves the vendor default, so existing behavior is unchanged.
+- Fixed Anthropic thinking support on Claude 5 models (`claude-sonnet-5`, `claude-opus-5`, `claude-fable-5`), which rejected the legacy `thinking.type=enabled` plus `budget_tokens` shape and returned HTTP 400 for every `--thinking` value except `off`.
+- Reworked `parseThinking` to select the correct request shape per model: `thinking.type=disabled` for `off`, adaptive thinking with `output_config.effort` for Claude 5, and the legacy enabled/budget shape for older models.
+- Preserved numeric thinking budgets on adaptive models by bucketing them onto the nearest effort level using the same thresholds as the named levels, so `--thinking=2048` and `--thinking=medium` behave consistently.
+- Added `--maxTokens` shell completion support for Bash, Zsh, and Fish, treating it as an option that requires an argument.
+
+## v1.4.487 (2026-09-14)
+
+### PR [#2219](https://github.com/danielmiessler/Fabric/pull/2219) by [anandghegde](https://github.com/anandghegde): feat: add --extract and --extract-last to output only a fenced code block
+
+- Feat: add `--extract` and `--extract-last` flags that output only the first or last fenced code block of the response, like `llm -x`
+- Falls back to the full response when no fenced code block is found
+
+### Direct commits
+
+- Merge branch 'main' into docs/sync-chinese-translation
+
+## v1.4.486 (2026-09-27)
+
+### PR [#2147](https://github.com/danielmiessler/Fabric/pull/2147) by [medhwu](https://github.com/medhwu): feat: add Chinese AI vendors, i18n translation fixes, and 5 Chinese patterns
+
+- Added OpenAI-compatible provider support for three Chinese AI vendors: Aliyun DashScope (Tongyi Qianwen), Zhipu AI (bigmodel.cn/GLM), and ByteDance Ark (Doubao).
+- Added test coverage for all three new Chinese AI vendor providers.
+- Improved Chinese (i18n) translation quality by unifying "provider" terminology across 24 entries and correcting residual English text.
+- Introduced five new Chinese-language patterns: article summarization, contract risk review, classical poetry analysis, English-to-Chinese news translation, and code review.
+
+## v1.4.485 (2026-09-27)
+
+### PR [#2169](https://github.com/danielmiessler/Fabric/pull/2169) by [ksylvan](https://github.com/ksylvan): fix(core): route user input to the user message in BuildSession
+
+- Routed user input through user messages in `BuildSession`, ensuring every request ends with a user message for broader model compatibility.
+- Tracked explicit input placeholders instead of automatically appending input to the prompt.
+- Separated system instructions from user input so input is no longer duplicated.
+- Preserved raw mode input, attachment text, and multipart content during message construction.
+- Maintained pattern endpoint responses by appending input when necessary, with new regression tests for message routing and pattern substitution.
+
+## v1.4.484 (2026-09-26)
+
+### PR [#2069](https://github.com/danielmiessler/Fabric/pull/2069) by [1rashiid](https://github.com/1rashiid) and [ksylvan](https://github.com/ksylvan): feat(cli): add --workflow for sequential pattern composition
+
+- Added a `--workflow` flag that chains multiple patterns together from a YAML or JSON file, piping each step's output into the next step's input.
+- Preserved compatibility with existing flags, including `--stream`, `--dry-run`, `-m`/`-V`, `--context`, `--strategy`, and `--language`, while leaving the single-pattern `-p` path untouched.
+- Added pre-flight validation that catches empty steps, missing or repeated patterns, and unknown pattern names before any LLM call is made.
+- Added per-step overrides for input, model, vendor, and variables, with progress and error messages prefixed as `[step N/TOTAL pattern]` on stderr to keep stdout pipe-clean.
+- Added shell completions for `--workflow` in Bash, Zsh, and Fish, including workflow file path suggestions.
+
+## v1.4.483 (2026-09-26)
+
+### PR [#2229](https://github.com/danielmiessler/Fabric/pull/2229) by [ksylvan](https://github.com/ksylvan): Show provider error details in Codex 401 responses
+
+- Preserved Codex provider details in authentication errors, appending them after the localized login error message.
+- Retained the underlying authentication errors so they can be inspected through unwrapping.
+- Added regression test coverage for Codex 401 provider messages.
+- Removed the unused `calculateFileHash` method from the extension registry, along with its `crypto/sha256`, `encoding/hex`, and `io` imports.
+- Removed the unused `Verify` and `ListExtensions` methods from the extension registry.
+
+## v1.4.482 (2026-09-25)
+
+### PR [#2228](https://github.com/danielmiessler/Fabric/pull/2228) by [ksylvan](https://github.com/ksylvan): refactor: simplify Ollama chat prompt building and error replies
+
+- Refactored Ollama prompt construction to unify message joining using `strings.Builder`.
+- Centralized error handling and responses while preserving streaming and JSON output formats.
+- Added tests covering streaming errors and multiple-message forwarding.
+
+## v1.4.481 (2026-09-24)
+
+### PR [#2226](https://github.com/danielmiessler/Fabric/pull/2226) by [ksylvan](https://github.com/ksylvan): feat: add Claude Code provider through the local CLI
+
+- Added a Claude Code CLI provider that authenticates through an existing local subscription login.
+- Added support for streaming responses, model selection, and configurable thinking effort.
+- Added handling for local images and base64 attachments via temporary files.
+- Stripped Anthropic environment variables to preserve subscription-based billing.
+- Added Claude Opus 5.5 with extended context support.
+
+## v1.4.480 (2026-09-23)
+
+### PR [#2224](https://github.com/danielmiessler/Fabric/pull/2224) by [ksylvan](https://github.com/ksylvan): chore: remove GitHub Models provider integration and documentation
+
+- Removed the GitHub Models provider from the compatible provider registry, dropping the integration entirely.
+- Dropped GitHub API version headers from model discovery requests.
+- Replaced GitHub cache fixtures with generic test providers and removed GitHub header verification along with its supporting test utilities.
+- Deleted the GitHub Models setup documentation and the Copilot cross-reference.
+- Removed GitHub Models listings from both the English and Chinese READMEs.
+
+## v1.4.479 (2026-09-17)
+
+### PR [#2220](https://github.com/danielmiessler/Fabric/pull/2220) by [jiweiyeah](https://github.com/jiweiyeah): feat(providers): add Y-API as an OpenAI-compatible provider
+
+- Feat(providers): add Y-API as an OpenAI-compatible provider
+
+## v1.4.478 (2026-09-06)
+
+### PR [#2216](https://github.com/danielmiessler/Fabric/pull/2216) by [ctbaum](https://github.com/ctbaum): fix: enable raw mode for GPT-6 models
+
+- Fix: enable raw mode for GPT-6 models
+
+## v1.4.477 (2026-09-03)
+
+### PR [#2211](https://github.com/danielmiessler/Fabric/pull/2211) by [ksylvan](https://github.com/ksylvan): fix: prevent pattern loader temporary directory leaks
+
+- Prevent pattern loader leaks by lazily creating temporary directories during database population and cleaning them up after successful or failed downloads.
+- Add regression tests for lazy directory creation and cleanup.
+
+## v1.4.476 (2026-09-03)
+
+### PR [#2210](https://github.com/danielmiessler/Fabric/pull/2210) by [ksylvan](https://github.com/ksylvan): feat: add Pzero as an OpenAI-compatible AI provider
+
+- Added Pzero as an OpenAI-compatible AI provider.
+- Registered Pzero with its OpenAI-compatible API base URL.
+- Added Pzero to the README’s list of supported AI providers.
+
+## v1.4.475 (2026-09-03)
+
+### PR [#2209](https://github.com/danielmiessler/Fabric/pull/2209) by [kadiryildiz283](https://github.com/kadiryildiz283): feat(i18n): add Turkish (tr) translation
+
+- Feat(i18n): add Turkish (tr) translation
+
+## v1.4.474 (2026-09-02)
+
+### PR [#2206](https://github.com/danielmiessler/Fabric/pull/2206) by [ksylvan](https://github.com/ksylvan): fix: confine storage names and authenticate Ollama serve
+
+- Reject unsafe cross-platform storage names and directory traversal attempts.
+- Confine symlink targets to configured filesystem storage directories.
+- Require API keys for non-loopback server bindings and authenticate Ollama routes.
+- Validate chat pattern, context, and session names early while preventing internal filesystem details from leaking through client errors.
+- Default the REST server to loopback port 8080 and add regression coverage for traversal, symlink, and authentication security.
+
+## v1.4.473 (2026-08-29)
+
+### PR [#2203](https://github.com/danielmiessler/Fabric/pull/2203) by [pacocartones](https://github.com/pacocartones) and [ksylvan](https://github.com/ksylvan): fix(web): preserve multi-byte UTF-8 split across SSE chunks in chat stream
+
+- Fix: preserve split UTF-8 characters in streaming responses
+- Decode API response chunks with persistent streaming state
+- Reuse streaming decoder when inspecting chat backend events
+
+## v1.4.472 (2026-08-29)
+
+### PR [#2198](https://github.com/danielmiessler/Fabric/pull/2198) by [cuihuan](https://github.com/cuihuan): feat(providers): add Synthorai as an OpenAI-compatible provider
+
+- Feat(providers): add Synthorai as an OpenAI-compatible provider
+
+### Direct commits
+
+- Chore: delete generate_changelog noise in README.
+
+## v1.4.471 (2026-08-28)
+
+### PR [#2200](https://github.com/danielmiessler/Fabric/pull/2200) by [ksylvan](https://github.com/ksylvan): fix: persist Codex OAuth tokens after refresh
+
+- Persist refreshed Codex OAuth tokens securely across processes, writing rotated credentials atomically with cross-process locks.
+- Reload stored tokens before refresh and return valid in-memory tokens first, preventing stale disk values from overwriting fresh credentials.
+- Reuse valid refresh tokens before launching interactive authentication, requiring account identifiers and unexpired tokens for fast-path reuse.
+- Preserve existing environment values, save environment files atomically while holding locks, and enforce secret-only permissions.
+- Reactivate configured vendors and surface configuration and provider failures immediately, with localized Codex prompts and persistence errors.
+
 ## v1.4.470 (2026-08-04)
 
 ### PR [#2186](https://github.com/danielmiessler/Fabric/pull/2186) by [giodamelio](https://github.com/giodamelio): Update Nixpkgs version for newer Go version
