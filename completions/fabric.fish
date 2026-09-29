@@ -100,6 +100,7 @@ function __fabric_register_completions
         complete -c $cmd -s P -l presencepenalty -x -d "Set presence penalty (default: 0.0)"
         complete -c $cmd -s F -l frequencypenalty -x -d "Set frequency penalty (default: 0.0)"
         complete -c $cmd -l modelContextLength -x -d "Model context length (only affects ollama)"
+        complete -c $cmd -l maxTokens -x -d "Maximum tokens the model may generate, including reasoning/thinking tokens (0 = vendor default)"
         complete -c $cmd -s n -l latest -x -d "Number of latest patterns to list (default: 0)"
         complete -c $cmd -s y -l youtube -x -d "YouTube video or play list URL to grab transcript, comments from it"
         complete -c $cmd -l visual-sensitivity -x -d "Tolerance for FFmpeg scene detection (0.0 - 1.0) (default: 0.4)"

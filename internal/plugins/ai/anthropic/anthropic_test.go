@@ -424,3 +424,110 @@ func TestToMessages_MultiContentPDFAttachment(t *testing.T) {
 		t.Fatalf("Expected document data to match base64 payload, got %s", document.Source.OfBase64.Data)
 	}
 }
+
+func TestParseThinking_AdaptiveModelUsesAdaptivePlusEffort(t *testing.T) {
+	for _, tc := range []struct {
+		level  domain.ThinkingLevel
+		effort anthropic.OutputConfigEffort
+	}{
+		{domain.ThinkingLow, anthropic.OutputConfigEffortLow},
+		{domain.ThinkingMedium, anthropic.OutputConfigEffortMedium},
+		{domain.ThinkingHigh, anthropic.OutputConfigEffortHigh},
+	} {
+		thinking, effort, ok := parseThinking(tc.level, string(anthropic.ModelClaudeSonnet5))
+		if !ok {
+			t.Fatalf("parseThinking(%q) returned ok=false", tc.level)
+		}
+		if thinking.OfAdaptive == nil {
+			t.Errorf("level %q: expected OfAdaptive to be set on an adaptive model", tc.level)
+		}
+		if thinking.OfEnabled != nil {
+			t.Errorf("level %q: OfEnabled must NOT be set on an adaptive model; the API rejects it", tc.level)
+		}
+		if effort != tc.effort {
+			t.Errorf("level %q: expected effort %q, got %q", tc.level, tc.effort, effort)
+		}
+	}
+}
+
+func TestParseThinking_LegacyModelKeepsBudgetTokens(t *testing.T) {
+	thinking, effort, ok := parseThinking(domain.ThinkingMedium, string(anthropic.ModelClaudeOpus4_7))
+	if !ok {
+		t.Fatal("parseThinking returned ok=false")
+	}
+	if thinking.OfEnabled == nil {
+		t.Fatal("expected OfEnabled (budget_tokens) to be set on a non-adaptive model")
+	}
+	if thinking.OfEnabled.BudgetTokens != domain.TokenBudgetMedium {
+		t.Errorf("expected budget %d, got %d", domain.TokenBudgetMedium, thinking.OfEnabled.BudgetTokens)
+	}
+	if effort != "" {
+		t.Errorf("effort must be empty for a non-adaptive model, got %q", effort)
+	}
+}
+
+func TestParseThinking_OffIsDisabledOnBothGenerations(t *testing.T) {
+	for _, model := range []string{
+		string(anthropic.ModelClaudeSonnet5),
+		string(anthropic.ModelClaudeOpus4_7),
+	} {
+		thinking, effort, ok := parseThinking(domain.ThinkingOff, model)
+		if !ok {
+			t.Fatalf("model %s: parseThinking returned ok=false", model)
+		}
+		if thinking.OfDisabled == nil {
+			t.Errorf("model %s: expected OfDisabled to be set", model)
+		}
+		if effort != "" {
+			t.Errorf("model %s: effort must be empty when thinking is off, got %q", model, effort)
+		}
+	}
+}
+
+func TestParseThinking_NumericBudgetBucketsToEffortOnAdaptiveModel(t *testing.T) {
+	for _, tc := range []struct {
+		tokens string
+		effort anthropic.OutputConfigEffort
+	}{
+		{"512", anthropic.OutputConfigEffortLow},
+		{"1024", anthropic.OutputConfigEffortLow},
+		{"2048", anthropic.OutputConfigEffortMedium},
+		{"9000", anthropic.OutputConfigEffortHigh},
+	} {
+		thinking, effort, ok := parseThinking(domain.ThinkingLevel(tc.tokens), string(anthropic.ModelClaudeSonnet5))
+		if !ok {
+			t.Fatalf("tokens %s: parseThinking returned ok=false", tc.tokens)
+		}
+		if thinking.OfAdaptive == nil {
+			t.Errorf("tokens %s: expected OfAdaptive on an adaptive model", tc.tokens)
+		}
+		if effort != tc.effort {
+			t.Errorf("tokens %s: expected effort %q, got %q", tc.tokens, tc.effort, effort)
+		}
+	}
+}
+
+func TestBuildMessageParams_ThinkingShapeFollowsModel(t *testing.T) {
+	for _, tc := range []struct {
+		model        anthropic.Model
+		wantAdaptive bool
+		wantEffort   anthropic.OutputConfigEffort
+	}{
+		{anthropic.ModelClaudeSonnet5, true, anthropic.OutputConfigEffortMedium},
+		{anthropic.ModelClaudeOpus4_7, false, ""},
+	} {
+		params := NewClient().buildMessageParams(
+			[]anthropic.MessageParam{anthropic.NewUserMessage(anthropic.NewTextBlock("Hello"))},
+			&domain.ChatOptions{Model: string(tc.model), Thinking: domain.ThinkingMedium},
+		)
+		if got := params.Thinking.OfAdaptive != nil; got != tc.wantAdaptive {
+			t.Errorf("model %s: adaptive=%v, want %v", tc.model, got, tc.wantAdaptive)
+		}
+		if got := params.Thinking.OfEnabled != nil; got == tc.wantAdaptive {
+			t.Errorf("model %s: budget_tokens set=%v, want %v", tc.model, got, !tc.wantAdaptive)
+		}
+		if params.OutputConfig.Effort != tc.wantEffort {
+			t.Errorf("model %s: effort=%q, want %q", tc.model, params.OutputConfig.Effort, tc.wantEffort)
+		}
+	}
+}
