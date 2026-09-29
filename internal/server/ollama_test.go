@@ -117,7 +117,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 		wantErr bool
 		errMsg  string
 	}{
-		// --- Valid inputs ---
 		{
 			name:    "nil options",
 			options: nil,
@@ -178,7 +177,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			want:    65536,
 			wantErr: false,
 		},
-		// --- Invalid inputs ---
 		{
 			name:    "float64 with fractional part",
 			options: map[string]any{"num_ctx": 4096.5},
@@ -256,7 +254,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a number, got invalid type",
 		},
-		// --- Edge cases ---
 		{
 			name:    "minimum valid value",
 			options: map[string]any{"num_ctx": 1},
@@ -290,7 +287,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a valid number",
 		},
-		// --- Special float values ---
 		{
 			name:    "float64 NaN",
 			options: map[string]any{"num_ctx": math.NaN()},
@@ -333,7 +329,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a finite number",
 		},
-		// --- Negative int64 (32-bit wraparound prevention) ---
 		{
 			name:    "negative int64",
 			options: map[string]any{"num_ctx": int64(-1000)},

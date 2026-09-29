@@ -73,7 +73,7 @@ func (o *Client) configure() (err error) {
 		return
 	}
 
-	timeout := 20 * time.Minute // Default timeout
+	timeout := 20 * time.Minute
 
 	if o.ApiHttpTimeout != nil {
 		parsed, err := time.ParseDuration(o.ApiHttpTimeout.Value)
@@ -157,8 +157,8 @@ func (o *Client) Send(ctx context.Context, msgs []*chat.ChatCompletionMessage, o
 }
 
 func (o *Client) createChatRequest(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (ret ollamaapi.ChatRequest, err error) {
-	// Some models (e.g. qwen3-coder, deepseek) return empty responses when
-	// the only message has role=system. Convert to role=user in that case.
+	// Some models, for example qwen3-coder and deepseek, return an empty response
+	// when the only message is a system message. Send it as a user message instead.
 	if len(msgs) == 1 && msgs[0].Role == chat.ChatMessageRoleSystem {
 		copy := *msgs[0]
 		copy.Role = chat.ChatMessageRoleUser
@@ -189,7 +189,6 @@ func (o *Client) createChatRequest(ctx context.Context, msgs []*chat.ChatComplet
 		Options:  options,
 	}
 
-	// Map Fabric's ThinkingLevel to Ollama's Think field
 	switch opts.Thinking {
 	case domain.ThinkingOff:
 		ret.Think = &ollamaapi.ThinkValue{Value: false}
@@ -207,7 +206,6 @@ func (o *Client) convertMessage(ctx context.Context, message *chat.ChatCompletio
 		return
 	}
 
-	// Pre-allocate with capacity hint
 	textParts := make([]string, 0, len(message.MultiContent))
 	if strings.TrimSpace(ret.Content) != "" {
 		textParts = append(textParts, strings.TrimSpace(ret.Content))
@@ -220,7 +218,6 @@ func (o *Client) convertMessage(ctx context.Context, message *chat.ChatCompletio
 				textParts = append(textParts, trimmed)
 			}
 		case chat.ChatMessagePartTypeImageURL:
-			// Nil guard
 			if part.ImageURL == nil || part.ImageURL.URL == "" {
 				continue
 			}
@@ -237,7 +234,6 @@ func (o *Client) convertMessage(ctx context.Context, message *chat.ChatCompletio
 }
 
 func (o *Client) loadImageBytes(ctx context.Context, imageURL string) (ret []byte, err error) {
-	// Handle data URLs (base64 encoded)
 	if strings.HasPrefix(imageURL, "data:") {
 		parts := strings.SplitN(imageURL, ",", 2)
 		if len(parts) != 2 {
@@ -250,7 +246,6 @@ func (o *Client) loadImageBytes(ctx context.Context, imageURL string) (ret []byt
 		return
 	}
 
-	// Handle HTTP URLs with context
 	var req *http.Request
 	if req, err = http.NewRequestWithContext(ctx, http.MethodGet, imageURL, nil); err != nil {
 		return

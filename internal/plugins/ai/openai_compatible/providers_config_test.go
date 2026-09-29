@@ -41,6 +41,11 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - FuturMix",
+			provider: "FuturMix",
+			exists:   true,
+		},
+		{
 			name:     "New Chinese provider - Aliyun DashScope",
 			provider: "Aliyun DashScope",
 			exists:   true,

@@ -29,7 +29,7 @@ type Chatter struct {
 	vendor             ai.Vendor
 }
 
-// recordFirstStreamError sends err to errChan if the channel is empty; subsequent errors are discarded.
+// recordFirstStreamError sends err to errChan when the channel has space. It discards later errors.
 func recordFirstStreamError(errChan chan error, err error) {
 	if err == nil {
 		return
@@ -38,7 +38,6 @@ func recordFirstStreamError(errChan chan error, err error) {
 	select {
 	case errChan <- err:
 	default:
-		// Second+ error discarded; log for observability
 		debuglog.Debug(debuglog.Wire, "additional stream error discarded: %v\n", err)
 	}
 }
@@ -58,8 +57,7 @@ func joinPromptSections(parts ...string) string {
 
 // Send processes a chat request and applies file changes for create_coding_feature pattern
 func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *domain.ChatOptions) (session *fsdb.Session, err error) {
-	// Use o.model (normalized) for NeedsRawMode check instead of opts.Model
-	// This ensures case-insensitive model names work correctly (e.g., "GPT-5" → "gpt-5")
+	// Test o.model, not opts.Model. GetChatter set o.model to the vendor's spelling of the name.
 	if o.vendor.NeedsRawMode(o.model) {
 		opts.Raw = true
 	}
@@ -89,8 +87,7 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 		return
 	}
 
-	// Always use the normalized model name from the Chatter
-	// This handles cases where user provides "GPT-5" but we've normalized it to "gpt-5"
+	// Send the vendor's spelling of the model name, not the one the user typed.
 	opts.Model = o.model
 
 	if opts.ModelContextLength == 0 {
@@ -125,7 +122,7 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 			switch update.Type {
 			case domain.StreamTypeContent:
 				message += update.Content
-				if !opts.SuppressThink && !opts.Quiet {
+				if !opts.SuppressThink && !opts.BufferStream && !opts.Quiet {
 					fmt.Print(update.Content)
 					printedStream = true
 				}
@@ -154,10 +151,8 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 			fmt.Println()
 		}
 
-		// Wait for goroutine to finish
 		<-done
 
-		// Check for errors in errChan
 		select {
 		case streamErr := <-errChan:
 			if streamErr != nil {
@@ -165,7 +160,6 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 				return
 			}
 		default:
-			// No errors, continue
 		}
 	} else {
 		if message, err = o.vendor.Send(ctx, session.GetVendorMessages(), opts); err != nil {
@@ -186,7 +180,6 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 		return
 	}
 
-	// Process file changes for create_coding_feature pattern
 	if request.PatternName == "create_coding_feature" {
 		summary, fileChanges, parseErr := domain.ParseFileChanges(message)
 		if parseErr != nil {
@@ -231,7 +224,6 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 		session.Append(&chat.ChatCompletionMessage{Role: domain.ChatMessageRoleMeta, Content: request.Meta})
 	}
 
-	// if a context name is provided, retrieve it from the database
 	var contextContent string
 	if request.ContextName != "" {
 		var ctx *fsdb.Context
@@ -242,9 +234,6 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 		contextContent = ctx.Content
 	}
 
-	// Process template variables in message content
-	// Double curly braces {{variable}} indicate template substitution
-	// Ensure we have a message before processing
 	if request.Message == nil {
 		request.Message = &chat.ChatCompletionMessage{
 			Role:    chat.ChatMessageRoleUser,
@@ -252,7 +241,6 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 		}
 	}
 
-	// Now we know request.Message is not nil, process template variables
 	if request.InputHasVars && !request.NoVariableReplacement {
 		request.Message.Content, err = template.ApplyTemplate(request.Message.Content, request.PatternVariables, "")
 		if err != nil {
@@ -289,9 +277,8 @@ func (o *Chatter) BuildSession(request *domain.ChatRequest, raw bool) (session *
 		}
 	}
 
-	// Apply refined language instruction if specified
 	if request.Language != "" && request.Language != "en" {
-		// Refined instruction: Execute pattern using user input, then translate the entire response.
+		// The prompt tells the model to run the instructions first, then write the full response in request.Language.
 		systemMessage = fmt.Sprintf(i18n.T("chatter_prompt_enforce_response_language"), systemMessage, request.Language)
 	}
 

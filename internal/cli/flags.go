@@ -22,8 +22,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Flags create flags struct. the users flags go into this, this will be passed to the chat struct in cli
-// Chat parameter defaults set in the struct tags must match domain.Default* constants
+// Flags holds the parsed command-line flags. Cli passes them to the chat handlers.
+// The defaults in the struct tags must match the domain.Default* constants.
 
 type Flags struct {
 	Pattern                         string               `short:"p" long:"pattern" yaml:"pattern" description:"Choose a pattern from the available patterns" default:""`
@@ -50,8 +50,11 @@ type Flags struct {
 	Model                           string               `short:"m" long:"model" yaml:"model" description:"Choose model"`
 	Vendor                          string               `short:"V" long:"vendor" yaml:"vendor" description:"Specify vendor for the selected model (e.g., -V \"LM Studio\" -m openai/gpt-oss-20b)"`
 	ModelContextLength              int                  `long:"modelContextLength" yaml:"modelContextLength" description:"Model context length (only affects ollama)"`
+	MaxTokens                       int                  `long:"maxTokens" yaml:"maxTokens" description:"Maximum tokens the model may generate, including reasoning/thinking tokens (0 = vendor default)"`
 	Output                          string               `short:"o" long:"output" description:"Output to file" default:""`
 	OutputSession                   bool                 `long:"output-session" description:"Output the entire session (also a temporary one) to the output file"`
+	Extract                         bool                 `long:"extract" description:"Output only the first fenced code block from the response (full response if none is found)"`
+	ExtractLast                     bool                 `long:"extract-last" description:"Output only the last fenced code block from the response (full response if none is found)"`
 	LatestPatterns                  string               `short:"n" long:"latest" description:"Number of latest patterns to list" default:"0"`
 	ChangeDefaultModel              bool                 `short:"d" long:"changeDefaultModel" description:"Change default model"`
 	YouTube                         string               `short:"y" long:"youtube" description:"YouTube video or play list \"URL\" to grab transcript, comments from it and send to chat or print it put to the console and store it in the output file"`
@@ -117,11 +120,10 @@ type Flags struct {
 // Init Initialize flags. returns a Flags struct and an error
 func Init() (ret *Flags, err error) {
 	debuglog.SetLevel(debuglog.LevelFromInt(parseDebugLevel(os.Args[1:])))
-	// Track which yaml-configured flags were set on CLI
+	// usedFlags records which YAML-backed flags the command line set. YAML must not override them.
 	usedFlags := make(map[string]bool)
 	yamlArgsScan := os.Args[1:]
 
-	// Create mapping from flag names (both short and long) to yaml tag names
 	flagToYamlTag := make(map[string]string)
 	t := reflect.TypeFor[Flags]()
 	for field := range t.Fields() {
@@ -140,7 +142,6 @@ func Init() (ret *Flags, err error) {
 		}
 	}
 
-	// Scan args for that are provided by cli and might be in yaml
 	for _, arg := range yamlArgsScan {
 		flag := extractFlag(arg)
 
@@ -152,13 +153,11 @@ func Init() (ret *Flags, err error) {
 		}
 	}
 
-	// Parse CLI flags first
 	ret = &Flags{}
 	parser := flags.NewParser(ret, flags.HelpFlag|flags.PassDoubleDash)
 
 	var args []string
 	if args, err = parser.Parse(); err != nil {
-		// Check if this is a help request and handle it with our custom help
 		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
 			CustomHelpHandler(parser, os.Stdout)
 			os.Exit(0)
@@ -177,9 +176,8 @@ func Init() (ret *Flags, err error) {
 
 	debuglog.SetLevel(debuglog.LevelFromInt(ret.Debug))
 
-	// Check to see if a ~/.config/fabric/config.yaml config file exists (only when user didn't specify a config)
+	// GetDefaultConfigPath returns "" when ~/.config/fabric/config.yaml does not exist.
 	if ret.Config == "" {
-		// Default to ~/.config/fabric/config.yaml if no config specified
 		if defaultConfigPath, err := util.GetDefaultConfigPath(); err == nil && defaultConfigPath != "" {
 			ret.Config = defaultConfigPath
 		} else if err != nil {
@@ -187,14 +185,13 @@ func Init() (ret *Flags, err error) {
 		}
 	}
 
-	// If config specified, load and apply YAML for unused flags
 	if ret.Config != "" {
 		var yamlFlags *Flags
 		if yamlFlags, err = loadYAMLConfig(ret.Config); err != nil {
 			return
 		}
 
-		// Apply YAML values where CLI flags weren't used
+		// YAML fills only the flags that the command line did not set.
 		flagsVal := reflect.ValueOf(ret).Elem()
 		yamlVal := reflect.ValueOf(yamlFlags).Elem()
 		flagsType := flagsVal.Type()
@@ -221,11 +218,9 @@ func Init() (ret *Flags, err error) {
 		}
 	}
 
-	// Handle stdin and messages
 	info, _ := os.Stdin.Stat()
 	pipedToStdin := (info.Mode() & os.ModeCharDevice) == 0
 
-	// Append positional arguments to the message (custom message)
 	if len(args) > 0 {
 		ret.Message = AppendMessage(ret.Message, strings.Join(args, " "))
 	}
@@ -273,17 +268,15 @@ func extractFlag(arg string) string {
 }
 
 func assignWithConversion(targetField, sourceField reflect.Value) error {
-	// Handle string source values
 	if sourceField.Kind() == reflect.String {
 		str := sourceField.String()
 		switch targetField.Kind() {
 		case reflect.Int:
-			// Try parsing as float first to handle "42.9" -> 42
+			// Parse as float first so "42.9" becomes 42.
 			if val, err := strconv.ParseFloat(str, 64); err == nil {
 				targetField.SetInt(int64(val))
 				return nil
 			}
-			// Try direct int parse
 			if val, err := strconv.ParseInt(str, 10, 64); err == nil {
 				targetField.SetInt(val)
 				return nil
@@ -319,7 +312,6 @@ func loadYAMLConfig(configPath string) (*Flags, error) {
 		return nil, fmt.Errorf(i18n.T("error_reading_config_file"), err)
 	}
 
-	// Use the existing Flags struct for YAML unmarshal
 	config := &Flags{}
 	if err := yaml.Unmarshal(data, config); err != nil {
 		return nil, fmt.Errorf(i18n.T("error_parsing_config_file"), err)
@@ -330,7 +322,6 @@ func loadYAMLConfig(configPath string) (*Flags, error) {
 	return config, nil
 }
 
-// readStdin reads from stdin and returns the input as a string or an error
 func readStdin() (ret string, err error) {
 	reader := bufio.NewReader(os.Stdin)
 	var sb strings.Builder
@@ -350,39 +341,34 @@ func readStdin() (ret string, err error) {
 	return
 }
 
-// validateImageFile validates the image file path and extension
+// validateImageFile rejects a path that exists or has an extension other than png, jpeg, jpg, or webp.
 func validateImageFile(imagePath string) error {
 	if imagePath == "" {
-		return nil // No validation needed if no image file specified
+		return nil
 	}
 
-	// Check if file already exists
 	if _, err := os.Stat(imagePath); err == nil {
 		return fmt.Errorf(i18n.T("image_file_already_exists"), imagePath)
 	}
 
-	// Check file extension
 	ext := strings.ToLower(filepath.Ext(imagePath))
 	validExtensions := []string{".png", ".jpeg", ".jpg", ".webp"}
 
 	if slices.Contains(validExtensions, ext) {
-		return nil // Valid extension found
+		return nil
 	}
 
 	return fmt.Errorf(i18n.T("invalid_image_file_extension"), ext)
 }
 
-// validateImageParameters validates image generation parameters
 func validateImageParameters(imagePath, size, quality, background string, compression int) error {
 	if imagePath == "" {
-		// Check if any image parameters are specified without --image-file
 		if size != "" || quality != "" || background != "" || compression != 0 {
 			return errors.New(i18n.T("image_parameters_require_image_file"))
 		}
 		return nil
 	}
 
-	// Validate size
 	if size != "" {
 		validSizes := []string{"1024x1024", "1536x1024", "1024x1536", "auto"}
 		valid := slices.Contains(validSizes, size)
@@ -391,7 +377,6 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 		}
 	}
 
-	// Validate quality
 	if quality != "" {
 		validQualities := []string{"low", "medium", "high", "auto"}
 		valid := slices.Contains(validQualities, quality)
@@ -400,7 +385,6 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 		}
 	}
 
-	// Validate background
 	if background != "" {
 		validBackgrounds := []string{"opaque", "transparent"}
 		valid := slices.Contains(validBackgrounds, background)
@@ -409,10 +393,8 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 		}
 	}
 
-	// Get file format for format-specific validations
 	ext := strings.ToLower(filepath.Ext(imagePath))
 
-	// Validate compression (only for jpeg/webp)
 	if compression != 0 { // 0 means not set
 		if ext != ".jpg" && ext != ".jpeg" && ext != ".webp" {
 			return fmt.Errorf(i18n.T("image_compression_jpeg_webp_only"), ext)
@@ -422,7 +404,6 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 		}
 	}
 
-	// Validate background transparency (only for png/webp)
 	if background == "transparent" {
 		if ext != ".png" && ext != ".webp" {
 			return fmt.Errorf(i18n.T("transparent_background_png_webp_only"), ext)
@@ -433,12 +414,10 @@ func validateImageParameters(imagePath, size, quality, background string, compre
 }
 
 func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
-	// Validate image file if specified
 	if err = validateImageFile(o.ImageFile); err != nil {
 		return nil, err
 	}
 
-	// Validate image parameters
 	if err = validateImageParameters(o.ImageFile, o.ImageSize, o.ImageQuality, o.ImageBackground, o.ImageCompression); err != nil {
 		return nil, err
 	}
@@ -462,6 +441,7 @@ func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
 		Seed:                o.Seed,
 		Thinking:            o.Thinking,
 		ModelContextLength:  o.ModelContextLength,
+		MaxTokens:           o.MaxTokens,
 		Search:              o.Search,
 		SearchLocation:      o.SearchLocation,
 		ImageFile:           o.ImageFile,
@@ -470,6 +450,7 @@ func (o *Flags) BuildChatOptions() (ret *domain.ChatOptions, err error) {
 		ImageCompression:    o.ImageCompression,
 		ImageBackground:     o.ImageBackground,
 		SuppressThink:       o.SuppressThink,
+		BufferStream:        o.Extract || o.ExtractLast,
 		ThinkStartTag:       startTag,
 		ThinkEndTag:         endTag,
 		Voice:               o.Voice,
