@@ -225,7 +225,6 @@ func ServeOllama(registry *core.PluginRegistry, address string, version string, 
 func newOllamaEngine(registry *core.PluginRegistry, address string, version string, apiKey string) *gin.Engine {
 	r := gin.New()
 
-	// Middleware
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	if apiKey != "" {
@@ -234,7 +233,6 @@ func newOllamaEngine(registry *core.PluginRegistry, address string, version stri
 		slog.Warn("Starting Ollama-compatible API server without API key authentication. This may pose security risks.")
 	}
 
-	// Register routes
 	fabricDb := registry.Db
 	NewPatternsHandler(r, fabricDb.Patterns)
 	NewContextsHandler(r, fabricDb.Contexts)
@@ -249,7 +247,6 @@ func newOllamaEngine(registry *core.PluginRegistry, address string, version stri
 		addr:     &address,
 		apiKey:   apiKey,
 	}
-	// Ollama Endpoints
 	r.GET("/api/tags", typeConversion.ollamaTags)
 	r.GET("/api/version", func(c *gin.Context) {
 		c.Data(200, "application/json", fmt.Appendf(nil, "{\"%s\"}", version))
@@ -305,7 +302,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		return
 	}
 
-	// Extract and validate num_ctx from options
 	numCtx, err := parseOllamaNumCtx(prompt.Options)
 	if err != nil {
 		log.Printf(i18n.T("ollama_invalid_num_ctx_in_request"), err)
@@ -316,19 +312,15 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	now := time.Now()
 	var chat ChatRequest
 
-	// Extract variables from either top-level Variables field or Options.variables
 	variables := prompt.Variables
 	if variables == nil && prompt.Options != nil {
 		if optVars, ok := prompt.Options["variables"]; ok {
-			// Options.variables can be either a JSON string or a map
 			switch v := optVars.(type) {
 			case string:
-				// Parse JSON string into map
 				if err := json.Unmarshal([]byte(v), &variables); err != nil {
 					log.Printf(i18n.T("ollama_warning_parse_variables"), err)
 				}
 			case map[string]any:
-				// Convert map[string]any to map[string]string
 				variables = make(map[string]string)
 				for k, val := range v {
 					if s, ok := val.(string); ok {
@@ -355,7 +347,6 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 		}}
 	}
 
-	// Set context length from parsed num_ctx
 	chat.ModelContextLength = numCtx
 
 	fabricChatReq, err := json.Marshal(chat)

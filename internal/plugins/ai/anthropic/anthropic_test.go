@@ -74,8 +74,8 @@ func TestBuildMessageParams_WithoutSearch(t *testing.T) {
 	client := NewClient()
 	opts := &domain.ChatOptions{
 		Model:       "claude-3-5-sonnet-latest",
-		Temperature: 0.8,                // Use non-default value to ensure it gets set
-		TopP:        domain.DefaultTopP, // Use default TopP so temperature takes precedence
+		Temperature: 0.8,                // Not the default, so the value must come from opts
+		TopP:        domain.DefaultTopP, // The default, so the code sends temperature
 		Search:      false,
 	}
 
@@ -93,7 +93,6 @@ func TestBuildMessageParams_WithoutSearch(t *testing.T) {
 		t.Errorf("Expected model %s, got %s", opts.Model, params.Model)
 	}
 
-	// When using non-default temperature, it should be set in params
 	if params.Temperature.Value != opts.Temperature {
 		t.Errorf("Expected temperature %f, got %f", opts.Temperature, params.Temperature.Value)
 	}
@@ -140,8 +139,8 @@ func TestBuildMessageParams_WithSearch(t *testing.T) {
 	client := NewClient()
 	opts := &domain.ChatOptions{
 		Model:       "claude-3-5-sonnet-latest",
-		Temperature: 0.8,                // Use non-default value
-		TopP:        domain.DefaultTopP, // Use default TopP so temperature takes precedence
+		Temperature: 0.8,
+		TopP:        domain.DefaultTopP,
 		Search:      true,
 	}
 
@@ -177,8 +176,8 @@ func TestBuildMessageParams_WithSearchAndLocation(t *testing.T) {
 	client := NewClient()
 	opts := &domain.ChatOptions{
 		Model:          "claude-3-5-sonnet-latest",
-		Temperature:    0.8,                // Use non-default value
-		TopP:           domain.DefaultTopP, // Use default TopP so temperature takes precedence
+		Temperature:    0.8,
+		TopP:           domain.DefaultTopP,
 		Search:         true,
 		SearchLocation: "America/Los_Angeles",
 	}
@@ -240,7 +239,6 @@ func TestModelBetasConfiguration(t *testing.T) {
 }
 
 func TestCitationFormatting(t *testing.T) {
-	// Test the citation formatting logic by creating a mock message with citations
 	message := &anthropic.Message{
 		Content: []anthropic.ContentBlockUnion{
 			{
@@ -267,7 +265,7 @@ func TestCitationFormatting(t *testing.T) {
 				Citations: []anthropic.TextCitationUnion{
 					{
 						Type:      "web_search_result_location",
-						URL:       "https://example.com/ai-research", // Duplicate URL should be deduplicated
+						URL:       "https://example.com/ai-research", // Same URL and title as the first citation
 						Title:     "AI Research Advances 2025",
 						CitedText: "machine learning models",
 					},
@@ -276,7 +274,7 @@ func TestCitationFormatting(t *testing.T) {
 		},
 	}
 
-	// Extract text and citations using the same logic as the Send method
+	// This is a copy of the citation code in Send. The test does not call Send.
 	var textParts []string
 	var citations []string
 	citationMap := make(map[string]bool)
@@ -306,13 +304,11 @@ func TestCitationFormatting(t *testing.T) {
 		result += "\n\n## Sources\n\n" + strings.Join(citations, "\n")
 	}
 
-	// Verify the result contains the expected text
 	expectedText := "Based on recent research, artificial intelligence is advancing rapidly. Machine learning models are becoming more sophisticated."
 	if !strings.Contains(result, expectedText) {
 		t.Errorf("Expected result to contain text: %s", expectedText)
 	}
 
-	// Verify citations are included
 	if !strings.Contains(result, "## Sources") {
 		t.Error("Expected result to contain Sources section")
 	}
@@ -325,7 +321,6 @@ func TestCitationFormatting(t *testing.T) {
 		t.Error("Expected result to contain second citation")
 	}
 
-	// Verify deduplication - should only have 2 unique citations, not 3
 	citationCount := strings.Count(result, "- [")
 	if citationCount != 2 {
 		t.Errorf("Expected 2 unique citations, got %d", citationCount)
@@ -335,11 +330,10 @@ func TestCitationFormatting(t *testing.T) {
 func TestBuildMessageParams_DefaultValues(t *testing.T) {
 	client := NewClient()
 
-	// Test with default temperature - should always set temperature unless TopP is explicitly set
 	opts := &domain.ChatOptions{
 		Model:       "claude-3-5-sonnet-latest",
-		Temperature: domain.DefaultTemperature, // 0.7 - should be set to override Anthropic's 1.0 default
-		TopP:        domain.DefaultTopP,        // 0.9 - default, so temperature takes precedence
+		Temperature: domain.DefaultTemperature, // 0.7, sent because the API default is 1.0
+		TopP:        domain.DefaultTopP,        // 0.9, the default, so the code sends temperature
 		Search:      false,
 	}
 
@@ -349,12 +343,10 @@ func TestBuildMessageParams_DefaultValues(t *testing.T) {
 
 	params := client.buildMessageParams(messages, opts)
 
-	// Temperature should be set when using default value to override Anthropic's 1.0 default
 	if params.Temperature.Value != opts.Temperature {
 		t.Errorf("Expected temperature %f, got %f", opts.Temperature, params.Temperature.Value)
 	}
 
-	// TopP should not be set when using default value (temperature takes precedence)
 	if params.TopP.Value != 0 {
 		t.Errorf("Expected TopP to not be set (0), but got %f", params.TopP.Value)
 	}
@@ -363,11 +355,10 @@ func TestBuildMessageParams_DefaultValues(t *testing.T) {
 func TestBuildMessageParams_ExplicitTopP(t *testing.T) {
 	client := NewClient()
 
-	// Test with explicit TopP - should set TopP instead of temperature
 	opts := &domain.ChatOptions{
 		Model:       "claude-3-5-sonnet-latest",
-		Temperature: domain.DefaultTemperature, // 0.7 - ignored when TopP is explicitly set
-		TopP:        0.5,                       // Non-default - should be set
+		Temperature: domain.DefaultTemperature, // 0.7, not sent because TopP is set
+		TopP:        0.5,                       // Not the default, so the code sends it
 		Search:      false,
 	}
 
@@ -377,12 +368,10 @@ func TestBuildMessageParams_ExplicitTopP(t *testing.T) {
 
 	params := client.buildMessageParams(messages, opts)
 
-	// Temperature should not be set when TopP is explicitly set
 	if params.Temperature.Value != 0 {
 		t.Errorf("Expected temperature to not be set (0), but got %f", params.Temperature.Value)
 	}
 
-	// TopP should be set when using non-default value
 	if params.TopP.Value != opts.TopP {
 		t.Errorf("Expected TopP %f, got %f", opts.TopP, params.TopP.Value)
 	}
