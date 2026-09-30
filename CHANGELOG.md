@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.495 (2026-09-30)
+
+### PR [#2204](https://github.com/danielmiessler/Fabric/pull/2204) by [ericcurtin](https://github.com/ericcurtin): feat: add llmman to the OpenAI-compatible providers
+
+- Added llmman as an OpenAI-compatible provider, enabling local models distributed as OCI artifacts to be served through an OpenAI-compatible API on port 17434.
+- Implemented the integration with a single `ProviderMap` entry, following the LiteLLM precedent for a localhost `BaseURL` and requiring no special handling.
+- Extended the existing `TestCreateClient` table with a new case covering the llmman provider.
+
 ## v1.4.494 (2026-09-29)
 
 ### PR [#2212](https://github.com/danielmiessler/Fabric/pull/2212) by [pacocartones](https://github.com/pacocartones): fix(ollama): honor caller context in SendStream and ListModels
