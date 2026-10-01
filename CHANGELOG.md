@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.499 (2026-10-01)
+
+### PR [#2163](https://github.com/danielmiessler/Fabric/pull/2163) by [Thibaultjaigu](https://github.com/Thibaultjaigu): Add Requesty as an OpenAI-compatible provider
+
+- Added Requesty as an OpenAI-compatible provider, registered in the provider config with the base URL `https://router.requesty.ai/v1`, mirroring the existing OpenRouter entry.
+- Derived the `REQUESTY_API_KEY` environment variable automatically from the provider name using the existing plugin machinery, consistent with `OPENROUTER_API_KEY`.
+- Documented Requesty in the OpenAI-compatible providers section of the README.
+
 ## v1.4.498 (2026-10-01)
 
 ### PR [#2241](https://github.com/danielmiessler/Fabric/pull/2241) by [ksylvan](https://github.com/ksylvan): fix: require explicit configuration for optional-key AI providers
