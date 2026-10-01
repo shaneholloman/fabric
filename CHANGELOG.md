@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.500 (2026-10-01)
+
+### PR [#2165](https://github.com/danielmiessler/Fabric/pull/2165) by [MVS-source](https://github.com/MVS-source): feat: add Eden AI as an OpenAI-compatible provider
+
+- Feat: add Eden AI as an OpenAI-compatible provider
+
 ## v1.4.499 (2026-10-01)
 
 ### PR [#2163](https://github.com/danielmiessler/Fabric/pull/2163) by [Thibaultjaigu](https://github.com/Thibaultjaigu): Add Requesty as an OpenAI-compatible provider
