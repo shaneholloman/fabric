@@ -51,6 +51,11 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - TrustedRouter",
+			provider: "TrustedRouter",
+			exists:   true,
+		},
+		{
 			name:     "Existing provider - FuturMix",
 			provider: "FuturMix",
 			exists:   true,
