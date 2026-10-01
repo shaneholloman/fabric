@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.501 (2026-10-01)
+
+### PR [#2193](https://github.com/danielmiessler/Fabric/pull/2193) by [Marc-oss-hub](https://github.com/Marc-oss-hub): feat: add OrcaRouter as OpenAI-compatible provider
+
+- Added OrcaRouter as an OpenAI-compatible provider, registered in the ProviderMap with the base URL `https://api.orcarouter.ai/v1`.
+- Updated the README supported-providers list and the cSpell dictionary to include OrcaRouter.
+- Added a matching `TestCreateClient` test case to cover the new provider.
+
 ## v1.4.500 (2026-10-01)
 
 ### PR [#2165](https://github.com/danielmiessler/Fabric/pull/2165) by [MVS-source](https://github.com/MVS-source): feat: add Eden AI as an OpenAI-compatible provider

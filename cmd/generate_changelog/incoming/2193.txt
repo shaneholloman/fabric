@@ -1,5 +1,0 @@
-### PR [#2193](https://github.com/danielmiessler/Fabric/pull/2193) by [Marc-oss-hub](https://github.com/Marc-oss-hub): feat: add OrcaRouter as OpenAI-compatible provider
-
-- Added OrcaRouter as an OpenAI-compatible provider, registered in the ProviderMap with the base URL `https://api.orcarouter.ai/v1`.
-- Updated the README supported-providers list and the cSpell dictionary to include OrcaRouter.
-- Added a matching `TestCreateClient` test case to cover the new provider.
