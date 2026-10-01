@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.496 (2026-10-01)
+
+### PR [#2239](https://github.com/danielmiessler/Fabric/pull/2239) by [ksylvan](https://github.com/ksylvan): feat: add llama.cpp support through the LM Studio-compatible client
+
+- Added llama.cpp support through the LM Studio-compatible client, registered with a localhost endpoint and an optional API key.
+- Replaced dots with underscores in environment variable names so dotted plugin names resolve correctly.
+- Added tests covering dotted plugin names to confirm the expected environment prefixes.
+
 ## v1.4.495 (2026-09-30)
 
 ### PR [#2204](https://github.com/danielmiessler/Fabric/pull/2204) by [ericcurtin](https://github.com/ericcurtin): feat: add llmman to the OpenAI-compatible providers
