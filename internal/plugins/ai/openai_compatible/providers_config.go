@@ -29,12 +29,15 @@ type ProviderConfig struct {
 	// alongside the web search tool when Search is enabled. Non-xAI
 	// providers should leave this false.
 	EnableXSearch bool
+	// ApiKeyOptional makes the API key not required at setup. Local servers
+	// such as Apple's fm serve accept requests without a key.
+	ApiKeyOptional bool
 }
 
 // Client is the common structure for all OpenAI-compatible providers
 type Client struct {
 	*openai.Client
-	modelsURL string // Custom URL for listing models (if different from BaseURL/models)
+	modelsURL string // endpoint URL or a "static:" key
 }
 
 // NewClient creates a new OpenAI-compatible client for the specified provider
@@ -48,16 +51,25 @@ func NewClient(providerConfig ProviderConfig) *Client {
 		providerConfig.ImplementsResponses,
 		nil,
 	)
-	// Apply optional Responses API tool overrides. Zero values preserve
-	// existing behavior for providers that do not set these fields.
 	client.Client.SetWebSearchToolName(providerConfig.WebSearchToolName)
 	client.Client.SetEnableXSearch(providerConfig.EnableXSearch)
+	client.Client.ApiKey.Required = !providerConfig.ApiKeyOptional
 	return client
+}
+
+// IsConfigured reports whether the vendor is ready to use. A provider with an
+// optional API key has no setting that can fail, so it would always count as
+// configured. For those, require the base URL in the environment, which
+// fabric -S writes when the user selects the provider. Ollama uses the same rule.
+func (c *Client) IsConfigured() bool {
+	if c.ApiKey.Required {
+		return c.Client.IsConfigured()
+	}
+	return os.Getenv(c.ApiBaseURL.EnvVariable) != ""
 }
 
 // ListModels overrides the default ListModels to handle different response formats
 func (c *Client) ListModels(ctx context.Context) ([]string, error) {
-	// If a custom models URL is provided, handle it
 	if c.modelsURL != "" {
 		if c.modelsURL == "static:abacus" {
 			models, err := c.fetchAbacusModels()
@@ -67,22 +79,18 @@ func (c *Client) ListModels(ctx context.Context) ([]string, error) {
 			return c.getStaticModels(c.modelsURL)
 		}
 
-		// Check for static model list
 		if strings.HasPrefix(c.modelsURL, "static:") {
 			return c.getStaticModels(c.modelsURL)
 		}
-		// TODO: Handle context properly in Fabric by accepting and propagating a context.Context
-		// instead of creating a new one here.
+		// TODO: pass ctx instead of context.Background().
 		return openai.FetchModelsDirectly(context.Background(), c.modelsURL, c.Client.ApiKey.Value, c.GetName(), nil)
 	}
 
-	// First try the standard OpenAI SDK approach
 	models, err := c.Client.ListModels(ctx)
-	if err == nil && len(models) > 0 { // only return if OpenAI SDK returns models
+	if err == nil && len(models) > 0 {
 		return models, nil
 	}
 
-	// Fall back to direct API fetch
 	return c.DirectlyGetModels(ctx)
 }
 
@@ -129,15 +137,13 @@ func (c *Client) fetchAbacusModels() ([]string, error) {
 
 // NeedsRawMode overrides the parent implementation to handle provider-specific raw mode requirements
 func (c *Client) NeedsRawMode(modelName string) bool {
-	// MiniMax models require raw mode for proper message formatting
+	// MiniMax models need raw mode for correct message formatting.
 	if c.GetName() == "MiniMax" {
 		return true
 	}
-	// Fall back to parent OpenAI client implementation for other providers
 	return c.Client.NeedsRawMode(modelName)
 }
 
-// getStaticModels returns a predefined list of models for providers that don't support model discovery
 func (c *Client) getStaticModels(modelsKey string) ([]string, error) {
 	switch modelsKey {
 	case "static:abacus":
@@ -217,9 +223,31 @@ func (c *Client) getStaticModels(modelsKey string) ([]string, error) {
 
 // ProviderMap is a map of provider name to ProviderConfig for O(1) lookup
 var ProviderMap = map[string]ProviderConfig{
+  "Abacus": {
+		Name:                "Abacus",
+		BaseURL:             "https://routellm.abacus.ai/v1/",
+		ModelsURL:           "static:abacus",
+		ImplementsResponses: false,
+	},
 	"AIML": {
 		Name:                "AIML",
 		BaseURL:             "https://api.aimlapi.com/v1",
+		ImplementsResponses: false,
+	},
+  "Aliyun DashScope": {
+		Name:                "Aliyun DashScope",
+		BaseURL:             "https://dashscope.aliyuncs.com/compatible-mode/v1",
+		ImplementsResponses: false,
+	},
+  "Apple Foundation Models": {
+		Name:                "Apple Foundation Models",
+		BaseURL:             "http://localhost:1976/v1",
+		ImplementsResponses: false,
+		ApiKeyOptional:      true,
+	},
+  "ByteDance Ark": {
+		Name:                "ByteDance Ark",
+		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
 		ImplementsResponses: false,
 	},
 	"Cerebras": {
@@ -232,10 +260,14 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.deepseek.com",
 		ImplementsResponses: false,
 	},
-	"GitHub": {
-		Name:                "GitHub",
-		BaseURL:             "https://models.github.ai/inference",
-		ModelsURL:           "https://models.github.ai/catalog", // FetchModelsDirectly will append /models
+	"Eden AI": {
+		Name:                "Eden AI",
+		BaseURL:             "https://api.edenai.run/v3",
+		ImplementsResponses: false,
+	},
+	"FuturMix": {
+		Name:                "FuturMix",
+		BaseURL:             "https://futurmix.ai/v1",
 		ImplementsResponses: false,
 	},
 	"Infermatic": {
@@ -247,9 +279,8 @@ var ProviderMap = map[string]ProviderConfig{
 		Name:                "GrokAI",
 		BaseURL:             "https://api.x.ai/v1",
 		ImplementsResponses: true,
-		// xAI's Responses API expects the "web_search" tool type, not
-		// OpenAI's "web_search_preview", and additionally accepts an
-		// "x_search" tool entry for live search grounding.
+		// xAI's Responses API uses the "web_search" tool type, not "web_search_preview".
+		// It also accepts an "x_search" tool entry.
 		WebSearchToolName: "web_search",
 		EnableXSearch:     true,
 	},
@@ -266,6 +297,16 @@ var ProviderMap = map[string]ProviderConfig{
 	"LiteLLM": {
 		Name:                "LiteLLM",
 		BaseURL:             "http://localhost:4000",
+		ImplementsResponses: false,
+	},
+	"llmman": {
+		Name:                "llmman",
+		BaseURL:             "http://localhost:17434/v1",
+		ImplementsResponses: false,
+	},
+	"Mammouth": {
+		Name:                "Mammouth",
+		BaseURL:             "https://api.mammouth.ai/v1",
 		ImplementsResponses: false,
 	},
 	"MiniMax": {
@@ -292,11 +333,26 @@ var ProviderMap = map[string]ProviderConfig{
 	"OrcaRouter": {
 		Name:                "OrcaRouter",
 		BaseURL:             "https://api.orcarouter.ai/v1",
+    ImplementsResponses: false,
+	},
+	"Pzero": {
+		Name:                "Pzero",
+		BaseURL:             "https://api.pzero.studio/v1",
+		ImplementsResponses: false,
+	},
+	"Requesty": {
+		Name:                "Requesty",
+		BaseURL:             "https://router.requesty.ai/v1",
 		ImplementsResponses: false,
 	},
 	"SiliconCloud": {
 		Name:                "SiliconCloud",
 		BaseURL:             "https://api.siliconflow.cn/v1",
+		ImplementsResponses: false,
+	},
+	"Synthorai": {
+		Name:                "Synthorai",
+		BaseURL:             "https://synthorai.io/v1",
 		ImplementsResponses: false,
 	},
 	"Together": {
@@ -309,20 +365,19 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.venice.ai/api/v1",
 		ImplementsResponses: false,
 	},
+	"Y-API": {
+		Name:                "Y-API",
+		BaseURL:             "https://api.y-api.bestvirtualgoods.com/v1",
+		ImplementsResponses: false,
+	},
 	"Z AI": {
 		Name:                "Z AI",
 		BaseURL:             "https://api.z.ai/api/paas/v4",
 		ImplementsResponses: false,
 	},
-	"Abacus": {
-		Name:                "Abacus",
-		BaseURL:             "https://routellm.abacus.ai/v1/",
-		ModelsURL:           "static:abacus", // Special marker for static model list
-		ImplementsResponses: false,
-	},
-	"Mammouth": {
-		Name:                "Mammouth",
-		BaseURL:             "https://api.mammouth.ai/v1",
+	"Zhipu AI": {
+		Name:                "Zhipu AI",
+		BaseURL:             "https://open.bigmodel.cn/api/paas/v4",
 		ImplementsResponses: false,
 	},
 }
@@ -331,28 +386,24 @@ var ProviderMap = map[string]ProviderConfig{
 func GetProviderByName(name string) (ProviderConfig, bool) {
 	provider, found := ProviderMap[name]
 	if strings.Contains(provider.BaseURL, "{{") && strings.Contains(provider.BaseURL, "}}") {
-		// Extract the template variable and default value
+		// A {{VAR=default}} in BaseURL takes its value from the env var NAME_VAR, for example LANGDOCK_REGION.
 		start := strings.Index(provider.BaseURL, "{{")
 		end := strings.Index(provider.BaseURL, "}}") + 2
 		template := provider.BaseURL[start:end]
 
-		// Parse the template to get variable name and default value
-		inner := template[2 : len(template)-2] // Remove {{ and }}
+		inner := template[2 : len(template)-2]
 		parts := strings.Split(inner, "=")
 		if len(parts) == 2 {
 			varName := strings.TrimSpace(parts[0])
 			defaultValue := strings.TrimSpace(parts[1])
 
-			// Create environment variable name
 			envVarName := strings.ToUpper(provider.Name) + "_" + varName
 
-			// Get value from environment or use default
 			envValue := os.Getenv(envVarName)
 			if envValue == "" {
 				envValue = defaultValue
 			}
 
-			// Replace the template with the actual value
 			provider.BaseURL = strings.Replace(provider.BaseURL, template, envValue, 1)
 		}
 	}
