@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.498 (2026-10-01)
+
+### PR [#2241](https://github.com/danielmiessler/Fabric/pull/2241) by [ksylvan](https://github.com/ksylvan): fix: require explicit configuration for optional-key AI providers
+
+- Fixed optional-key AI providers so they now require explicit configuration before activation.
+- Required base URL environment variables for providers that do not need an API key.
+- Preserved existing configuration checks for providers that require an API key.
+- Added tests covering optional-key activation and required-key checks without credentials.
+- Documented Apple Foundation Models activation through `fabric -S`.
+
 ## v1.4.497 (2026-10-01)
 
 ### PR [#2240](https://github.com/danielmiessler/Fabric/pull/2240) by [ksylvan](https://github.com/ksylvan): feat: add local Apple Foundation Models provider support
