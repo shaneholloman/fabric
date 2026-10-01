@@ -245,6 +245,11 @@ var ProviderMap = map[string]ProviderConfig{
 		ImplementsResponses: false,
 		ApiKeyOptional:      true,
 	},
+	"API Route": {
+		Name:                "API Route",
+		BaseURL:             "https://global.api-route.com/v1",
+		ImplementsResponses: false,
+	},
 	"ByteDance Ark": {
 		Name:                "ByteDance Ark",
 		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
