@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.503 (2026-10-01)
+
+### PR [#2218](https://github.com/danielmiessler/Fabric/pull/2218) by [DennyHo0917](https://github.com/DennyHo0917): feat(providers): add API Route as an OpenAI-compatible provider
+
+- Added API Route (https://global.api-route.com/v1) as an OpenAI-compatible AI provider in Fabric.
+- Standardized the provider's brand name to "API Route" across the codebase.
+- Merged the latest changes from `main` into the feature branch.
+
 ## v1.4.502 (2026-10-01)
 
 ### PR [#2194](https://github.com/danielmiessler/Fabric/pull/2194) by [jperla](https://github.com/jperla): feat: add TrustedRouter as an OpenAI-compatible provider
