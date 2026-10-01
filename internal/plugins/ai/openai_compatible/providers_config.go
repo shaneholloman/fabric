@@ -57,6 +57,17 @@ func NewClient(providerConfig ProviderConfig) *Client {
 	return client
 }
 
+// IsConfigured reports whether the vendor is ready to use. A provider with an
+// optional API key has no setting that can fail, so it would always count as
+// configured. For those, require the base URL in the environment, which
+// fabric -S writes when the user selects the provider. Ollama uses the same rule.
+func (c *Client) IsConfigured() bool {
+	if c.ApiKey.Required {
+		return c.Client.IsConfigured()
+	}
+	return os.Getenv(c.ApiBaseURL.EnvVariable) != ""
+}
+
 // ListModels overrides the default ListModels to handle different response formats
 func (c *Client) ListModels(ctx context.Context) ([]string, error) {
 	if c.modelsURL != "" {

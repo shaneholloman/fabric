@@ -90,3 +90,23 @@ func TestCreateClient(t *testing.T) {
 		})
 	}
 }
+
+func TestIsConfiguredOptionalKey(t *testing.T) {
+	const envVar = "APPLE_FOUNDATION_MODELS_API_BASE_URL"
+	t.Setenv(envVar, "")
+
+	apple, _ := CreateClient("Apple Foundation Models")
+	if apple.IsConfigured() {
+		t.Fatal("optional-key provider must not be configured until its base URL is in the environment")
+	}
+
+	t.Setenv(envVar, "http://localhost:1976/v1")
+	if !apple.IsConfigured() {
+		t.Fatal("optional-key provider must be configured once its base URL is in the environment")
+	}
+
+	groq, _ := CreateClient("Groq")
+	if groq.IsConfigured() {
+		t.Fatal("required-key provider must not be configured without a key")
+	}
+}
