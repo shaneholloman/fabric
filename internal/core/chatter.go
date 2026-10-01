@@ -1,13 +1,13 @@
 package core
 
 import (
+	"cmp"
 	"context"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/google/uuid"
 
 	"github.com/danielmiessler/fabric/internal/chat"
 
@@ -67,17 +67,9 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 		return
 	}
 
-	// Establish a stable session identifier for the conversation so providers
-	// that support session-based routing can optimize request handling. Named
-	// sessions reuse their name; stateless requests get a fresh UUID. The
-	// guard keeps the value stable when one ChatOptions is reused across
-	// multiple sends (e.g. strategies or tool loops).
-	if opts.SessionID == "" {
-		if session.Name != "" {
-			opts.SessionID = session.Name
-		} else {
-			opts.SessionID = uuid.NewString()
-		}
+	// Set one stable session ID for each conversation. Providers that route by session send it as a header.
+	if opts.SessionID = cmp.Or(opts.SessionID, session.Name); opts.SessionID == "" {
+		opts.SessionID = rand.Text()
 	}
 
 	vendorMessages := session.GetVendorMessages()

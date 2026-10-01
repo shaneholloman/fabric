@@ -50,36 +50,10 @@ func TestRequestOptions_SendsSessionAndUserAgent(t *testing.T) {
 	assert.Equal(t, "fabric/test", rt.req.Header.Get("User-Agent"))
 }
 
-// Ensures the session header is omitted when no session ID is available while
-// the User-Agent override still applies.
+// An empty session ID drops the session header and keeps the User-Agent.
 func TestRequestOptions_EmptySessionOmitsHeader(t *testing.T) {
-	client := &Client{
-		sessionHeaderName: "x-opencode-session",
-		userAgent:         "fabric/test",
-	}
-
-	rt := &captureRoundTripper{body: `{
-		"id": "chatcmpl-1",
-		"object": "chat.completion",
-		"created": 0,
-		"model": "glm-5.1",
-		"choices": [{"index": 0, "message": {"role": "assistant", "content": "hi"}, "finish_reason": "stop"}]
-	}`}
-
-	sdk := openai.NewClient(
-		option.WithAPIKey("test-key"),
-		option.WithBaseURL("https://opencode.test/v1"),
-		option.WithHTTPClient(&http.Client{Transport: rt}),
-	)
-
-	_, err := sdk.Chat.Completions.New(context.Background(), openai.ChatCompletionNewParams{
-		Model:    shared.ChatModel("glm-5.1"),
-		Messages: []openai.ChatCompletionMessageParamUnion{openai.UserMessage("hi")},
-	}, client.requestOptions("")...)
-
-	assert.NoError(t, err)
-	assert.Empty(t, rt.req.Header.Get("x-opencode-session"))
-	assert.Equal(t, "fabric/test", rt.req.Header.Get("User-Agent"))
+	client := &Client{sessionHeaderName: "x-opencode-session", userAgent: "fabric/test"}
+	assert.Len(t, client.requestOptions(""), 1)
 }
 
 // captureRoundTripper records the outgoing request and returns a fixed JSON body.

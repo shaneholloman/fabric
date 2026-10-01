@@ -11,7 +11,6 @@ import (
 
 	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins/ai/openai"
-	"github.com/danielmiessler/fabric/internal/util"
 )
 
 const abacusRouteLLMModelsURL = "https://routellm.abacus.ai/api/v0/_listRouteLLMModels"
@@ -350,14 +349,14 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://opencode.ai/zen/go/v1",
 		ImplementsResponses: false,
 		SessionHeader:       openCodeSessionHeader,
-		UserAgent:           "fabric/" + util.FabricVersion(),
+		UserAgent:           "fabric",
 	},
 	"OpenCode Zen": {
 		Name:                "OpenCode Zen",
 		BaseURL:             "https://opencode.ai/zen/v1",
 		ImplementsResponses: false,
 		SessionHeader:       openCodeSessionHeader,
-		UserAgent:           "fabric/" + util.FabricVersion(),
+		UserAgent:           "fabric",
 	},
 	"OpenRouter": {
 		Name:                "OpenRouter",
