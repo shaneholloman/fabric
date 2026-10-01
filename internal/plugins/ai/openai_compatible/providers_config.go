@@ -223,7 +223,7 @@ func (c *Client) getStaticModels(modelsKey string) ([]string, error) {
 
 // ProviderMap is a map of provider name to ProviderConfig for O(1) lookup
 var ProviderMap = map[string]ProviderConfig{
-  "Abacus": {
+	"Abacus": {
 		Name:                "Abacus",
 		BaseURL:             "https://routellm.abacus.ai/v1/",
 		ModelsURL:           "static:abacus",
@@ -234,18 +234,18 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.aimlapi.com/v1",
 		ImplementsResponses: false,
 	},
-  "Aliyun DashScope": {
+	"Aliyun DashScope": {
 		Name:                "Aliyun DashScope",
 		BaseURL:             "https://dashscope.aliyuncs.com/compatible-mode/v1",
 		ImplementsResponses: false,
 	},
-  "Apple Foundation Models": {
+	"Apple Foundation Models": {
 		Name:                "Apple Foundation Models",
 		BaseURL:             "http://localhost:1976/v1",
 		ImplementsResponses: false,
 		ApiKeyOptional:      true,
 	},
-  "ByteDance Ark": {
+	"ByteDance Ark": {
 		Name:                "ByteDance Ark",
 		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
 		ImplementsResponses: false,
@@ -333,7 +333,7 @@ var ProviderMap = map[string]ProviderConfig{
 	"OrcaRouter": {
 		Name:                "OrcaRouter",
 		BaseURL:             "https://api.orcarouter.ai/v1",
-    ImplementsResponses: false,
+		ImplementsResponses: false,
 	},
 	"Pzero": {
 		Name:                "Pzero",
