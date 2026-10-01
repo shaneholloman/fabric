@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.502 (2026-10-01)
+
+### PR [#2194](https://github.com/danielmiessler/Fabric/pull/2194) by [jperla](https://github.com/jperla): feat: add TrustedRouter as an OpenAI-compatible provider
+
+- Added TrustedRouter as an OpenAI-compatible provider via a single `ProviderMap` entry, which the plugin registry picks up automatically.
+- Mapped the provider name to the `TRUSTEDROUTER_API_KEY` environment variable in `BuildEnvVariable`.
+- Updated the REST configuration handlers with the matching TrustedRouter field alongside the other providers.
+
 ## v1.4.501 (2026-10-01)
 
 ### PR [#2193](https://github.com/danielmiessler/Fabric/pull/2193) by [Marc-oss-hub](https://github.com/Marc-oss-hub): feat: add OrcaRouter as OpenAI-compatible provider
