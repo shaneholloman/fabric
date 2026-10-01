@@ -2,7 +2,9 @@ package openai
 
 import (
 	"context"
+	"io"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/openai/openai-go"
@@ -78,4 +80,20 @@ func TestRequestOptions_EmptySessionOmitsHeader(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Empty(t, rt.req.Header.Get("x-opencode-session"))
 	assert.Equal(t, "fabric/test", rt.req.Header.Get("User-Agent"))
+}
+
+// captureRoundTripper records the outgoing request and returns a fixed JSON body.
+type captureRoundTripper struct {
+	body string
+	req  *http.Request
+}
+
+func (c *captureRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	c.req = req
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(c.body)),
+		Request:    req,
+	}, nil
 }

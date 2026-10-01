@@ -22,7 +22,7 @@ func NewDb(dir string) (db *Db) {
 		StorageEntity:          &StorageEntity{Label: "Patterns", Dir: db.FilePath("patterns"), ItemIsDir: true},
 		SystemPatternFile:      "system.md",
 		UniquePatternsFilePath: db.FilePath("unique_patterns.txt"),
-		CustomPatternsDir:      "", // Will be set after loading .env file
+		CustomPatternsDir:      "", // Configure sets this after it loads the .env file.
 	}
 
 	db.Sessions = &SessionsEntity{
@@ -55,10 +55,8 @@ func (o *Db) Configure() (err error) {
 		return
 	}
 
-	// Set custom patterns directory after loading .env file
 	customPatternsDir := os.Getenv("CUSTOM_PATTERNS_DIRECTORY")
 	if customPatternsDir != "" {
-		// Expand home directory if needed
 		if strings.HasPrefix(customPatternsDir, "~/") {
 			if homeDir, err := os.UserHomeDir(); err == nil {
 				customPatternsDir = filepath.Join(homeDir, customPatternsDir[2:])
