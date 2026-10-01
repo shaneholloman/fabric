@@ -53,6 +53,11 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - Cheaper Inference",
+			provider: "Cheaper Inference",
+			exists:   true,
+		},
+		{
 			name:     "Existing provider - OpenCode Zen",
 			provider: "OpenCode Zen",
 			exists:   true,
