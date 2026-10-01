@@ -16,6 +16,11 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - Eden AI",
+			provider: "Eden AI",
+			exists:   true,
+		},
+		{
 			name:     "Existing provider - Groq",
 			provider: "Groq",
 			exists:   true,
@@ -36,8 +41,48 @@ func TestCreateClient(t *testing.T) {
 			exists:   true,
 		},
 		{
+			name:     "Existing provider - OrcaRouter",
+			provider: "OrcaRouter",
+			exists:   true,
+		},
+		{
 			name:     "Existing provider - MiniMax",
 			provider: "MiniMax",
+			exists:   true,
+		},
+		{
+			name:     "Existing provider - TrustedRouter",
+			provider: "TrustedRouter",
+			exists:   true,
+		},
+		{
+			name:     "Existing provider - FuturMix",
+			provider: "FuturMix",
+			exists:   true,
+		},
+		{
+			name:     "New Chinese provider - Aliyun DashScope",
+			provider: "Aliyun DashScope",
+			exists:   true,
+		},
+		{
+			name:     "New Chinese provider - Zhipu AI",
+			provider: "Zhipu AI",
+			exists:   true,
+		},
+		{
+			name:     "New Chinese provider - ByteDance Ark",
+			provider: "ByteDance Ark",
+			exists:   true,
+		},
+		{
+			name:     "Existing provider - llmman",
+			provider: "llmman",
+			exists:   true,
+		},
+		{
+			name:     "Local provider - Apple Foundation Models",
+			provider: "Apple Foundation Models",
 			exists:   true,
 		},
 		{
@@ -58,5 +103,25 @@ func TestCreateClient(t *testing.T) {
 				t.Errorf("Expected non-nil client for provider %s", tc.provider)
 			}
 		})
+	}
+}
+
+func TestIsConfiguredOptionalKey(t *testing.T) {
+	const envVar = "APPLE_FOUNDATION_MODELS_API_BASE_URL"
+	t.Setenv(envVar, "")
+
+	apple, _ := CreateClient("Apple Foundation Models")
+	if apple.IsConfigured() {
+		t.Fatal("optional-key provider must not be configured until its base URL is in the environment")
+	}
+
+	t.Setenv(envVar, "http://localhost:1976/v1")
+	if !apple.IsConfigured() {
+		t.Fatal("optional-key provider must be configured once its base URL is in the environment")
+	}
+
+	groq, _ := CreateClient("Groq")
+	if groq.IsConfigured() {
+		t.Fatal("required-key provider must not be configured without a key")
 	}
 }

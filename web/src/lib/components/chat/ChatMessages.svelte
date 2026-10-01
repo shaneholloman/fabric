@@ -32,15 +32,13 @@
     showScrollButton = scrollHeight - scrollTop - clientHeight > 100;
   }
 
-  // Watch for changes in messages
   $: if ($chatState.messages.length > 0) {
     const lastMessage = $chatState.messages[$chatState.messages.length - 1];
     isUserMessage = lastMessage.role === 'user';
-    // Auto-scroll on both user messages and assistant messages
     setTimeout(scrollToBottom, 100);
   }
 
-  // Also watch for streaming state changes to ensure scrolling when streaming completes
+  // Scroll again when streaming ends.
   $: if ($streamingStore === false) {
     setTimeout(scrollToBottom, 100);
   }
@@ -56,7 +54,6 @@
     }
   });
 
-  // Configure marked to be synchronous
   const renderer = new marked.Renderer();
   marked.setOptions({
     gfm: true,
@@ -65,7 +62,6 @@
     async: false
   });
 
-  // New shouldRenderAsMarkdown function
 function shouldRenderAsMarkdown(message: Message): boolean {
     const pattern = get(selectedPatternName);
     if (pattern && message.role === 'assistant') {
@@ -74,13 +70,12 @@ function shouldRenderAsMarkdown(message: Message): boolean {
     return message.role === 'assistant' && message.format !== 'plain';
 }
 
-// Clean pattern output on accumulated content at render time
 const chatService = new ChatService();
 
 function renderContent(message: Message): string {
     let content = message.content.replace(/\\n/g, '\n');
 
-    // Apply pattern cleaning on the full accumulated content (not per-token)
+    // Clean the full accumulated content, not each token.
     const pattern = get(selectedPatternName);
     if (pattern && message.role === 'assistant') {
         content = chatService.cleanPatternOutput(content);

@@ -38,9 +38,7 @@ func requireAPIKeyForBind(address, apiKey string) error {
 // Swagger documentation endpoints (/swagger/*) are exempt from authentication
 // to allow users to browse and test the API documentation freely.
 func APIKeyMiddleware(apiKey string) gin.HandlerFunc {
-	// Compare digests, not the raw values. ConstantTimeCompare returns
-	// early when the lengths are different, and that shows the length of
-	// the configured key.
+	// Hash the configured key so the comparison avoids leaking its length through timing.
 	expectedKey := sha256.Sum256([]byte(apiKey))
 	return func(c *gin.Context) {
 		// Skip authentication for Swagger documentation endpoints

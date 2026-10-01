@@ -31,13 +31,11 @@ func (o *StorageEntity) Configure() (err error) {
 
 // GetNames finds all patterns in the patterns directory and enters the id, name, and pattern into a slice of Entry structs. it returns these entries or an error
 func (o *StorageEntity) GetNames() (ret []string, err error) {
-	// Resolve the directory path to an absolute path
 	absDir, err := util.GetAbsolutePath(o.Dir)
 	if err != nil {
 		return nil, fmt.Errorf(i18n.T("storage_error_resolve_directory"), err)
 	}
 
-	// Read the directory entries
 	var entries []os.DirEntry
 	if entries, err = os.ReadDir(absDir); err != nil {
 		return nil, fmt.Errorf(i18n.T("storage_error_read_directory"), err)
@@ -46,20 +44,16 @@ func (o *StorageEntity) GetNames() (ret []string, err error) {
 	for _, entry := range entries {
 		entryPath := filepath.Join(absDir, entry.Name())
 
-		// Get metadata for the entry, including symlink info
 		fileInfo, err := os.Lstat(entryPath)
 		if err != nil {
 			return nil, fmt.Errorf(i18n.T("storage_error_stat_entry"), entryPath, err)
 		}
 
-		// Determine if the entry should be included
 		if o.ItemIsDir {
-			// Include directories or symlinks to directories
 			if fileInfo.IsDir() || (fileInfo.Mode()&os.ModeSymlink != 0 && util.IsSymlinkToDir(entryPath)) {
 				ret = append(ret, entry.Name())
 			}
 		} else {
-			// Include files, optionally filtering by extension
 			if !fileInfo.IsDir() {
 				if o.FileExtension == "" || filepath.Ext(entry.Name()) == o.FileExtension {
 					ret = append(ret, strings.TrimSuffix(entry.Name(), o.FileExtension))
