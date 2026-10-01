@@ -73,12 +73,23 @@ func (h *ChatHandler) HandleChat(c *gin.Context) {
 
 	if err := c.BindJSON(&request); err != nil {
 		log.Printf("Error binding JSON: %v", err)
-		c.Writer.Header().Set("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
+		setHSTS(c)
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf(i18n.T("server_invalid_request_format"), err)})
 		return
 	}
 
-	// Add log to check received language field
+	for _, prompt := range request.Prompts {
+		if rejectUnsafePatternName(c, prompt.PatternName) {
+			return
+		}
+		if rejectInvalidStorageName(c, prompt.ContextName) {
+			return
+		}
+		if rejectInvalidStorageName(c, prompt.SessionName) {
+			return
+		}
+	}
+
 	log.Printf("Received chat request - Language: '%s', Prompts: %d", request.Language, len(request.Prompts))
 
 	// Set headers for SSE
