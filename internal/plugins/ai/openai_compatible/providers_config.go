@@ -223,9 +223,31 @@ func (c *Client) getStaticModels(modelsKey string) ([]string, error) {
 
 // ProviderMap is a map of provider name to ProviderConfig for O(1) lookup
 var ProviderMap = map[string]ProviderConfig{
+	"Abacus": {
+		Name:                "Abacus",
+		BaseURL:             "https://routellm.abacus.ai/v1/",
+		ModelsURL:           "static:abacus",
+		ImplementsResponses: false,
+	},
 	"AIML": {
 		Name:                "AIML",
 		BaseURL:             "https://api.aimlapi.com/v1",
+		ImplementsResponses: false,
+	},
+	"Aliyun DashScope": {
+		Name:                "Aliyun DashScope",
+		BaseURL:             "https://dashscope.aliyuncs.com/compatible-mode/v1",
+		ImplementsResponses: false,
+	},
+	"Apple Foundation Models": {
+		Name:                "Apple Foundation Models",
+		BaseURL:             "http://localhost:1976/v1",
+		ImplementsResponses: false,
+		ApiKeyOptional:      true,
+	},
+	"ByteDance Ark": {
+		Name:                "ByteDance Ark",
+		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
 		ImplementsResponses: false,
 	},
 	"Cerebras": {
@@ -282,6 +304,11 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "http://localhost:17434/v1",
 		ImplementsResponses: false,
 	},
+	"Mammouth": {
+		Name:                "Mammouth",
+		BaseURL:             "https://api.mammouth.ai/v1",
+		ImplementsResponses: false,
+	},
 	"MiniMax": {
 		Name:                "MiniMax",
 		BaseURL:             "https://api.minimax.io/v1",
@@ -301,6 +328,11 @@ var ProviderMap = map[string]ProviderConfig{
 	"OpenRouter": {
 		Name:                "OpenRouter",
 		BaseURL:             "https://openrouter.ai/api/v1",
+		ImplementsResponses: false,
+	},
+	"OrcaRouter": {
+		Name:                "OrcaRouter",
+		BaseURL:             "https://api.orcarouter.ai/v1",
 		ImplementsResponses: false,
 	},
 	"Pzero": {
@@ -343,37 +375,10 @@ var ProviderMap = map[string]ProviderConfig{
 		BaseURL:             "https://api.z.ai/api/paas/v4",
 		ImplementsResponses: false,
 	},
-	"Abacus": {
-		Name:                "Abacus",
-		BaseURL:             "https://routellm.abacus.ai/v1/",
-		ModelsURL:           "static:abacus",
-		ImplementsResponses: false,
-	},
-	"Mammouth": {
-		Name:                "Mammouth",
-		BaseURL:             "https://api.mammouth.ai/v1",
-		ImplementsResponses: false,
-	},
-	"Aliyun DashScope": {
-		Name:                "Aliyun DashScope",
-		BaseURL:             "https://dashscope.aliyuncs.com/compatible-mode/v1",
-		ImplementsResponses: false,
-	},
 	"Zhipu AI": {
 		Name:                "Zhipu AI",
 		BaseURL:             "https://open.bigmodel.cn/api/paas/v4",
 		ImplementsResponses: false,
-	},
-	"ByteDance Ark": {
-		Name:                "ByteDance Ark",
-		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
-		ImplementsResponses: false,
-	},
-	"Apple Foundation Models": {
-		Name:                "Apple Foundation Models",
-		BaseURL:             "http://localhost:1976/v1",
-		ImplementsResponses: false,
-		ApiKeyOptional:      true,
 	},
 }
 
