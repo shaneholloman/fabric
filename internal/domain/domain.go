@@ -53,8 +53,12 @@ type ChatOptions struct {
 	NotificationCommand string
 	ShowMetadata        bool
 	Quiet               bool
-	BufferStream        bool              // collect streamed content without printing it
-	UpdateChan          chan StreamUpdate `json:"-"`
+	// SessionID is a stable identifier for the current conversation. Providers
+	// that support session-based routing (e.g. OpenCode) forward it as a header.
+	// It is derived internally and must not be part of the REST API surface.
+	SessionID    string            `json:"-"`
+	BufferStream bool              // collect streamed content without printing it
+	UpdateChan   chan StreamUpdate `json:"-"`
 }
 
 // NormalizeMessages remove empty messages and ensure messages order user-assist-user

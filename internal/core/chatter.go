@@ -1,7 +1,9 @@
 package core
 
 import (
+	"cmp"
 	"context"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	"os"
@@ -63,6 +65,11 @@ func (o *Chatter) Send(ctx context.Context, request *domain.ChatRequest, opts *d
 	}
 	if session, err = o.BuildSession(request, opts.Raw); err != nil {
 		return
+	}
+
+	// Set one stable session ID for each conversation. Providers that route by session send it as a header.
+	if opts.SessionID = cmp.Or(opts.SessionID, session.Name); opts.SessionID == "" {
+		opts.SessionID = rand.Text()
 	}
 
 	vendorMessages := session.GetVendorMessages()

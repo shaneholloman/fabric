@@ -70,6 +70,11 @@ type Client struct {
 	webSearchToolName string
 	// enableXSearch adds the xAI "x_search" tool next to the web search tool.
 	enableXSearch bool
+	// sessionHeaderName, when non-empty, is the request header used to carry a
+	// stable per-conversation session ID (e.g. OpenCode's "x-opencode-session").
+	sessionHeaderName string
+	// userAgent, when non-empty, overrides the SDK's default User-Agent header.
+	userAgent string
 }
 
 // SetResponsesAPIEnabled configures whether to use the Responses API
@@ -90,6 +95,32 @@ func (o *Client) SetWebSearchToolName(name string) {
 // leave this false.
 func (o *Client) SetEnableXSearch(enabled bool) {
 	o.enableXSearch = enabled
+}
+
+// SetSessionHeaderName sets the request header used to carry a stable
+// per-conversation session ID (for example, OpenCode's "x-opencode-session").
+// Pass an empty string to disable.
+func (o *Client) SetSessionHeaderName(name string) {
+	o.sessionHeaderName = name
+}
+
+// SetUserAgent overrides the User-Agent header sent with chat and responses
+// requests. Pass an empty string to keep the SDK's default.
+func (o *Client) SetUserAgent(userAgent string) {
+	o.userAgent = userAgent
+}
+
+// requestOptions returns per-request options that attach Fabric's session ID
+// and User-Agent headers when configured. Providers that do not set these
+// values get an empty slice, preserving default behavior.
+func (o *Client) requestOptions(sessionID string) (ret []option.RequestOption) {
+	if o.sessionHeaderName != "" && sessionID != "" {
+		ret = append(ret, option.WithHeader(o.sessionHeaderName, sessionID))
+	}
+	if o.userAgent != "" {
+		ret = append(ret, option.WithHeader("User-Agent", o.userAgent))
+	}
+	return
 }
 
 func checkImageGenerationCompatibility(model string) {
@@ -143,7 +174,7 @@ func (o *Client) sendStreamResponses(
 	defer close(channel)
 
 	req := o.buildResponseParams(msgs, opts)
-	stream := o.ApiClient.Responses.NewStreaming(ctx, req)
+	stream := o.ApiClient.Responses.NewStreaming(ctx, req, o.requestOptions(opts.SessionID)...)
 	for stream.Next() {
 		event := stream.Current()
 		switch event.Type {
@@ -185,7 +216,7 @@ func (o *Client) sendResponses(ctx context.Context, msgs []*chat.ChatCompletionM
 	req := o.buildResponseParams(msgs, opts)
 
 	var resp *responses.Response
-	if resp, err = o.ApiClient.Responses.New(ctx, req); err != nil {
+	if resp, err = o.ApiClient.Responses.New(ctx, req, o.requestOptions(opts.SessionID)...); err != nil {
 		return
 	}
 

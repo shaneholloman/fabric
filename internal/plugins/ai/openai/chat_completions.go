@@ -18,7 +18,8 @@ func (o *Client) sendChatCompletions(ctx context.Context, msgs []*chat.ChatCompl
 
 	var resp *openai.ChatCompletion
 	// Apple's fm serve sends an event stream if "stream" is not in the request. Set it to false.
-	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req, option.WithJSONSet("stream", false)); err != nil {
+	reqOpts := append(o.requestOptions(opts.SessionID), option.WithJSONSet("stream", false))
+	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req, reqOpts...); err != nil {
 		return
 	}
 	if len(resp.Choices) > 0 {
@@ -37,7 +38,7 @@ func (o *Client) sendStreamChatCompletions(
 	req.StreamOptions = openai.ChatCompletionStreamOptionsParam{
 		IncludeUsage: openai.Bool(true),
 	}
-	stream := o.ApiClient.Chat.Completions.NewStreaming(ctx, req)
+	stream := o.ApiClient.Chat.Completions.NewStreaming(ctx, req, o.requestOptions(opts.SessionID)...)
 	for stream.Next() {
 		chunk := stream.Current()
 		if len(chunk.Choices) > 0 && chunk.Choices[0].Delta.Content != "" {

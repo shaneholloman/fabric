@@ -376,6 +376,8 @@ Fabric supports a wide range of AI providers:
 - MiniMax
 - Mistral
 - Novita AI
+- OpenCode Go
+- OpenCode Zen
 - OpenRouter
 - OrcaRouter
 - Pzero

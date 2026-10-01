@@ -15,6 +15,10 @@ import (
 
 const abacusRouteLLMModelsURL = "https://routellm.abacus.ai/api/v0/_listRouteLLMModels"
 
+// openCodeSessionHeader carries a stable per-conversation session ID that
+// OpenCode uses to optimize routing and prompt caching.
+const openCodeSessionHeader = "x-opencode-session"
+
 // ProviderConfig defines the configuration for an OpenAI-compatible API provider
 type ProviderConfig struct {
 	Name                string
@@ -29,6 +33,14 @@ type ProviderConfig struct {
 	// alongside the web search tool when Search is enabled. Non-xAI
 	// providers should leave this false.
 	EnableXSearch bool
+	// SessionHeader, when non-empty, is the request header used to carry a
+	// stable per-conversation session ID. OpenCode, for example, expects
+	// "x-opencode-session" so it can optimize routing and prompt caching.
+	SessionHeader string
+	// UserAgent, when non-empty, overrides the SDK's default User-Agent
+	// header. Providers that ask clients to identify themselves (e.g.
+	// OpenCode) should set this.
+	UserAgent string
 	// ApiKeyOptional makes the API key not required at setup. Local servers
 	// such as Apple's fm serve accept requests without a key.
 	ApiKeyOptional bool
@@ -53,6 +65,8 @@ func NewClient(providerConfig ProviderConfig) *Client {
 	)
 	client.Client.SetWebSearchToolName(providerConfig.WebSearchToolName)
 	client.Client.SetEnableXSearch(providerConfig.EnableXSearch)
+	client.Client.SetSessionHeaderName(providerConfig.SessionHeader)
+	client.Client.SetUserAgent(providerConfig.UserAgent)
 	client.Client.ApiKey.Required = !providerConfig.ApiKeyOptional
 	return client
 }
@@ -329,6 +343,20 @@ var ProviderMap = map[string]ProviderConfig{
 		Name:                "Novita AI",
 		BaseURL:             "https://api.novita.ai/openai/v1",
 		ImplementsResponses: false,
+	},
+	"OpenCode Go": {
+		Name:                "OpenCode Go",
+		BaseURL:             "https://opencode.ai/zen/go/v1",
+		ImplementsResponses: false,
+		SessionHeader:       openCodeSessionHeader,
+		UserAgent:           "fabric",
+	},
+	"OpenCode Zen": {
+		Name:                "OpenCode Zen",
+		BaseURL:             "https://opencode.ai/zen/v1",
+		ImplementsResponses: false,
+		SessionHeader:       openCodeSessionHeader,
+		UserAgent:           "fabric",
 	},
 	"OpenRouter": {
 		Name:                "OpenRouter",
