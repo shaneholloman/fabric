@@ -29,6 +29,9 @@ type ProviderConfig struct {
 	// alongside the web search tool when Search is enabled. Non-xAI
 	// providers should leave this false.
 	EnableXSearch bool
+	// ApiKeyOptional makes the API key not required at setup. Local servers
+	// such as Apple's fm serve accept requests without a key.
+	ApiKeyOptional bool
 }
 
 // Client is the common structure for all OpenAI-compatible providers
@@ -50,6 +53,7 @@ func NewClient(providerConfig ProviderConfig) *Client {
 	)
 	client.Client.SetWebSearchToolName(providerConfig.WebSearchToolName)
 	client.Client.SetEnableXSearch(providerConfig.EnableXSearch)
+	client.Client.ApiKey.Required = !providerConfig.ApiKeyOptional
 	return client
 }
 
@@ -343,6 +347,12 @@ var ProviderMap = map[string]ProviderConfig{
 		Name:                "ByteDance Ark",
 		BaseURL:             "https://ark.cn-beijing.volces.com/api/v3",
 		ImplementsResponses: false,
+	},
+	"Apple Foundation Models": {
+		Name:                "Apple Foundation Models",
+		BaseURL:             "http://localhost:1976/v1",
+		ImplementsResponses: false,
+		ApiKeyOptional:      true,
 	},
 }
 
