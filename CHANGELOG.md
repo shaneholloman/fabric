@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.497 (2026-10-01)
+
+### PR [#2240](https://github.com/danielmiessler/Fabric/pull/2240) by [ksylvan](https://github.com/ksylvan): feat: add local Apple Foundation Models provider support
+
+- Added support for the local Apple Foundation Models provider.
+- Registered Apple Foundation Models with a local server endpoint.
+- Made API keys optional during provider setup.
+- Explicitly disabled streaming for non-streaming chat completion requests.
+- Documented macOS requirements, license activation, and local server startup.
+
 ## v1.4.496 (2026-10-01)
 
 ### PR [#2239](https://github.com/danielmiessler/Fabric/pull/2239) by [ksylvan](https://github.com/ksylvan): feat: add llama.cpp support through the LM Studio-compatible client
