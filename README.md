@@ -363,6 +363,7 @@ Fabric supports a wide range of AI providers:
 
 - Abacus
 - AIML
+- Apple Foundation Models (local, macOS 27 or later: run `sudo fm license` once, then `fm serve --port 1976`; no API key)
 - Cerebras
 - DeepSeek
 - DigitalOcean

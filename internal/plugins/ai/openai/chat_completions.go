@@ -9,6 +9,7 @@ import (
 	"github.com/danielmiessler/fabric/internal/chat"
 	"github.com/danielmiessler/fabric/internal/domain"
 	openai "github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/shared"
 )
 
@@ -16,7 +17,8 @@ func (o *Client) sendChatCompletions(ctx context.Context, msgs []*chat.ChatCompl
 	req := o.buildChatCompletionParams(msgs, opts)
 
 	var resp *openai.ChatCompletion
-	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req); err != nil {
+	// Apple's fm serve sends an event stream if "stream" is not in the request. Set it to false.
+	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req, option.WithJSONSet("stream", false)); err != nil {
 		return
 	}
 	if len(resp.Choices) > 0 {
