@@ -1,0 +1,7 @@
+### PR [#2240](https://github.com/danielmiessler/Fabric/pull/2240) by [ksylvan](https://github.com/ksylvan): feat: add local Apple Foundation Models provider support
+
+- Added support for the local Apple Foundation Models provider.
+- Registered Apple Foundation Models with a local server endpoint.
+- Made API keys optional during provider setup.
+- Explicitly disabled streaming for non-streaming chat completion requests.
+- Documented macOS requirements, license activation, and local server startup.
