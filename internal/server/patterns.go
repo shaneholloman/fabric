@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"maps"
 	"net/http"
+	"strings"
 
 	"github.com/danielmiessler/fabric/internal/i18n"
 	"github.com/danielmiessler/fabric/internal/plugins/db/fsdb"
@@ -34,7 +35,6 @@ func rejectUnsafePatternName(c *gin.Context, name string) bool {
 
 // NewPatternsHandler creates a new PatternsHandler
 func NewPatternsHandler(r *gin.Engine, patterns *fsdb.PatternsEntity) (ret *PatternsHandler) {
-	// Create a storage handler but don't register any routes yet
 	storageHandler := &StorageHandler[fsdb.Pattern]{storage: patterns}
 	ret = &PatternsHandler{StorageHandler: storageHandler, patterns: patterns}
 
@@ -121,5 +121,12 @@ func (h *PatternsHandler) ApplyPattern(c *gin.Context) {
 		storageError(c, err)
 		return
 	}
+
+	// A pattern without an {{input}} placeholder does not contain the input.
+	// Add the input at the end to keep the response contract of this endpoint.
+	if request.Input != "" && !pattern.InputUsed {
+		pattern.Pattern = strings.TrimSuffix(pattern.Pattern, "\n") + "\n" + request.Input
+	}
+
 	c.JSON(http.StatusOK, pattern)
 }

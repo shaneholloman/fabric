@@ -1,8 +1,6 @@
 package openai
 
-// This file contains helper methods for the Chat Completions API.
-// These methods are used as fallbacks for OpenAI-compatible providers
-// that don't support the newer Responses API (e.g., Groq, Mistral, etc.).
+// The Chat Completions API path, for providers that do not implement the Responses API.
 
 import (
 	"context"
@@ -11,15 +9,16 @@ import (
 	"github.com/danielmiessler/fabric/internal/chat"
 	"github.com/danielmiessler/fabric/internal/domain"
 	openai "github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/shared"
 )
 
-// sendChatCompletions sends a request using the Chat Completions API
 func (o *Client) sendChatCompletions(ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions) (ret string, err error) {
 	req := o.buildChatCompletionParams(msgs, opts)
 
 	var resp *openai.ChatCompletion
-	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req); err != nil {
+	// Apple's fm serve sends an event stream if "stream" is not in the request. Set it to false.
+	if resp, err = o.ApiClient.Chat.Completions.New(ctx, req, option.WithJSONSet("stream", false)); err != nil {
 		return
 	}
 	if len(resp.Choices) > 0 {
@@ -28,14 +27,13 @@ func (o *Client) sendChatCompletions(ctx context.Context, msgs []*chat.ChatCompl
 	return
 }
 
-// sendStreamChatCompletions sends a streaming request using the Chat Completions API
 func (o *Client) sendStreamChatCompletions(
 	ctx context.Context, msgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions, channel chan domain.StreamUpdate,
 ) (err error) {
 	defer close(channel)
 
 	req := o.buildChatCompletionParams(msgs, opts)
-	// Set StreamOptions only for streaming requests (required to get usage stats)
+	// Without IncludeUsage the stream has no usage chunk.
 	req.StreamOptions = openai.ChatCompletionStreamOptionsParam{
 		IncludeUsage: openai.Bool(true),
 	}
@@ -69,7 +67,6 @@ func (o *Client) sendStreamChatCompletions(
 	return stream.Err()
 }
 
-// buildChatCompletionParams builds parameters for the Chat Completions API
 func (o *Client) buildChatCompletionParams(
 	inputMsgs []*chat.ChatCompletionMessage, opts *domain.ChatOptions,
 ) (ret openai.ChatCompletionNewParams) {
@@ -112,7 +109,6 @@ func (o *Client) buildChatCompletionParams(
 	return
 }
 
-// convertChatMessage converts fabric chat message to OpenAI chat completion message
 func (o *Client) convertChatMessage(msg chat.ChatCompletionMessage) openai.ChatCompletionMessageParamUnion {
 	result := convertMessageCommon(msg)
 
@@ -120,7 +116,6 @@ func (o *Client) convertChatMessage(msg chat.ChatCompletionMessage) openai.ChatC
 	case chat.ChatMessageRoleSystem:
 		return openai.SystemMessage(result.Content)
 	case chat.ChatMessageRoleUser:
-		// Handle multi-content messages (text + images)
 		if result.HasMultiContent {
 			var parts []openai.ChatCompletionContentPartUnionParam
 			for _, p := range result.MultiContent {
