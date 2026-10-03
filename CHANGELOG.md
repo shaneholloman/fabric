@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.506 (2026-10-03)
+
+OpenAI Get "https://api.openai.com/v1/models": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+### PR [#2249](https://github.com/danielmiessler/Fabric/pull/2249) by [ksylvan](https://github.com/ksylvan): fix: respect user subtitle language arguments in yt-dlp
+
+- Fixed yt-dlp handling so user-specified subtitle language arguments are respected.
+- Skipped built-in language filters whenever users supply their own subtitle languages.
+- Preserved user arguments when retrying downloads without the built-in language filters.
+- Added tests covering language defaults, user overrides, and empty language selections.
+
 ## v1.4.505 (2026-10-01)
 
 ### PR [#2225](https://github.com/danielmiessler/Fabric/pull/2225) by [aiapienthusiast](https://github.com/aiapienthusiast): feat(providers): add Cheaper Inference as an OpenAI-compatible provider
