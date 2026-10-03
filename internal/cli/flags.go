@@ -115,6 +115,7 @@ type Flags struct {
 	Thinking                        domain.ThinkingLevel `long:"thinking" yaml:"thinking" description:"Set reasoning/thinking level (e.g., off, low, medium, high, or numeric tokens for Anthropic or Google Gemini)"`
 	ShowMetadata                    bool                 `long:"show-metadata" description:"Print metadata (input/output tokens) to stderr"`
 	Debug                           int                  `long:"debug" description:"Set debug level (0=off, 1=basic, 2=detailed, 3=trace, 4=wire)" default:"0"`
+	patternFromBinary               bool                 // Init sets this when the pattern name comes from the binary name.
 }
 
 // Init Initialize flags. returns a Flags struct and an error
@@ -170,6 +171,7 @@ func Init() (ret *Flags, err error) {
 		execName = strings.TrimSuffix(execName, filepath.Ext(execName))
 		if execName != "fabric" && execName != "main" && execName != "cmd" && execName != "" {
 			ret.Pattern = execName
+			ret.patternFromBinary = true
 			usedFlags["pattern"] = true
 		}
 	}
@@ -535,14 +537,6 @@ func (o *Flags) AppendMessage(message string) {
 func (o *Flags) IsChatRequest() (ret bool) {
 	ret = o.Message != "" || len(o.Attachments) > 0 || o.Context != "" || o.Session != "" || o.Pattern != "" || o.Workflow != ""
 	return
-}
-
-// patternFromBinaryName returns true when the pattern matches the binary name fallback
-// (i.e., no -p flag was given and the binary was not named "fabric", "main", or "cmd").
-func patternFromBinaryName(patternName string) bool {
-	execName := filepath.Base(os.Args[0])
-	execName = strings.TrimSuffix(execName, filepath.Ext(execName))
-	return execName != "fabric" && execName != "main" && execName != "cmd" && execName != "" && patternName == execName
 }
 
 func (o *Flags) WriteOutput(message string) (err error) {
