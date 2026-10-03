@@ -115,7 +115,12 @@ type Flags struct {
 	Thinking                        domain.ThinkingLevel `long:"thinking" yaml:"thinking" description:"Set reasoning/thinking level (e.g., off, low, medium, high, or numeric tokens for Anthropic or Google Gemini)"`
 	ShowMetadata                    bool                 `long:"show-metadata" description:"Print metadata (input/output tokens) to stderr"`
 	Debug                           int                  `long:"debug" description:"Set debug level (0=off, 1=basic, 2=detailed, 3=trace, 4=wire)" default:"0"`
+	patternFromBinary               bool                 // Init sets this when the pattern name comes from the binary name.
 }
+
+// These binary names do not select a pattern. "main" is argv[0] for
+// "go run cmd/fabric/main.go". "cmd" is argv[0] in the tests.
+var execNamesWithoutPattern = []string{"", "fabric", "fabric-ai", "main", "cmd"}
 
 // Init Initialize flags. returns a Flags struct and an error
 func Init() (ret *Flags, err error) {
@@ -168,8 +173,9 @@ func Init() (ret *Flags, err error) {
 	if ret.Pattern == "" {
 		execName := filepath.Base(os.Args[0])
 		execName = strings.TrimSuffix(execName, filepath.Ext(execName))
-		if execName != "fabric" && execName != "main" && execName != "cmd" && execName != "" {
+		if !slices.Contains(execNamesWithoutPattern, execName) {
 			ret.Pattern = execName
+			ret.patternFromBinary = true
 			usedFlags["pattern"] = true
 		}
 	}
