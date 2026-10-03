@@ -1,4 +1,4 @@
-### PR [#2173](https://github.com/danielmiessler/Fabric/pull/2173) by [OdinKral](https://github.com/OdinKral): fix: clearer error when binary name used as pattern fallback
+### PR [#2173](https://github.com/danielmiessler/Fabric/pull/2173) by [OdinKral](https://github.com/OdinKral) and [ksylvan](https://github.com/ksylvan): fix: clearer error when binary name used as pattern fallback
 
 - Added a clearer error hint when a pattern is derived from the binary name, explaining that the executable name was used as a fallback and how to specify a pattern explicitly with `-p`.
 - Introduced a `patternFromBinaryName()` helper and explicit tracking of binary-derived pattern names during flag initialization, so fallback hints appear only when a pattern truly came from the binary name.
