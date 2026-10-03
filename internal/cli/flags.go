@@ -118,6 +118,10 @@ type Flags struct {
 	patternFromBinary               bool                 // Init sets this when the pattern name comes from the binary name.
 }
 
+// These binary names do not select a pattern. "main" is argv[0] for
+// "go run cmd/fabric/main.go". "cmd" is argv[0] in the tests.
+var execNamesWithoutPattern = []string{"", "fabric", "fabric-ai", "main", "cmd"}
+
 // Init Initialize flags. returns a Flags struct and an error
 func Init() (ret *Flags, err error) {
 	debuglog.SetLevel(debuglog.LevelFromInt(parseDebugLevel(os.Args[1:])))
@@ -169,7 +173,7 @@ func Init() (ret *Flags, err error) {
 	if ret.Pattern == "" {
 		execName := filepath.Base(os.Args[0])
 		execName = strings.TrimSuffix(execName, filepath.Ext(execName))
-		if execName != "fabric" && execName != "main" && execName != "cmd" && execName != "" {
+		if !slices.Contains(execNamesWithoutPattern, execName) {
 			ret.Pattern = execName
 			ret.patternFromBinary = true
 			usedFlags["pattern"] = true
