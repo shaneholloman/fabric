@@ -740,6 +740,7 @@ Application Options:
       --serveOllama                 Serve the Fabric Rest API with ollama endpoints
       --address=                    The address to bind the REST API (default: :8080)
       --api-key=                    API key used to secure server routes
+      --cors-origins=               Browser origins that can call the server (repeatable; * for all)
       --config=                     Path to YAML config file
       --version                     Print current version
       --listextensions              List all registered extensions
