@@ -1,7 +1,7 @@
 ### PR [#2253](https://github.com/danielmiessler/Fabric/pull/2253) by [ksylvan](https://github.com/ksylvan): feat: expand pattern suggestions with Chinese workflows
 
-- Expanded pattern suggestions with Chinese workflows and analytical lenses.
-- Registered five Chinese workflow patterns across the relevant categories.
-- Added deconstructive, rhetorical, and philosophical lenses to the suggestions.
-- Documented eight additional patterns in the suggestion catalog.
-- Added matching descriptions, category tags, and prompt extracts.
+- Added five Chinese-language workflow patterns across the relevant suggestion categories, covering summaries, reviews, translation, and poetry.
+- Introduced deconstructive, rhetorical, and philosophical analytical lenses for text analysis.
+- Documented eight additional patterns in the suggestion catalog, including descriptions, category tags, and prompt extracts.
+- Renumbered subsequent catalog entries to accommodate the eight new additions.
+- Updated the changelog with the entry for this release.
