@@ -15,14 +15,13 @@ import (
 	"github.com/danielmiessler/fabric/internal/plugins"
 )
 
-const userAgent = "Fabric"
-
 var searchURL = "https://api.serply.io/v1/search"
+
+var httpClient = &http.Client{Timeout: 30 * time.Second}
 
 type Client struct {
 	*plugins.PluginBase
-	ApiKey     *plugins.SetupQuestion
-	HttpClient *http.Client
+	ApiKey *plugins.SetupQuestion
 }
 
 func NewClient() (ret *Client) {
@@ -67,15 +66,10 @@ func (c *Client) Search(query string) (ret string, err error) {
 		return
 	}
 	req.Header.Set("X-Api-Key", c.ApiKey.Value)
-	req.Header.Set("User-Agent", userAgent)
-
-	client := c.HttpClient
-	if client == nil {
-		client = &http.Client{Timeout: 30 * time.Second}
-	}
+	req.Header.Set("User-Agent", "Fabric")
 
 	var resp *http.Response
-	if resp, err = client.Do(req); err != nil {
+	if resp, err = httpClient.Do(req); err != nil {
 		err = fmt.Errorf(i18n.T("serply_failed_execute_request"), err)
 		return
 	}

@@ -25,7 +25,6 @@ func TestSearchSendsKeyAndFormatsResults(t *testing.T) {
 
 	client := NewClient()
 	client.ApiKey.Value = "secret"
-	client.HttpClient = server.Client()
 
 	got, err := client.Search("golang generics")
 	require.NoError(t, err)
@@ -45,7 +44,6 @@ func TestSearchReturnsAPIError(t *testing.T) {
 
 	client := NewClient()
 	client.ApiKey.Value = "bad"
-	client.HttpClient = server.Client()
 
 	_, err := client.Search("anything")
 	require.ErrorContains(t, err, "Invalid API key")
