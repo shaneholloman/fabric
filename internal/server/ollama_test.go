@@ -117,7 +117,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 		wantErr bool
 		errMsg  string
 	}{
-		// --- Valid inputs ---
 		{
 			name:    "nil options",
 			options: nil,
@@ -178,7 +177,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			want:    65536,
 			wantErr: false,
 		},
-		// --- Invalid inputs ---
 		{
 			name:    "float64 with fractional part",
 			options: map[string]any{"num_ctx": 4096.5},
@@ -256,7 +254,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a number, got invalid type",
 		},
-		// --- Edge cases ---
 		{
 			name:    "minimum valid value",
 			options: map[string]any{"num_ctx": 1},
@@ -290,7 +287,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a valid number",
 		},
-		// --- Special float values ---
 		{
 			name:    "float64 NaN",
 			options: map[string]any{"num_ctx": math.NaN()},
@@ -333,7 +329,6 @@ func TestParseOllamaNumCtx(t *testing.T) {
 			wantErr: true,
 			errMsg:  "num_ctx must be a finite number",
 		},
-		// --- Negative int64 (32-bit wraparound prevention) ---
 		{
 			name:    "negative int64",
 			options: map[string]any{"num_ctx": int64(-1000)},
@@ -383,7 +378,7 @@ func TestNewOllamaEngine_APIKeyWiring(t *testing.T) {
 		return w.Code
 	}
 
-	withKey := newOllamaEngine(registry, ":0", "test-version", "secret")
+	withKey := newOllamaEngine(registry, ":0", "test-version", "secret", nil)
 	if code := getVersion(withKey, ""); code != http.StatusUnauthorized {
 		t.Fatalf("no key presented: got %d, want 401", code)
 	}
@@ -391,7 +386,7 @@ func TestNewOllamaEngine_APIKeyWiring(t *testing.T) {
 		t.Fatalf("valid key presented: got %d, want 200", code)
 	}
 
-	withoutKey := newOllamaEngine(registry, ":0", "test-version", "")
+	withoutKey := newOllamaEngine(registry, ":0", "test-version", "", nil)
 	if code := getVersion(withoutKey, ""); code != http.StatusOK {
 		t.Fatalf("no key configured: got %d, want 200", code)
 	}
@@ -556,5 +551,79 @@ func TestOllamaChat_NoKeyOmitsHeader(t *testing.T) {
 	}
 	if gotHeader != "" {
 		t.Fatalf("X-API-Key was forwarded with no key configured: %q", gotHeader)
+	}
+}
+
+// In stream mode, an upstream error event must end the NDJSON stream
+// with a done chunk that holds the prefixed error text.
+func TestOllamaChat_StreamUpstreamErrorEvent(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	upstream := gin.New()
+	upstream.POST("/chat", func(c *gin.Context) {
+		c.Writer.Header().Set("Content-Type", "text/event-stream")
+		fmt.Fprint(c.Writer, "data: {\"type\":\"error\",\"content\":\"boom\"}\n\n")
+	})
+	server := httptest.NewServer(upstream)
+	defer server.Close()
+
+	r := gin.New()
+	conv := APIConvert{addr: &server.URL}
+	r.POST("/api/chat", conv.ollamaChat)
+
+	w := httptest.NewRecorder()
+	body := `{"model":"test:latest","stream":true,"messages":[{"role":"user","content":"hi"}]}`
+	req := httptest.NewRequest(http.MethodPost, "/api/chat", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+
+	lines := strings.Split(strings.TrimSpace(w.Body.String()), "\n")
+	var last OllamaResponse
+	if err := json.Unmarshal([]byte(lines[len(lines)-1]), &last); err != nil {
+		t.Fatalf("last line is not JSON: %v: %q", err, w.Body.String())
+	}
+	if !last.Done {
+		t.Fatalf("last chunk has done=false: %+v", last)
+	}
+	if !strings.Contains(last.Message.Content, "boom") || last.Message.Content == "boom" {
+		t.Fatalf("last chunk content is not the prefixed error: %q", last.Message.Content)
+	}
+}
+
+// With more than one message, the forwarded prompt must join all
+// messages as "role:content\n" lines.
+func TestOllamaChat_JoinsManyMessages(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	var got ChatRequest
+	upstream := gin.New()
+	upstream.POST("/chat", func(c *gin.Context) {
+		if err := c.ShouldBindJSON(&got); err != nil {
+			t.Errorf("decode forwarded body: %v", err)
+		}
+		c.Writer.Header().Set("Content-Type", "text/event-stream")
+		fmt.Fprint(c.Writer, "data: {\"type\":\"content\",\"format\":\"markdown\",\"content\":\"hi\"}\n\n")
+	})
+	server := httptest.NewServer(upstream)
+	defer server.Close()
+
+	r := gin.New()
+	conv := APIConvert{addr: &server.URL}
+	r.POST("/api/chat", conv.ollamaChat)
+
+	w := httptest.NewRecorder()
+	body := `{"model":"summarize:latest","messages":[{"role":"user","content":"a"},{"role":"assistant","content":"b"}]}`
+	req := httptest.NewRequest(http.MethodPost, "/api/chat", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("got %d, want 200", w.Code)
+	}
+	if len(got.Prompts) != 1 {
+		t.Fatalf("got %d prompts, want 1", len(got.Prompts))
+	}
+	if p := got.Prompts[0]; p.UserInput != "user:a\nassistant:b\n" || p.PatternName != "summarize" {
+		t.Fatalf("got UserInput=%q PatternName=%q", p.UserInput, p.PatternName)
 	}
 }

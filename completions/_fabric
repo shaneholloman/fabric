@@ -72,6 +72,7 @@ _fabric() {
 
   _arguments -C \
     '(-p --pattern)'{-p,--pattern}'[Choose a pattern from the available patterns]:pattern:_fabric_patterns' \
+    '(--workflow)--workflow[Run a sequence of patterns defined in a YAML or JSON workflow file]:workflow file:_files -g "*.yaml *.yml *.json"' \
     '(-v --variable)'{-v,--variable}'[Values for pattern variables, e.g. -v=#role:expert -v=#points:30]:variable:' \
     '(-C --context)'{-C,--context}'[Choose a context from the available contexts]:context:_fabric_contexts' \
     '(--session)--session[Choose a session from the available sessions]:session:_fabric_sessions' \
@@ -93,8 +94,11 @@ _fabric() {
     '(-m --model)'{-m,--model}'[Choose model]:model:_fabric_models' \
     '(-V --vendor)'{-V,--vendor}'[Specify vendor for the selected model (e.g., -V "LM Studio" -m openai/gpt-oss-20b)]:vendor:_fabric_vendors' \
     '(--modelContextLength)--modelContextLength[Model context length (only affects ollama)]:length:' \
+    '(--maxTokens)--maxTokens[Maximum tokens the model may generate, including reasoning/thinking tokens (0 = vendor default)]:tokens:' \
     '(-o --output)'{-o,--output}'[Output to file]:file:_files' \
     '(--output-session)--output-session[Output the entire session to the output file]' \
+    '(--extract)--extract[Output only the first fenced code block from the response]' \
+    '(--extract-last)--extract-last[Output only the last fenced code block from the response]' \
     '(-n --latest)'{-n,--latest}'[Number of latest patterns to list (default: 0)]:number:' \
     '(-d --changeDefaultModel)'{-d,--changeDefaultModel}'[Change default model]' \
     '(-y --youtube)'{-y,--youtube}'[YouTube video or play list URL]:youtube url:' \
@@ -125,6 +129,7 @@ _fabric() {
     '(--serveOllama)--serveOllama[Serve the Fabric Rest API with ollama endpoints]' \
     '(--address)--address[The address to bind the REST API (default: :8080)]:address:' \
     '(--api-key)--api-key[API key used to secure server routes]:api-key:' \
+    '*--cors-origins[Browser origins that can call the server (repeatable; * for all)]:origin:' \
     '(--config)--config[Path to YAML config file]:config file:_files -g "*.yaml *.yml"' \
     '(--version)--version[Print current version]' \
     '(--search)--search[Enable web search tool for supported models (Anthropic, OpenAI, Gemini, Grok)]' \
