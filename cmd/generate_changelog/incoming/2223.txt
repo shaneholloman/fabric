@@ -1,4 +1,4 @@
-### PR [#2223](https://github.com/danielmiessler/Fabric/pull/2223) by [googio](https://github.com/googio): feat: add Serply web search via --serply_search flag
+### PR [#2223](https://github.com/danielmiessler/Fabric/pull/2223) by [googio](https://github.com/googio) and [ksylvan](https://github.com/ksylvan): feat: add Serply web search via --serply_search flag
 
 - Added an optional Serply web search plugin (`SERPLY_API_KEY`) exposed through the new `--serply_search` flag, which runs a Google search and appends the results to the chat as markdown alongside the existing Jina `scrape_question` tool. Installations without configuration remain unchanged.
 - Refactored the Serply integration to use a shared HTTP client with a 30-second timeout, removing per-instance client configuration.
