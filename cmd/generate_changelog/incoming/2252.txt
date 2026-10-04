@@ -1,0 +1,7 @@
+### PR [#2252](https://github.com/danielmiessler/Fabric/pull/2252) by [ksylvan](https://github.com/ksylvan): feat: add configurable CORS support to REST and Ollama servers
+
+- Added configurable CORS support to the REST and Ollama servers, with origins set through repeatable flags and environment variables.
+- Applied shared CORS middleware across both the REST and Ollama servers.
+- Required API keys for wildcard origins and excluded null origins for tighter security.
+- Handled preflight requests before authentication and removed hardcoded chat origins.
+- Loaded server settings from `.env` while preserving explicit overrides.
