@@ -66,7 +66,6 @@ func (c *Client) Search(query string) (ret string, err error) {
 		return
 	}
 	req.Header.Set("X-Api-Key", c.ApiKey.Value)
-	req.Header.Set("User-Agent", "Fabric")
 
 	var resp *http.Response
 	if resp, err = httpClient.Do(req); err != nil {

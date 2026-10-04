@@ -11,7 +11,6 @@ import (
 func TestSearchSendsKeyAndFormatsResults(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, "secret", r.Header.Get("X-Api-Key"))
-		require.Equal(t, "Fabric", r.Header.Get("User-Agent"))
 		require.Equal(t, "golang generics", r.URL.Query().Get("q"))
 		require.Equal(t, "10", r.URL.Query().Get("num"))
 		w.Header().Set("Content-Type", "application/json")
