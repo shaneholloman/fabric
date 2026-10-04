@@ -350,6 +350,7 @@ Fabric supports a wide range of AI providers:
 - OpenAI
 - OpenAI Codex (ChatGPT/Codex subscription OAuth via private backend)
 - Anthropic (Claude)
+- Claude Code (Claude subscription via the local `claude` CLI)
 - Google Gemini
 - Ollama (local models)
 - Azure OpenAI
@@ -362,10 +363,13 @@ Fabric supports a wide range of AI providers:
 
 - Abacus
 - AIML
+- API Route
+- Apple Foundation Models (local, macOS 27 or later: run `sudo fm license` once, then `fm serve --port 1976`; no API key; select it once in `fabric -S` to enable it)
 - Cerebras
+- Cheaper Inference
 - DeepSeek
 - DigitalOcean
-- GitHub Models
+- Eden AI
 - GrokAI
 - Groq
 - Langdock
@@ -373,10 +377,17 @@ Fabric supports a wide range of AI providers:
 - MiniMax
 - Mistral
 - Novita AI
+- OpenCode Go
+- OpenCode Zen
 - OpenRouter
+- OrcaRouter
+- Pzero
+- Requesty
 - SiliconCloud
+- Synthorai
 - Together
 - Venice AI
+- Y-API
 - Z AI
 
 Run `fabric --setup` to configure your preferred provider(s), or use `fabric --listvendors` to see all available vendors.
@@ -413,6 +424,7 @@ yt() {
     if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
         echo "Usage: yt [-t | --timestamps] youtube-link"
         echo "Use the '-t' flag to get the transcript with timestamps."
+        echo "Pipe to a pattern: yt URL | fabric -p extract_wisdom"
         return 1
     fi
 
@@ -422,6 +434,8 @@ yt() {
         shift
     fi
     local video_link="$1"
+    # Outputs the raw transcript to stdout so it can be piped to a pattern:
+    #   yt URL | fabric -p extract_wisdom
     fabric -y "$video_link" $transcript_flag
 }
 ```
@@ -500,20 +514,28 @@ function yt {
     process {
         if (-not $videoLink) {
             Write-Error "Usage: yt [-t | --timestamps] youtube-link"
+            Write-Host "Pipe to a pattern: yt URL | fabric -p extract_wisdom"
             return
         }
     }
 
     end {
         if ($videoLink) {
-            # Execute and allow output to flow through the pipeline
+            # Outputs the raw transcript to stdout so it can be piped to a pattern:
+            #   yt URL | fabric -p extract_wisdom
             fabric -y $videoLink $transcriptFlag
         }
     }
 }
 ```
 
-This also creates a `yt` alias that allows you to use `yt https://www.youtube.com/watch?v=4b0iet22VIk` to get transcripts, comments, and metadata.
+This also creates a `yt` helper that outputs a YouTube transcript to stdout. Pipe it to a pattern to process it with fabric:
+
+```shell
+yt https://www.youtube.com/watch?v=4b0iet22VIk | fabric -p extract_wisdom
+```
+
+Use `yt` without a pipe to review the raw transcript first.
 
 #### Save your files in markdown using aliases
 
@@ -682,6 +704,10 @@ Application Options:
       --modelContextLength=         Model context length (only affects ollama)
   -o, --output=                     Output to file
       --output-session              Output the entire session (also a temporary one) to the output file
+      --extract                     Output only the first fenced code block from the response (full response if
+                                    none is found)
+      --extract-last                Output only the last fenced code block from the response (full response if
+                                    none is found)
   -n, --latest=                     Number of latest patterns to list
   -d, --changeDefaultModel          Change default model
   -y, --youtube=                    YouTube video or play list "URL" to grab transcript, comments from it and
@@ -714,6 +740,7 @@ Application Options:
       --serveOllama                 Serve the Fabric Rest API with ollama endpoints
       --address=                    The address to bind the REST API (default: :8080)
       --api-key=                    API key used to secure server routes
+      --cors-origins=               Browser origins that can call the server (repeatable; * for all)
       --config=                     Path to YAML config file
       --version                     Print current version
       --listextensions              List all registered extensions
